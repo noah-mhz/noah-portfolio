@@ -140,6 +140,8 @@ export function initHoverAnimations() {
   // CTA fill enters from below and exits through the top — a directional wipe.
   $$('.cta').forEach((cta) => {
     const fill = $('.cta__fill', cta);
+    // Take over the CSS resting offset so GSAP owns a single transform.
+    gsap.set(fill, { y: 0, yPercent: 101 });
     const enter = () => {
       cta.classList.add('is-hover');
       gsap.fromTo(fill, { yPercent: 101 }, { yPercent: 0, duration: 0.7, ease: 'expo.out', overwrite: true });
@@ -161,14 +163,30 @@ export function initHoverAnimations() {
       const media = $('.project__media', project);
       const img = $('.project__img', project);
       const meta = $('.project__meta', project);
-      const shift = project.classList.contains('project--alt') ? -10 : 10;
+      const shift = project.classList.contains('project--alt') ? 10 : -10;
+      const imgX = gsap.quickTo(img, 'xPercent', { duration: 1.2, ease: 'power3' });
+      const imgY = gsap.quickTo(img, 'yPercent', { duration: 1.2, ease: 'power3' });
+      let rect = null;
+
+      // The image leans a fraction toward the pointer inside its frame.
+      const onMove = (event) => {
+        rect = rect || media.getBoundingClientRect();
+        imgX(((event.clientX - rect.left) / rect.width - 0.5) * -3);
+        imgY(((event.clientY - rect.top) / rect.height - 0.5) * -3);
+      };
 
       return listen([
         [media, 'pointerenter', () => {
-          gsap.to(img, { scale: 1.05, duration: 1.4, ease: 'expo.out', overwrite: 'auto' });
+          rect = null;
+          media.classList.add('is-hover');
+          gsap.to(img, { scale: 1.03, duration: 1.4, ease: 'expo.out', overwrite: 'auto' });
           gsap.to(meta, { x: shift, duration: 1, ease: 'expo.out', overwrite: 'auto' });
         }],
+        [media, 'pointermove', onMove],
         [media, 'pointerleave', () => {
+          media.classList.remove('is-hover');
+          imgX(0);
+          imgY(0);
           gsap.to(img, { scale: 1, duration: 1.4, ease: 'expo.out', overwrite: 'auto' });
           gsap.to(meta, { x: 0, duration: 1, ease: 'expo.out', overwrite: 'auto' });
         }],
@@ -189,11 +207,9 @@ function initCapabilities() {
   gsap.matchMedia().add(FINE_POINTER_MOTION, () => {
     const rows = $$('[data-cap]', list);
     const images = $$('img', preview);
-    const xTo = gsap.quickTo(preview, 'x', { duration: 0.8, ease: 'power3' });
+    const rail = $('.grid-lines span:nth-child(3)');
     const yTo = gsap.quickTo(preview, 'y', { duration: 0.8, ease: 'power3' });
-    const rotateTo = gsap.quickTo(preview, 'rotation', { duration: 0.8, ease: 'power3' });
     let previewHeight = 0;
-    let lastX = 0;
     let active = -1;
     let layer = 1;
 
@@ -210,31 +226,30 @@ function initCapabilities() {
       layer += 1;
       gsap.set(images[index], { zIndex: layer });
       gsap.fromTo(images[index],
-        { clipPath: 'inset(100% 0% 0% 0%)', scale: 1.25 },
+        { clipPath: 'inset(100% 0% 0% 0%)', scale: 1.2 },
         { clipPath: 'inset(0% 0% 0% 0%)', scale: 1, duration: 0.9, ease: 'expo.out', overwrite: true });
     };
 
+    // The preview rides the third grid line: it only travels vertically with the pointer.
     const onListEnter = (event) => {
       previewHeight = preview.offsetHeight;
-      gsap.set(preview, { x: event.clientX + 40, y: event.clientY - previewHeight / 2 });
+      gsap.set(preview, { x: rail.getBoundingClientRect().left, y: event.clientY - previewHeight / 2 });
       list.classList.add('is-hovering');
-      gsap.to(preview, { autoAlpha: 1, scale: 1, duration: 0.6, ease: 'expo.out', overwrite: 'auto' });
+      gsap.fromTo(preview,
+        { autoAlpha: 1, clipPath: 'inset(50% 0% 50% 0%)' },
+        { clipPath: 'inset(0% 0% 0% 0%)', duration: 0.7, ease: 'expo.out', overwrite: 'auto' });
     };
 
     const onListLeave = () => {
       list.classList.remove('is-hovering');
       active = -1;
-      gsap.to(preview, { autoAlpha: 0, scale: 0.9, duration: 0.5, ease: 'power3.out', overwrite: 'auto' });
+      gsap.to(preview, {
+        clipPath: 'inset(50% 0% 50% 0%)', duration: 0.5, ease: 'power3.in', overwrite: 'auto',
+        onComplete: () => gsap.set(preview, { autoAlpha: 0 }),
+      });
     };
 
-    const onListMove = (event) => {
-      // Lean slightly into the direction of travel.
-      const velocity = gsap.utils.clamp(-4, 4, (event.clientX - lastX) * 0.25);
-      lastX = event.clientX;
-      xTo(event.clientX + 40);
-      yTo(event.clientY - previewHeight / 2);
-      rotateTo(velocity);
-    };
+    const onListMove = (event) => yTo(event.clientY - previewHeight / 2);
 
     const rowDisposers = rows.map((row, index) => {
       const enter = () => {

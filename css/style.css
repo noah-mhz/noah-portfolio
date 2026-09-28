@@ -118,7 +118,22 @@ main { position: relative; z-index: 1; }
 
 .line { display: block; }
 
-/* Word-split masks. Padding keeps descenders from clipping at tight line-heights. */
+/* Split masks. Padding keeps descenders from clipping at tight line-heights. */
+.l-mask {
+  overflow: hidden;
+  padding-bottom: 0.1em;
+  margin-bottom: -0.1em;
+}
+
+.l-inner {
+  display: block;
+  transform-origin: 0% 100%;
+}
+
+.c-inner {
+  display: inline-block;
+}
+
 .w-mask {
   display: inline-block;
   overflow: hidden;
@@ -147,18 +162,11 @@ main { position: relative; z-index: 1; }
 
 .status-dot {
   display: inline-block;
-  width: 6px;
-  height: 6px;
+  width: 5px;
+  height: 5px;
   margin-right: 0.6rem;
-  border-radius: 50%;
   background: var(--accent);
-  vertical-align: 0.1em;
-  animation: pulse 2.4s var(--ease-in-out) infinite;
-}
-
-@keyframes pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.3; }
+  vertical-align: 0.15em;
 }
 
 .arrow {
@@ -194,6 +202,31 @@ a:focus-visible .arrow--diag { transform: translate(0.2em, -0.2em); }
 .link-line:focus-visible::after {
   transform: scaleX(1);
   transform-origin: left;
+}
+
+/*
+ * Viewfinder marks: four corner ticks that frame anything the page is
+ * pointing at — project images, the pinned case image, the CTA.
+ */
+.marks {
+  --mark: 14px;
+  --mark-color: rgba(242, 242, 240, 0.75);
+  position: absolute;
+  inset: 14px;
+  pointer-events: none;
+  background:
+    linear-gradient(var(--mark-color), var(--mark-color)) 0 0 / var(--mark) 1px,
+    linear-gradient(var(--mark-color), var(--mark-color)) 0 0 / 1px var(--mark),
+    linear-gradient(var(--mark-color), var(--mark-color)) 100% 0 / var(--mark) 1px,
+    linear-gradient(var(--mark-color), var(--mark-color)) 100% 0 / 1px var(--mark),
+    linear-gradient(var(--mark-color), var(--mark-color)) 0 100% / var(--mark) 1px,
+    linear-gradient(var(--mark-color), var(--mark-color)) 0 100% / 1px var(--mark),
+    linear-gradient(var(--mark-color), var(--mark-color)) 100% 100% / var(--mark) 1px,
+    linear-gradient(var(--mark-color), var(--mark-color)) 100% 100% / 1px var(--mark);
+  background-repeat: no-repeat;
+  opacity: 0;
+  transform: scale(1.04);
+  transition: opacity 0.6s var(--ease-out), transform 0.9s var(--ease-out);
 }
 
 .skip-link {
@@ -244,13 +277,7 @@ a:focus-visible .arrow--diag { transform: translate(0.2em, -0.2em); }
   gap: 0.25rem;
 }
 
-.intro__count {
-  font-size: clamp(4.5rem, 14vw, 13rem);
-  font-weight: 300;
-  line-height: 0.78;
-  letter-spacing: -0.05em;
-  font-variant-numeric: tabular-nums;
-}
+.intro__index { color: var(--accent); }
 
 .grid-lines {
   position: fixed;
@@ -261,8 +288,31 @@ a:focus-visible .arrow--diag { transform: translate(0.2em, -0.2em); }
   pointer-events: none;
 }
 
-.grid-lines span { border-left: 1px solid var(--border-soft); }
+.grid-lines span {
+  position: relative;
+  border-left: 1px solid var(--border-soft);
+  transition: border-color 1.6s var(--ease-out);
+}
+
 .grid-lines span:last-child { border-right: 1px solid var(--border-soft); }
+
+/* Contact: the grid resolves — lines brighten and an accent travels down the first. */
+.grid-lines span:first-child::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: -1px;
+  width: 1px;
+  background: var(--accent);
+  opacity: 0.6;
+  transform: scaleY(0);
+  transform-origin: 50% 0%;
+  transition: transform 2.2s var(--ease-in-out);
+}
+
+.grid-lines.is-lit span { border-color: rgba(242, 242, 240, 0.09); }
+.grid-lines.is-lit span:first-child::after { transform: scaleY(1); }
 
 @media (max-width: 767px) {
   .grid-lines { grid-template-columns: repeat(2, 1fr); }
@@ -357,10 +407,38 @@ a:focus-visible .arrow--diag { transform: translate(0.2em, -0.2em); }
 
 .nav__logo { letter-spacing: 0.24em; }
 
+.nav__right {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
 .nav__list {
   display: flex;
   gap: clamp(1.25rem, 3vw, 3rem);
 }
+
+.nav__right[data-mode="status"] .nav__list li { overflow: hidden; }
+
+.nav__status {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  overflow: hidden;
+  padding: 0.25rem 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font-family: var(--font-mono);
+  font-size: var(--fs-meta);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  cursor: pointer;
+  transform: translateY(-50%);
+}
+
+.nav__status-text { display: block; }
 
 .nav__link {
   position: relative;
@@ -588,57 +666,24 @@ a:focus-visible .arrow--diag { transform: translate(0.2em, -0.2em); }
   white-space: nowrap;
 }
 
-.work__title .line:nth-child(2) { padding-left: 28%; }
-
-.work__count {
-  margin-left: 0.4em;
-  font-family: var(--font-mono);
-  font-size: 0.1em;
-  font-weight: 400;
-  letter-spacing: 0.04em;
-  vertical-align: super;
-  color: var(--accent);
-}
-
-.work__list { position: relative; }
-
-/* Zero-height sticky rail: the counter rides the viewport without taking layout space. */
-.work__counter {
-  position: sticky;
-  top: calc(100vh - 4.5rem);
-  z-index: 5;
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  height: 0;
-  padding: 0 var(--gutter);
-  opacity: 0;
-  transition: opacity 0.6s var(--ease-out);
-  pointer-events: none;
-}
-
-.work__counter.is-visible { opacity: 1; }
-
-.work__counter-window {
-  display: inline-block;
-  height: 1.1em;
-  overflow: hidden;
-  font-size: 1.5rem;
-  font-weight: 500;
-  line-height: 1.1;
-  letter-spacing: -0.02em;
+.work__title .line:nth-child(2) {
+  padding-left: 25%;
+  font-weight: 300;
   font-variant-numeric: tabular-nums;
 }
 
-.work__counter-strip { display: block; }
-.work__counter-strip span { display: block; }
+.work__list {
+  position: relative;
+  overflow-x: clip;
+}
 
 .project {
   position: relative;
+  z-index: 2;
   display: grid;
   grid-template-columns: repeat(12, 1fr);
   column-gap: var(--gutter);
-  padding: clamp(6rem, 16vh, 12rem) var(--gutter);
+  padding: clamp(5rem, 12vh, 9rem) var(--gutter) clamp(3rem, 6vh, 5rem);
 }
 
 .project__head {
@@ -688,10 +733,10 @@ a:focus-visible .arrow--diag { transform: translate(0.2em, -0.2em); }
   clip-path: inset(0% 0% 0% 0%);
 }
 
-/* Oversized so horizontal drift never exposes an edge. */
+/* Oversized so drift never exposes an edge. */
 .project__inner {
   position: absolute;
-  inset: 0 -8%;
+  inset: -6% -8%;
 }
 
 .project__img {
@@ -710,7 +755,23 @@ a:focus-visible .arrow--diag { transform: translate(0.2em, -0.2em); }
   grid-row: 2;
   align-self: end;
   display: grid;
+  gap: 2rem;
+}
+
+.project__facts {
+  display: grid;
   gap: 1.25rem;
+}
+
+.project__link {
+  justify-self: start;
+  color: var(--text);
+}
+
+.project__media.is-hover .marks,
+.project__media:focus-visible .marks {
+  opacity: 1;
+  transform: scale(1);
 }
 
 .project--alt .project__meta { grid-column: 1 / 4; }
@@ -725,9 +786,9 @@ a:focus-visible .arrow--diag { transform: translate(0.2em, -0.2em); }
   .project--alt .project__meta {
     grid-column: 1 / -1;
     grid-row: 3;
-    grid-template-columns: repeat(4, 1fr);
     margin-top: 1.5rem;
   }
+  .project__facts { grid-template-columns: repeat(4, 1fr); }
 }
 
 @media (max-width: 767px) {
@@ -737,9 +798,7 @@ a:focus-visible .arrow--diag { transform: translate(0.2em, -0.2em); }
   .project--alt .project__head { align-items: flex-end; }
   .project__title { white-space: normal; }
   .project__clip { aspect-ratio: 4 / 5; }
-  .project__meta,
-  .project--alt .project__meta { grid-template-columns: repeat(2, 1fr); }
-  .work__counter { display: none; }
+  .project__facts { grid-template-columns: repeat(2, 1fr); }
 }
 
 /* ==========================================================================
@@ -748,8 +807,7 @@ a:focus-visible .arrow--diag { transform: translate(0.2em, -0.2em); }
 
 .case {
   position: relative;
-  padding: 12vh var(--gutter);
-  background: var(--bg);
+  padding: clamp(5rem, 12vh, 9rem) var(--gutter);
 }
 
 .case__frame {
@@ -817,6 +875,11 @@ a:focus-visible .arrow--diag { transform: translate(0.2em, -0.2em); }
   clip-path: inset(0% 0% 0% 0%);
 }
 
+.case__media .marks {
+  opacity: 1;
+  transform: none;
+}
+
 .case__img {
   position: absolute;
   inset: 0;
@@ -861,30 +924,12 @@ a:focus-visible .arrow--diag { transform: translate(0.2em, -0.2em); }
 .case__stack li > span { font-size: clamp(1.125rem, 1.5vw, 1.5rem); letter-spacing: -0.01em; }
 .case__stack li > span .label { align-self: center; }
 
-.case__results {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: var(--gutter);
-}
-
-.case__results [data-stage-item] {
-  display: grid;
-  gap: 0.75rem;
-}
-
-.case__figure {
-  font-size: clamp(2.5rem, 4.5vw, 5rem);
-  font-weight: 300;
-  line-height: 1;
-  letter-spacing: -0.045em;
-  font-variant-numeric: tabular-nums;
-}
-
 .case.is-pinned { padding: 0; }
 
 .case.is-pinned .case__frame {
   display: block;
   height: 100vh;
+  overflow: hidden;
 }
 
 .case.is-pinned .case__top {
@@ -909,6 +954,7 @@ a:focus-visible .arrow--diag { transform: translate(0.2em, -0.2em); }
   bottom: var(--gutter);
   width: 52%;
   aspect-ratio: auto;
+  transform-origin: 100% 50%;
 }
 
 .case.is-pinned .case__stages {
@@ -918,17 +964,6 @@ a:focus-visible .arrow--diag { transform: translate(0.2em, -0.2em); }
   width: 36%;
 }
 
-.case.is-pinned .case__results {
-  grid-template-columns: 1fr;
-  gap: 1.75rem;
-}
-
-.case.is-pinned .case__results [data-stage-item] {
-  grid-template-columns: minmax(8rem, auto) 1fr;
-  align-items: baseline;
-  gap: 1.5rem;
-}
-
 .case.is-pinned .case__stage {
   position: absolute;
   top: 0;
@@ -936,11 +971,27 @@ a:focus-visible .arrow--diag { transform: translate(0.2em, -0.2em); }
   width: 100%;
 }
 
+.case__next { display: none; }
+
+.case.is-pinned .case__next {
+  position: absolute;
+  right: var(--gutter);
+  bottom: var(--gutter);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  color: var(--muted);
+}
+
+.case.is-pinned .case__next span:last-child { color: var(--text); }
+
+/* Desktop only: the next project rises over the pinned frame as it releases. */
+.project.is-overlapping { margin-top: -70vh; }
+
 @media (max-width: 767px) {
   .case__title { white-space: normal; }
   .case__steps { display: none; }
   .case__media { aspect-ratio: 4 / 5; }
-  .case__results { grid-template-columns: 1fr; }
 }
 
 /* ==========================================================================
@@ -960,17 +1011,30 @@ a:focus-visible .arrow--diag { transform: translate(0.2em, -0.2em); }
 }
 
 .words__list {
-  font-size: clamp(2.75rem, 10.5vw, 12rem);
+  font-size: clamp(2.75rem, 8.6vw, 10.5rem);
   font-weight: 500;
-  line-height: 0.88;
+  line-height: 0.9;
   letter-spacing: -0.05em;
   text-transform: uppercase;
 }
 
-.words__item { display: block; }
-.words__item:nth-child(2) { padding-left: 16%; }
-.words__item:nth-child(3) { padding-left: 6%; }
+/* Each word starts on a grid line: 0, 1, 2 columns in; the last ends on the right edge. */
+.words__item { display: block; white-space: nowrap; }
+.words__item:nth-child(2) { padding-left: 25%; }
+.words__item:nth-child(3) { padding-left: 50%; }
 .words__item:nth-child(4) { text-align: right; }
+
+.words__item::before {
+  content: attr(data-index);
+  display: inline-block;
+  margin-right: 0.9rem;
+  font-family: var(--font-mono);
+  font-size: var(--fs-meta);
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  vertical-align: top;
+  color: var(--muted);
+}
 
 .words__meta {
   position: absolute;
@@ -981,8 +1045,9 @@ a:focus-visible .arrow--diag { transform: translate(0.2em, -0.2em); }
 }
 
 @media (max-width: 767px) {
-  .words__item:nth-child(2) { padding-left: 0; }
-  .words__item:nth-child(4) { text-align: left; }
+  .words__item:nth-child(2) { padding-left: 10%; }
+  .words__item:nth-child(3) { padding-left: 20%; }
+  .words__item::before { margin-right: 0.5rem; font-size: 0.625rem; }
 }
 
 /* ==========================================================================
@@ -1062,11 +1127,12 @@ a:focus-visible .arrow--diag { transform: translate(0.2em, -0.2em); }
 .caps__list.is-hovering .cap__title { color: var(--muted); }
 .caps__list.is-hovering .cap.is-active .cap__title { color: var(--text); }
 
+/* Sits beneath the page layer, so the list typography passes over the image. */
 .cap-preview {
   position: fixed;
   top: 0;
   left: 0;
-  z-index: 40;
+  z-index: 0;
   width: clamp(14rem, 20vw, 20rem);
   aspect-ratio: 4 / 5;
   overflow: hidden;
@@ -1074,6 +1140,12 @@ a:focus-visible .arrow--diag { transform: translate(0.2em, -0.2em); }
   pointer-events: none;
   visibility: hidden;
   opacity: 0;
+}
+
+.cap-preview .marks {
+  z-index: 50;
+  opacity: 1;
+  transform: none;
 }
 
 .cap-preview img {
@@ -1334,19 +1406,25 @@ a:focus-visible .arrow--diag { transform: translate(0.2em, -0.2em); }
   align-items: center;
   padding: 1.5rem 2.4rem;
   overflow: hidden;
-  border: 1px solid var(--border);
-  border-radius: 999px;
   font-size: 0.875rem;
   font-weight: 500;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  transition: border-color 0.6s var(--ease-out);
 }
+
+.cta .marks {
+  --mark: 10px;
+  inset: 0;
+  opacity: 1;
+  transform: none;
+  transition: none;
+}
+
+.cta.is-hover .marks { --mark-color: var(--bg); }
 
 .cta__fill {
   position: absolute;
   inset: 0;
-  border-radius: inherit;
   background: var(--accent);
   transform: translateY(101%);
 }
@@ -1358,13 +1436,22 @@ a:focus-visible .arrow--diag { transform: translate(0.2em, -0.2em); }
   transition: color 0.5s var(--ease-out);
 }
 
-.cta.is-hover { border-color: var(--accent); }
 .cta.is-hover .cta__label { color: var(--bg); }
 .cta.is-hover .arrow { transform: translateX(0.3em); }
 
 .contact__email {
   font-size: clamp(1.25rem, 2.4vw, 2.25rem);
   letter-spacing: -0.02em;
+  transition: color 1s var(--ease-out);
+}
+
+.contact.is-live .contact__email { color: var(--accent); }
+
+.contact.is-live .contact__email::after {
+  transform: scaleX(1);
+  transform-origin: left;
+  transition-duration: 1.4s;
+  transition-delay: 0.4s;
 }
 
 .contact__meta {
@@ -1471,6 +1558,11 @@ a:focus-visible .arrow--diag { transform: translate(0.2em, -0.2em); }
   }
 
   .js .intro { display: none; }
+
+  .tl__dot {
+    border-color: var(--accent);
+    background: var(--accent);
+  }
 }
 
 /* Sections receive programmatic focus from in-page anchors; no outline for those. */

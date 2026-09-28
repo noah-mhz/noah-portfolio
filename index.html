@@ -27,11 +27,11 @@
   <a class="skip-link" href="#main">Skip to content</a>
 
   <div class="intro" aria-hidden="true">
-    <div class="intro__labels">
-      <span class="label">Noah — Portfolio</span>
-      <span class="label muted">Singapore → Worldwide</span>
+    <div class="intro__labels label">
+      <span class="mask"><span data-intro-item>Noah — Portfolio</span></span>
+      <span class="mask"><span class="muted" data-intro-item>Singapore → Worldwide</span></span>
     </div>
-    <span class="intro__count">000</span>
+    <span class="intro__index label"><span class="mask"><span data-intro-item>Index 01—04</span></span></span>
   </div>
 
   <div class="grid-lines" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
@@ -50,32 +50,36 @@
     <img src="https://images.unsplash.com/photo-1581291518857-4e27b48ff24e?auto=format&fit=crop&w=720&q=70" alt="" width="720" height="900" decoding="async">
     <img src="https://images.unsplash.com/photo-1633356122544-f134324a6cee?auto=format&fit=crop&w=720&q=70" alt="" width="720" height="900" decoding="async">
     <img src="https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&w=720&q=70" alt="" width="720" height="900" decoding="async">
+    <span class="marks"></span>
   </div>
 
   <header class="nav">
     <a class="nav__logo" href="#top" data-nav-item aria-label="Noah — back to top">Noah</a>
-    <nav aria-label="Primary">
+    <nav class="nav__right" aria-label="Primary" data-nav>
       <ul class="nav__list">
         <li data-nav-item><a class="nav__link" href="#work" data-nav-link="work"><span class="nav__index">01</span>Work</a></li>
         <li data-nav-item><a class="nav__link" href="#about" data-nav-link="about"><span class="nav__index">02</span>About</a></li>
         <li data-nav-item><a class="nav__link" href="#contact" data-nav-link="contact"><span class="nav__index">03</span>Contact</a></li>
       </ul>
+      <button class="nav__status" type="button" aria-label="Show navigation" data-nav-status>
+        <span class="nav__status-text" data-nav-status-text></span>
+      </button>
     </nav>
   </header>
 
   <main id="main">
 
     <!-- 01 — Opening -->
-    <section class="hero" id="top" data-nav-section="">
+    <section class="hero" id="top" data-nav-label="">
       <div class="hero__meta label">
         <span class="mask"><span data-hero-meta>Portfolio ©2026</span></span>
         <span class="mask hide-sm"><span data-hero-meta>1.3521° N — 103.8198° E</span></span>
-        <span class="mask"><span data-hero-meta><span class="status-dot" aria-hidden="true"></span>Available for projects</span></span>
+        <span class="mask"><span data-hero-meta><span class="status-dot" aria-hidden="true"></span>Taking projects — Q4 2026</span></span>
       </div>
 
       <div class="hero__center">
         <p class="hero__hello label"><span class="mask"><span data-hero-meta>Hello, I'm Noah.</span></span></p>
-        <h1 class="hero__title" data-split>
+        <h1 class="hero__title" data-split="lines">
           <span class="line">I design &amp;</span>
           <span class="line">build digital</span>
           <span class="line">experiences<span class="hero__accent" aria-hidden="true"></span></span>
@@ -96,13 +100,13 @@
     </section>
 
     <!-- 02 — Introduction -->
-    <section class="statement" aria-labelledby="statement-title">
+    <section class="statement" aria-labelledby="statement-title" data-nav-label="">
       <div class="section-label" data-reveal="fade"><span>(01)</span><span>Introduction</span></div>
-      <h2 class="statement__text" id="statement-title" data-split>
-        <span class="line" data-from="left" data-reveal="words">I build digital</span>
-        <span class="line" data-from="right" data-reveal="words">experiences that</span>
-        <span class="line" data-from="up" data-reveal="words">feel as good as</span>
-        <span class="line" data-from="left" data-reveal="words">they <em class="accent">work.</em></span>
+      <h2 class="statement__text" id="statement-title" data-split="lines">
+        <span class="line" data-from="left" data-reveal="text">I build digital</span>
+        <span class="line" data-from="right" data-reveal="text">experiences that</span>
+        <span class="line" data-from="up" data-reveal="text">feel as good as</span>
+        <span class="line" data-from="left" data-reveal="text">they <em class="accent">work.</em></span>
       </h2>
       <div class="statement__aside">
         <p data-reveal="fade">Websites, interfaces and interactive products — designed with editorial restraint and engineered to be fast, accessible and responsive to every gesture.</p>
@@ -111,58 +115,113 @@
     </section>
 
     <!-- 03 — Selected work -->
-    <section class="work" id="work" data-nav-section="work" aria-labelledby="work-title">
-      <div class="work__head">
-        <div class="section-label" data-reveal="fade"><span>(02)</span><span>Selected work 2022 — 2026</span></div>
-        <h2 class="work__title" id="work-title" data-split data-reveal="words">
-          <span class="line">Selected</span>
-          <span class="line">Work<sup class="work__count">(04)</sup></span>
+    <section class="work" id="work" aria-labelledby="work-title">
+      <div class="work__head" data-nav-section="work" data-nav-label="Index">
+        <div class="section-label" data-reveal="fade"><span>(02)</span><span>Selected work</span><span class="hide-sm">2022 — 2026</span></div>
+        <h2 class="work__title" id="work-title" data-split="chars" data-reveal="text">
+          <span class="line">Index</span>
+          <span class="line">01—04</span>
         </h2>
       </div>
 
       <div class="work__list">
-        <div class="work__counter" aria-hidden="true">
-          <span class="label muted">Project</span>
-          <span class="work__counter-window">
-            <span class="work__counter-strip" data-counter-strip><span>01</span><span>02</span><span>03</span><span>04</span></span>
-          </span>
-          <span class="label muted">/ 04</span>
-        </div>
 
-        <article class="project" data-project aria-labelledby="project-1-title">
-          <header class="project__head">
-            <span class="project__num label"><span class="mask"><span data-project-num>(01)</span></span></span>
-            <h3 class="project__title" id="project-1-title" data-split data-reveal="words">Ganko.sg</h3>
-          </header>
-          <a class="project__media" href="#case-study" data-cursor="View" aria-label="Ganko.sg — view case study">
-            <div class="project__clip">
-              <div class="project__inner">
-                <img class="project__img"
-                  src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1600&q=75"
-                  srcset="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=800&q=70 800w,
-                          https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1600&q=75 1600w,
-                          https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=2200&q=75 2200w"
-                  sizes="(max-width: 767px) 100vw, 80vw"
-                  alt="Upward view of glass towers against a pale sky"
-                  width="2200" height="1375" loading="lazy" decoding="async">
+        <!-- 01 — Ganko.sg: pinned sequence (stacked on tablet / mobile) -->
+        <article class="case" id="case-study" aria-labelledby="case-title" data-nav-section="work" data-nav-label="01 / 04">
+          <div class="case__frame">
+            <div class="case__top label">
+              <span>01 / 04 — Case study</span>
+              <ol class="case__steps">
+                <li class="is-active"><span>01</span>Overview</li>
+                <li><span>02</span>Approach</li>
+                <li><span>03</span>Stack</li>
+                <li><span>04</span>Outcome</li>
+              </ol>
+              <span class="case__bar" aria-hidden="true"><span class="case__bar-fill" data-case-bar></span></span>
+            </div>
+
+            <h3 class="case__title" id="case-title" data-split="chars">Ganko.sg</h3>
+
+            <div class="case__media">
+              <img class="case__img case__img--a"
+                src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1800&q=75"
+                srcset="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=900&q=70 900w,
+                        https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1800&q=75 1800w"
+                sizes="(max-width: 1023px) 100vw, 70vw"
+                alt="Ganko.sg — hero visual" width="1800" height="1200" loading="lazy" decoding="async">
+              <img class="case__img case__img--b"
+                src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=1800&q=75"
+                srcset="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=900&q=70 900w,
+                        https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=1800&q=75 1800w"
+                sizes="(max-width: 1023px) 100vw, 70vw"
+                alt="Ganko.sg — interface detail on a laptop" width="1800" height="1200" loading="lazy" decoding="async">
+              <span class="marks" aria-hidden="true"></span>
+            </div>
+
+            <div class="case__stages">
+              <div class="case__stage">
+                <p class="label accent-text"><span class="mask"><span data-stage-item>01 — Overview</span></span></p>
+                <p class="case__lead">
+                  <span class="mask mask--block"><span data-stage-item>A digital flagship,</span></span>
+                  <span class="mask mask--block"><span data-stage-item>as considered as</span></span>
+                  <span class="mask mask--block"><span data-stage-item>the product itself.</span></span>
+                </p>
+                <ul class="case__facts label">
+                  <li class="mask mask--block"><span data-stage-item><span class="muted">Discipline</span><span>Digital Experience</span></span></li>
+                  <li class="mask mask--block"><span data-stage-item><span class="muted">Location</span><span>Singapore</span></span></li>
+                  <li class="mask mask--block"><span data-stage-item><span class="muted">Year</span><span>2026</span></span></li>
+                </ul>
+              </div>
+
+              <div class="case__stage">
+                <p class="label accent-text"><span class="mask"><span data-stage-item>02 — Approach</span></span></p>
+                <p class="case__lead">
+                  <span class="mask mask--block"><span data-stage-item>Editorial layouts,</span></span>
+                  <span class="mask mask--block"><span data-stage-item>restrained motion,</span></span>
+                  <span class="mask mask--block"><span data-stage-item>typography first.</span></span>
+                </p>
+                <p class="case__copy muted"><span class="mask mask--block"><span data-stage-item>Every interaction was prototyped in the browser, tuned against real content and real devices — never signed off as a static comp.</span></span></p>
+              </div>
+
+              <div class="case__stage">
+                <p class="label accent-text"><span class="mask"><span data-stage-item>03 — Stack &amp; role</span></span></p>
+                <ul class="case__stack">
+                  <li class="mask mask--block"><span data-stage-item><span>Role</span><span class="label muted">Design &amp; development</span></span></li>
+                  <li class="mask mask--block"><span data-stage-item><span>HTML / CSS</span><span class="label muted">Semantic, tokenised</span></span></li>
+                  <li class="mask mask--block"><span data-stage-item><span>JavaScript</span><span class="label muted">ES modules</span></span></li>
+                  <li class="mask mask--block"><span data-stage-item><span>GSAP + ScrollTrigger</span><span class="label muted">Motion system</span></span></li>
+                  <li class="mask mask--block"><span data-stage-item><span>Cloudflare Pages</span><span class="label muted">Edge hosting</span></span></li>
+                </ul>
+              </div>
+
+              <div class="case__stage">
+                <p class="label accent-text"><span class="mask"><span data-stage-item>04 — Outcome</span></span></p>
+                <p class="case__lead">
+                  <span class="mask mask--block"><span data-stage-item>Fast to navigate,</span></span>
+                  <span class="mask mask--block"><span data-stage-item>clear in its hierarchy.</span></span>
+                </p>
+                <ul class="case__facts label">
+                  <li class="mask mask--block"><span data-stage-item><span class="muted">Performance</span><span>Lean first load</span></span></li>
+                  <li class="mask mask--block"><span data-stage-item><span class="muted">Structure</span><span>Content-first</span></span></li>
+                  <li class="mask mask--block"><span data-stage-item><span class="muted">Handover</span><span>Tokenised, modular</span></span></li>
+                </ul>
               </div>
             </div>
-          </a>
-          <dl class="project__meta label">
-            <div><dt>Discipline</dt><dd>Digital Experience</dd></div>
-            <div><dt>Role</dt><dd>Web Design / Development</dd></div>
-            <div><dt>Location</dt><dd>Singapore</dd></div>
-            <div><dt>Year</dt><dd>2026</dd></div>
-          </dl>
+
+            <p class="case__next label" aria-hidden="true">
+              <span class="mask"><span data-case-next>Next — 02 / 04</span></span>
+              <span class="mask"><span data-case-next>Luumens ↓</span></span>
+            </p>
+          </div>
         </article>
 
-        <article class="project project--alt" data-project aria-labelledby="project-2-title">
+        <article class="project project--alt" data-project aria-labelledby="project-2-title" data-nav-section="work" data-nav-label="02 / 04">
           <header class="project__head">
-            <span class="project__num label"><span class="mask"><span data-project-num>(02)</span></span></span>
-            <h3 class="project__title" id="project-2-title" data-split data-reveal="words">Luumens</h3>
+            <span class="project__num label"><span class="mask"><span data-project-num>02 / 04</span></span></span>
+            <h3 class="project__title" id="project-2-title" data-split="chars" data-reveal="text">Luumens</h3>
           </header>
           <!-- Replace href with the live project URL -->
-          <a class="project__media" href="https://example.com" target="_blank" rel="noopener" data-cursor="Open" aria-label="Luumens — open live site (new tab)">
+          <a class="project__media" href="https://example.com" target="_blank" rel="noopener" data-cursor="View" tabindex="-1" aria-hidden="true">
             <div class="project__clip">
               <div class="project__inner">
                 <img class="project__img"
@@ -174,23 +233,27 @@
                   alt="Warm filament bulbs glowing in a dark room"
                   width="2200" height="1375" loading="lazy" decoding="async">
               </div>
+              <span class="marks" aria-hidden="true"></span>
             </div>
           </a>
-          <dl class="project__meta label">
-            <div><dt>Discipline</dt><dd>Brand Website</dd></div>
-            <div><dt>Role</dt><dd>Design / Front-End</dd></div>
-            <div><dt>Location</dt><dd>Singapore</dd></div>
-            <div><dt>Year</dt><dd>2025</dd></div>
-          </dl>
+          <div class="project__meta label">
+            <dl class="project__facts">
+              <div><dt>Discipline</dt><dd>Brand Website</dd></div>
+              <div><dt>Role</dt><dd>Design / Front-End</dd></div>
+              <div><dt>Location</dt><dd>Singapore</dd></div>
+              <div><dt>Year</dt><dd>2025</dd></div>
+            </dl>
+            <a class="project__link link-line" href="https://example.com" target="_blank" rel="noopener" aria-label="Luumens — view project (opens in a new tab)">View project <span class="arrow arrow--diag" aria-hidden="true">↗</span></a>
+          </div>
         </article>
 
-        <article class="project" data-project aria-labelledby="project-3-title">
+        <article class="project" data-project aria-labelledby="project-3-title" data-nav-section="work" data-nav-label="03 / 04">
           <header class="project__head">
-            <span class="project__num label"><span class="mask"><span data-project-num>(03)</span></span></span>
-            <h3 class="project__title" id="project-3-title" data-split data-reveal="words">Voyagaer</h3>
+            <span class="project__num label"><span class="mask"><span data-project-num>03 / 04</span></span></span>
+            <h3 class="project__title" id="project-3-title" data-split="chars" data-reveal="text">Voyagaer</h3>
           </header>
           <!-- Replace href with the live project URL -->
-          <a class="project__media" href="https://example.com" target="_blank" rel="noopener" data-cursor="Open" aria-label="Voyagaer — open live site (new tab)">
+          <a class="project__media" href="https://example.com" target="_blank" rel="noopener" data-cursor="View" tabindex="-1" aria-hidden="true">
             <div class="project__clip">
               <div class="project__inner">
                 <img class="project__img"
@@ -202,23 +265,27 @@
                   alt="A breaking ocean wave seen from water level"
                   width="2200" height="1375" loading="lazy" decoding="async">
               </div>
+              <span class="marks" aria-hidden="true"></span>
             </div>
           </a>
-          <dl class="project__meta label">
-            <div><dt>Discipline</dt><dd>Premium Marine Brand</dd></div>
-            <div><dt>Role</dt><dd>Design / Development / Motion</dd></div>
-            <div><dt>Location</dt><dd>Singapore</dd></div>
-            <div><dt>Year</dt><dd>2025</dd></div>
-          </dl>
+          <div class="project__meta label">
+            <dl class="project__facts">
+              <div><dt>Discipline</dt><dd>Premium Marine Brand</dd></div>
+              <div><dt>Role</dt><dd>Design / Development / Motion</dd></div>
+              <div><dt>Location</dt><dd>Singapore</dd></div>
+              <div><dt>Year</dt><dd>2025</dd></div>
+            </dl>
+            <a class="project__link link-line" href="https://example.com" target="_blank" rel="noopener" aria-label="Voyagaer — view project (opens in a new tab)">View project <span class="arrow arrow--diag" aria-hidden="true">↗</span></a>
+          </div>
         </article>
 
-        <article class="project project--alt" data-project aria-labelledby="project-4-title">
+        <article class="project project--alt" data-project aria-labelledby="project-4-title" data-nav-section="work" data-nav-label="04 / 04">
           <header class="project__head">
-            <span class="project__num label"><span class="mask"><span data-project-num>(04)</span></span></span>
-            <h3 class="project__title" id="project-4-title" data-split data-reveal="words">Experiments</h3>
+            <span class="project__num label"><span class="mask"><span data-project-num>04 / 04</span></span></span>
+            <h3 class="project__title" id="project-4-title" data-split="chars" data-reveal="text">Experiments</h3>
           </header>
           <!-- Replace href with a lab / GitHub URL -->
-          <a class="project__media" href="https://example.com" target="_blank" rel="noopener" data-cursor="Open" aria-label="Experiments — open lab (new tab)">
+          <a class="project__media" href="https://example.com" target="_blank" rel="noopener" data-cursor="View" tabindex="-1" aria-hidden="true">
             <div class="project__clip">
               <div class="project__inner">
                 <img class="project__img"
@@ -230,108 +297,40 @@
                   alt="A vintage computer and hardware on a desk"
                   width="2200" height="1375" loading="lazy" decoding="async">
               </div>
+              <span class="marks" aria-hidden="true"></span>
             </div>
           </a>
-          <dl class="project__meta label">
-            <div><dt>Discipline</dt><dd>Lab / R&amp;D</dd></div>
-            <div><dt>Role</dt><dd>Creative Coding / WebGL / AR</dd></div>
-            <div><dt>Location</dt><dd>Worldwide</dd></div>
-            <div><dt>Year</dt><dd>Ongoing</dd></div>
-          </dl>
+          <div class="project__meta label">
+            <dl class="project__facts">
+              <div><dt>Discipline</dt><dd>Lab / R&amp;D</dd></div>
+              <div><dt>Role</dt><dd>Creative Coding / WebGL / AR</dd></div>
+              <div><dt>Location</dt><dd>Worldwide</dd></div>
+              <div><dt>Year</dt><dd>Ongoing</dd></div>
+            </dl>
+            <a class="project__link link-line" href="https://example.com" target="_blank" rel="noopener" aria-label="Experiments — view project (opens in a new tab)">View project <span class="arrow arrow--diag" aria-hidden="true">↗</span></a>
+          </div>
         </article>
       </div>
     </section>
 
-    <!-- 04 — Pinned case study -->
-    <section class="case" id="case-study" data-nav-section="work" aria-labelledby="case-title">
-      <div class="case__frame">
-        <div class="case__top label">
-          <span>Case study — (01)</span>
-          <ol class="case__steps">
-            <li class="is-active"><span>01</span>Overview</li>
-            <li><span>02</span>Approach</li>
-            <li><span>03</span>Stack</li>
-            <li><span>04</span>Outcome</li>
-          </ol>
-          <span class="case__bar" aria-hidden="true"><span class="case__bar-fill" data-case-bar></span></span>
-        </div>
-
-        <h2 class="case__title" id="case-title" data-split>Ganko.sg</h2>
-
-        <div class="case__media">
-          <img class="case__img case__img--a"
-            src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1800&q=75"
-            alt="Ganko.sg — hero visual" width="1800" height="1200" loading="lazy" decoding="async">
-          <img class="case__img case__img--b"
-            src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=1800&q=75"
-            alt="Ganko.sg — interface detail on a laptop" width="1800" height="1200" loading="lazy" decoding="async">
-        </div>
-
-        <div class="case__stages">
-          <div class="case__stage">
-            <p class="label accent-text"><span class="mask"><span data-stage-item>01 — Overview</span></span></p>
-            <p class="case__lead">
-              <span class="mask mask--block"><span data-stage-item>A digital flagship for a Singapore brand,</span></span>
-              <span class="mask mask--block"><span data-stage-item>built to feel as considered as the product.</span></span>
-            </p>
-            <ul class="case__facts label">
-              <li class="mask mask--block"><span data-stage-item><span class="muted">Client</span><span>Ganko.sg</span></span></li>
-              <li class="mask mask--block"><span data-stage-item><span class="muted">Role</span><span>Design &amp; Development</span></span></li>
-              <li class="mask mask--block"><span data-stage-item><span class="muted">Year</span><span>2026</span></span></li>
-            </ul>
-          </div>
-
-          <div class="case__stage">
-            <p class="label accent-text"><span class="mask"><span data-stage-item>02 — Approach</span></span></p>
-            <p class="case__lead">
-              <span class="mask mask--block"><span data-stage-item>Editorial layouts, restrained motion</span></span>
-              <span class="mask mask--block"><span data-stage-item>and typography doing the heavy lifting.</span></span>
-            </p>
-            <p class="case__copy muted"><span class="mask mask--block"><span data-stage-item>Every interaction was prototyped in the browser, tuned against real content and real devices — never signed off as a static comp.</span></span></p>
-          </div>
-
-          <div class="case__stage">
-            <p class="label accent-text"><span class="mask"><span data-stage-item>03 — Stack</span></span></p>
-            <ul class="case__stack">
-              <li class="mask mask--block"><span data-stage-item><span>HTML / CSS</span><span class="label muted">Semantic, tokenised</span></span></li>
-              <li class="mask mask--block"><span data-stage-item><span>JavaScript</span><span class="label muted">ES modules</span></span></li>
-              <li class="mask mask--block"><span data-stage-item><span>GSAP + ScrollTrigger</span><span class="label muted">Motion system</span></span></li>
-              <li class="mask mask--block"><span data-stage-item><span>Lenis</span><span class="label muted">Scroll physics</span></span></li>
-              <li class="mask mask--block"><span data-stage-item><span>Cloudflare Pages</span><span class="label muted">Edge hosting</span></span></li>
-            </ul>
-          </div>
-
-          <!-- Placeholder figures — replace with real project results -->
-          <div class="case__stage">
-            <p class="label accent-text"><span class="mask"><span data-stage-item>04 — Outcome</span></span></p>
-            <div class="case__results">
-              <div class="mask mask--block"><div data-stage-item><span class="case__figure" data-count="98">98</span><span class="label muted">Lighthouse performance</span></div></div>
-              <div class="mask mask--block"><div data-stage-item><span class="case__figure" data-count="0.8" data-decimals="1" data-suffix="s">0.8s</span><span class="label muted">Largest contentful paint</span></div></div>
-              <div class="mask mask--block"><div data-stage-item><span class="case__figure" data-count="140" data-prefix="+" data-suffix="%">+140%</span><span class="label muted">Average session length</span></div></div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
     <!-- 05 — Text-driven transition -->
-    <section class="words" aria-label="Disciplines">
+    <section class="words" aria-label="Disciplines" data-nav-section="work" data-nav-label="Disciplines">
       <div class="words__stage">
         <p class="words__meta label"><span class="muted">Discipline</span><span class="accent-text" data-words-count>01</span><span class="muted">/ 04</span></p>
         <ul class="words__list">
-          <li class="words__item" data-split data-reveal="words">Design</li>
-          <li class="words__item">Development</li>
-          <li class="words__item" data-split>Motion</li>
-          <li class="words__item">Experience</li>
+          <li class="words__item" data-index="01" data-split data-reveal="text">Design</li>
+          <li class="words__item" data-index="02">Development</li>
+          <li class="words__item" data-index="03" data-split>Motion</li>
+          <li class="words__item" data-index="04">Experience</li>
         </ul>
       </div>
     </section>
 
     <!-- 06 — Capabilities -->
-    <section class="caps" id="capabilities" data-nav-section="work" aria-labelledby="caps-title">
+    <section class="caps" id="capabilities" aria-labelledby="caps-title" data-nav-section="work" data-nav-label="Capabilities">
       <div class="caps__head">
         <div class="section-label" data-reveal="fade"><span>(03)</span><span>Capabilities</span></div>
-        <h2 class="caps__title" id="caps-title" data-split data-reveal="words">What I do</h2>
+        <h2 class="caps__title" id="caps-title" data-split data-reveal="text">What I do</h2>
         <p class="caps__intro muted" data-reveal="fade">From the first sketch to the production deploy — one person accountable for how it looks, how it moves and how it performs.</p>
       </div>
       <ul class="caps__list" data-caps>
@@ -393,12 +392,12 @@
     </section>
 
     <!-- 07 — About -->
-    <section class="about" id="about" data-nav-section="about" aria-labelledby="about-title">
+    <section class="about" id="about" aria-labelledby="about-title" data-nav-section="about" data-nav-label="About">
       <div class="section-label" data-reveal="fade"><span>(04)</span><span>About</span></div>
-      <h2 class="about__statement" id="about-title" data-split>
-        <span class="line" data-reveal="words">I like building things</span>
-        <span class="line" data-reveal="words">that shouldn't feel</span>
-        <span class="line" data-reveal="words">like <em class="accent">templates.</em></span>
+      <h2 class="about__statement" id="about-title" data-split="lines">
+        <span class="line" data-reveal="text">I like building things</span>
+        <span class="line" data-reveal="text">that shouldn't feel</span>
+        <span class="line" data-reveal="text">like <em class="accent">templates.</em></span>
       </h2>
       <figure class="about__media">
         <div class="about__media-inner" data-parallax="8">
@@ -419,10 +418,10 @@
     </section>
 
     <!-- 08 — Timeline -->
-    <section class="timeline" data-nav-section="about" aria-labelledby="timeline-title">
+    <section class="timeline" aria-labelledby="timeline-title" data-nav-section="about" data-nav-label="Experience">
       <div class="timeline__head">
         <div class="section-label" data-reveal="fade"><span>(05)</span><span>Experience</span></div>
-        <h2 class="timeline__title" id="timeline-title" data-split data-reveal="words">Timeline</h2>
+        <h2 class="timeline__title" id="timeline-title" data-split data-reveal="text">Timeline</h2>
       </div>
       <div class="timeline__track" data-timeline>
         <span class="timeline__line" aria-hidden="true"><span class="timeline__fill" data-timeline-fill></span></span>
@@ -459,17 +458,18 @@
     </section>
 
     <!-- 09 — Contact -->
-    <section class="contact" id="contact" data-nav-section="contact" aria-labelledby="contact-title">
+    <section class="contact" id="contact" aria-labelledby="contact-title" data-nav-section="contact" data-nav-label="Contact">
       <div class="contact__inner">
         <div class="section-label" data-reveal="fade"><span>(06)</span><span>Contact</span></div>
-        <h2 class="contact__title" id="contact-title" data-split>
-          <span class="line" data-reveal="words">Let's make</span>
-          <span class="line" data-reveal="words">something</span>
-          <span class="line" data-reveal="words"><em class="accent">interesting.</em></span>
+        <h2 class="contact__title" id="contact-title" data-split="lines">
+          <span class="line" data-reveal="text">Let's make</span>
+          <span class="line" data-reveal="text">something</span>
+          <span class="line" data-reveal="text"><em class="accent">interesting.</em></span>
         </h2>
         <div class="contact__row" data-reveal="fade">
           <a class="cta" href="mailto:hello@email.com?subject=New%20project" data-magnetic="0.4">
             <span class="cta__fill" aria-hidden="true"></span>
+            <span class="marks" aria-hidden="true"></span>
             <span class="cta__label" data-magnetic-inner>Start a project <span class="arrow" aria-hidden="true">→</span></span>
           </a>
           <a class="contact__email link-line" href="mailto:hello@email.com">hello@email.com</a>
@@ -483,7 +483,7 @@
     </section>
   </main>
 
-  <footer class="footer" data-nav-section="contact">
+  <footer class="footer" data-nav-section="contact" data-nav-label="Contact">
     <div class="footer__grid">
       <div class="footer__brand">
         <p class="footer__name">Noah</p>
@@ -505,7 +505,7 @@
     <p class="footer__mark" aria-hidden="true"><span>N</span><span>O</span><span>A</span><span>H</span></p>
     <div class="footer__bottom label muted">
       <span>© 2026 Noah</span>
-      <span>Singapore → Worldwide</span>
+      <span>1.3521° N — 103.8198° E</span>
       <span>Designed &amp; built by hand</span>
     </div>
   </footer>

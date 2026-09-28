@@ -1,9 +1,11 @@
-import { splitWords } from './split.js';
+import { splitAll, TEXT_TARGETS } from './split.js';
+import { initNavigation } from './navigation.js';
 
 const { gsap, ScrollTrigger } = window;
 
 const $ = (selector, root = document) => root.querySelector(selector);
 const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
+const textTargets = (el) => el.querySelectorAll(TEXT_TARGETS);
 
 export const MEDIA = {
   desktop: '(min-width: 1024px) and (prefers-reduced-motion: no-preference)',
@@ -18,8 +20,8 @@ export const MEDIA = {
 
 export function initIntro({ reduceMotion, onComplete }) {
   const intro = $('.intro');
-  const heroLines = $$('.hero__title .line');
   const scrollCue = $('.scroll-cue');
+  const [first, second, third] = $$('.hero__title .l-inner');
 
   if (reduceMotion || !intro) {
     intro?.remove();
@@ -28,56 +30,53 @@ export function initIntro({ reduceMotion, onComplete }) {
     return null;
   }
 
-  const counter = $('.intro__count', intro);
-  const count = { value: 0 };
-
-  gsap.set('[data-nav-item]', { clipPath: 'inset(0% 100% 0% 0%)' });
+  gsap.set('[data-intro-item]', { yPercent: 110 });
+  gsap.set('[data-nav-item]', { yPercent: -60, clipPath: 'inset(0% 0% 100% 0%)' });
   gsap.set('[data-hero-meta]', { yPercent: 110 });
-  gsap.set('.hero__title .w-inner', { yPercent: 115, rotate: 4 });
+  // Each line takes a slightly different path out of its mask.
+  gsap.set(first, { yPercent: 100 });
+  gsap.set(second, { yPercent: 100, xPercent: 5 });
+  gsap.set(third, { yPercent: 100, rotate: 2.5 });
   gsap.set('.hero__rule', { scaleX: 0 });
   gsap.set('.hero__accent', { scale: 0 });
   gsap.set(scrollCue, { autoAlpha: 0 });
   gsap.set('.grid-lines span', { scaleY: 0, transformOrigin: '50% 0%' });
 
   const tl = gsap.timeline({
-    defaults: { ease: 'expo.out' },
+    defaults: { ease: 'power4.out' },
     onComplete: () => {
       intro.remove();
       onComplete?.();
     },
   });
 
-  tl.to(count, {
-    value: 100,
-    duration: 1.2,
-    ease: 'power2.inOut',
-    onUpdate: () => {
-      counter.textContent = String(Math.round(count.value)).padStart(3, '0');
-    },
-  })
-    // 1 — background
-    .to(intro, { clipPath: 'inset(0% 0% 100% 0%)', duration: 1.2, ease: 'expo.inOut' })
-    .to('.grid-lines span', { scaleY: 1, duration: 1.8, stagger: 0.08, ease: 'expo.inOut' }, '<0.2')
-    // 2 — navigation, horizontally
-    .to('[data-nav-item]', { clipPath: 'inset(0% 0% 0% 0%)', duration: 1.3, stagger: 0.08 }, '<0.35')
-    // 3 — metadata
-    .to('[data-hero-meta]', { yPercent: 0, duration: 1.2, stagger: 0.06, ease: 'power4.out' }, '<0.1')
-    .addLabel('title', '<0.15');
-
-  // 4 + 5 — line-by-line, word-by-word
-  heroLines.forEach((line, index) => {
-    tl.to(line.querySelectorAll('.w-inner'), {
+  // 0 — a title card of metadata, then 1 — the background establishes itself
+  tl.to('[data-intro-item]', { yPercent: 0, duration: 1, stagger: 0.08, delay: 0.2 })
+    .to('[data-intro-item]', { yPercent: -110, duration: 0.6, stagger: 0.05, ease: 'power3.in' }, '+=0.35')
+    .to(intro, { clipPath: 'inset(0% 0% 100% 0%)', duration: 1.3, ease: 'expo.inOut' }, '-=0.15')
+    // 2 — navigation settles in from above, quietly
+    .to('[data-nav-item]', {
       yPercent: 0,
-      rotate: 0,
-      duration: 1.5,
+      clipPath: 'inset(0% 0% 0% 0%)',
+      duration: 1.2,
       stagger: 0.06,
-    }, `title+=${index * 0.14}`);
-  });
-
-  // 6 — accent, 7 — scroll cue
-  tl.to('.hero__rule', { scaleX: 1, duration: 1.6, ease: 'expo.inOut' }, 'title+=0.3')
-    .to('.hero__accent', { scale: 1, duration: 1, ease: 'power4.out' }, 'title+=0.9')
-    .to(scrollCue, { autoAlpha: 1, duration: 0.8, ease: 'power2.out' }, '<0.2')
+      ease: 'expo.out',
+      clearProps: 'clipPath',
+    }, '-=0.35')
+    // 3 — metadata
+    .to('[data-hero-meta]', { yPercent: 0, duration: 1.2, stagger: 0.05 }, '<0.15')
+    // 4 + 5 — the title, line by line, each on its own path
+    .addLabel('title', '<0.1')
+    .to(first, { yPercent: 0, duration: 1.8 }, 'title')
+    .to(second, { yPercent: 0, xPercent: 0, duration: 1.9 }, 'title+=0.16')
+    .to(third, { yPercent: 0, rotate: 0, duration: 2 }, 'title+=0.32')
+    .to('.hero__rule', { scaleX: 1, duration: 1.8, ease: 'expo.inOut' }, 'title+=0.4')
+    // 6 — accent
+    .to('.hero__accent', { scale: 1, duration: 1, ease: 'expo.out' }, 'title+=1.1')
+    // 7 — the grid draws itself in behind everything
+    .to('.grid-lines span', { scaleY: 1, duration: 1.8, stagger: 0.1, ease: 'expo.inOut' }, 'title+=0.9')
+    // 8 — scroll cue becomes active
+    .to(scrollCue, { autoAlpha: 1, duration: 0.8, ease: 'power2.out' }, 'title+=1.6')
     .add(() => scrollCue.classList.add('is-active'), '<');
 
   return tl;
@@ -87,26 +86,37 @@ export function initIntro({ reduceMotion, onComplete }) {
    Reusable reveals
    -------------------------------------------------------------------------- */
 
-export function initTextReveal({ isMobile = false } = {}) {
-  $$('[data-reveal="words"]').forEach((el) => {
-    const words = el.querySelectorAll('.w-inner');
-    if (!words.length) return;
+const REVEAL = {
+  line: { duration: 1.5, stagger: 0.12 },
+  word: { duration: 1.4, stagger: 0.045 },
+  char: { duration: 1.2, stagger: 0.025 },
+};
 
-    gsap.fromTo(words,
-      { yPercent: 115, rotate: isMobile ? 0 : 3 },
+/** Masked reveal for any split element: [data-reveal="text"]. */
+export function initTextReveal({ isMobile = false } = {}) {
+  $$('[data-reveal="text"]').forEach((el) => {
+    const targets = textTargets(el);
+    if (!targets.length) return;
+
+    const kind = targets[0].classList.contains('c-inner') ? 'char'
+      : targets[0].classList.contains('l-inner') ? 'line' : 'word';
+    const { duration, stagger } = REVEAL[kind];
+
+    gsap.fromTo(targets,
+      { yPercent: 110, rotate: isMobile || kind === 'char' ? 0 : 2.5 },
       {
         yPercent: 0,
         rotate: 0,
-        duration: 1.4,
-        ease: 'expo.out',
-        stagger: isMobile ? 0.03 : 0.045,
+        duration,
+        ease: 'power4.out',
+        stagger: isMobile ? stagger * 0.6 : stagger,
         scrollTrigger: { trigger: el, start: 'top 88%', once: true },
       });
   });
 
   $$('[data-reveal="fade"]').forEach((el) => {
     gsap.fromTo(el,
-      { y: 36, autoAlpha: 0 },
+      { y: 28, autoAlpha: 0 },
       {
         y: 0,
         autoAlpha: 1,
@@ -195,139 +205,109 @@ export function initWorkHead() {
   gsap.fromTo(second, { xPercent: -8 }, { xPercent: 4, ease: 'none', scrollTrigger: { ...scrub } });
 }
 
-export function initProjectScroll({ isMobile }) {
-  const projects = $$('[data-project]');
-  const strip = $('[data-counter-strip]');
-  const counter = $('.work__counter');
+/**
+ * Each project enters along the path the previous one left on, so the
+ * sequence reads as one choreography: up (Ganko, pinned) → from below
+ * (Luumens) → diagonal (Voyagaer) → lateral wipe (Experiments).
+ * title: signed xPercent entry offset · meta: side the metadata enters from.
+ */
+const PROJECT_PATHS = [
+  { title: 12, clip: 'inset(42% 0% 0% 0%)', media: { yPercent: 12 }, meta: -1 },
+  { title: -12, clip: 'inset(0% 0% 38% 38%)', media: { xPercent: -4, yPercent: 8 }, meta: 1 },
+  { title: 12, clip: 'inset(0% 0% 0% 64%)', media: { xPercent: 5 }, meta: -1 },
+];
 
-  if (counter) {
-    ScrollTrigger.create({
-      trigger: '.work__list',
-      start: 'top 60%',
-      end: 'bottom 60%',
-      toggleClass: { targets: counter, className: 'is-visible' },
-    });
-  }
-
-  projects.forEach((project, index) => {
-    const alt = project.classList.contains('project--alt');
+export function initProjectAnimations({ isMobile }) {
+  $$('[data-project]').forEach((project, index) => {
+    const path = PROJECT_PATHS[index % PROJECT_PATHS.length];
     const media = $('.project__media', project);
     const clip = $('.project__clip', project);
     const inner = $('.project__inner', project);
     const title = $('.project__title', project);
     const num = $('[data-project-num]', project);
-    const meta = $$('.project__meta > div', project);
-
-    if (strip) {
-      ScrollTrigger.create({
-        trigger: project,
-        start: 'top 55%',
-        end: 'bottom 55%',
-        onToggle: (self) => {
-          if (!self.isActive) return;
-          gsap.to(strip, {
-            yPercent: -(100 / projects.length) * index,
-            duration: 1,
-            ease: 'expo.out',
-            overwrite: true,
-          });
-        },
-      });
-    }
+    const meta = $$('.project__facts > div, .project__link', project);
 
     gsap.fromTo(num, { yPercent: 110 }, {
       yPercent: 0,
       duration: 1.2,
-      ease: 'expo.out',
-      scrollTrigger: { trigger: project, start: 'top 75%', once: true },
+      ease: 'power4.out',
+      scrollTrigger: { trigger: project, start: 'top 80%', once: true },
     });
 
     gsap.fromTo(meta,
-      { x: isMobile ? 0 : (alt ? -60 : 60), y: isMobile ? 20 : 0, autoAlpha: 0 },
+      { x: isMobile ? 0 : 56 * path.meta, y: isMobile ? 18 : 0, autoAlpha: 0 },
       {
         x: 0,
         y: 0,
         autoAlpha: 1,
         duration: 1.3,
         ease: 'expo.out',
-        stagger: 0.08,
-        scrollTrigger: { trigger: clip, start: isMobile ? 'top 80%' : 'top 55%', once: true },
+        stagger: 0.07,
+        scrollTrigger: { trigger: clip, start: isMobile ? 'top 80%' : 'top 50%', once: true },
       });
 
     if (isMobile) {
-      gsap.fromTo(clip, { clipPath: 'inset(12% 0% 12% 0%)' }, {
-        clipPath: 'inset(0% 0% 0% 0%)',
-        duration: 1.6,
-        ease: 'expo.out',
-        scrollTrigger: { trigger: clip, start: 'top 85%', once: true },
-      });
-      gsap.fromTo(inner, { scale: 1.15 }, {
-        scale: 1,
-        duration: 2,
-        ease: 'expo.out',
-        scrollTrigger: { trigger: clip, start: 'top 85%', once: true },
-      });
+      gsap.timeline({ scrollTrigger: { trigger: clip, start: 'top 85%', once: true } })
+        .fromTo(clip, { clipPath: path.clip }, { clipPath: 'inset(0% 0% 0% 0%)', duration: 1.6, ease: 'expo.out' }, 0)
+        .fromTo(inner, { scale: 1.12 }, { scale: 1, duration: 2, ease: 'expo.out' }, 0);
       return;
     }
 
-    // Entry: the frame opens from the inside edge while the image settles.
+    // Entry — the frame opens along this project's path while the image settles.
     gsap.timeline({
-      scrollTrigger: { trigger: project, start: 'top bottom', end: 'center center', scrub: 1 },
+      scrollTrigger: { trigger: project, start: 'top bottom', end: 'center 55%', scrub: 1 },
     })
-      .fromTo(clip,
-        { clipPath: alt ? 'inset(14% 0% 14% 24%)' : 'inset(14% 24% 14% 0%)' },
-        { clipPath: 'inset(0% 0% 0% 0%)', ease: 'power2.out' }, 0)
-      .fromTo(inner, { scale: 1.15 }, { scale: 1, ease: 'power2.out' }, 0);
+      .fromTo(clip, { clipPath: path.clip }, { clipPath: 'inset(0% 0% 0% 0%)', ease: 'power2.out' }, 0)
+      .fromTo(media, path.media, { xPercent: 0, yPercent: 0, ease: 'power2.out' }, 0)
+      .fromTo(inner, { scale: 1.12 }, { scale: 1, ease: 'power2.out' }, 0);
 
-    // Continuous drift across the full pass.
-    gsap.fromTo(inner, { xPercent: -5 }, {
-      xPercent: 5,
+    // Continuous drift across the full pass — noticed subconsciously.
+    gsap.fromTo(inner, { xPercent: -4, yPercent: 3 }, {
+      xPercent: 4,
+      yPercent: -3,
       ease: 'none',
       scrollTrigger: { trigger: project, start: 'top bottom', end: 'bottom top', scrub: true },
     });
 
-    gsap.fromTo(title, { xPercent: alt ? 10 : -10 }, {
-      xPercent: alt ? -3 : 3,
-      ease: 'none',
+    // Title arrives from its side, settles, then keeps travelling as it leaves.
+    gsap.timeline({
+      defaults: { ease: 'none' },
       scrollTrigger: { trigger: project, start: 'top bottom', end: 'bottom top', scrub: true },
-    });
+    })
+      .fromTo(title, { xPercent: path.title }, { xPercent: 0, duration: 1 })
+      .to(title, { xPercent: -path.title * 0.4, duration: 1 });
 
-    // Exit: the panel recedes as the next one arrives.
-    gsap.to(media, {
-      scale: 0.92,
-      rotate: alt ? 0.6 : -0.6,
-      autoAlpha: 0.35,
+    // Exit — the frame retracts upward, handing the viewport to the next project.
+    gsap.fromTo(media, { clipPath: 'inset(0% 0% 0% 0%)' }, {
+      clipPath: 'inset(0% 0% 28% 0%)',
       ease: 'none',
-      scrollTrigger: { trigger: project, start: 'bottom 75%', end: 'bottom top', scrub: true },
+      immediateRender: false,
+      scrollTrigger: { trigger: project, start: 'bottom 80%', end: 'bottom top', scrub: true },
     });
   });
 }
 
 /* --------------------------------------------------------------------------
-   Pinned case study
+   Pinned project sequence — Ganko.sg
    -------------------------------------------------------------------------- */
 
-const formatCount = (el, value) => {
-  const decimals = parseInt(el.dataset.decimals || '0', 10);
-  el.textContent = `${el.dataset.prefix || ''}${value.toFixed(decimals)}${el.dataset.suffix || ''}`;
-};
 
 export function initCaseStudy({ pinned }) {
   const section = $('.case');
-  if (!section) return;
+  if (!section) return undefined;
 
   const stages = $$('.case__stage', section);
   const media = $('.case__media', section);
   const imgA = $('.case__img--a', section);
   const imgB = $('.case__img--b', section);
-  const titleWords = $$('.case__title .w-inner', section);
+  const titleChars = textTargets($('.case__title', section));
 
   if (!pinned) {
-    gsap.fromTo(titleWords, { yPercent: 115 }, {
-      yPercent: 0, duration: 1.4, ease: 'expo.out', stagger: 0.05,
+    gsap.fromTo(titleChars, { yPercent: 115 }, {
+      yPercent: 0, duration: 1.4, ease: 'power4.out', stagger: 0.03,
       scrollTrigger: { trigger: section, start: 'top 75%', once: true },
     });
-    gsap.fromTo(media, { clipPath: 'inset(10% 0% 10% 0%)' }, {
+    gsap.fromTo(media, { clipPath: 'inset(42% 0% 0% 0%)' }, {
       clipPath: 'inset(0% 0% 0% 0%)', duration: 1.6, ease: 'expo.out',
       scrollTrigger: { trigger: media, start: 'top 85%', once: true },
     });
@@ -337,26 +317,39 @@ export function initCaseStudy({ pinned }) {
         scrollTrigger: { trigger: stage, start: 'top 85%', once: true },
       });
     });
-    return;
+    return undefined;
   }
 
+  const nextProject = section.nextElementSibling;
   section.classList.add('is-pinned');
+  nextProject?.classList.add('is-overlapping');
 
   const steps = $$('.case__steps li', section);
   const bar = $('[data-case-bar]', section);
-  const counters = $$('[data-count]', section);
+  const stagesWrap = $('.case__stages', section);
+  const next = $$('[data-case-next]', section);
 
-  // Timeline positions (seconds within the scrubbed timeline).
-  const stageIn = [0.5, 1.9, 3.3, 4.7];
-  const stageOut = [1.35, 2.75, 4.15, 5.6];
-  const total = 6.4;
-  let currentStep = 0;
+  /*
+   * One continuous timeline (units are scroll distance):
+   * 1 title over a large image · 2 zoom out, metadata · 3 description ·
+   * 4 stack & role · 5 image shifts position · 6 exit + next cue ·
+   * 7 hold while the next project rises over the frame, then release.
+   */
+  const stageIn = [1.5, 2.9, 4.3, 6.0];
+  const stageOut = [2.6, 4.0, 5.4, 7.0];
+  const exitAt = 7.0;
+  const total = 9.6;
+  let currentStep = -1;
 
   const setStep = (index) => {
     if (index === currentStep) return;
     currentStep = index;
     steps.forEach((step, i) => step.classList.toggle('is-active', i === index));
   };
+
+  // Phase 5 distances depend on layout, so they are re-measured on refresh.
+  const mediaShift = () => stagesWrap.offsetLeft - media.offsetLeft;
+  const stagesShift = () => (media.offsetLeft + media.offsetWidth) - (stagesWrap.offsetLeft + stagesWrap.offsetWidth);
 
   gsap.set(stages, { autoAlpha: 0 });
 
@@ -365,10 +358,11 @@ export function initCaseStudy({ pinned }) {
     scrollTrigger: {
       trigger: section,
       start: 'top top',
-      end: '+=450%',
+      end: '+=500%',
       pin: true,
       scrub: 1,
       anticipatePin: 1,
+      invalidateOnRefresh: true,
       onUpdate: (self) => {
         const t = self.progress * total;
         setStep(t < stageIn[1] ? 0 : t < stageIn[2] ? 1 : t < stageIn[3] ? 2 : 3);
@@ -376,25 +370,31 @@ export function initCaseStudy({ pinned }) {
     },
   });
 
-  tl.fromTo(bar, { scaleX: 0 }, { scaleX: 1, duration: total, ease: 'none' }, 0)
-    // Overview — the frame opens around the image, the title rises
-    .fromTo(media, { clipPath: 'inset(24% 20% 24% 20%)' }, { clipPath: 'inset(0% 0% 0% 0%)', duration: 1.2 }, 0)
-    .fromTo(imgA, { scale: 1.3 }, { scale: 1, duration: 1.6, ease: 'power2.out' }, 0)
-    .fromTo(titleWords, { yPercent: 115 }, { yPercent: 0, duration: 0.9, stagger: 0.05, ease: 'power4.out' }, 0.15)
-    // Approach — image transition
+  tl.fromTo(bar, { scaleX: 0 }, { scaleX: 1, duration: exitAt + 1, ease: 'none' }, 0)
+    // 1 — the title rises over a large image
+    .fromTo(media,
+      { clipPath: 'inset(18% 12% 18% 12%)', scale: 1.35 },
+      { clipPath: 'inset(0% 0% 0% 0%)', duration: 1, ease: 'power2.out' }, 0)
+    .fromTo(imgA, { scale: 1.12 }, { scale: 1, duration: 1.4, ease: 'power2.out' }, 0)
+    .fromTo(titleChars, { yPercent: 115 }, { yPercent: 0, duration: 0.9, stagger: 0.04, ease: 'power4.out' }, 0.1)
+    // 2 — the image zooms out to its place in the grid
+    .to(media, { scale: 1, duration: 1.1, ease: 'power2.inOut' }, 1.1)
+    // 3 — image transition under the description
     .fromTo(imgB,
       { clipPath: 'inset(100% 0% 0% 0%)', scale: 1.2 },
       { clipPath: 'inset(0% 0% 0% 0%)', scale: 1, duration: 1.3 }, stageIn[1] - 0.3)
     .to(imgA, { yPercent: -10, scale: 1.08, duration: 1.3 }, stageIn[1] - 0.3)
-    // Stack — the frame narrows, imagery keeps drifting
-    .to(media, { clipPath: 'inset(0% 0% 0% 22%)', duration: 1.1 }, stageIn[2] - 0.2)
-    .to(imgB, { scale: 1.12, xPercent: -4, duration: stageOut[3] - stageIn[2], ease: 'none' }, stageIn[2] - 0.2)
-    // Outcome — the frame settles back
-    .to(media, { clipPath: 'inset(8% 0% 8% 22%)', duration: 1.1 }, stageIn[3] - 0.2)
-    // Exit — wipe up into the next section
-    .to(titleWords, { yPercent: -115, duration: 0.7, stagger: 0.04, ease: 'power3.in' }, stageOut[3])
-    .to(media, { clipPath: 'inset(0% 0% 100% 22%)', duration: 0.9, ease: 'expo.inOut' }, stageOut[3] - 0.1)
-    .to('.case__top', { autoAlpha: 0, duration: 0.5 }, stageOut[3] + 0.2);
+    .to(imgB, { scale: 1.08, xPercent: -3, duration: exitAt - stageIn[2], ease: 'none' }, stageIn[2])
+    // 5 — the image crosses to the other side of the grid; the text column swaps with it
+    .to(media, { x: mediaShift, duration: 1.2 }, stageOut[2] + 0.1)
+    .to(stagesWrap, { x: stagesShift, duration: 1.2 }, stageOut[2] + 0.1)
+    // 6 — everything leaves upward; the next project is announced
+    .to(titleChars, { yPercent: -115, duration: 0.7, stagger: 0.03, ease: 'power3.in' }, exitAt)
+    .to(media, { clipPath: 'inset(0% 0% 100% 0%)', duration: 1, ease: 'expo.inOut' }, exitAt)
+    .to('.case__top', { autoAlpha: 0, duration: 0.6 }, exitAt + 0.6)
+    .fromTo(next, { yPercent: 110 }, { yPercent: 0, duration: 0.7, stagger: 0.08, ease: 'power3.out' }, exitAt + 0.4)
+    // 7 — hold while the next project rises over the frame, then release
+    .to(next, { yPercent: -110, duration: 0.5, stagger: 0.05, ease: 'power3.in' }, total - 1.1);
 
   stages.forEach((stage, index) => {
     const items = $$('[data-stage-item]', stage);
@@ -405,30 +405,55 @@ export function initCaseStudy({ pinned }) {
       .set(stage, { autoAlpha: 0 }, stageOut[index] + 0.55);
   });
 
-  counters.forEach((el) => {
-    const target = parseFloat(el.dataset.count);
-    const state = { value: 0 };
-    tl.to(state, {
-      value: target,
-      duration: 0.9,
-      ease: 'power2.out',
-      onUpdate: () => formatCount(el, state.value),
-    }, stageIn[3] + 0.1);
-  });
+  setStep(0);
 
-  return () => section.classList.remove('is-pinned');
+  return () => {
+    section.classList.remove('is-pinned');
+    nextProject?.classList.remove('is-overlapping');
+  };
+}
+
+/**
+ * Scroll velocity nudges a few elements and lets them settle once scrolling
+ * stops. Ranges are small: the page should never feel unstable.
+ */
+export function initVelocity() {
+  const targets = [
+    ...$$('.project__clip').map((el) => [el, 14]),
+    ...$$('.project__meta, .project__num').map((el) => [el, 6]),
+    ...$$('.project__title').map((el) => [el, 4]),
+  ].map(([el, range]) => ({ range, to: gsap.quickTo(el, 'y', { duration: 0.9, ease: 'power3' }) }));
+
+  const settle = gsap.delayedCall(0.12, () => targets.forEach(({ to }) => to(0))).pause();
+
+  ScrollTrigger.create({
+    start: 0,
+    end: 'max',
+    onUpdate: (self) => {
+      const v = gsap.utils.clamp(-1, 1, self.getVelocity() / 3000);
+      targets.forEach(({ range, to }) => to(-v * range));
+      settle.restart(true);
+    },
+  });
 }
 
 /* --------------------------------------------------------------------------
    Typographic transition — DESIGN / DEVELOPMENT / MOTION / EXPERIENCE
    -------------------------------------------------------------------------- */
 
+/**
+ * Each discipline is anchored to a grid line and arrives on its own trajectory:
+ * DESIGN holds · DEVELOPMENT travels horizontally · MOTION rises vertically ·
+ * EXPERIENCE arrives diagonally. Once assembled, the words drift at different
+ * rates — depth from motion rather than shadow — before two leave and two stay.
+ */
 export function initWordStack({ isMobile }) {
   const section = $('.words');
   if (!section) return;
 
   const [design, development, motion, experience] = $$('.words__item', section);
   const countEl = $('[data-words-count]', section);
+  const accent = getComputedStyle(document.documentElement).getPropertyValue('--accent').trim();
   let current = 1;
 
   const tl = gsap.timeline({
@@ -436,12 +461,12 @@ export function initWordStack({ isMobile }) {
     scrollTrigger: {
       trigger: section,
       start: 'top top',
-      end: isMobile ? '+=160%' : '+=300%',
+      end: isMobile ? '+=160%' : '+=320%',
       pin: true,
       scrub: 1,
       onUpdate: (self) => {
         const p = self.progress;
-        const next = p < 0.14 ? 1 : p < 0.32 ? 2 : p < 0.5 ? 3 : 4;
+        const next = p < 0.12 ? 1 : p < 0.3 ? 2 : p < 0.48 ? 3 : 4;
         if (next !== current) {
           current = next;
           countEl.textContent = String(next).padStart(2, '0');
@@ -450,25 +475,21 @@ export function initWordStack({ isMobile }) {
     },
   });
 
-  tl
-    // Enters from the right, from beyond the viewport
-    .fromTo(development, { xPercent: 105 }, { xPercent: 0, duration: 1 }, 0.1)
-    // Rises from beneath its mask
-    .fromTo(motion.querySelectorAll('.w-inner'), { yPercent: 115, rotate: 4 }, { yPercent: 0, rotate: 0, duration: 1 }, 1.1)
-    // Wipes in from the left
+  tl.fromTo(development, { xPercent: 105 }, { xPercent: 0, duration: 1.1 }, 0.1)
+    .fromTo(motion, { yPercent: 70, autoAlpha: 0 }, { yPercent: 0, autoAlpha: 1, duration: 1.1 }, 1.1)
+    .fromTo(textTargets(motion), { yPercent: 110 }, { yPercent: 0, duration: 0.9 }, 1.2)
     .fromTo(experience,
-      { clipPath: 'inset(0% 100% 0% 0%)', xPercent: -6 },
-      { clipPath: 'inset(0% 0% 0% 0%)', xPercent: 0, duration: 1.1 }, 2.1)
-    // Finale: two words leave the frame, two remain pinned
-    .to(design, { xPercent: -110, duration: 1.2, ease: 'power2.in' }, 3.6)
-    .to(development, { xPercent: 110, duration: 1.2, ease: 'power2.in' }, 3.6)
-    .to(motion, { xPercent: 4, duration: 1.4, ease: 'power2.inOut' }, 3.7)
-    .to(experience, {
-      xPercent: -3,
-      color: getComputedStyle(document.documentElement).getPropertyValue('--accent').trim(),
-      duration: 1.4,
-      ease: 'power2.inOut',
-    }, 3.7)
+      { xPercent: -10, yPercent: 60, clipPath: 'inset(0% 100% 0% 0%)' },
+      { xPercent: 0, yPercent: 0, clipPath: 'inset(0% 0% 0% 0%)', duration: 1.2 }, 2.1)
+    // Parallax layers: the further down the stack, the faster it drifts.
+    .to(design, { xPercent: -1, duration: 1.4, ease: 'none' }, 3.3)
+    .to(development, { xPercent: -3, duration: 1.4, ease: 'none' }, 3.3)
+    .to(motion, { xPercent: -6, duration: 1.4, ease: 'none' }, 3.3)
+    .to(experience, { xPercent: -9, duration: 1.4, ease: 'none' }, 3.3)
+    // Two leave the frame, two remain pinned; the last word takes the accent.
+    .to(design, { xPercent: -110, duration: 1.2, ease: 'power2.in' }, 4.7)
+    .to(development, { xPercent: 110, duration: 1.2, ease: 'power2.in' }, 4.7)
+    .to(experience, { color: accent, duration: 0.8, ease: 'power2.inOut' }, 4.9)
     .to({}, { duration: 0.4 });
 }
 
@@ -516,7 +537,21 @@ export function initCapsEntrance() {
   });
 }
 
-export function initPageTransitions({ isMobile }) {
+export function initSectionTransitions({ isMobile }) {
+  const grid = $('.grid-lines');
+  const contact = $('.contact');
+
+  // The page resolves at the contact: the grid brightens, the accent enters, the link goes live.
+  ScrollTrigger.create({
+    trigger: contact,
+    start: 'top 55%',
+    end: 'bottom top',
+    onToggle: (self) => {
+      grid.classList.toggle('is-lit', self.isActive);
+      contact.classList.toggle('is-live', self.isActive);
+    },
+  });
+
   // Contact recedes as the footer rises over it.
   gsap.to('.contact__inner', {
     y: isMobile ? -30 : -90,
@@ -531,52 +566,11 @@ export function initPageTransitions({ isMobile }) {
     stagger: 0.12,
     scrollTrigger: { trigger: '.footer', start: 'top 85%', end: 'bottom bottom', scrub: 1 },
   });
-}
 
-/* --------------------------------------------------------------------------
-   Navigation state + progress
-   -------------------------------------------------------------------------- */
-
-export function initNavState() {
-  const nav = $('.nav');
-  const links = $$('[data-nav-link]');
-  let hidden = false;
-
-  const setActive = (key) => {
-    links.forEach((link) => link.classList.toggle('is-active', link.dataset.navLink === key));
+  return () => {
+    grid.classList.remove('is-lit');
+    contact.classList.remove('is-live');
   };
-
-  const setHidden = (hide) => {
-    if (hide === hidden) return;
-    hidden = hide;
-    gsap.to(nav, { yPercent: hide ? -100 : 0, duration: 0.8, ease: 'expo.out', overwrite: true });
-  };
-
-  $$('[data-nav-section]').forEach((section) => {
-    ScrollTrigger.create({
-      trigger: section,
-      start: 'top 50%',
-      end: 'bottom 50%',
-      onToggle: (self) => self.isActive && setActive(section.dataset.navSection),
-    });
-  });
-
-  ScrollTrigger.create({
-    start: 120,
-    end: 'max',
-    onUpdate: (self) => setHidden(self.direction === 1),
-    onLeaveBack: () => setHidden(false),
-  });
-
-  nav.addEventListener('focusin', () => setHidden(false));
-
-  gsap.to('.progress__bar', {
-    scaleX: 1,
-    ease: 'none',
-    scrollTrigger: { start: 0, end: 'max', scrub: 0.3 },
-  });
-
-  return () => gsap.set(nav, { yPercent: 0 });
 }
 
 /* --------------------------------------------------------------------------
@@ -584,7 +578,7 @@ export function initNavState() {
    -------------------------------------------------------------------------- */
 
 export function prepareText() {
-  $$('[data-split]').forEach(splitWords);
+  splitAll();
 }
 
 /**
@@ -608,12 +602,12 @@ export function initScrollAnimations() {
 
     initHeroScroll({ isMobile });
     initTextReveal({ isMobile });
-    initProjectScroll({ isMobile });
+    initProjectAnimations({ isMobile });
     initTimeline();
     initCapsEntrance();
     initImageReveal();
-    initPageTransitions({ isMobile });
-    const cleanupNav = initNavState();
+    const cleanupSections = initSectionTransitions({ isMobile });
+    const cleanupNav = initNavigation();
 
     if (!isMobile) {
       initStatement();
@@ -621,14 +615,17 @@ export function initScrollAnimations() {
       initParallax();
     }
 
+    if (isDesktop) initVelocity();
+
     return () => {
       cleanupCase?.();
       cleanupNav?.();
+      cleanupSections?.();
     };
   });
 
-  // Reduced motion: content is static and immediately visible; keep only nav state.
-  mm.add(MEDIA.reduced, () => initNavState());
+  // Reduced motion: content is static and immediately visible; navigation state still tracks the page.
+  mm.add(MEDIA.reduced, () => initNavigation({ reduceMotion: true }));
 
   return mm;
 }
