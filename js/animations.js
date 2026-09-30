@@ -176,20 +176,48 @@ export function initHeroScroll({ isMobile }) {
     .to('.scroll-cue__track', { scaleY: 0, transformOrigin: '50% 100%', ease: 'none', duration: 0.4 }, 0);
 }
 
+/* --------------------------------------------------------------------------
+   Viewport-safe travel
+   -------------------------------------------------------------------------- */
+
+/**
+ * Free horizontal room (px) around an element's visible content, measured
+ * against the page gutters. Animated offsets are capped by these values so
+ * nothing is ever pushed past the edge of the composition.
+ */
+function room(el) {
+  const range = document.createRange();
+  range.selectNodeContents(el);
+  const text = range.getBoundingClientRect();
+  const gutter = $('.grid-lines').getBoundingClientRect().left;
+  const x = gsap.getProperty(el, 'x') || 0;
+  const vw = document.documentElement.clientWidth;
+  return {
+    left: Math.max(0, text.left - x - gutter),
+    right: Math.max(0, vw - gutter - (text.right - x)),
+  };
+}
+
+/** Travel toward the inside of the composition, never more than `max` px or `share` of the room. */
+const inward = (el, side, share = 0.5, max = 160) => () => {
+  const r = room(el);
+  return side === 'left' ? -Math.min(r.left * share, max) : Math.min(r.right * share, max);
+};
+
 export function initStatement() {
   $$('.statement__text .line').forEach((line) => {
-    const from = {
-      left: { xPercent: -16 },
-      right: { xPercent: 16 },
-      up: { yPercent: 45 },
-    }[line.dataset.from] || { yPercent: 45 };
+    const dir = line.dataset.from;
+    const x = dir === 'left' ? inward(line, 'right', 0.35, 140)
+      : dir === 'right' ? inward(line, 'left', 0.35, 140) : 0;
 
-    gsap.fromTo(line, from, {
-      xPercent: 0,
-      yPercent: 0,
-      ease: 'none',
-      scrollTrigger: { trigger: line, start: 'top bottom', end: 'top 45%', scrub: 1 },
-    });
+    gsap.fromTo(line,
+      { x: dir === 'up' ? 0 : x, yPercent: dir === 'up' ? 45 : 0 },
+      {
+        x: 0,
+        yPercent: 0,
+        ease: 'none',
+        scrollTrigger: { trigger: line, start: 'top bottom', end: 'top 45%', scrub: 1, invalidateOnRefresh: true },
+      });
   });
 }
 
@@ -197,93 +225,99 @@ export function initStatement() {
    Selected work
    -------------------------------------------------------------------------- */
 
+/** INDEX and 01—05 drift in opposite directions, each within its own free space. */
 export function initWorkHead() {
   const [first, second] = $$('.work__title .line');
-  const scrub = { trigger: '.work__head', start: 'top bottom', end: 'bottom top', scrub: true };
+  const scrub = { trigger: '.work__head', start: 'top bottom', end: 'bottom top', scrub: true, invalidateOnRefresh: true };
 
-  gsap.fromTo(first, { xPercent: 8 }, { xPercent: -6, ease: 'none', scrollTrigger: scrub });
-  gsap.fromTo(second, { xPercent: -8 }, { xPercent: 4, ease: 'none', scrollTrigger: { ...scrub } });
+  gsap.fromTo(first, { x: inward(first, 'right', 0.25, 120) }, { x: 0, ease: 'none', scrollTrigger: scrub });
+  gsap.fromTo(second,
+    { x: inward(second, 'left', 0.3, 100) },
+    { x: inward(second, 'right', 0.3, 100), ease: 'none', scrollTrigger: { ...scrub } });
 }
 
 /**
- * Each project enters along the path the previous one left on, so the
- * sequence reads as one choreography: up (Ganko, pinned) → from below
- * (Luumens) → diagonal (Voyagaer) → lateral wipe (Experiments).
- * title: signed xPercent entry offset · meta: side the metadata enters from.
+ * Each project enters along its own path, and the paths alternate so the
+ * list reads as one choreography. Offsets are expressed as travel *toward
+ * the inside* of the page; the side comes from the layout (project--alt sits
+ * right), so asymmetry never becomes overflow.
+ *   clip   — the edge the image opens from
+ *   media  — inward x / upward y offset the frame settles from (px, %)
+ *   meta   — metadata enters from outside its column, toward the image
  */
 const PROJECT_PATHS = [
-  { title: 12, clip: 'inset(42% 0% 0% 0%)', media: { yPercent: 12 }, meta: -1 },
-  { title: -12, clip: 'inset(0% 0% 38% 38%)', media: { xPercent: -4, yPercent: 8 }, meta: 1 },
-  { title: 12, clip: 'inset(0% 0% 0% 64%)', media: { xPercent: 5 }, meta: -1 },
+  { clip: 'inset(42% 0% 0% 0%)', media: { x: 0, yPercent: 12 } },
+  { clip: 'inset(0% 0% 38% 38%)', media: { x: 48, yPercent: 8 } },
+  { clip: 'inset(0% 0% 0% 64%)', media: { x: 64, yPercent: 0 } },
 ];
+
+const isAlt = (project) => project.classList.contains('project--alt');
 
 export function initProjectAnimations({ isMobile }) {
   $$('[data-project]').forEach((project, index) => {
     const path = PROJECT_PATHS[index % PROJECT_PATHS.length];
+    const alt = isAlt(project);
     const media = $('.project__media', project);
     const clip = $('.project__clip', project);
     const inner = $('.project__inner', project);
     const title = $('.project__title', project);
+    const numWrap = $('.project__num', project);
     const num = $('[data-project-num]', project);
     const meta = $$('.project__facts > div, .project__link', project);
 
-    gsap.fromTo(num, { yPercent: 110 }, {
-      yPercent: 0,
-      duration: 1.2,
-      ease: 'power4.out',
-      scrollTrigger: { trigger: project, start: 'top 80%', once: true },
-    });
-
-    gsap.fromTo(meta,
-      { x: isMobile ? 0 : 56 * path.meta, y: isMobile ? 18 : 0, autoAlpha: 0 },
-      {
-        x: 0,
-        y: 0,
-        autoAlpha: 1,
-        duration: 1.3,
-        ease: 'expo.out',
-        stagger: 0.07,
-        scrollTrigger: { trigger: clip, start: isMobile ? 'top 80%' : 'top 50%', once: true },
-      });
-
     if (isMobile) {
-      gsap.timeline({ scrollTrigger: { trigger: clip, start: 'top 85%', once: true } })
-        .fromTo(clip, { clipPath: path.clip }, { clipPath: 'inset(0% 0% 0% 0%)', duration: 1.6, ease: 'expo.out' }, 0)
-        .fromTo(inner, { scale: 1.12 }, { scale: 1, duration: 2, ease: 'expo.out' }, 0);
+      // Mobile: one short, ordered sequence per project — image, number, metadata.
+      gsap.timeline({
+        defaults: { ease: 'expo.out' },
+        scrollTrigger: { trigger: clip, start: 'top 88%', once: true },
+      })
+        .fromTo(clip, { clipPath: path.clip }, { clipPath: 'inset(0% 0% 0% 0%)', duration: 1.5 }, 0)
+        .fromTo(inner, { scale: 1.12 }, { scale: 1, duration: 2 }, 0)
+        .fromTo(num, { yPercent: 110 }, { yPercent: 0, duration: 1, ease: 'power4.out' }, 0.2)
+        .fromTo(meta, { y: 16, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 1.1, stagger: 0.06 }, 0.55);
       return;
     }
 
-    // Entry — the frame opens along this project's path while the image settles.
-    gsap.timeline({
-      scrollTrigger: { trigger: project, start: 'top bottom', end: 'center 55%', scrub: 1 },
-    })
-      .fromTo(clip, { clipPath: path.clip }, { clipPath: 'inset(0% 0% 0% 0%)', ease: 'power2.out' }, 0)
-      .fromTo(media, path.media, { xPercent: 0, yPercent: 0, ease: 'power2.out' }, 0)
-      .fromTo(inner, { scale: 1.12 }, { scale: 1, ease: 'power2.out' }, 0);
+    // Title + number move as one group, toward the page centre and back.
+    const group = [numWrap, title];
+    const titleTravel = () => {
+      const r = room(alt ? numWrap : title);
+      return (alt ? -1 : 1) * Math.min((alt ? r.left : r.right) * 0.45, window.innerWidth * 0.1);
+    };
+    const mediaX = alt ? -path.media.x : path.media.x;
+    const metaFrom = alt ? 40 : -40; // metadata sits opposite the image and leans in toward it
 
-    // Continuous drift across the full pass — noticed subconsciously.
-    gsap.fromTo(inner, { xPercent: -4, yPercent: 3 }, {
-      xPercent: 4,
-      yPercent: -3,
-      ease: 'none',
-      scrollTrigger: { trigger: project, start: 'top bottom', end: 'bottom top', scrub: true },
-    });
-
-    // Title arrives from its side, settles, then keeps travelling as it leaves.
-    gsap.timeline({
+    /*
+     * One scrubbed timeline across the project's full pass (0 → 10):
+     * 0–3   image reveal (clip opens, frame settles)
+     * 1–4   title arrives and settles
+     * 2.6–4.4 metadata reveals
+     * 0–10  continuous image drift; scale eases 1.12 → 1 by the midpoint
+     * 7–10  hand-off: the frame retracts upward, the title drifts on
+     */
+    const tl = gsap.timeline({
       defaults: { ease: 'none' },
-      scrollTrigger: { trigger: project, start: 'top bottom', end: 'bottom top', scrub: true },
-    })
-      .fromTo(title, { xPercent: path.title }, { xPercent: 0, duration: 1 })
-      .to(title, { xPercent: -path.title * 0.4, duration: 1 });
-
-    // Exit — the frame retracts upward, handing the viewport to the next project.
-    gsap.fromTo(media, { clipPath: 'inset(0% 0% 0% 0%)' }, {
-      clipPath: 'inset(0% 0% 28% 0%)',
-      ease: 'none',
-      immediateRender: false,
-      scrollTrigger: { trigger: project, start: 'bottom 80%', end: 'bottom top', scrub: true },
+      scrollTrigger: {
+        trigger: project,
+        start: 'top bottom',
+        end: 'bottom top',
+        scrub: 1,
+        invalidateOnRefresh: true,
+      },
     });
+
+    tl.fromTo(clip, { clipPath: path.clip }, { clipPath: 'inset(0% 0% 0% 0%)', duration: 3, ease: 'power2.out' }, 0)
+      .fromTo(media, { x: mediaX, yPercent: path.media.yPercent }, { x: 0, yPercent: 0, duration: 3, ease: 'power2.out' }, 0)
+      .fromTo(inner, { scale: 1.12 }, { scale: 1, duration: 5, ease: 'power1.out' }, 0)
+      .fromTo(inner, { xPercent: -4, yPercent: 3 }, { xPercent: 4, yPercent: -3, duration: 10 }, 0)
+      .fromTo(group, { x: titleTravel }, { x: 0, duration: 3, ease: 'power3.out' }, 1)
+      .fromTo(num, { yPercent: 110 }, { yPercent: 0, duration: 1.2, ease: 'power3.out' }, 1.4)
+      .fromTo(meta,
+        { x: metaFrom, autoAlpha: 0 },
+        { x: 0, autoAlpha: 1, duration: 1.2, stagger: 0.15, ease: 'power3.out' }, 2.6)
+      .to(group, { x: () => titleTravel() * 0.35, duration: 3, ease: 'power1.in' }, 7)
+      .fromTo(media, { clipPath: 'inset(0% 0% 0% 0%)' }, { clipPath: 'inset(0% 0% 28% 0%)', duration: 3, ease: 'power1.in' }, 7);
+
   });
 }
 

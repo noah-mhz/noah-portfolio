@@ -27,11 +27,30 @@
   --ease-in-out: cubic-bezier(0.76, 0, 0.24, 1);
 }
 
+/* Widescreen: type keeps scaling with the canvas instead of stalling at its desktop cap. */
+@media (min-width: 1600px) {
+  :root {
+    --fs-hero: clamp(10rem, 8.4vw, 13rem);
+    --fs-section: clamp(7rem, 5.6vw, 9rem);
+    --fs-display: clamp(16rem, 13vw, 20rem);
+    --fs-meta: 0.8125rem;
+    --gutter: clamp(2.5rem, 2.6vw, 4rem);
+  }
+}
+
+@media (max-width: 1023px) {
+  :root {
+    --fs-hero: clamp(3.5rem, 10vw, 6.5rem);
+    --fs-section: clamp(2.75rem, 7.5vw, 4.5rem);
+    --fs-display: clamp(5rem, 15vw, 9rem);
+  }
+}
+
 @media (max-width: 767px) {
   :root {
-    --fs-hero: 11.5vw;
-    --fs-section: 9.5vw;
-    --fs-display: 18vw;
+    --fs-hero: clamp(2.375rem, 11vw, 3.75rem);
+    --fs-section: clamp(2rem, 9vw, 3.25rem);
+    --fs-display: clamp(3.75rem, 19vw, 6rem);
     --nav-h: 4rem;
   }
 }
@@ -594,8 +613,21 @@ a:focus-visible .arrow--diag { transform: translate(0.2em, -0.2em); }
 }
 
 @media (max-width: 767px) {
-  .hero__title .line:nth-child(2) { padding-left: 8vw; }
+  .hero__meta {
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+  .hero__meta .mask { white-space: nowrap; }
+  .hero__center { padding: 4vh 0; }
+  .hero__title { line-height: 0.94; }
+  .hero__title .line:nth-child(2) { padding-left: 6vw; }
   .hero__title .line:nth-child(3) { padding-left: 0; }
+}
+
+/* Short landscape phones: keep the title clear of the footer row. */
+@media (max-height: 560px) and (orientation: landscape) {
+  .hero { min-height: auto; }
+  .hero__center { padding: 3rem 0; }
 }
 
 /* ==========================================================================
@@ -698,6 +730,8 @@ a:focus-visible .arrow--diag { transform: translate(0.2em, -0.2em); }
   pointer-events: none;
 }
 
+.project__title { max-width: 100%; }
+
 .project--alt .project__head { justify-content: flex-end; }
 
 .project__num {
@@ -789,16 +823,70 @@ a:focus-visible .arrow--diag { transform: translate(0.2em, -0.2em); }
     margin-top: 1.5rem;
   }
   .project__facts { grid-template-columns: repeat(4, 1fr); }
+  .project__head { font-size: clamp(3.5rem, 11vw, 7rem); }
+
+  /* Values read as text, labels stay technical. */
+  .project__facts dd {
+    margin-top: 0.3rem;
+    font-family: var(--font-sans);
+    font-size: 0.9375rem;
+    line-height: 1.35;
+    letter-spacing: 0;
+    text-transform: none;
+  }
 }
 
 @media (max-width: 767px) {
   .work__title { white-space: normal; }
   .work__title .line:nth-child(2) { padding-left: 14%; }
-  .project__head { flex-direction: column; gap: 0.5rem; margin-bottom: 1rem; }
+
+  /*
+   * Asymmetry comes from where each image meets the screen edge: normal
+   * projects run to the left edge, alt projects to the right, the text
+   * column keeps the gutter on both sides. Nothing crosses the viewport.
+   */
+  .project {
+    padding-top: clamp(3.5rem, 9vh, 5rem);
+    padding-bottom: 0.5rem;
+  }
+
+  .project__head {
+    flex-direction: column;
+    gap: 0.4rem;
+    margin-bottom: 0.9rem;
+    font-size: clamp(2.5rem, 12.5vw, 4rem);
+  }
+
   .project--alt .project__head { align-items: flex-end; }
-  .project__title { white-space: normal; }
+  .project__title { white-space: nowrap; }
+
+  .project__media { margin-left: calc(-1 * var(--gutter)); }
+  .project--alt .project__media { margin: 0 calc(-1 * var(--gutter)) 0 0; }
   .project__clip { aspect-ratio: 4 / 5; }
-  .project__facts { grid-template-columns: repeat(2, 1fr); }
+
+  .project__meta,
+  .project--alt .project__meta {
+    gap: 1.25rem;
+    margin-top: 1.25rem;
+  }
+
+  .project__facts {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0;
+    border-top: 1px solid var(--border);
+  }
+
+  .project__facts > div {
+    padding: 0.8rem 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .project__facts > div:nth-child(odd) { padding-right: 1rem; }
+
+  .project__facts dt { font-size: 0.6875rem; }
+  .project__facts dd { font-size: 0.9375rem; }
+
+  .project__link { padding: 0.25rem 0; }
 }
 
 /* ==========================================================================
@@ -973,13 +1061,14 @@ a:focus-visible .arrow--diag { transform: translate(0.2em, -0.2em); }
 
 .case__next { display: none; }
 
+/* Bottom-left: the Ganko title has left by then, and the next title rises on the right. */
 .case.is-pinned .case__next {
   position: absolute;
-  right: var(--gutter);
+  left: var(--gutter);
   bottom: var(--gutter);
   display: flex;
   flex-direction: column;
-  align-items: flex-end;
+  align-items: flex-start;
   color: var(--muted);
 }
 
@@ -989,9 +1078,16 @@ a:focus-visible .arrow--diag { transform: translate(0.2em, -0.2em); }
 .project.is-overlapping { margin-top: -70vh; }
 
 @media (max-width: 767px) {
-  .case__title { white-space: normal; }
+  .case { padding: 3rem var(--gutter) 1rem; }
+  .case__frame { gap: 1.5rem; }
+  .case__title { font-size: clamp(2.75rem, 14vw, 4.5rem); white-space: nowrap; }
   .case__steps { display: none; }
-  .case__media { aspect-ratio: 4 / 5; }
+  .case__media {
+    aspect-ratio: 4 / 5;
+    margin-left: calc(-1 * var(--gutter));
+  }
+  .case__stages { gap: 2.5rem; }
+  .case__lead { font-size: clamp(1.375rem, 6vw, 1.75rem); }
 }
 
 /* ==========================================================================
@@ -1045,7 +1141,8 @@ a:focus-visible .arrow--diag { transform: translate(0.2em, -0.2em); }
 }
 
 @media (max-width: 767px) {
-  .words__item:nth-child(2) { padding-left: 10%; }
+  .words__list { font-size: clamp(2rem, 10.5vw, 3.5rem); }
+  .words__item:nth-child(2) { padding-left: 4%; }
   .words__item:nth-child(3) { padding-left: 20%; }
   .words__item::before { margin-right: 0.5rem; font-size: 0.625rem; }
 }
