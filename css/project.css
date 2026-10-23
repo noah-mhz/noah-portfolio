@@ -123,6 +123,14 @@ a:focus-visible .arrow--back { transform: translateX(-0.3em); }
   color: var(--accent);
 }
 
+/* Latin taglines in the vertical slot read as metadata, not as a second title. */
+.study-hero__jp--mono {
+  font-family: var(--font-mono);
+  font-size: var(--fs-meta);
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+}
+
 .study-meta {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -181,6 +189,10 @@ a:focus-visible .arrow--back { transform: translateX(-0.3em); }
   line-height: 1;
   letter-spacing: -0.045em;
 }
+
+/* Four figures (e.g. product specifications) share the row at a smaller size. */
+.study-facts--four { grid-template-columns: repeat(4, 1fr); }
+.study-facts--four dd:nth-of-type(1) { font-size: clamp(2rem, 3.4vw, 3.75rem); white-space: nowrap; }
 
 .study-principles {
   display: grid;
@@ -299,6 +311,13 @@ a:focus-visible .arrow--back { transform: translateX(-0.3em); }
 
 .study-guest figure:nth-child(even) { margin-top: clamp(4rem, 12vh, 8rem); }
 
+/* Landscape pair that overlaps, the second frame sliding over the first. */
+.study-pair--overlap .study-pair__a { grid-column: 1 / 9; grid-row: 1; }
+.study-pair--overlap .study-pair__b { grid-column: 6 / 13; grid-row: 2; margin-top: clamp(-10rem, -14vw, -4rem); position: relative; z-index: 1; }
+
+/* Wide section captures keep their full width (no crop). */
+.frame--fit .frame__view { overflow: hidden; }
+
 /* ---------- End ---------- */
 
 .study-end {
@@ -356,6 +375,7 @@ a:focus-visible .arrow--back { transform: translateX(-0.3em); }
   .study-section__head .section-label { position: static; }
   .study-meta { grid-template-columns: repeat(2, 1fr); row-gap: 1.5rem; }
   .study-principles { grid-template-columns: 1fr; }
+  .study-facts--four { grid-template-columns: repeat(2, 1fr); row-gap: 2rem; }
   .study-split figure,
   .study-split__text { grid-column: 1 / -1; }
   .study-split__text { margin-top: 3rem; }
@@ -373,7 +393,8 @@ a:focus-visible .arrow--back { transform: translateX(-0.3em); }
 
   .study-section { padding: clamp(4rem, 12vh, 6rem) var(--gutter); }
   .study-copy { margin-left: 0; }
-  .study-facts { grid-template-columns: 1fr; gap: 1.5rem; }
+  .study-facts,
+  .study-facts--four { grid-template-columns: 1fr; gap: 1.5rem; }
   .study-palette { grid-template-columns: repeat(2, 1fr); }
   .study-palette li { min-height: 9rem; }
   .study-map { grid-template-columns: 1fr; }
@@ -386,6 +407,9 @@ a:focus-visible .arrow--back { transform: translateX(-0.3em); }
   .study-pages__offset { margin-top: 3rem; }
   .study-pair__a { margin-right: 12%; }
   .study-pair__b { margin-left: 12%; }
+  .study-pair--overlap .study-pair__a,
+  .study-pair--overlap .study-pair__b { grid-column: 1 / -1; grid-row: auto; }
+  .study-pair--overlap .study-pair__b { margin-top: 3rem; }
 
   .study-guest { grid-template-columns: 1fr; }
   .study-guest figure:nth-child(even) { margin-top: 0; }
@@ -396,3 +420,6 @@ a:focus-visible .arrow--back { transform: translateX(-0.3em); }
 
 /* Window height for scroll-through frames (added by JS when motion runs). */
 .frame--scroll.is-scrolling .frame__view { height: min(78vh, 46vw); }
+
+/* Longer domains are sized to the viewport so the arrow always stays on the line. */
+.study-end__link--long { font-size: min(var(--fs-display), 12.5vw); }

@@ -1,0 +1,353 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Luumens — Case Study — Noah</title>
+  <meta name="description" content="Website design and build for Luumens, a Singapore alternative energy solutions provider working across solar, energy storage and methanol and hydrogen fuel cells.">
+  <meta name="theme-color" content="#0A0A0A">
+  <meta property="og:title" content="Luumens — Case Study — Noah">
+  <meta property="og:description" content="Website design and build for Luumens, alternative energy solutions.">
+  <meta property="og:type" content="article">
+  <meta property="og:image" content="../../assets/images/luumens-home-1600.jpg">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230A0A0A'/%3E%3Ccircle cx='16' cy='16' r='4' fill='%23A6FFCB'/%3E%3C/svg%3E">
+
+  <style>html{background:#0A0A0A}</style>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@100..900&family=JetBrains+Mono:wght@400;500&display=swap">
+  <link rel="stylesheet" href="../../css/style.css">
+  <link rel="stylesheet" href="../../css/project.css">
+
+  <script>document.documentElement.classList.add('js');</script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js" defer></script>
+  <script type="module" src="../../js/project.js"></script>
+</head>
+<body class="study-page">
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <div class="grid-lines" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
+  <div class="progress" aria-hidden="true"><span class="progress__bar"></span></div>
+
+  <div class="cursor" aria-hidden="true">
+    <span class="cursor__circle"></span>
+    <span class="cursor__label"></span>
+  </div>
+
+  <header class="nav">
+    <a class="nav__logo" href="../../" aria-label="Noah — home">Noah</a>
+    <nav class="nav__right" aria-label="Primary" data-nav>
+      <ul class="nav__list">
+        <li><a class="nav__link" href="../../#work" data-nav-link="work"><span class="nav__index">01</span>Work</a></li>
+        <li><a class="nav__link" href="../../#about" data-nav-link="about"><span class="nav__index">02</span>About</a></li>
+        <li><a class="nav__link" href="../../#contact" data-nav-link="contact"><span class="nav__index">03</span>Contact</a></li>
+      </ul>
+      <button class="nav__status" type="button" aria-label="Show navigation" data-nav-status>
+        <span class="nav__status-text" data-nav-status-text></span>
+      </button>
+    </nav>
+  </header>
+
+  <main id="main">
+
+    <!-- Hero -->
+    <section class="study-hero" id="top" data-nav-label="">
+      <div class="study-hero__top label muted">
+        <a class="study-back link-line" href="../../#work"><span class="arrow arrow--back" aria-hidden="true">←</span> All work</a>
+        <span class="hide-sm">Case study — Website</span>
+        <span><span class="status-dot" aria-hidden="true"></span>Singapore</span>
+      </div>
+
+      <div class="study-hero__title">
+        <h1 class="study-hero__name" data-split="chars" data-hero-title>Luumens</h1>
+        <p class="study-hero__sub" data-hero-sub>Alternative energy solutions</p>
+        <p class="study-hero__jp study-hero__jp--mono" aria-hidden="true">Harness nature's power</p>
+      </div>
+
+      <dl class="study-meta label">
+        <div data-hero-meta><dt>Client</dt><dd>Luumens</dd></div>
+        <div data-hero-meta><dt>Role</dt><dd>Web design &amp; build</dd></div>
+        <div data-hero-meta><dt>Platform</dt><dd>WordPress</dd></div>
+        <div data-hero-meta><dt>Live site</dt><dd><a class="link-line accent" href="https://luumens.com" target="_blank" rel="noopener">luumens.com <span class="arrow arrow--diag" aria-hidden="true">↗</span></a></dd></div>
+      </dl>
+
+      <figure class="study-hero__media" data-hero-media>
+        <div class="frame">
+          <div class="frame__bar" aria-hidden="true"><i><b></b><b></b><b></b></i><span class="frame__url label">luumens.com</span><i></i></div>
+          <img src="../../assets/images/luumens-home-1600.jpg"
+            srcset="../../assets/images/luumens-home-900.jpg 900w, ../../assets/images/luumens-home-1600.jpg 1600w"
+            sizes="(max-width: 767px) 100vw, 90vw"
+            alt="Luumens homepage hero — Harness Nature's Power, over a field of solar panels" width="1600" height="1000" fetchpriority="high" decoding="async">
+          <span class="marks" aria-hidden="true"></span>
+        </div>
+      </figure>
+    </section>
+
+    <!-- Context -->
+    <section class="study-section" data-nav-section="work" data-nav-label="Context" aria-labelledby="context-title">
+      <div class="study-section__head">
+        <div class="section-label" data-reveal="fade"><span>Context</span></div>
+      </div>
+      <div class="study-section__body">
+        <h2 class="study-lead" id="context-title" data-split="lines" data-reveal="text">
+          <span class="line">Clean energy,</span>
+          <span class="line">explained <em class="accent">before it's sold.</em></span>
+        </h2>
+        <p class="study-copy muted" data-reveal="fade">Luumens is a Singapore alternative energy solutions provider built on the generation of clean energy. It designs and installs commercial and residential solar — including BIPV and BAPV such as glass canopies, solar tiles and facades — builds energy storage and EV charger installations, and supplies methanol and hydrogen fuel cells for land and marine use. The site had to make that range, and the technology behind it, easy to follow.</p>
+        <dl class="study-facts">
+          <div data-reveal="fade"><dt class="label muted">Solutions</dt><dd>6</dd><dd class="label muted">Ship to monitoring</dd></div>
+          <div data-reveal="fade"><dt class="label muted">Fuel-cell tech</dt><dd>3</dd><dd class="label muted">Hydrogen · DMFC · HTMFC</dd></div>
+          <div data-reveal="fade"><dt class="label muted">Industries</dt><dd>2</dd><dd class="label muted">Land &amp; marine</dd></div>
+        </dl>
+      </div>
+    </section>
+
+    <!-- Showcase: homepage -->
+    <section class="study-showcase" data-nav-section="work" data-nav-label="Homepage" aria-label="Homepage">
+      <div class="study-showcase__caption label muted">
+        <span>Homepage — full scroll</span>
+        <span class="hide-sm">Hero · Energy cycle · Solutions · News · Products · Work with us</span>
+      </div>
+      <div class="frame" data-reveal="media">
+        <div class="frame__bar" aria-hidden="true"><i><b></b><b></b><b></b></i><span class="frame__url label">luumens.com</span><i></i></div>
+        <video data-inview-video muted loop playsinline preload="none"
+          poster="../../assets/images/luumens-home-1600.jpg" width="1600" height="1000"
+          aria-label="Scrolling through the Luumens homepage">
+          <source src="../../assets/video/luumens-scroll.mp4" type="video/mp4">
+        </video>
+        <span class="marks" aria-hidden="true"></span>
+      </div>
+    </section>
+
+    <!-- Approach -->
+    <section class="study-section" data-nav-section="work" data-nav-label="Approach" aria-labelledby="approach-title">
+      <div class="study-section__head">
+        <div class="section-label" data-reveal="fade"><span>Approach</span></div>
+      </div>
+      <div class="study-section__body">
+        <h2 class="study-lead" id="approach-title" data-split="lines" data-reveal="text">
+          <span class="line">Show the system,</span>
+          <span class="line">then the products.</span>
+        </h2>
+        <p class="study-copy muted" data-reveal="fade">Fuel cells and methanol are unfamiliar to most visitors, so the homepage opens on how the energy is made before it shows anything for sale. From there, every solution and product page answers one question — where does this fit, and why is it better — in a clean, technical layout led by the Luumens red.</p>
+        <ul class="study-principles">
+          <li data-reveal="fade"><span class="label muted">Technology first</span><p>The energy-cycle diagram leads the homepage, ahead of the products.</p></li>
+          <li data-reveal="fade"><span class="label muted">A story per use</span><p>Each solution page starts from the limit people hit in that setting, and how a fuel cell answers it.</p></li>
+          <li data-reveal="fade"><span class="label muted">Specs you can scan</span><p>Product details become cards, figures and a decay chart rather than a datasheet.</p></li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Energy cycle -->
+    <section class="study-wide" data-nav-section="work" data-nav-label="Energy cycle" aria-label="Energy cycle">
+      <figure data-reveal="media" data-from="left">
+        <div class="study-media"><img src="../../assets/images/luumens-cycle.jpg" alt="Diagram of the energy cycle: renewable energy and water through electrolysis and methanol synthesis to hydrogen, methanol and oxygen consumers" width="1600" height="1087" loading="lazy" decoding="async"><span class="marks" aria-hidden="true"></span></div>
+        <figcaption class="label muted"><span>Energy cycle — homepage</span><span>Electrolysis → methanol synthesis</span></figcaption>
+      </figure>
+    </section>
+
+    <!-- Solutions -->
+    <section class="study-section" data-nav-section="work" data-nav-label="Solutions" aria-labelledby="solutions-title">
+      <div class="study-section__head">
+        <div class="section-label" data-reveal="fade"><span>Solutions</span></div>
+      </div>
+      <div class="study-section__body">
+        <h2 class="study-lead" id="solutions-title" data-split="lines" data-reveal="text">
+          <span class="line">Six settings,</span>
+          <span class="line">six stories.</span>
+        </h2>
+        <p class="study-copy muted" data-reveal="fade">Ship, camping, RV, signal tower, emergency rescue and monitoring — each gets its own photograph on the homepage, its own card in the solutions carousel and its own page, written around the people who would use it there.</p>
+      </div>
+    </section>
+
+    <section class="study-pair study-pair--overlap" data-nav-section="work" data-nav-label="Solutions" aria-label="Solutions on the homepage and the solutions page">
+      <figure class="study-pair__a" data-reveal="media" data-from="bottom">
+        <div class="study-media"><img src="../../assets/images/luumens-solutions-grid.jpg" alt="Energy Solutions grid on the homepage: Ship, Camping, RV, Signal Tower, Emergency Rescue and Monitoring" width="1600" height="1033" loading="lazy" decoding="async"><span class="marks" aria-hidden="true"></span></div>
+        <figcaption class="label muted"><span>Homepage — energy solutions</span></figcaption>
+      </figure>
+      <figure class="study-pair__b" data-reveal="media" data-from="top">
+        <div class="study-media"><img src="../../assets/images/luumens-solutions.jpg" alt="Solutions page with a card carousel of line-drawn products, opening on ship energy" width="1400" height="948" loading="lazy" decoding="async"><span class="marks" aria-hidden="true"></span></div>
+        <figcaption class="label muted"><span>Solutions — card carousel</span></figcaption>
+      </figure>
+    </section>
+
+    <section class="study-split" data-nav-section="work" data-nav-label="Camping" aria-labelledby="camping-title">
+      <figure data-reveal="media" data-from="bottom">
+        <div class="frame"><div class="frame__bar" aria-hidden="true"><i><b></b><b></b><b></b></i><span class="frame__url label">luumens.com/camping-energy</span><i></i></div>
+          <img src="../../assets/images/luumens-camping.jpg" alt="Camping Energy page: a fuel-cell power unit running a laptop at a campsite table, with three benefits" width="1400" height="948" loading="lazy" decoding="async"><span class="marks" aria-hidden="true"></span></div>
+      </figure>
+      <div class="study-split__text">
+        <div class="section-label" data-reveal="fade"><span>Camping energy</span></div>
+        <h2 class="study-lead" id="camping-title" data-split="lines" data-reveal="text"><span class="line">Power that</span><span class="line">lasts the trip.</span></h2>
+        <p class="study-copy muted" data-reveal="fade">The page starts from the real limit — small lithium batteries run out and are hard to recharge on longer trips — then shows why methanol fuel cells answer it, and hands on to the next solution.</p>
+      </div>
+    </section>
+
+    <!-- Product -->
+    <section class="study-section" data-nav-section="work" data-nav-label="Product" aria-labelledby="product-title">
+      <div class="study-section__head">
+        <div class="section-label" data-reveal="fade"><span>Product — PV panel</span></div>
+      </div>
+      <div class="study-section__body">
+        <h2 class="study-lead" id="product-title" data-split="lines" data-reveal="text">
+          <span class="line">A datasheet,</span>
+          <span class="line">made <em class="accent">scannable.</em></span>
+        </h2>
+        <p class="study-copy muted" data-reveal="fade">The N-type bifacial PV panel page sets each advantage in its own card — bifaciality, attenuation, efficiency, temperature co-efficient — next to the panel itself, then gives the warranties as figures and the power decay as a chart.</p>
+        <dl class="study-facts study-facts--four">
+          <div data-reveal="fade"><dt class="label muted">Panel</dt><dd>690–710W</dd><dd class="label muted">N-type, bifacial</dd></div>
+          <div data-reveal="fade"><dt class="label muted">Quality assurance</dt><dd>15 yrs</dd></div>
+          <div data-reveal="fade"><dt class="label muted">Power guarantee</dt><dd>30 yrs</dd></div>
+          <div data-reveal="fade"><dt class="label muted">Annual decay</dt><dd>−0.4%</dd></div>
+        </dl>
+      </div>
+    </section>
+
+    <section class="study-wide" data-nav-section="work" data-nav-label="Product" aria-label="PV panel layout">
+      <figure data-reveal="media" data-from="left">
+        <div class="study-media"><img src="../../assets/images/luumens-pv-bento.jpg" alt="PV Panel product page laid out as a bento grid of feature cards beside the panel" width="1600" height="933" loading="lazy" decoding="async"><span class="marks" aria-hidden="true"></span></div>
+        <figcaption class="label muted"><span>PV panel — bento layout</span><span>Desktop</span></figcaption>
+      </figure>
+    </section>
+
+    <!-- Identity -->
+    <section class="study-section" data-nav-section="work" data-nav-label="Identity" aria-labelledby="identity-title">
+      <div class="study-section__head">
+        <div class="section-label" data-reveal="fade"><span>Identity</span></div>
+      </div>
+      <div class="study-section__body">
+        <h2 class="study-lead" id="identity-title" data-split="lines" data-reveal="text">
+          <span class="line">Technical, calm,</span>
+          <span class="line">one warm note.</span>
+        </h2>
+        <ul class="study-palette" aria-label="Site colour palette">
+          <li style="--swatch:#E33F4D;--ink:#FFFFFF" data-swatch><span class="label">Luumens red</span><span class="label">#E33F4D</span></li>
+          <li style="--swatch:#FFFFFF;--ink:#33332D" data-swatch><span class="label">White</span><span class="label">#FFFFFF</span></li>
+          <li style="--swatch:#F8F8F8;--ink:#33332D" data-swatch><span class="label">Mist</span><span class="label">#F8F8F8</span></li>
+          <li style="--swatch:#33332D;--ink:#FFFFFF" data-swatch><span class="label">Graphite</span><span class="label">#33332D</span></li>
+        </ul>
+        <p class="study-copy muted" data-reveal="fade">The sunburst wordmark and the headings carry the Luumens red. Around them, white space, mist-grey cards and graphite buttons keep every page technical and calm.</p>
+      </div>
+    </section>
+
+    <!-- Scroll-through pages -->
+    <section class="study-pages" data-nav-section="work" data-nav-label="Pages" aria-label="Discover and PV panel pages">
+      <figure>
+        <div class="frame frame--scroll" data-scroll-through>
+          <div class="frame__bar" aria-hidden="true"><i><b></b><b></b><b></b></i><span class="frame__url label">luumens.com/discover</span><i></i></div>
+          <div class="frame__view"><img src="../../assets/images/luumens-discover.jpg" alt="Discover Luumens page — about us, mission, vision and why Luumens" width="1400" height="2599" loading="lazy" decoding="async"></div>
+          <span class="marks" aria-hidden="true"></span>
+        </div>
+        <figcaption class="label muted"><span>Discover — about, mission, vision</span></figcaption>
+      </figure>
+      <figure class="study-pages__offset">
+        <div class="frame frame--scroll" data-scroll-through>
+          <div class="frame__bar" aria-hidden="true"><i><b></b><b></b><b></b></i><span class="frame__url label">luumens.com/pv-panel</span><i></i></div>
+          <div class="frame__view"><img src="../../assets/images/luumens-pv.jpg" alt="Full PV Panel product page with feature cards, warranty figures and a power decay chart" width="1400" height="2235" loading="lazy" decoding="async"></div>
+          <span class="marks" aria-hidden="true"></span>
+        </div>
+        <figcaption class="label muted"><span>Product — PV panel</span></figcaption>
+      </figure>
+    </section>
+
+    <!-- Company pages -->
+    <section class="study-section study-section--stack" data-nav-section="work" data-nav-label="Company" aria-labelledby="company-title">
+      <div class="study-section__head">
+        <div class="section-label" data-reveal="fade"><span>Company</span></div>
+      </div>
+      <div class="study-section__body">
+        <h2 class="study-lead" id="company-title" data-split="lines" data-reveal="text">
+          <span class="line">Who they are,</span>
+          <span class="line">where to find them.</span>
+        </h2>
+        <p class="study-copy muted" data-reveal="fade">Discover covers the company's mission, vision and why clients choose Luumens, with highlights in tabs. Latest news and the three fuel-cell technologies sit together on the homepage, and Find Us pairs the address and opening hours with a live map.</p>
+      </div>
+      <div class="study-guest">
+        <figure data-reveal="media" data-from="bottom">
+          <div class="frame frame--fit"><div class="frame__bar" aria-hidden="true"><i><b></b><b></b><b></b></i><span class="frame__url label">luumens.com/discover</span><i></i></div>
+            <div class="frame__view"><img src="../../assets/images/luumens-why.jpg" alt="Why Luumens tabs: Unique Installations, Customer Service and High Standards" width="1400" height="510" loading="lazy" decoding="async"></div><span class="marks" aria-hidden="true"></span></div>
+          <figcaption class="label muted"><span>Why Luumens</span></figcaption>
+        </figure>
+        <figure data-reveal="media" data-from="bottom">
+          <div class="frame frame--fit"><div class="frame__bar" aria-hidden="true"><i><b></b><b></b><b></b></i><span class="frame__url label">luumens.com</span><i></i></div>
+            <div class="frame__view"><img src="../../assets/images/luumens-news.jpg" alt="Latest news beside the three fuel-cell technologies on the homepage" width="1400" height="643" loading="lazy" decoding="async"></div><span class="marks" aria-hidden="true"></span></div>
+          <figcaption class="label muted"><span>News &amp; technology</span></figcaption>
+        </figure>
+        <figure data-reveal="media" data-from="bottom">
+          <div class="frame frame--fit"><div class="frame__bar" aria-hidden="true"><i><b></b><b></b><b></b></i><span class="frame__url label">luumens.com/find-us</span><i></i></div>
+            <div class="frame__view"><img src="../../assets/images/luumens-findus.jpg" alt="Find Us page with location, opening hours and a map" width="1400" height="614" loading="lazy" decoding="async"></div><span class="marks" aria-hidden="true"></span></div>
+          <figcaption class="label muted"><span>Find us</span></figcaption>
+        </figure>
+        <figure data-reveal="media" data-from="bottom">
+          <div class="frame frame--fit"><div class="frame__bar" aria-hidden="true"><i><b></b><b></b><b></b></i><span class="frame__url label">luumens.com/camping-energy</span><i></i></div>
+            <div class="frame__view"><img src="../../assets/images/luumens-camping.jpg" alt="Camping Energy solution page" width="1400" height="948" loading="lazy" decoding="async"></div><span class="marks" aria-hidden="true"></span></div>
+          <figcaption class="label muted"><span>Solution page</span></figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- Build -->
+    <section class="study-section" data-nav-section="work" data-nav-label="Build" aria-labelledby="build-title">
+      <div class="study-section__head">
+        <div class="section-label" data-reveal="fade"><span>Build</span></div>
+      </div>
+      <div class="study-section__body">
+        <h2 class="study-lead" id="build-title" data-split="lines" data-reveal="text">
+          <span class="line">WordPress, with</span>
+          <span class="line">hand-built sections.</span>
+        </h2>
+        <ul class="study-stack">
+          <li data-reveal="fade"><span>WordPress</span><span class="label muted">Platform</span></li>
+          <li data-reveal="fade"><span>Custom HTML / CSS widgets</span><span class="label muted">Bespoke sections</span></li>
+          <li data-reveal="fade"><span>Responsive layouts</span><span class="label muted">Desktop &amp; mobile</span></li>
+          <li data-reveal="fade"><span>Web design</span><span class="label muted">Layout &amp; art direction</span></li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Live + next -->
+    <section class="study-end" data-nav-section="work" data-nav-label="Live" aria-labelledby="live-title">
+      <div class="section-label" data-reveal="fade"><span>Visit the live site</span></div>
+      <h2 class="study-end__link study-end__link--long" id="live-title">
+        <a href="https://luumens.com" target="_blank" rel="noopener" data-cursor="Open"><span data-split="chars" data-reveal="text">luumens.com</span> <span class="arrow arrow--diag accent" aria-hidden="true">↗</span></a>
+      </h2>
+      <nav class="study-next" aria-label="More work">
+        <a class="study-next__back link-line label" href="../ganko/"><span class="arrow arrow--back" aria-hidden="true">←</span> Ganko.sg</a>
+        <a class="study-next__project" href="../../#work" data-magnetic="0.2">
+          <span class="label muted">Next project</span>
+          <span class="study-next__name" data-magnetic-inner>Voyagaer <span class="arrow" aria-hidden="true">→</span></span>
+        </a>
+      </nav>
+    </section>
+  </main>
+
+  <footer class="footer" data-nav-section="contact" data-nav-label="Contact">
+    <div class="footer__grid">
+      <div class="footer__brand">
+        <p class="footer__name">Noah</p>
+        <p class="muted">Creative Developer<br>Web Designer</p>
+      </div>
+      <nav class="footer__nav" aria-label="Footer">
+        <ul class="footer__links">
+          <li><a class="link-line" href="../../#work">Work</a></li>
+          <li><a class="link-line" href="../../#about">About</a></li>
+          <li><a class="link-line" href="../../#contact">Contact</a></li>
+        </ul>
+        <ul class="footer__links">
+          <li><a class="link-line" href="https://sg.linkedin.com/in/zaw-min-htut-a672b11a2" target="_blank" rel="noopener">LinkedIn <span class="arrow arrow--diag" aria-hidden="true">↗</span></a></li>
+          <li><a class="link-line" href="https://github.com/" target="_blank" rel="noopener">GitHub <span class="arrow arrow--diag" aria-hidden="true">↗</span></a></li>
+        </ul>
+      </nav>
+      <a class="footer__back label" href="#top" data-magnetic><span data-magnetic-inner>Back to top ↑</span></a>
+    </div>
+    <p class="footer__mark" aria-hidden="true"><span>N</span><span>O</span><span>A</span><span>H</span></p>
+    <div class="footer__bottom label muted">
+      <span>© 2026 Noah</span>
+      <span>1.3521° N — 103.8198° E</span>
+      <span>Designed &amp; built by hand</span>
+    </div>
+  </footer>
+</body>
+</html>

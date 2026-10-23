@@ -18,12 +18,13 @@ js/interactions.js   cursor, magnetic elements, hover choreography, clock
 js/project.js        entry for case-study pages: hero, media reveals, scroll-through
 css/project.css      case-study page styles
 work/ganko/          Ganko.sg case study (template for further project pages)
+work/luumens/        Luumens case study
 ```
 
 ## Visual system
 
-- **Index** — projects are `01 / 05` … `05 / 05`; the same index appears in the
-  project heads, the pinned sequence and the navigation status.
+- **Index** — projects are `01 / 05` … `05 / 05` in the project heads, the
+  pinned sequence and the navigation status. Selected Work opens with a label only.
 - **Sections** — mono labels led by a short mint rule; no numbering.
 - **Coordinates** — bookends only: hero metadata and footer.
 - **Grid** — four fixed columns; the discipline words start on its lines and
@@ -37,17 +38,22 @@ work/ganko/          Ganko.sg case study (template for further project pages)
 
 - Ganko.sg uses real captures: `assets/images/ganko-home-*.jpg` and the looping
   `assets/video/ganko-scroll.mp4` (plays only in view; poster for reduced motion).
-- Images: the other project images are Unsplash placeholders (marked with a comment).
-  Replace with screenshots of each live site, e.g. `assets/images/luumens.jpg`,
+- Luumens uses real captures: `assets/images/luumens-*.jpg` (homepage card: `luumens-card-*`)
+  and `assets/video/luumens-scroll.mp4`.
+- Images: Voyagaer, Craftism and Evnergy are still Unsplash placeholders (marked with a comment).
+  Replace with screenshots of each live site, e.g. `assets/images/voyagaer.jpg`,
   keep the `width`/`height` attributes and update the `alt` text.
 - LinkedIn and GitHub URLs in the footer.
 
 ## Motion tiers (gsap.matchMedia)
 
 - Hero: a project reel sits inside the headline (`.hero__reel`; swap its video to
-  feature another project). Desktop/tablet: the hero pins and the mint dot opens
-  into a full-bleed frame (`.hero__stage`). Fine pointers: title weight follows
-  the cursor (variable Inter Tight, `[data-weight]`).
+  feature another project). Desktop: the hero holds briefly while the headline
+  clears, and a copy of the reel (`.reel-flyer`) grows — smoothed, across the
+  whole trip — into the Ganko case image's pinned spot, then hands over to it
+  (`initReelHandoff`). Tablet/mobile: the reel stays in the headline and each
+  line fades before it reaches the nav. Fine pointers: title weight follows the
+  cursor (variable Inter Tight, `[data-weight]`).
 - Desktop ≥1024px: pinned Ganko sequence with the next project rising over its
   release, scrubbed project paths, parallax, scroll-velocity response, cursor,
   magnetic elements, grid-locked capability preview.
