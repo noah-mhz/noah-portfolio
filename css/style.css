@@ -70,7 +70,11 @@
 html {
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
+  /* The page progress bar replaces the native scrollbar; scrolling itself is unchanged. */
+  scrollbar-width: none;
 }
+
+html::-webkit-scrollbar { display: none; }
 
 html.lenis,
 html.lenis body { height: auto; }
@@ -915,6 +919,10 @@ a:focus-visible .arrow--diag { transform: translate(0.2em, -0.2em); }
   justify-self: start;
   color: var(--text);
 }
+
+/* Case study first, live site second. */
+.project__links { display: flex; flex-wrap: wrap; gap: 0.75rem 1.75rem; }
+.project__links .project__link.muted { color: var(--muted); }
 
 .project__media.is-hover .marks,
 .project__media:focus-visible .marks {
