@@ -177,7 +177,13 @@ main { position: relative; z-index: 1; }
   color: var(--muted);
 }
 
-.section-label span:first-child { color: var(--accent); }
+.section-label::before {
+  content: '';
+  align-self: center;
+  width: 1.75rem;
+  height: 1px;
+  background: var(--accent);
+}
 
 .status-dot {
   display: inline-block;
@@ -315,23 +321,27 @@ a:focus-visible .arrow--diag { transform: translate(0.2em, -0.2em); }
 
 .grid-lines span:last-child { border-right: 1px solid var(--border-soft); }
 
-/* Contact: the grid resolves — lines brighten and an accent travels down the first. */
-.grid-lines span:first-child::after {
+/* Contact: the grid resolves — each line redraws top to bottom, left to right. */
+.grid-lines span::after {
   content: '';
   position: absolute;
   top: 0;
   bottom: 0;
   left: -1px;
   width: 1px;
-  background: var(--accent);
-  opacity: 0.6;
+  background: rgba(242, 242, 240, 0.16);
   transform: scaleY(0);
   transform-origin: 50% 0%;
-  transition: transform 2.2s var(--ease-in-out);
+  transition: transform 1.8s var(--ease-in-out);
 }
 
-.grid-lines.is-lit span { border-color: rgba(242, 242, 240, 0.09); }
-.grid-lines.is-lit span:first-child::after { transform: scaleY(1); }
+.grid-lines span:nth-child(2)::after { transition-delay: 0.12s; }
+.grid-lines span:nth-child(3)::after { transition-delay: 0.24s; }
+.grid-lines span:nth-child(4)::after { transition-delay: 0.36s; }
+
+.grid-lines.is-lit span { border-color: rgba(242, 242, 240, 0.08); }
+.grid-lines.is-lit span::after { transform: scaleY(1); }
+.grid-lines:not(.is-lit) span::after { transition-delay: 0s; }
 
 @media (max-width: 767px) {
   .grid-lines { grid-template-columns: repeat(2, 1fr); }
