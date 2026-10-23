@@ -1,4 +1,4 @@
-import { splitAll, TEXT_TARGETS } from './split.js';
+import { splitAll, wrapChars, TEXT_TARGETS } from './split.js';
 import { initNavigation } from './navigation.js';
 
 const { gsap, ScrollTrigger } = window;
@@ -23,8 +23,12 @@ export function initIntro({ reduceMotion, onComplete }) {
   const scrollCue = $('.scroll-cue');
   const [first, second, third] = $$('.hero__title .l-inner');
 
+  // Once the title has risen, its masks no longer need to clip (the reel's label sits outside them).
+  const revealTitle = () => $('.hero__title')?.classList.add('is-revealed');
+
   if (reduceMotion || !intro) {
     intro?.remove();
+    revealTitle();
     scrollCue?.classList.add('is-active');
     onComplete?.();
     return null;
@@ -77,7 +81,8 @@ export function initIntro({ reduceMotion, onComplete }) {
     .to('.grid-lines span', { scaleY: 1, duration: 1.8, stagger: 0.1, ease: 'expo.inOut' }, 'title+=0.9')
     // 8 — scroll cue becomes active
     .to(scrollCue, { autoAlpha: 1, duration: 0.8, ease: 'power2.out' }, 'title+=1.6')
-    .add(() => scrollCue.classList.add('is-active'), '<');
+    .add(() => scrollCue.classList.add('is-active'), '<')
+    .add(revealTitle, 'title+=1.9');
 
   return tl;
 }
@@ -174,6 +179,51 @@ export function initHeroScroll({ isMobile }) {
   tl.to('.hero__meta, .hero__hello', { y: -60, autoAlpha: 0, ease: 'none' }, 0)
     .to('.hero__foot', { autoAlpha: 0, ease: 'none', duration: 0.5 }, 0)
     .to('.scroll-cue__track', { scaleY: 0, transformOrigin: '50% 100%', ease: 'none', duration: 0.4 }, 0);
+}
+
+/**
+ * Desktop/tablet: the hero holds while its title recedes and the mint dot
+ * after "experiences" opens into a full-bleed frame — the first project.
+ */
+export function initHeroHandoff() {
+  const hero = $('.hero');
+  const dot = $('.hero__accent');
+  const stage = $('.hero__stage');
+  const img = $('img', stage);
+  const ui = $$('.hero__stage-ui > *', stage);
+
+  // The frame starts exactly where the dot sits, so the dot seems to grow.
+  const dotInset = () => {
+    const h = hero.getBoundingClientRect();
+    const d = dot.getBoundingClientRect();
+    const w = dot.offsetWidth; // layout size, unaffected by the intro's scale
+    const cx = d.left + d.width / 2 - h.left;
+    const cy = d.top + d.height / 2 - h.top;
+    return `inset(${cy - w / 2}px ${h.width - cx - w / 2}px ${h.height - cy - w / 2}px ${cx - w / 2}px round ${w}px)`;
+  };
+
+  const tl = gsap.timeline({
+    defaults: { ease: 'none' },
+    scrollTrigger: {
+      trigger: hero,
+      start: 'top top',
+      end: '+=140%',
+      pin: true,
+      scrub: 1,
+      invalidateOnRefresh: true,
+    },
+  });
+
+  tl.to('.hero__meta, .hero__hello, .hero__foot', { y: -40, autoAlpha: 0, duration: 0.25 }, 0)
+    .to('.hero__center', { scale: 0.55, yPercent: -28, autoAlpha: 0, transformOrigin: '0% 50%', duration: 0.6, ease: 'power2.in' }, 0)
+    .set(stage, { visibility: 'visible' }, 0.12)
+    .fromTo(stage, { clipPath: dotInset }, { clipPath: 'inset(0px 0px 0px 0px round 0px)', duration: 0.7, ease: 'power2.inOut' }, 0.12)
+    .fromTo(img, { autoAlpha: 0, scale: 1.3 }, { autoAlpha: 1, scale: 1, duration: 0.7, ease: 'power2.out' }, 0.22)
+    .to(img, { filter: 'brightness(0.5)', duration: 0.2 }, 0.78)
+    .fromTo(ui, { y: 30, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.18, stagger: 0.03, ease: 'power2.out' }, 0.8)
+    .to({}, { duration: 0.1 });
+
+  return () => gsap.set(stage, { clearProps: 'all' });
 }
 
 /* --------------------------------------------------------------------------
@@ -613,6 +663,7 @@ export function initSectionTransitions({ isMobile }) {
 
 export function prepareText() {
   splitAll();
+  $$('[data-weight]').forEach((el) => wrapChars(el, '.hero__reel, .hero__accent'));
 }
 
 /**
@@ -634,7 +685,7 @@ export function initScrollAnimations() {
     const cleanupCase = initCaseStudy({ pinned: isDesktop });
     initWordStack({ isMobile });
 
-    initHeroScroll({ isMobile });
+    const cleanupHero = isMobile ? initHeroScroll({ isMobile }) : initHeroHandoff();
     initTextReveal({ isMobile });
     initProjectAnimations({ isMobile });
     initTimeline();
@@ -653,6 +704,7 @@ export function initScrollAnimations() {
 
     return () => {
       cleanupCase?.();
+      cleanupHero?.();
       cleanupNav?.();
       cleanupSections?.();
     };

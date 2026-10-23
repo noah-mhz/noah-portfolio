@@ -550,8 +550,95 @@ a:focus-visible .arrow--diag { transform: translate(0.2em, -0.2em); }
   text-transform: uppercase;
 }
 
-.hero__title .line:nth-child(2) { padding-left: 12vw; }
+.hero__title .line:nth-child(2) { padding-left: 1.5vw; }
 .hero__title .line:nth-child(3) { padding-left: 4vw; }
+
+/* Characters wrapped for the cursor-weight response. */
+.hero__ch { font-weight: 500; }
+
+/* Work inside the headline: a framed clip sitting in the second line. */
+.hero__reel {
+  position: relative;
+  display: inline-block;
+  width: 2.5em;
+  height: 0.74em;
+  margin-right: 0.2em;
+  vertical-align: 0.03em;
+  background: var(--surface);
+}
+
+.hero__reel video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+  filter: brightness(0.9);
+  transition: filter 0.8s var(--ease-out);
+}
+
+.hero__reel:hover video,
+.hero__reel:focus-visible video { filter: brightness(1); }
+
+.hero__reel .marks { --mark: 10px; inset: -8px; opacity: 1; transform: none; }
+
+.hero__reel-tag {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  z-index: 1;
+  padding: 0.5em 0.7em;
+  background: rgba(10, 10, 10, 0.78);
+  font-size: var(--fs-meta);
+  letter-spacing: 0.08em;
+  line-height: 1;
+  white-space: nowrap;
+  text-transform: uppercase;
+  color: var(--muted);
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 0.8s var(--ease-out), transform 0.8s var(--ease-out);
+}
+
+.hero__title.is-revealed .l-mask { overflow: visible; }
+.hero__title.is-revealed .hero__reel-tag { opacity: 1; transform: none; }
+
+/* The dot opens into this full-bleed frame as the hero hands off to the work. */
+.hero__stage {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  overflow: hidden;
+  background: var(--accent);
+  visibility: hidden;
+}
+
+.hero__stage img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+}
+
+.hero__stage-ui {
+  position: absolute;
+  inset: calc(var(--nav-h) + 1rem) var(--gutter) var(--gutter);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.hero__stage-ui .label:last-child { align-self: flex-end; }
+
+.hero__stage-title {
+  font-size: var(--fs-display);
+  font-weight: 500;
+  line-height: 0.8;
+  letter-spacing: -0.055em;
+  text-transform: uppercase;
+}
 
 .hero__accent {
   display: inline-block;
@@ -630,8 +717,22 @@ a:focus-visible .arrow--diag { transform: translate(0.2em, -0.2em); }
   .hero__meta .mask { white-space: nowrap; }
   .hero__center { padding: 4vh 0; }
   .hero__title { line-height: 0.94; }
-  .hero__title .line:nth-child(2) { padding-left: 6vw; }
+  .hero__title .line:nth-child(2) { padding-left: 0; }
   .hero__title .line:nth-child(3) { padding-left: 0; }
+  .hero__reel-tag { font-size: 0.625rem; }
+
+  /* Mobile: the reel becomes its own framed row between the lines. */
+  .hero__reel {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 10;
+    margin: 3.2rem 0 1rem;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  .hero__reel { width: 1.9em; }
 }
 
 /* Short landscape phones: keep the title clear of the footer row. */

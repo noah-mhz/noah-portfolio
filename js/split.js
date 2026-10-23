@@ -72,3 +72,28 @@ export function splitAll(root = document) {
 }
 
 export const TEXT_TARGETS = '.l-inner, .w-inner, .c-inner';
+
+/**
+ * Wraps every visible character in a plain span (no mask) so it can be
+ * styled on its own, e.g. weight that follows the cursor. Skips `skip`.
+ */
+export function wrapChars(el, skip) {
+  const walk = (node) => {
+    [...node.childNodes].forEach((child) => {
+      if (child.nodeType === Node.TEXT_NODE) {
+        const fragment = document.createDocumentFragment();
+        [...child.textContent].forEach((ch) => {
+          if (/\s/.test(ch)) {
+            fragment.appendChild(document.createTextNode(ch));
+          } else {
+            fragment.appendChild(make('span', 'hero__ch', ch));
+          }
+        });
+        child.replaceWith(fragment);
+      } else if (child.nodeType === Node.ELEMENT_NODE && !(skip && child.matches(skip))) {
+        walk(child);
+      }
+    });
+  };
+  walk(el);
+}

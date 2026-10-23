@@ -14,7 +14,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preconnect" href="https://images.unsplash.com">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@100..900&family=JetBrains+Mono:wght@400;500&display=swap">
   <link rel="stylesheet" href="css/style.css">
 
   <script>document.documentElement.classList.add('js');</script>
@@ -79,12 +79,28 @@
 
       <div class="hero__center">
         <p class="hero__hello label"><span class="mask"><span data-hero-meta>Hello, I'm Noah.</span></span></p>
-        <h1 class="hero__title" data-split="lines">
+        <h1 class="hero__title" data-split="lines" data-weight aria-label="I design &amp; build digital experiences.">
           <span class="line">I design &amp;</span>
-          <span class="line">build digital</span>
+          <span class="line"><a class="hero__reel" href="work/ganko/" data-cursor="View" aria-label="Now playing: Ganko.sg — view the case study">
+              <span class="hero__reel-tag label" aria-hidden="true"><span class="status-dot"></span>Now playing — Ganko.sg</span>
+              <video data-inview-video muted loop playsinline preload="none" poster="assets/images/ganko-scroll-poster.jpg" width="1600" height="1000" aria-hidden="true">
+                <source src="assets/video/ganko-scroll.mp4" type="video/mp4">
+              </video>
+              <span class="marks" aria-hidden="true"></span>
+            </a>build digital</span>
           <span class="line">experiences<span class="hero__accent" aria-hidden="true"></span></span>
         </h1>
       </div>
+
+      <a class="hero__stage" href="work/ganko/" tabindex="-1" aria-hidden="true" data-cursor="View">
+        <img src="assets/images/ganko-stage-1600.jpg" srcset="assets/images/ganko-stage-900.jpg 900w, assets/images/ganko-stage-1600.jpg 1600w"
+          sizes="100vw" alt="" width="1600" height="1000" loading="lazy" decoding="async">
+        <span class="hero__stage-ui">
+          <span class="label">Selected work — 01 / 05</span>
+          <span class="hero__stage-title">Ganko.sg</span>
+          <span class="label">View case study <span class="arrow">→</span></span>
+        </span>
+      </a>
 
       <div class="hero__foot">
         <span class="hero__rule" aria-hidden="true"></span>

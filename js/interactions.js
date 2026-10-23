@@ -284,6 +284,56 @@ function initCapabilities() {
 }
 
 /* --------------------------------------------------------------------------
+   Hero weight: characters near the pointer grow heavier, then ease back
+   -------------------------------------------------------------------------- */
+
+export function initHeroWeight() {
+  const title = $('[data-weight]');
+  if (!title) return;
+
+  gsap.matchMedia().add(FINE_POINTER_MOTION, () => {
+    const chars = $$('.hero__ch', title);
+    const hero = title.closest('section');
+    const BASE = 500;
+    const PEAK = 850;
+    const RADIUS = 280;
+    const setters = chars.map((ch) => gsap.quickTo(ch, 'fontWeight', { duration: 0.7, ease: 'power3' }));
+    let centres = [];
+    let measuredAt = 0;
+
+    // Positions shift slightly as weights change, so re-measure at most twice a second.
+    const measure = () => {
+      centres = chars.map((ch) => {
+        const r = ch.getBoundingClientRect();
+        return [r.left + r.width / 2, r.top + r.height / 2];
+      });
+      measuredAt = performance.now();
+    };
+
+    const onMove = (event) => {
+      if (performance.now() - measuredAt > 500) measure();
+      centres.forEach(([x, y], i) => {
+        const d = Math.hypot(event.clientX - x, event.clientY - y);
+        const t = Math.max(0, 1 - d / RADIUS);
+        setters[i](BASE + (PEAK - BASE) * t * t * (3 - 2 * t));
+      });
+    };
+
+    const onLeave = () => setters.forEach((set) => set(BASE));
+
+    const dispose = listen([
+      [hero, 'pointermove', onMove, { passive: true }],
+      [hero, 'pointerleave', onLeave],
+    ]);
+
+    return () => {
+      dispose();
+      gsap.set(chars, { clearProps: 'fontWeight' });
+    };
+  });
+}
+
+/* --------------------------------------------------------------------------
    In-view video: plays only while visible, never for reduced-motion users
    -------------------------------------------------------------------------- */
 
