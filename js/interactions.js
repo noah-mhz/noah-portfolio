@@ -284,6 +284,29 @@ function initCapabilities() {
 }
 
 /* --------------------------------------------------------------------------
+   In-view video: plays only while visible, never for reduced-motion users
+   -------------------------------------------------------------------------- */
+
+export function initInViewVideo() {
+  const videos = $$('[data-inview-video]');
+  if (!videos.length || !('IntersectionObserver' in window)) return;
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(({ target, isIntersecting }) => {
+      if (isIntersecting) {
+        target.preload = 'auto';
+        target.play().catch(() => {});
+      } else {
+        target.pause();
+      }
+    });
+  }, { threshold: 0.15 });
+
+  videos.forEach((video) => observer.observe(video));
+}
+
+/* --------------------------------------------------------------------------
    Local time
    -------------------------------------------------------------------------- */
 

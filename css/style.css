@@ -974,7 +974,8 @@ a:focus-visible .arrow--diag { transform: translate(0.2em, -0.2em); }
   width: 100%;
   height: 100%;
   object-fit: cover;
-  filter: grayscale(0.6) brightness(0.8);
+  object-position: top center;
+  filter: brightness(0.92);
 }
 
 .case__stages {
@@ -1039,9 +1040,8 @@ a:focus-visible .arrow--diag { transform: translate(0.2em, -0.2em); }
   position: absolute;
   top: calc(var(--nav-h) + 4.5rem);
   right: var(--gutter);
-  bottom: var(--gutter);
   width: 52%;
-  aspect-ratio: auto;
+  aspect-ratio: 16 / 10;
   transform-origin: 100% 50%;
 }
 
@@ -1083,7 +1083,6 @@ a:focus-visible .arrow--diag { transform: translate(0.2em, -0.2em); }
   .case__title { font-size: clamp(2.75rem, 14vw, 4.5rem); white-space: nowrap; }
   .case__steps { display: none; }
   .case__media {
-    aspect-ratio: 4 / 5;
     margin-left: calc(-1 * var(--gutter));
   }
   .case__stages { gap: 2.5rem; }

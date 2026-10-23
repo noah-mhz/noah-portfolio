@@ -1,11 +1,12 @@
 import { initScroll, initAnchors } from './scroll.js';
 import { initIntro, initScrollAnimations, prepareText } from './animations.js';
-import { initCursor, initMagnetic, initHoverAnimations, initClock } from './interactions.js';
+import { initCursor, initMagnetic, initHoverAnimations, initClock, initInViewVideo } from './interactions.js';
 
 function boot() {
   const { gsap, ScrollTrigger } = window;
 
   initClock();
+  initInViewVideo();
 
   // If the CDN fails, the page stays fully readable with no motion.
   if (!gsap || !ScrollTrigger) {
