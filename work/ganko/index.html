@@ -1,0 +1,336 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ganko.sg — Case Study — Noah</title>
+  <meta name="description" content="Website design and build for Ganko Sushi Singapore, the Singapore flagship of a Japanese sushi institution founded in Osaka in 1963.">
+  <meta name="theme-color" content="#0A0A0A">
+  <meta property="og:title" content="Ganko.sg — Case Study — Noah">
+  <meta property="og:description" content="Website design and build for Ganko Sushi Singapore.">
+  <meta property="og:type" content="article">
+  <meta property="og:image" content="../../assets/images/ganko-home-1600.jpg">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230A0A0A'/%3E%3Ccircle cx='16' cy='16' r='4' fill='%23A6FFCB'/%3E%3C/svg%3E">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+  <link rel="stylesheet" href="../../css/style.css">
+  <link rel="stylesheet" href="../../css/project.css">
+
+  <script>document.documentElement.classList.add('js');</script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js" defer></script>
+  <script type="module" src="../../js/project.js"></script>
+</head>
+<body class="study-page">
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <div class="grid-lines" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
+  <div class="progress" aria-hidden="true"><span class="progress__bar"></span></div>
+
+  <div class="cursor" aria-hidden="true">
+    <span class="cursor__circle"></span>
+    <span class="cursor__label"></span>
+  </div>
+
+  <header class="nav">
+    <a class="nav__logo" href="../../" aria-label="Noah — home">Noah</a>
+    <nav class="nav__right" aria-label="Primary" data-nav>
+      <ul class="nav__list">
+        <li><a class="nav__link" href="../../#work" data-nav-link="work"><span class="nav__index">01</span>Work</a></li>
+        <li><a class="nav__link" href="../../#about" data-nav-link="about"><span class="nav__index">02</span>About</a></li>
+        <li><a class="nav__link" href="../../#contact" data-nav-link="contact"><span class="nav__index">03</span>Contact</a></li>
+      </ul>
+      <button class="nav__status" type="button" aria-label="Show navigation" data-nav-status>
+        <span class="nav__status-text" data-nav-status-text></span>
+      </button>
+    </nav>
+  </header>
+
+  <main id="main">
+
+    <!-- Hero -->
+    <section class="study-hero" id="top" data-nav-label="">
+      <div class="study-hero__top label muted">
+        <a class="study-back link-line" href="../../#work"><span class="arrow arrow--back" aria-hidden="true">←</span> All work</a>
+        <span class="hide-sm">Case study — Website</span>
+        <span><span class="status-dot" aria-hidden="true"></span>Singapore</span>
+      </div>
+
+      <div class="study-hero__title">
+        <h1 class="study-hero__name" data-split="chars" data-hero-title>Ganko.sg</h1>
+        <p class="study-hero__sub" data-hero-sub>Ganko Sushi Singapore</p>
+        <p class="study-hero__jp" lang="ja" aria-hidden="true">がんこ寿司</p>
+      </div>
+
+      <dl class="study-meta label">
+        <div data-hero-meta><dt>Client</dt><dd>Ganko Sushi Singapore</dd></div>
+        <div data-hero-meta><dt>Role</dt><dd>Web design &amp; build</dd></div>
+        <div data-hero-meta><dt>Platform</dt><dd>GoDaddy Website Builder</dd></div>
+        <div data-hero-meta><dt>Live site</dt><dd><a class="link-line accent" href="https://ganko.sg" target="_blank" rel="noopener">ganko.sg <span class="arrow arrow--diag" aria-hidden="true">↗</span></a></dd></div>
+      </dl>
+
+      <figure class="study-hero__media" data-hero-media>
+        <div class="frame">
+          <div class="frame__bar" aria-hidden="true"><i><b></b><b></b><b></b></i><span class="frame__url label">ganko.sg</span><i></i></div>
+          <img src="../../assets/images/ganko-home-1600.jpg"
+            srcset="../../assets/images/ganko-home-900.jpg 900w, ../../assets/images/ganko-home-1600.jpg 1600w"
+            sizes="(max-width: 767px) 100vw, 90vw"
+            alt="Ganko.sg homepage hero — Authentic Japanese Cuisine in Singapore" width="1600" height="1067" fetchpriority="high" decoding="async">
+          <span class="marks" aria-hidden="true"></span>
+        </div>
+      </figure>
+    </section>
+
+    <!-- Context -->
+    <section class="study-section" data-nav-section="work" data-nav-label="Context" aria-labelledby="context-title">
+      <div class="study-section__head">
+        <div class="section-label" data-reveal="fade"><span>Context</span></div>
+      </div>
+      <div class="study-section__body">
+        <h2 class="study-lead" id="context-title" data-split="lines" data-reveal="text">
+          <span class="line">Sixty years of sushi,</span>
+          <span class="line">one <em class="accent">Singapore flagship.</em></span>
+        </h2>
+        <p class="study-copy muted" data-reveal="fade">Ganko Sushi began in 1963 as a 15-square-metre eatery in Juso, Osaka, and has grown to more than 100 outlets across Japan and Hong Kong. Its Singapore restaurant on Penang Road opened in 2021. The site needed to carry that heritage, present the food and the space, and make booking a table simple.</p>
+        <dl class="study-facts">
+          <div data-reveal="fade"><dt class="label muted">Founded</dt><dd>1963</dd><dd class="label muted">Juso, Osaka</dd></div>
+          <div data-reveal="fade"><dt class="label muted">Outlets</dt><dd>100+</dd><dd class="label muted">Japan &amp; Hong Kong</dd></div>
+          <div data-reveal="fade"><dt class="label muted">Singapore</dt><dd>2021</dd><dd class="label muted">9 Penang Road</dd></div>
+        </dl>
+      </div>
+    </section>
+
+    <!-- Showcase: homepage -->
+    <section class="study-showcase" data-nav-section="work" data-nav-label="Homepage" aria-label="Homepage">
+      <div class="study-showcase__caption label muted">
+        <span>Homepage — full scroll</span>
+        <span class="hide-sm">Hero · Legacy · Experience · Gallery</span>
+      </div>
+      <div class="frame" data-reveal="media">
+        <div class="frame__bar" aria-hidden="true"><i><b></b><b></b><b></b></i><span class="frame__url label">ganko.sg</span><i></i></div>
+        <video data-inview-video muted loop playsinline preload="none"
+          poster="../../assets/images/ganko-scroll-poster.jpg" width="1600" height="1000"
+          aria-label="Scrolling through the Ganko.sg homepage">
+          <source src="../../assets/video/ganko-scroll.mp4" type="video/mp4">
+        </video>
+        <span class="marks" aria-hidden="true"></span>
+      </div>
+    </section>
+
+    <!-- Approach -->
+    <section class="study-section" data-nav-section="work" data-nav-label="Approach" aria-labelledby="approach-title">
+      <div class="study-section__head">
+        <div class="section-label" data-reveal="fade"><span>Approach</span></div>
+      </div>
+      <div class="study-section__body">
+        <h2 class="study-lead" id="approach-title" data-split="lines" data-reveal="text">
+          <span class="line">Let the restaurant</span>
+          <span class="line">speak first.</span>
+        </h2>
+        <p class="study-copy muted" data-reveal="fade">The layout stays quiet so the photography carries the experience: archival images of the founding team sit beside today's Singapore kitchen, and the brand's own warmth — rice-paper backgrounds, washi textures and the founder's caricature mark — frames everything. Type stays small and calm; the food and the interiors do the talking.</p>
+        <ul class="study-principles">
+          <li data-reveal="fade"><span class="label muted">Heritage first</span><p>The 1963 story leads the homepage and the About pages, told through original photographs.</p></li>
+          <li data-reveal="fade"><span class="label muted">Imagery-led</span><p>Generous image grids for dishes and interiors, with copy kept short and centred.</p></li>
+          <li data-reveal="fade"><span class="label muted">Booking within reach</span><p>"Book now" sits in the hero, Reservation in the main navigation, and contact details repeat in every footer.</p></li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Heritage pair -->
+    <section class="study-pair" data-nav-section="work" data-nav-label="Tradition" aria-label="Tradition">
+      <figure class="study-pair__a" data-reveal="media" data-from="bottom">
+        <div class="study-media"><img src="../../assets/images/ganko-archive.jpg" alt="The first Ganko Sushi team, with founder Atsushi Kojima, in Osaka" width="900" height="970" loading="lazy" decoding="async"><span class="marks" aria-hidden="true"></span></div>
+        <figcaption class="label muted"><span>The founding team, Osaka</span><span class="accent">1963</span></figcaption>
+      </figure>
+      <figure class="study-pair__b" data-reveal="media" data-from="top">
+        <div class="study-media"><img src="../../assets/images/ganko-team.jpg" alt="Ganko Sushi Singapore chefs preparing sushi at the counter" width="900" height="1225" loading="lazy" decoding="async"><span class="marks" aria-hidden="true"></span></div>
+        <figcaption class="label muted"><span>Ganko Sushi Singapore</span><span class="accent">2021</span></figcaption>
+      </figure>
+    </section>
+
+    <!-- Identity -->
+    <section class="study-section" data-nav-section="work" data-nav-label="Identity" aria-labelledby="identity-title">
+      <div class="study-section__head">
+        <div class="section-label" data-reveal="fade"><span>Identity</span></div>
+      </div>
+      <div class="study-section__body">
+        <h2 class="study-lead" id="identity-title" data-split="lines" data-reveal="text">
+          <span class="line">Warm, paper-toned,</span>
+          <span class="line">one loud mark.</span>
+        </h2>
+        <ul class="study-palette" aria-label="Site colour palette">
+          <li style="--swatch:#262323;--ink:#F2F2F0" data-swatch><span class="label">Charcoal</span><span class="label">#262323</span></li>
+          <li style="--swatch:#FDF7E7;--ink:#262323" data-swatch><span class="label">Rice paper</span><span class="label">#FDF7E7</span></li>
+          <li style="--swatch:#F0EAD8;--ink:#262323" data-swatch><span class="label">Washi</span><span class="label">#F0EAD8</span></li>
+          <li style="--swatch:#D90C18;--ink:#FDF7E7" data-swatch><span class="label">Ganko red</span><span class="label">#D90C18</span></li>
+        </ul>
+        <p class="study-copy muted" data-reveal="fade">Charcoal navigation and rice-paper pages keep the palette warm and restrained, leaving the red caricature mark as the single loud element on every page.</p>
+      </div>
+    </section>
+
+    <!-- Dishes -->
+    <section class="study-wide" data-nav-section="work" data-nav-label="Dishes" aria-label="Signature dishes">
+      <figure data-reveal="media" data-from="left">
+        <div class="study-media"><img src="../../assets/images/ganko-dishes.jpg" alt="Grid of six signature dishes: sets, donburi and seafood bowls" width="1600" height="736" loading="lazy" decoding="async"><span class="marks" aria-hidden="true"></span></div>
+        <figcaption class="label muted"><span>Signature dishes — About page</span><span>Six-up grid</span></figcaption>
+      </figure>
+    </section>
+
+    <!-- Structure -->
+    <section class="study-section" data-nav-section="work" data-nav-label="Structure" aria-labelledby="structure-title">
+      <div class="study-section__head">
+        <div class="section-label" data-reveal="fade"><span>Structure</span></div>
+      </div>
+      <div class="study-section__body">
+        <h2 class="study-lead" id="structure-title" data-split="lines" data-reveal="text">
+          <span class="line">Eight pages,</span>
+          <span class="line">two journeys.</span>
+        </h2>
+        <p class="study-copy muted" data-reveal="fade">Guests either want to understand the restaurant or book a table. The navigation splits along those lines: story pages under About, practical pages one click from anywhere.</p>
+        <div class="study-map">
+          <div data-reveal="fade">
+            <p class="label muted">Discover</p>
+            <ul><li>Home</li><li>Menu</li><li>About — Tradition</li><li>About — Hospitality</li></ul>
+          </div>
+          <div data-reveal="fade">
+            <p class="label muted">Plan a visit</p>
+            <ul><li>Reservation</li><li>Contact</li><li>FAQ</li><li>Careers</li></ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Scroll-through pages -->
+    <section class="study-pages" data-nav-section="work" data-nav-label="About pages" aria-label="About pages">
+      <figure>
+        <div class="frame frame--scroll" data-scroll-through>
+          <div class="frame__bar" aria-hidden="true"><i><b></b><b></b><b></b></i><span class="frame__url label">ganko.sg/tradition</span><i></i></div>
+          <div class="frame__view"><img src="../../assets/images/ganko-tradition.jpg" alt="Ganko.sg Tradition page — heritage photographs and dish gallery" width="1400" height="2143" loading="lazy" decoding="async"></div>
+          <span class="marks" aria-hidden="true"></span>
+        </div>
+        <figcaption class="label muted"><span>About — Tradition</span></figcaption>
+      </figure>
+      <figure class="study-pages__offset">
+        <div class="frame frame--scroll" data-scroll-through>
+          <div class="frame__bar" aria-hidden="true"><i><b></b><b></b><b></b></i><span class="frame__url label">ganko.sg/hospitality</span><i></i></div>
+          <div class="frame__view"><img src="../../assets/images/ganko-hospitality.jpg" alt="Ganko.sg Hospitality page — interior photography gallery" width="1400" height="2852" loading="lazy" decoding="async"></div>
+          <span class="marks" aria-hidden="true"></span>
+        </div>
+        <figcaption class="label muted"><span>About — Hospitality</span></figcaption>
+      </figure>
+    </section>
+
+    <!-- Interiors -->
+    <section class="study-split" data-nav-section="work" data-nav-label="Interiors" aria-labelledby="interiors-title">
+      <figure data-reveal="media" data-from="bottom">
+        <div class="study-media"><img src="../../assets/images/ganko-interiors.jpg" alt="Asymmetric gallery of the restaurant's timber and stone interiors" width="1400" height="1421" loading="lazy" decoding="async"><span class="marks" aria-hidden="true"></span></div>
+      </figure>
+      <div class="study-split__text">
+        <div class="section-label" data-reveal="fade"><span>Hospitality</span></div>
+        <h2 class="study-lead" id="interiors-title" data-split="lines" data-reveal="text"><span class="line">Tranquil.</span></h2>
+        <p class="study-copy muted" data-reveal="fade">Interior photography is set in an asymmetric gallery — varied crops and heights that echo the restaurant's timber, stone and light.</p>
+      </div>
+    </section>
+
+    <!-- Guest pages -->
+    <section class="study-section study-section--stack" data-nav-section="work" data-nav-label="Plan a visit" aria-labelledby="guest-title">
+      <div class="study-section__head">
+        <div class="section-label" data-reveal="fade"><span>Plan a visit</span></div>
+      </div>
+      <div class="study-section__body">
+        <h2 class="study-lead" id="guest-title" data-split="lines" data-reveal="text">
+          <span class="line">The practical pages,</span>
+          <span class="line">kept effortless.</span>
+        </h2>
+        <p class="study-copy muted" data-reveal="fade">Reservations run through an embedded Chope booking widget. Address, hours, phone and email are repeated in every footer, and the FAQ answers the questions guests ask most.</p>
+      </div>
+      <div class="study-guest">
+        <figure data-reveal="media" data-from="bottom">
+          <div class="frame frame--crop"><div class="frame__bar" aria-hidden="true"><i><b></b><b></b><b></b></i><span class="frame__url label">ganko.sg/reservation</span><i></i></div>
+            <div class="frame__view"><img src="../../assets/images/ganko-reservation.jpg" alt="Ganko.sg Reservation page with Chope booking widget" width="1400" height="1349" loading="lazy" decoding="async"></div><span class="marks" aria-hidden="true"></span></div>
+          <figcaption class="label muted"><span>Reservation</span></figcaption>
+        </figure>
+        <figure data-reveal="media" data-from="bottom">
+          <div class="frame frame--crop"><div class="frame__bar" aria-hidden="true"><i><b></b><b></b><b></b></i><span class="frame__url label">ganko.sg/contact</span><i></i></div>
+            <div class="frame__view"><img src="../../assets/images/ganko-contact.jpg" alt="Ganko.sg Contact page with address, hours and storefront photo" width="1400" height="1461" loading="lazy" decoding="async"></div><span class="marks" aria-hidden="true"></span></div>
+          <figcaption class="label muted"><span>Contact</span></figcaption>
+        </figure>
+        <figure data-reveal="media" data-from="bottom">
+          <div class="frame frame--crop"><div class="frame__bar" aria-hidden="true"><i><b></b><b></b><b></b></i><span class="frame__url label">ganko.sg/faq</span><i></i></div>
+            <div class="frame__view"><img src="../../assets/images/ganko-faq.jpg" alt="Ganko.sg FAQ page" width="1400" height="1058" loading="lazy" decoding="async"></div><span class="marks" aria-hidden="true"></span></div>
+          <figcaption class="label muted"><span>FAQ</span></figcaption>
+        </figure>
+        <figure data-reveal="media" data-from="bottom">
+          <div class="frame frame--crop"><div class="frame__bar" aria-hidden="true"><i><b></b><b></b><b></b></i><span class="frame__url label">ganko.sg/careers</span><i></i></div>
+            <div class="frame__view"><img src="../../assets/images/ganko-careers.jpg" alt="Ganko.sg Careers page" width="1400" height="1097" loading="lazy" decoding="async"></div><span class="marks" aria-hidden="true"></span></div>
+          <figcaption class="label muted"><span>Careers</span></figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- Build -->
+    <section class="study-section" data-nav-section="work" data-nav-label="Build" aria-labelledby="build-title">
+      <div class="study-section__head">
+        <div class="section-label" data-reveal="fade"><span>Build</span></div>
+      </div>
+      <div class="study-section__body">
+        <h2 class="study-lead" id="build-title" data-split="lines" data-reveal="text">
+          <span class="line">Hosted, responsive,</span>
+          <span class="line">easy to update.</span>
+        </h2>
+        <ul class="study-stack">
+          <li data-reveal="fade"><span>GoDaddy Website Builder</span><span class="label muted">Platform</span></li>
+          <li data-reveal="fade"><span>Chope</span><span class="label muted">Embedded reservations</span></li>
+          <li data-reveal="fade"><span>Responsive layouts</span><span class="label muted">Desktop &amp; mobile</span></li>
+          <li data-reveal="fade"><span>Web design</span><span class="label muted">Layout &amp; art direction</span></li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Live + next -->
+    <section class="study-end" data-nav-section="work" data-nav-label="Live" aria-labelledby="live-title">
+      <div class="section-label" data-reveal="fade"><span>Visit the live site</span></div>
+      <h2 class="study-end__link" id="live-title">
+        <a href="https://ganko.sg" target="_blank" rel="noopener" data-cursor="Open"><span data-split="chars" data-reveal="text">ganko.sg</span> <span class="arrow arrow--diag accent" aria-hidden="true">↗</span></a>
+      </h2>
+      <nav class="study-next" aria-label="More work">
+        <a class="study-next__back link-line label" href="../../#work"><span class="arrow arrow--back" aria-hidden="true">←</span> All work</a>
+        <a class="study-next__project" href="../../#work" data-magnetic="0.2">
+          <span class="label muted">Next project</span>
+          <span class="study-next__name" data-magnetic-inner>Luumens <span class="arrow" aria-hidden="true">→</span></span>
+        </a>
+      </nav>
+    </section>
+  </main>
+
+  <footer class="footer" data-nav-section="contact" data-nav-label="Contact">
+    <div class="footer__grid">
+      <div class="footer__brand">
+        <p class="footer__name">Noah</p>
+        <p class="muted">Creative Developer<br>Web Designer</p>
+      </div>
+      <nav class="footer__nav" aria-label="Footer">
+        <ul class="footer__links">
+          <li><a class="link-line" href="../../#work">Work</a></li>
+          <li><a class="link-line" href="../../#about">About</a></li>
+          <li><a class="link-line" href="../../#contact">Contact</a></li>
+        </ul>
+        <ul class="footer__links">
+          <li><a class="link-line" href="https://sg.linkedin.com/in/zaw-min-htut-a672b11a2" target="_blank" rel="noopener">LinkedIn <span class="arrow arrow--diag" aria-hidden="true">↗</span></a></li>
+          <li><a class="link-line" href="https://github.com/" target="_blank" rel="noopener">GitHub <span class="arrow arrow--diag" aria-hidden="true">↗</span></a></li>
+        </ul>
+      </nav>
+      <a class="footer__back label" href="#top" data-magnetic><span data-magnetic-inner>Back to top ↑</span></a>
+    </div>
+    <p class="footer__mark" aria-hidden="true"><span>N</span><span>O</span><span>A</span><span>H</span></p>
+    <div class="footer__bottom label muted">
+      <span>© 2026 Noah</span>
+      <span>1.3521° N — 103.8198° E</span>
+      <span>Designed &amp; built by hand</span>
+    </div>
+  </footer>
+</body>
+</html>
