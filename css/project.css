@@ -1,0 +1,398 @@
+/* ==========================================================================
+   Project case-study pages (work/*). Builds on the tokens in style.css.
+   ========================================================================== */
+
+.study-page main { overflow-x: clip; }
+
+/* ---------- Shared pieces ---------- */
+
+.frame {
+  position: relative;
+  border: 1px solid var(--border);
+  background: var(--surface);
+}
+
+.frame__bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  height: 2.5rem;
+  padding: 0 1rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.frame__bar i { display: flex; gap: 0.4rem; width: 3rem; }
+.frame__bar b { width: 0.55rem; height: 0.55rem; border-radius: 50%; background: #2C2C2C; }
+
+.frame__url {
+  flex: 0 1 22rem;
+  padding: 0.3rem 0;
+  text-align: center;
+  text-transform: none;
+  color: var(--muted);
+  background: #0D0D0D;
+  font-size: 0.6875rem;
+}
+
+.frame img,
+.frame video {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.frame .marks,
+.study-media .marks { opacity: 1; transform: none; }
+
+/* Long captures scroll inside a fixed window on larger screens. */
+.frame--scroll .frame__view { overflow: hidden; }
+
+/* Guest pages show the top of each page only. */
+.frame--crop .frame__view {
+  aspect-ratio: 16 / 11;
+  overflow: hidden;
+}
+
+.frame--crop .frame__view img {
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+}
+
+.study-media { position: relative; overflow: hidden; }
+.study-media img { display: block; width: 100%; height: auto; }
+
+figure figcaption {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 1.1rem;
+}
+
+.arrow--back { transform: none; }
+a:hover .arrow--back,
+a:focus-visible .arrow--back { transform: translateX(-0.3em); }
+
+/* ---------- Hero ---------- */
+
+.study-hero {
+  position: relative;
+  padding: calc(var(--nav-h) + 1.5rem) var(--gutter) clamp(4rem, 10vh, 7rem);
+}
+
+.study-hero__top {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.study-back { color: var(--text); }
+
+.study-hero__title {
+  position: relative;
+  padding: clamp(5rem, 16vh, 11rem) 0 clamp(3rem, 8vh, 5rem);
+}
+
+.study-hero__name {
+  font-size: var(--fs-display);
+  font-weight: 500;
+  line-height: 0.82;
+  letter-spacing: -0.055em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.study-hero__sub {
+  margin-top: clamp(1rem, 3vh, 2rem);
+  padding-left: 25%;
+  font-size: clamp(1.5rem, 3vw, 3rem);
+  font-weight: 300;
+  letter-spacing: -0.025em;
+}
+
+.study-hero__jp {
+  position: absolute;
+  top: clamp(3rem, 10vh, 7rem);
+  right: 0;
+  writing-mode: vertical-rl;
+  white-space: nowrap;
+  font-family: 'Hiragino Sans', 'Yu Gothic', 'Noto Sans JP', 'IPAGothic', sans-serif;
+  font-size: clamp(1.25rem, 2.2vw, 2.25rem);
+  letter-spacing: 0.35em;
+  color: var(--accent);
+}
+
+.study-meta {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--gutter);
+  padding-top: 1.4rem;
+  border-top: 1px solid var(--border);
+}
+
+.study-meta dt { color: var(--muted); margin-bottom: 0.5rem; }
+.study-meta dd { color: var(--text); }
+
+.study-hero__media { margin-top: clamp(4rem, 10vh, 7rem); }
+
+/* ---------- Text sections ---------- */
+
+.study-section {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  column-gap: var(--gutter);
+  padding: clamp(6rem, 18vh, 12rem) var(--gutter);
+}
+
+.study-section__head { grid-column: 1 / 4; }
+.study-section__head .section-label { position: sticky; top: calc(var(--nav-h) + 2rem); }
+.study-section__body { grid-column: 4 / 12; }
+
+.study-lead {
+  font-size: var(--fs-section);
+  font-weight: 500;
+  line-height: 0.95;
+  letter-spacing: -0.045em;
+  text-transform: uppercase;
+}
+
+.study-lead em { font-style: normal; }
+
+.study-copy {
+  max-width: 46ch;
+  margin-top: clamp(2rem, 5vh, 3.5rem);
+  margin-left: auto;
+}
+
+.study-facts {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--gutter);
+  margin-top: clamp(3rem, 8vh, 5rem);
+  padding-top: 1.4rem;
+  border-top: 1px solid var(--border);
+}
+
+.study-facts dd:nth-of-type(1) {
+  margin: 0.6rem 0 0.4rem;
+  font-size: clamp(2.5rem, 5vw, 5rem);
+  font-weight: 300;
+  line-height: 1;
+  letter-spacing: -0.045em;
+}
+
+.study-principles {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--gutter);
+  margin-top: clamp(3rem, 8vh, 5rem);
+}
+
+.study-principles li {
+  padding-top: 1.2rem;
+  border-top: 1px solid var(--border);
+}
+
+.study-principles p {
+  margin-top: 0.9rem;
+  color: rgba(242, 242, 240, 0.82);
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+.study-palette {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  margin-top: clamp(3rem, 8vh, 5rem);
+}
+
+.study-palette li {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 0.25rem;
+  min-height: clamp(12rem, 28vh, 20rem);
+  padding: 1rem;
+  background: var(--swatch);
+  color: var(--ink);
+  transform-origin: 50% 100%;
+}
+
+.study-map {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--gutter);
+  margin-top: clamp(3rem, 8vh, 5rem);
+}
+
+.study-map ul { margin-top: 1rem; border-top: 1px solid var(--border); }
+
+.study-map li {
+  padding: 0.9rem 0;
+  border-bottom: 1px solid var(--border);
+  font-size: clamp(1.125rem, 1.6vw, 1.5rem);
+  letter-spacing: -0.015em;
+}
+
+.study-stack { margin-top: clamp(3rem, 8vh, 5rem); border-top: 1px solid var(--border); }
+
+.study-stack li {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1rem;
+  padding: 1.1rem 0;
+  border-bottom: 1px solid var(--border);
+  font-size: clamp(1.25rem, 2vw, 2rem);
+  letter-spacing: -0.02em;
+}
+
+/* ---------- Media sections ---------- */
+
+.study-showcase { padding: 0 var(--gutter); }
+.study-showcase__caption { display: flex; justify-content: space-between; margin-bottom: 1.4rem; }
+
+/* Offset pair: the archive image sits higher on the left, today's team lower on the right. */
+.study-pair {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  column-gap: var(--gutter);
+  padding: clamp(4rem, 12vh, 8rem) var(--gutter);
+}
+
+.study-pair__a { grid-column: 1 / 6; }
+.study-pair__b { grid-column: 7 / 12; margin-top: clamp(6rem, 22vh, 14rem); }
+
+.study-wide { padding: clamp(4rem, 10vh, 6rem) var(--gutter); }
+
+.study-pages {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  column-gap: var(--gutter);
+  padding: 0 var(--gutter) clamp(4rem, 10vh, 6rem);
+}
+
+.study-pages figure:first-child { grid-column: 1 / 7; }
+.study-pages__offset { grid-column: 7 / 13; margin-top: clamp(6rem, 20vh, 12rem); }
+
+.study-split {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  column-gap: var(--gutter);
+  align-items: end;
+  padding: clamp(6rem, 16vh, 10rem) var(--gutter);
+}
+
+.study-split figure { grid-column: 1 / 8; }
+.study-split__text { grid-column: 9 / 13; }
+.study-split__text .study-copy { margin-left: 0; }
+
+.study-section--stack { row-gap: clamp(3rem, 8vh, 5rem); }
+
+.study-guest {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: clamp(2rem, 5vw, 4rem) var(--gutter);
+}
+
+.study-guest figure:nth-child(even) { margin-top: clamp(4rem, 12vh, 8rem); }
+
+/* ---------- End ---------- */
+
+.study-end {
+  padding: clamp(6rem, 18vh, 12rem) var(--gutter) clamp(5rem, 12vh, 8rem);
+}
+
+.study-end__link {
+  margin: clamp(1.5rem, 4vh, 3rem) 0 clamp(5rem, 14vh, 9rem);
+  font-size: var(--fs-display);
+  font-weight: 500;
+  line-height: 0.85;
+  letter-spacing: -0.055em;
+  text-transform: uppercase;
+}
+
+.study-end__link a { display: inline-flex; align-items: flex-start; gap: 0.15em; white-space: nowrap; }
+.study-end__link .arrow { font-size: 0.4em; font-weight: 300; }
+
+.study-next {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 2rem;
+  padding-top: 1.6rem;
+  border-top: 1px solid var(--border);
+}
+
+.study-next__back { color: var(--text); }
+
+.study-next__project {
+  display: grid;
+  gap: 0.6rem;
+  justify-items: end;
+  text-align: right;
+}
+
+.study-next__name {
+  display: inline-block;
+  font-size: clamp(2rem, 5vw, 4.5rem);
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: -0.04em;
+  text-transform: uppercase;
+  transition: color 0.6s var(--ease-out);
+}
+
+.study-next__project:hover .study-next__name,
+.study-next__project:focus-visible .study-next__name { color: var(--accent); }
+
+/* ---------- Tablet ---------- */
+
+@media (max-width: 1023px) {
+  .study-section__head,
+  .study-section__body { grid-column: 1 / -1; }
+  .study-section__head .section-label { position: static; }
+  .study-meta { grid-template-columns: repeat(2, 1fr); row-gap: 1.5rem; }
+  .study-principles { grid-template-columns: 1fr; }
+  .study-split figure,
+  .study-split__text { grid-column: 1 / -1; }
+  .study-split__text { margin-top: 3rem; }
+}
+
+/* ---------- Mobile ---------- */
+
+@media (max-width: 767px) {
+  /* Domain names never break: size them to the viewport instead. */
+  .study-hero__name,
+  .study-end__link { font-size: min(var(--fs-display), 16vw); }
+  .study-hero__sub { padding-left: 10%; }
+  .study-hero__jp { top: 1.5rem; }
+  .study-hero__media { margin-inline: calc(-1 * var(--gutter)); }
+
+  .study-section { padding: clamp(4rem, 12vh, 6rem) var(--gutter); }
+  .study-copy { margin-left: 0; }
+  .study-facts { grid-template-columns: 1fr; gap: 1.5rem; }
+  .study-palette { grid-template-columns: repeat(2, 1fr); }
+  .study-palette li { min-height: 9rem; }
+  .study-map { grid-template-columns: 1fr; }
+
+  .study-pair__a,
+  .study-pair__b,
+  .study-pages figure:first-child,
+  .study-pages__offset { grid-column: 1 / -1; }
+  .study-pair__b,
+  .study-pages__offset { margin-top: 3rem; }
+  .study-pair__a { margin-right: 12%; }
+  .study-pair__b { margin-left: 12%; }
+
+  .study-guest { grid-template-columns: 1fr; }
+  .study-guest figure:nth-child(even) { margin-top: 0; }
+
+  .study-next { flex-direction: column; align-items: flex-start; }
+  .study-next__project { justify-items: start; text-align: left; }
+}
+
+/* Window height for scroll-through frames (added by JS when motion runs). */
+.frame--scroll.is-scrolling .frame__view { height: min(78vh, 46vw); }

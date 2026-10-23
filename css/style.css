@@ -1069,6 +1069,12 @@ a:focus-visible .arrow--diag { transform: translate(0.2em, -0.2em); }
   width: 100%;
 }
 
+.case__study-link {
+  font-size: clamp(1.125rem, 1.6vw, 1.5rem);
+  letter-spacing: -0.015em;
+  color: var(--accent);
+}
+
 .case__next { display: none; }
 
 /* Bottom-left: the Ganko title has left by then, and the next title rises on the right. */
