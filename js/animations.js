@@ -18,6 +18,28 @@ export const MEDIA = {
    Opening title sequence
    -------------------------------------------------------------------------- */
 
+const timeout = (ms) => new Promise((resolve) => { setTimeout(resolve, ms); });
+
+/** Resolves when the font stylesheet, the headline weights and the hero poster are ready. */
+function pageReady(limit) {
+  const link = $('link[data-fonts]');
+  const sheet = link && !link.sheet
+    ? new Promise((resolve) => { link.addEventListener('load', resolve, { once: true }); link.addEventListener('error', resolve, { once: true }); })
+    : Promise.resolve();
+  const fonts = sheet.then(() => Promise.all([
+    document.fonts?.load('500 1em "Inter Tight"'),
+    document.fonts?.load('400 1em "JetBrains Mono"'),
+  ])).catch(() => {});
+  const poster = new Promise((resolve) => {
+    const img = new Image();
+    img.onload = resolve;
+    img.onerror = resolve;
+    img.src = $('.hero__reel video')?.getAttribute('poster') || '';
+    if (!img.src) resolve();
+  });
+  return Promise.race([Promise.all([fonts, poster]), timeout(limit)]);
+}
+
 export function initIntro({ reduceMotion, onComplete }) {
   const intro = $('.intro');
   const scrollCue = $('.scroll-cue');
@@ -34,7 +56,9 @@ export function initIntro({ reduceMotion, onComplete }) {
     return null;
   }
 
-  gsap.set('[data-intro-item]', { yPercent: 110 });
+  // From here GSAP owns the overlay (the CSS failsafe is cancelled).
+  intro.classList.add('is-live');
+  const bar = $('.intro__bar span');
   gsap.set('[data-nav-item]', { yPercent: -60, clipPath: 'inset(0% 0% 100% 0%)' });
   gsap.set('[data-hero-meta]', { yPercent: 110 });
   // Each line takes a slightly different path out of its mask.
@@ -47,17 +71,21 @@ export function initIntro({ reduceMotion, onComplete }) {
   gsap.set('.grid-lines span', { scaleY: 0, transformOrigin: '50% 0%' });
 
   const tl = gsap.timeline({
+    paused: true,
     defaults: { ease: 'power4.out' },
-    onComplete: () => {
-      intro.remove();
-      onComplete?.();
-    },
+    onComplete: () => intro.remove(),
   });
 
-  // 0 — a title card of metadata, then 1 — the background establishes itself
-  tl.to('[data-intro-item]', { yPercent: 0, duration: 1, stagger: 0.08, delay: 0.2 })
-    .to('[data-intro-item]', { yPercent: -110, duration: 0.6, stagger: 0.05, ease: 'power3.in' }, '+=0.35')
-    .to(intro, { clipPath: 'inset(0% 0% 100% 0%)', duration: 1.3, ease: 'expo.inOut' }, '-=0.15')
+  // 0 — the title card (already risen in CSS) finishes loading, then 1 — the page is revealed
+  tl.add(() => {
+    // Hand the loading line from CSS to GSAP at whatever point it reached.
+    const reached = new DOMMatrix(getComputedStyle(bar).transform).a || 0;
+    bar.style.animation = 'none';
+    gsap.fromTo(bar, { scaleX: reached }, { scaleX: 1, duration: 0.45, ease: 'power2.out' });
+  })
+    .to('[data-intro-item]', { yPercent: -110, duration: 0.5, stagger: 0.04, ease: 'power3.in' }, 0.15)
+    .to('.intro__bar', { autoAlpha: 0, duration: 0.3 }, 0.35)
+    .to(intro, { clipPath: 'inset(0% 0% 100% 0%)', duration: 1.1, ease: 'expo.inOut' }, 0.35)
     // 2 — navigation settles in from above, quietly
     .to('[data-nav-item]', {
       yPercent: 0,
@@ -66,11 +94,11 @@ export function initIntro({ reduceMotion, onComplete }) {
       stagger: 0.06,
       ease: 'expo.out',
       clearProps: 'clipPath',
-    }, '-=0.35')
+    }, 0.85)
     // 3 — metadata
-    .to('[data-hero-meta]', { yPercent: 0, duration: 1.2, stagger: 0.05 }, '<0.15')
-    // 4 + 5 — the title, line by line, each on its own path
-    .addLabel('title', '<0.1')
+    .to('[data-hero-meta]', { yPercent: 0, duration: 1.2, stagger: 0.05 }, '<0.1')
+    // 4 + 5 — the title, line by line, each on its own path, rising as the overlay clears
+    .addLabel('title', 0.8)
     .to(first, { yPercent: 0, duration: 1.8 }, 'title')
     .to(second, { yPercent: 0, xPercent: 0, duration: 1.9 }, 'title+=0.16')
     .to(third, { yPercent: 0, rotate: 0, duration: 2 }, 'title+=0.32')
@@ -82,7 +110,16 @@ export function initIntro({ reduceMotion, onComplete }) {
     // 8 — scroll cue becomes active
     .to(scrollCue, { autoAlpha: 1, duration: 0.8, ease: 'power2.out' }, 'title+=1.6')
     .add(() => scrollCue.classList.add('is-active'), '<')
+    // Scrolling opens as soon as the headline has mostly settled.
+    .add(() => onComplete?.(), 'title+=0.9')
     .add(revealTitle, 'title+=1.9');
+
+  // Start once the real fonts and the hero image are in (never waiting more than ~2.5s),
+  // and not before the title card has had a moment on screen.
+  pageReady(2500).then(() => {
+    const sinceLoad = performance.now();
+    gsap.delayedCall(Math.max(0, 750 - sinceLoad) / 1000, () => tl.play());
+  });
 
   return tl;
 }

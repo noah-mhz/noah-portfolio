@@ -293,10 +293,49 @@ a:focus-visible .arrow--diag { transform: translate(0.2em, -0.2em); }
   background: var(--surface);
   clip-path: inset(0% 0% 0% 0%);
   /* Safety net: never leave the overlay up if scripts fail to load. */
-  animation: intro-failsafe 0.01s 5s forwards;
+  animation: intro-failsafe 0.01s 6s forwards;
 }
 
+/* Scripts took over; they decide when the overlay leaves. */
+.js .intro.is-live { animation: none; }
+
 @keyframes intro-failsafe { to { visibility: hidden; } }
+
+/*
+ * The title card plays in CSS from the very first frame, so nothing waits on
+ * scripts. `translate` is used (not `transform`) so GSAP can take the same
+ * elements over without a conflict.
+ */
+.js .intro [data-intro-item] {
+  display: inline-block;
+  animation: intro-rise 1s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+.js .intro__labels .mask:nth-child(2) [data-intro-item] { animation-delay: 0.08s; }
+.js .intro__index [data-intro-item] { animation-delay: 0.16s; }
+
+@keyframes intro-rise { from { translate: 0 110%; } to { translate: 0 0; } }
+
+/* Loading line: eases toward most of the way, scripts finish it once the page is ready. */
+.intro__bar {
+  position: absolute;
+  left: var(--gutter);
+  right: var(--gutter);
+  bottom: calc(var(--gutter) * 0.5);
+  height: 1px;
+  background: rgba(242, 242, 240, 0.08);
+  overflow: hidden;
+}
+
+.intro__bar span {
+  display: block;
+  height: 100%;
+  background: var(--accent);
+  transform-origin: 0% 50%;
+  transform: scaleX(0);
+  animation: intro-load 2.4s cubic-bezier(0.22, 1, 0.36, 1) 0.2s forwards;
+}
+
+@keyframes intro-load { to { transform: scaleX(0.82); } }
 
 .intro__labels {
   display: flex;

@@ -14,7 +14,10 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preconnect" href="https://images.unsplash.com">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@100..900&family=JetBrains+Mono:wght@400;500&display=swap">
+  <!-- Paint the page dark from the first frame, before any stylesheet arrives. -->
+  <style>html{background:#0A0A0A}</style>
+  <link rel="preload" as="image" href="assets/images/ganko-scroll-poster.jpg" fetchpriority="high">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@100..900&family=JetBrains+Mono:wght@400;500&display=swap" data-fonts>
   <link rel="stylesheet" href="css/style.css">
 
   <script>document.documentElement.classList.add('js');</script>
@@ -32,6 +35,7 @@
       <span class="mask"><span class="muted" data-intro-item>Singapore → Worldwide</span></span>
     </div>
     <span class="intro__index label"><span class="mask"><span data-intro-item>Selected work 2025 — Now</span></span></span>
+    <span class="intro__bar"><span></span></span>
   </div>
 
   <!-- Carries the headline reel down the page and docks it onto the Ganko case image (desktop). -->
