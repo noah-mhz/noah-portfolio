@@ -174,6 +174,13 @@ export function initHeroScroll({ isMobile }) {
 
   lines.forEach((line, index) => {
     tl.to(line, { yPercent: -(isMobile ? 20 : 40) - index * 22, ease: 'none' }, 0);
+    // Each line clears before it can reach the navigation bar.
+    gsap.fromTo(line, { autoAlpha: 1 }, {
+      autoAlpha: 0,
+      ease: 'none',
+      immediateRender: false,
+      scrollTrigger: { trigger: line, start: 'clamp(top 45%)', end: 'clamp(top 5%)', scrub: true },
+    });
   });
 
   tl.to('.hero__meta, .hero__hello', { y: -60, autoAlpha: 0, ease: 'none' }, 0)
@@ -182,19 +189,25 @@ export function initHeroScroll({ isMobile }) {
 }
 
 /**
- * Desktop: as the page scrolls from the hero to the pinned Ganko sequence,
- * a fixed copy of the headline reel grows and travels from the reel's
- * position to the case image, then hands over to it exactly as the pin
- * begins. Both ends are measured live, so the copy always meets its target.
+ * Desktop: the headline reel grows, smoothed and at a measured pace, into the
+ * exact spot the Ganko case image will occupy once its sequence pins, and
+ * hands over to the real image as that pin begins. The hero holds briefly so
+ * the headline clears before the frame crosses it.
+ *   reel   — at rest in the headline
+ *   flying — the fixed frame is visible and growing
+ *   docked — the real case image has taken over
  */
 export function initReelHandoff() {
+  const hero = $('.hero');
   const reel = $('.hero__reel');
+  const caseEl = $('.case');
   const media = $('.case__media');
   const flyer = $('.reel-flyer');
-  if (!reel || !media || !flyer) return undefined;
+  if (!hero || !reel || !caseEl || !media || !flyer) return undefined;
 
-  const ease = gsap.parseEase('power2.inOut');
   const lerp = (a, b, t) => a + (b - a) * t;
+  const caseStart = () => ScrollTrigger.getAll().find((t) => t.pin === caseEl)?.start ?? Infinity;
+  const progress = { value: 0 };
   let state = 'reel';
 
   const show = (next) => {
@@ -205,33 +218,62 @@ export function initReelHandoff() {
     gsap.set(media, { autoAlpha: next === 'flying' ? 0 : 1 });
   };
 
-  const trigger = ScrollTrigger.create({
-    trigger: '.hero',
-    start: 'top top',
-    endTrigger: '.case',
-    end: 'top top',
-    onUpdate: (self) => {
-      const p = self.progress;
-      if (p <= 0.002) return show('reel');
-      if (p >= 0.998) return show('docked');
-      show('flying');
+  // Where the case image sits once its sequence pins, in viewport coordinates.
+  const dockedRect = () => {
+    const r = media.getBoundingClientRect();
+    const offset = window.scrollY - caseStart();
+    return { left: r.left, top: r.top + offset, width: r.width, height: r.height };
+  };
 
-      const from = reel.getBoundingClientRect();
-      const to = media.getBoundingClientRect();
-      const t = ease(p);
-      gsap.set(flyer, {
-        x: lerp(from.left, to.left, t),
-        y: lerp(from.top, to.top, t),
-        width: lerp(from.width, to.width, t),
-        height: lerp(from.height, to.height, t),
-      });
-      return undefined;
-    },
+  const render = () => {
+    const t = progress.value;
+    if (window.scrollY >= caseStart() - 1 && t >= 0.999) return show('docked');
+    if (t <= 0.001) return show('reel');
+    show('flying');
+    const from = reel.getBoundingClientRect();
+    const to = dockedRect();
+    gsap.set(flyer, {
+      x: lerp(from.left, to.left, t),
+      y: lerp(from.top, to.top, t),
+      width: lerp(from.width, to.width, t),
+      height: lerp(from.height, to.height, t),
+    });
+    return undefined;
+  };
+
+  // A short hold so the headline can clear before the frame crosses it.
+  const lines = $$('.hero__title .line');
+  const tl = gsap.timeline({
+    defaults: { ease: 'none' },
+    scrollTrigger: { trigger: hero, start: 'top top', end: '+=55%', pin: true, scrub: 1 },
+  });
+  tl.to(lines, { yPercent: -16, autoAlpha: 0, stagger: 0.08, duration: 0.5, ease: 'power1.in' }, 0)
+    .to('.hero__meta, .hero__hello', { y: -40, autoAlpha: 0, duration: 0.45 }, 0)
+    .to('.hero__foot', { autoAlpha: 0, duration: 0.4 }, 0)
+    .to('.scroll-cue__track', { scaleY: 0, transformOrigin: '50% 100%', duration: 0.3 }, 0)
+    .to({}, { duration: 0.35 });
+
+  // The frame grows across the whole trip to the case pin, smoothed, so its pace stays calm.
+  const grow = gsap.to(progress, {
+    value: 1,
+    ease: 'power2.inOut',
+    onUpdate: render,
+    scrollTrigger: { start: 0, endTrigger: caseEl, end: 'top top', scrub: 1.4 },
   });
 
+  const onRefresh = () => render();
+  ScrollTrigger.addEventListener('refresh', onRefresh);
+  // The page keeps moving after the scrub settles; keep the frame on its target.
+  const follow = ScrollTrigger.create({ start: 0, endTrigger: caseEl, end: 'top top', onUpdate: render, onLeave: render, onEnterBack: render });
+
   return () => {
-    trigger.kill();
-    gsap.set([reel, media], { clearProps: 'opacity,visibility' });
+    tl.scrollTrigger?.kill();
+    tl.kill();
+    grow.scrollTrigger?.kill();
+    grow.kill();
+    follow.kill();
+    ScrollTrigger.removeEventListener('refresh', onRefresh);
+    gsap.set([reel, media, ...lines, '.hero__meta', '.hero__hello', '.hero__foot'], { clearProps: 'opacity,visibility,transform' });
     gsap.set(flyer, { clearProps: 'all' });
   };
 }
@@ -284,17 +326,6 @@ export function initStatement() {
 /* --------------------------------------------------------------------------
    Selected work
    -------------------------------------------------------------------------- */
-
-/** INDEX and 01—05 drift in opposite directions, each within its own free space. */
-export function initWorkHead() {
-  const [first, second] = $$('.work__title .line');
-  const scrub = { trigger: '.work__head', start: 'top bottom', end: 'bottom top', scrub: true, invalidateOnRefresh: true };
-
-  gsap.fromTo(first, { x: inward(first, 'right', 0.25, 120) }, { x: 0, ease: 'none', scrollTrigger: scrub });
-  gsap.fromTo(second,
-    { x: inward(second, 'left', 0.3, 100) },
-    { x: inward(second, 'right', 0.3, 100), ease: 'none', scrollTrigger: { ...scrub } });
-}
 
 /**
  * Each project enters along its own path, and the paths alternate so the
@@ -696,11 +727,11 @@ export function initScrollAnimations() {
     const { isDesktop, isTablet, isMobile } = context.conditions;
     if (!isDesktop && !isTablet && !isMobile) return undefined;
 
+    // Pins in page order: hero (desktop), then the Ganko sequence.
+    const cleanupHero = isDesktop ? initReelHandoff() : undefined;
+    if (!isDesktop) initHeroScroll({ isMobile });
     const cleanupCase = initCaseStudy({ pinned: isDesktop, handoff: isDesktop });
     initWordStack({ isMobile });
-
-    initHeroScroll({ isMobile });
-    const cleanupHero = isDesktop ? initReelHandoff() : undefined;
     initTextReveal({ isMobile });
     initProjectAnimations({ isMobile });
     initTimeline();
@@ -711,7 +742,6 @@ export function initScrollAnimations() {
 
     if (!isMobile) {
       initStatement();
-      initWorkHead();
       initParallax();
     }
 

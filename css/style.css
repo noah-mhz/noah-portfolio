@@ -172,6 +172,8 @@ main { position: relative; z-index: 1; }
   margin-bottom: clamp(2rem, 6vh, 4.5rem);
   font-family: var(--font-mono);
   font-size: var(--fs-meta);
+  font-weight: 400;
+  line-height: 1.4;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--muted);
@@ -777,21 +779,6 @@ a:focus-visible .arrow--diag { transform: translate(0.2em, -0.2em); }
   overflow-x: clip;
 }
 
-.work__title {
-  font-size: var(--fs-display);
-  font-weight: 500;
-  line-height: 0.82;
-  letter-spacing: -0.055em;
-  text-transform: uppercase;
-  white-space: nowrap;
-}
-
-.work__title .line:nth-child(2) {
-  padding-left: 25%;
-  font-weight: 300;
-  font-variant-numeric: tabular-nums;
-}
-
 .work__list {
   position: relative;
   overflow-x: clip;
@@ -925,8 +912,6 @@ a:focus-visible .arrow--diag { transform: translate(0.2em, -0.2em); }
 }
 
 @media (max-width: 767px) {
-  .work__title { white-space: normal; }
-  .work__title .line:nth-child(2) { padding-left: 14%; }
 
   /*
    * Asymmetry comes from where each image meets the screen edge: normal
