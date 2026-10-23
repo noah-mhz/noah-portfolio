@@ -1039,6 +1039,7 @@ a:focus-visible .arrow--diag { transform: translate(0.2em, -0.2em); }
 }
 
 .case.is-pinned .case__title {
+  font-size: clamp(3.5rem, min(12vw, 24vh), 14rem);
   position: absolute;
   left: var(--gutter);
   bottom: var(--gutter);
@@ -1050,8 +1051,8 @@ a:focus-visible .arrow--diag { transform: translate(0.2em, -0.2em); }
   position: absolute;
   top: calc(var(--nav-h) + 4.5rem);
   right: var(--gutter);
-  /* Never taller than the space above the title, on any screen shape. */
-  width: min(52%, calc((100vh - var(--nav-h) - 4.5rem - var(--gutter) - min(12vw, 14rem) - 3rem) * 1.6));
+  /* As wide as the column allows, but never taller than the screen. */
+  width: min(52%, calc((100vh - var(--nav-h) - 4.5rem - var(--gutter)) * 1.6));
   aspect-ratio: 16 / 10;
   transform-origin: 100% 50%;
 }
