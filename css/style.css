@@ -603,51 +603,28 @@ a:focus-visible .arrow--diag { transform: translate(0.2em, -0.2em); }
 .hero__title.is-revealed .l-mask { overflow: visible; }
 .hero__title.is-revealed .hero__reel-tag { opacity: 1; transform: none; }
 
-/* The dot opens into this full-bleed frame as the hero hands off to the work. */
-.hero__stage {
-  position: absolute;
-  inset: 0;
-  z-index: 3;
+/* Fixed copy of the reel that travels to the Ganko case image while scrolling. */
+.reel-flyer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 0;
   overflow: hidden;
-  background: var(--accent);
+  background: var(--surface);
   visibility: hidden;
+  pointer-events: none;
 }
 
-.hero__stage img {
-  position: absolute;
-  inset: 0;
+.reel-flyer img {
+  display: block;
   width: 100%;
   height: 100%;
   object-fit: cover;
   object-position: top center;
+  filter: brightness(0.92);
 }
 
-.hero__stage-ui {
-  position: absolute;
-  inset: calc(var(--nav-h) + 1rem) var(--gutter) var(--gutter);
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
-
-.hero__stage-ui .label:last-child { align-self: flex-end; }
-
-.hero__stage-title {
-  font-size: var(--fs-display);
-  font-weight: 500;
-  line-height: 0.8;
-  letter-spacing: -0.055em;
-  text-transform: uppercase;
-}
-
-.hero__accent {
-  display: inline-block;
-  width: 0.14em;
-  height: 0.14em;
-  margin-left: 0.05em;
-  border-radius: 50%;
-  background: var(--accent);
-}
+.reel-flyer .marks { --mark: 14px; inset: 0; opacity: 1; transform: none; }
 
 .hero__foot {
   position: relative;

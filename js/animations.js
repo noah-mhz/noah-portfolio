@@ -182,48 +182,58 @@ export function initHeroScroll({ isMobile }) {
 }
 
 /**
- * Desktop/tablet: the hero holds while its title recedes and the mint dot
- * after "experiences" opens into a full-bleed frame — the first project.
+ * Desktop: as the page scrolls from the hero to the pinned Ganko sequence,
+ * a fixed copy of the headline reel grows and travels from the reel's
+ * position to the case image, then hands over to it exactly as the pin
+ * begins. Both ends are measured live, so the copy always meets its target.
  */
-export function initHeroHandoff() {
-  const hero = $('.hero');
-  const dot = $('.hero__accent');
-  const stage = $('.hero__stage');
-  const img = $('img', stage);
-  const ui = $$('.hero__stage-ui > *', stage);
+export function initReelHandoff() {
+  const reel = $('.hero__reel');
+  const media = $('.case__media');
+  const flyer = $('.reel-flyer');
+  if (!reel || !media || !flyer) return undefined;
 
-  // The frame starts exactly where the dot sits, so the dot seems to grow.
-  const dotInset = () => {
-    const h = hero.getBoundingClientRect();
-    const d = dot.getBoundingClientRect();
-    const w = dot.offsetWidth; // layout size, unaffected by the intro's scale
-    const cx = d.left + d.width / 2 - h.left;
-    const cy = d.top + d.height / 2 - h.top;
-    return `inset(${cy - w / 2}px ${h.width - cx - w / 2}px ${h.height - cy - w / 2}px ${cx - w / 2}px round ${w}px)`;
+  const ease = gsap.parseEase('power2.inOut');
+  const lerp = (a, b, t) => a + (b - a) * t;
+  let state = 'reel';
+
+  const show = (next) => {
+    if (next === state) return;
+    state = next;
+    gsap.set(reel, { autoAlpha: next === 'reel' ? 1 : 0 });
+    gsap.set(flyer, { visibility: next === 'flying' ? 'visible' : 'hidden' });
+    gsap.set(media, { autoAlpha: next === 'flying' ? 0 : 1 });
   };
 
-  const tl = gsap.timeline({
-    defaults: { ease: 'none' },
-    scrollTrigger: {
-      trigger: hero,
-      start: 'top top',
-      end: '+=140%',
-      pin: true,
-      scrub: 1,
-      invalidateOnRefresh: true,
+  const trigger = ScrollTrigger.create({
+    trigger: '.hero',
+    start: 'top top',
+    endTrigger: '.case',
+    end: 'top top',
+    onUpdate: (self) => {
+      const p = self.progress;
+      if (p <= 0.002) return show('reel');
+      if (p >= 0.998) return show('docked');
+      show('flying');
+
+      const from = reel.getBoundingClientRect();
+      const to = media.getBoundingClientRect();
+      const t = ease(p);
+      gsap.set(flyer, {
+        x: lerp(from.left, to.left, t),
+        y: lerp(from.top, to.top, t),
+        width: lerp(from.width, to.width, t),
+        height: lerp(from.height, to.height, t),
+      });
+      return undefined;
     },
   });
 
-  tl.to('.hero__meta, .hero__hello, .hero__foot', { y: -40, autoAlpha: 0, duration: 0.25 }, 0)
-    .to('.hero__center', { scale: 0.55, yPercent: -28, autoAlpha: 0, transformOrigin: '0% 50%', duration: 0.6, ease: 'power2.in' }, 0)
-    .set(stage, { visibility: 'visible' }, 0.12)
-    .fromTo(stage, { clipPath: dotInset }, { clipPath: 'inset(0px 0px 0px 0px round 0px)', duration: 0.7, ease: 'power2.inOut' }, 0.12)
-    .fromTo(img, { autoAlpha: 0, scale: 1.3 }, { autoAlpha: 1, scale: 1, duration: 0.7, ease: 'power2.out' }, 0.22)
-    .to(img, { filter: 'brightness(0.5)', duration: 0.2 }, 0.78)
-    .fromTo(ui, { y: 30, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.18, stagger: 0.03, ease: 'power2.out' }, 0.8)
-    .to({}, { duration: 0.1 });
-
-  return () => gsap.set(stage, { clearProps: 'all' });
+  return () => {
+    trigger.kill();
+    gsap.set([reel, media], { clearProps: 'opacity,visibility' });
+    gsap.set(flyer, { clearProps: 'all' });
+  };
 }
 
 /* --------------------------------------------------------------------------
@@ -376,7 +386,7 @@ export function initProjectAnimations({ isMobile }) {
    -------------------------------------------------------------------------- */
 
 
-export function initCaseStudy({ pinned }) {
+export function initCaseStudy({ pinned, handoff = false }) {
   const section = $('.case');
   if (!section) return undefined;
 
@@ -455,14 +465,18 @@ export function initCaseStudy({ pinned }) {
   });
 
   tl.fromTo(bar, { scaleX: 0 }, { scaleX: 1, duration: exitAt + 1, ease: 'none' }, 0)
-    // 1 — the title rises over a large image
-    .fromTo(media,
+    .fromTo(titleChars, { yPercent: 115 }, { yPercent: 0, duration: 0.9, stagger: 0.04, ease: 'power4.out' }, 0.1);
+
+  // 1–2 — the image opens and settles; skipped when the hero reel has just docked into it.
+  if (!handoff) {
+    tl.fromTo(media,
       { clipPath: 'inset(18% 12% 18% 12%)', scale: 1.35 },
       { clipPath: 'inset(0% 0% 0% 0%)', duration: 1, ease: 'power2.out' }, 0)
-    .fromTo(imgA, { scale: 1.12 }, { scale: 1, duration: 1.4, ease: 'power2.out' }, 0)
-    .fromTo(titleChars, { yPercent: 115 }, { yPercent: 0, duration: 0.9, stagger: 0.04, ease: 'power4.out' }, 0.1)
-    // 2 — the image zooms out to its place in the grid
-    .to(media, { scale: 1, duration: 1.1, ease: 'power2.inOut' }, 1.1)
+      .fromTo(imgA, { scale: 1.12 }, { scale: 1, duration: 1.4, ease: 'power2.out' }, 0)
+      .to(media, { scale: 1, duration: 1.1, ease: 'power2.inOut' }, 1.1);
+  }
+
+  tl
     // 3 — image transition under the description
     .fromTo(imgB,
       { clipPath: 'inset(100% 0% 0% 0%)', scale: 1.2 },
@@ -682,10 +696,11 @@ export function initScrollAnimations() {
     const { isDesktop, isTablet, isMobile } = context.conditions;
     if (!isDesktop && !isTablet && !isMobile) return undefined;
 
-    const cleanupCase = initCaseStudy({ pinned: isDesktop });
+    const cleanupCase = initCaseStudy({ pinned: isDesktop, handoff: isDesktop });
     initWordStack({ isMobile });
 
-    const cleanupHero = isMobile ? initHeroScroll({ isMobile }) : initHeroHandoff();
+    initHeroScroll({ isMobile });
+    const cleanupHero = isDesktop ? initReelHandoff() : undefined;
     initTextReveal({ isMobile });
     initProjectAnimations({ isMobile });
     initTimeline();
