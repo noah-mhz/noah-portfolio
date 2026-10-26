@@ -201,28 +201,80 @@ export function initParallax() {
    Hero exit + statement
    -------------------------------------------------------------------------- */
 
-export function initHeroScroll({ isMobile }) {
+/**
+ * Tablet and mobile: as the hero scrolls away, the headline reel opens up in
+ * place — it grows to the full width of the screen (and taller: square on
+ * phones, 16:10 on tablets) while the lines around it part and fade. The
+ * picture inside is counter-scaled so it always fills the frame without
+ * stretching. Scrubbed to the scroll, so it reverses when scrolling back.
+ */
+export function initReelOpen({ isMobile }) {
   const hero = $('.hero');
-  const lines = $$('.hero__title .line');
+  const reel = $('.hero__reel');
+  const [first, second, third] = $$('.hero__title .line');
+  if (!hero || !reel || !second) return undefined;
+
+  const media = reel.querySelector('video, img');
+  const extras = reel.querySelectorAll('.marks, .hero__reel-tag');
+  const chars = second.querySelectorAll('.hero__ch');
+
+  // Layout box of the reel, ignoring every transform (its own and the intro's
+  // offsets on the headline), measured fresh on every refresh.
+  const measure = () => {
+    let left = 0;
+    for (let el = reel; el; el = el.offsetParent) left += el.offsetLeft;
+    const w = reel.offsetWidth;
+    const h = reel.offsetHeight;
+    const vw = document.documentElement.clientWidth;
+    const targetH = isMobile ? vw : vw * 0.625;
+    const sx = vw / w;
+    const sy = targetH / h;
+    return { sx, sy, k: Math.max(sx, sy), x: vw / 2 - (left + w / 2) };
+  };
+  let m = measure();
+
+  gsap.set(second, { position: 'relative', zIndex: 2 });
+  gsap.set(reel, { transformOrigin: '50% 50%' });
+  if (media) gsap.set(media, { transformOrigin: '50% 50%' });
 
   const tl = gsap.timeline({
-    scrollTrigger: { trigger: hero, start: 'top top', end: 'bottom top', scrub: true },
+    defaults: { ease: 'none' },
+    scrollTrigger: {
+      trigger: hero,
+      start: 'top top',
+      end: isMobile ? 'bottom 45%' : 'bottom 35%',
+      scrub: 0.6,
+      invalidateOnRefresh: true,
+      onRefreshInit: () => { m = measure(); },
+    },
   });
 
-  lines.forEach((line, index) => {
-    tl.to(line, { yPercent: -(isMobile ? 20 : 40) - index * 22, ease: 'none' }, 0);
-    // Each line clears before it can reach the navigation bar.
-    gsap.fromTo(line, { autoAlpha: 1 }, {
-      autoAlpha: 0,
-      ease: 'none',
-      immediateRender: false,
-      scrollTrigger: { trigger: line, start: 'clamp(top 45%)', end: 'clamp(top 5%)', scrub: true },
+  tl.to(reel, { x: () => m.x, scaleX: () => m.sx, scaleY: () => m.sy, ease: 'power2.inOut', duration: 1 }, 0)
+    .to(extras, { autoAlpha: 0, duration: 0.25 }, 0)
+    .to(chars, { autoAlpha: 0, duration: 0.45 }, 0)
+    .to(first, { yPercent: -60, autoAlpha: 0, duration: 0.6 }, 0)
+    .to(third, { yPercent: 60, autoAlpha: 0, duration: 0.6 }, 0)
+    .to('.hero__meta, .hero__hello', { y: -60, autoAlpha: 0, duration: 0.6 }, 0)
+    .to('.hero__foot', { autoAlpha: 0, duration: 0.4 }, 0)
+    .to('.scroll-cue__track', { scaleY: 0, transformOrigin: '50% 100%', duration: 0.3 }, 0);
+  // Once it starts opening, the frame clips its picture (the corner marks have faded by then).
+  tl.set(reel, { clipPath: 'inset(0%)' }, 0.001);
+
+  // Keep the picture covering the frame exactly, at its natural proportions, on every frame.
+  if (media) {
+    tl.eventCallback('onUpdate', () => {
+      const sx = gsap.getProperty(reel, 'scaleX');
+      const sy = gsap.getProperty(reel, 'scaleY');
+      const k = Math.max(sx, sy);
+      gsap.set(media, { scaleX: k / sx, scaleY: k / sy });
     });
-  });
+  }
 
-  tl.to('.hero__meta, .hero__hello', { y: -60, autoAlpha: 0, ease: 'none' }, 0)
-    .to('.hero__foot', { autoAlpha: 0, ease: 'none', duration: 0.5 }, 0)
-    .to('.scroll-cue__track', { scaleY: 0, transformOrigin: '50% 100%', ease: 'none', duration: 0.4 }, 0);
+  return () => {
+    tl.scrollTrigger?.kill();
+    tl.kill();
+    gsap.set([reel, media, second, first, third, ...extras, ...chars].filter(Boolean), { clearProps: 'all' });
+  };
 }
 
 /**
@@ -791,8 +843,7 @@ export function initScrollAnimations() {
     if (!isDesktop && !isTablet && !isMobile) return undefined;
 
     // Pins in page order: hero (desktop), then the Ganko sequence.
-    const cleanupHero = isDesktop ? initReelHandoff() : undefined;
-    if (!isDesktop) initHeroScroll({ isMobile });
+    const cleanupHero = isDesktop ? initReelHandoff() : initReelOpen({ isMobile });
     const cleanupCase = initCaseStudy({ pinned: isDesktop, handoff: isDesktop });
     initWordStack({ isMobile });
     initTextReveal({ isMobile });
