@@ -19,6 +19,7 @@ js/project.js        entry for case-study pages: hero, media reveals, scroll-thr
 css/project.css      case-study page styles
 work/ganko/          Ganko.sg case study (template for further project pages)
 work/luumens/        Luumens case study
+work/voyagaer/       Voyagaer case study
 ```
 
 ## Visual system
@@ -40,8 +41,10 @@ work/luumens/        Luumens case study
   `assets/video/ganko-scroll.mp4` (plays only in view; poster for reduced motion).
 - Luumens uses real captures: `assets/images/luumens-*.jpg` (homepage card: `luumens-card-*`)
   and `assets/video/luumens-scroll.mp4`.
-- Images: Voyagaer, Craftism and Evnergy are still Unsplash placeholders (marked with a comment).
-  Replace with screenshots of each live site, e.g. `assets/images/voyagaer.jpg`,
+- Voyagaer uses real captures: `assets/images/voyagaer-*.jpg` (homepage card: `voyagaer-card-*`)
+  and `assets/video/voyagaer-scroll.mp4`.
+- Images: Craftism and Evnergy are still Unsplash placeholders (marked with a comment).
+  Replace with screenshots of each live site, e.g. `assets/images/craftism.jpg`,
   keep the `width`/`height` attributes and update the `alt` text.
 - LinkedIn and GitHub URLs in the footer.
 

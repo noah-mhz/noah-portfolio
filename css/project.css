@@ -422,4 +422,4 @@ a:focus-visible .arrow--back { transform: translateX(-0.3em); }
 .frame--scroll.is-scrolling .frame__view { height: min(78vh, 46vw); }
 
 /* Longer domains are sized to the viewport so the arrow always stays on the line. */
-.study-end__link--long { font-size: min(var(--fs-display), 12.5vw); }
+.study-end__link--long { font-size: min(var(--fs-display), 11.5vw); }
