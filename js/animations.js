@@ -703,6 +703,32 @@ export function initCapsEntrance() {
   });
 }
 
+/**
+ * Touch screens have no hover, so project images take their colour from the
+ * scroll instead: they warm to full colour as they reach the middle of the
+ * screen and settle back to greyscale as they leave, in step with the page.
+ */
+export function initScrollColour() {
+  const GREY = 'grayscale(0.9) brightness(0.8)';
+  const COLOUR = 'grayscale(0) brightness(0.95)';
+  const triggers = [];
+
+  $$('[data-project] .project__img').forEach((img) => {
+    const media = img.closest('.project__media');
+    img.style.transition = 'none';
+
+    const tl = gsap.timeline({
+      scrollTrigger: { trigger: media, start: 'top 85%', end: 'bottom 15%', scrub: 0.6 },
+    });
+    tl.fromTo(img, { filter: GREY }, { filter: COLOUR, ease: 'power1.out', duration: 0.45 })
+      .to(img, { filter: COLOUR, duration: 0.15 })
+      .to(img, { filter: GREY, ease: 'power1.in', duration: 0.4 });
+    triggers.push(() => { tl.scrollTrigger?.kill(); tl.kill(); gsap.set(img, { clearProps: 'filter,transition' }); });
+  });
+
+  return () => triggers.forEach((kill) => kill());
+}
+
 export function initSectionTransitions({ isMobile }) {
   const grid = $('.grid-lines');
   const contact = $('.contact');
@@ -791,6 +817,9 @@ export function initScrollAnimations() {
       cleanupSections?.();
     };
   });
+
+  // Touch screens (tablets, phones): colour follows the scroll instead of hover.
+  mm.add('(prefers-reduced-motion: no-preference) and ((hover: none) or (max-width: 1023px))', () => initScrollColour());
 
   // Reduced motion: content is static and immediately visible; navigation state still tracks the page.
   mm.add(MEDIA.reduced, () => initNavigation({ reduceMotion: true }));
