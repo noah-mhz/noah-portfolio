@@ -24,7 +24,7 @@ function initHero({ gsap }) {
     .fromTo('[data-hero-media]',
       { clipPath: 'inset(18% 10% 0% 10%)' },
       { clipPath: 'inset(0% 0% 0% 0%)', duration: 1.8, ease: 'expo.inOut' }, 0.9)
-    .fromTo('[data-hero-media] img', { scale: 1.15 }, { scale: 1, duration: 2.2, ease: 'expo.out' }, 0.9);
+    .fromTo('[data-hero-media] img, [data-hero-media] video', { scale: 1.15 }, { scale: 1, duration: 2.2, ease: 'expo.out' }, 0.9);
 }
 
 /** Media frames open from the edge named in data-from, while the image settles. */

@@ -351,7 +351,7 @@ export function initInViewVideo() {
         target.pause();
       }
     });
-  }, { threshold: 0.15 });
+  }, { threshold: 0 }); // start as soon as any part of the frame is on screen
 
   videos.forEach((video) => observer.observe(video));
 }
