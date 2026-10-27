@@ -2129,3 +2129,25 @@ section[tabindex="-1"]:focus { outline: none; }
   .pf__send { width: 100%; justify-content: center; }
   .pf__result-title { font-size: min(var(--fs-display), 19vw); }
 }
+
+/* Browser autofill: keep the form's own colours instead of the browser's light fill. */
+.pf input:-webkit-autofill,
+.pf input:-webkit-autofill:hover,
+.pf input:-webkit-autofill:focus,
+.pf textarea:-webkit-autofill,
+.pf select:-webkit-autofill {
+  -webkit-text-fill-color: var(--accent);
+  caret-color: var(--accent);
+  -webkit-box-shadow: 0 0 0 1000px var(--bg) inset;
+  box-shadow: 0 0 0 1000px var(--bg) inset;
+  /* Delays Chrome's own background change indefinitely. */
+  transition: background-color 9999s ease-out 0s, color 9999s ease-out 0s;
+}
+
+.pf input:autofill,
+.pf textarea:autofill,
+.pf select:autofill {
+  color: var(--accent);
+  background-color: transparent;
+  box-shadow: 0 0 0 1000px var(--bg) inset;
+}
