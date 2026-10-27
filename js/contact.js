@@ -36,7 +36,8 @@ export function initContactForm() {
   const wipe = $('.pf__wipe', root);
   const panel = $('.pf__panel', root);
   const form = $('.pf__form', root);
-  const done = $('.pf__done', root);
+  const result = $('.pf__result', root);
+  const retry = $('[data-pf-retry]', root);
   const status = $('.pf__status', root);
   const send = $('.pf__send', root);
   const captcha = $('[data-pf-captcha]', root);
@@ -104,6 +105,7 @@ export function initContactForm() {
   const items = () => $$('.pf__top .pf__item, .pf__title .pf__item, .pf__sentence .pf__item', root);
   const rules = () => $$('.pf__rule', root);
   const fields = () => $$('.pf__field input, .pf__field select', root);
+  const formParts = () => $$('.pf__title, .pf__sentence, .pf__message, .pf__foot, .pf__status', form);
 
   const insetFrom = (el) => {
     const r = el.getBoundingClientRect();
@@ -120,7 +122,8 @@ export function initContactForm() {
 
     root.hidden = false;
     form.hidden = false;
-    done.hidden = true;
+    result.hidden = true;
+    if (gsap) gsap.set(formParts(), { clearProps: 'opacity,visibility,transform' });
     status.textContent = '';
     status.classList.remove('is-error');
     document.documentElement.style.overflow = 'hidden';
@@ -198,14 +201,50 @@ export function initContactForm() {
     firstBad?.focus();
   };
 
-  const showDone = () => {
-    form.hidden = true;
-    done.hidden = false;
-    $('.pf__again', root)?.focus({ preventScroll: true });
-    if (reduce || !gsap) return;
-    gsap.fromTo($$('.pf__done-item', root), { yPercent: 110, autoAlpha: 0 },
-      { yPercent: 0, autoAlpha: 1, duration: 1.2, stagger: 0.08, ease: 'expo.out' });
+  /* ---------- Result: the form fades out, the outcome rises in its place ---------- */
+
+  const COPY = {
+    sent: { label: 'Message sent', t1: 'Thanks —', t2: 'talk soon.', note: 'I usually reply within a day or two.' },
+    failed: { label: 'Not sent', t1: 'Something', t2: 'went wrong.', note: '' },
   };
+
+  const showResult = (state, note = '') => {
+    const copy = COPY[state];
+    $$('[data-pf-r]', result).forEach((el) => { el.textContent = el.dataset.pfR === 'note' ? (note || copy.note) : copy[el.dataset.pfR]; });
+    result.dataset.state = state;
+    retry.hidden = state !== 'failed';
+
+    const reveal = () => {
+      form.hidden = true;
+      if (state === 'sent') form.reset(); // clear only once the form is out of sight
+      result.hidden = false;
+      (state === 'failed' ? retry : $('[data-pf-close]', result))?.focus({ preventScroll: true });
+      if (reduce || !gsap) return;
+      // Opacity only (not visibility), so the focused button keeps focus while it animates in.
+      gsap.fromTo($$('.pf__result-item', result), { yPercent: 110, opacity: 0, visibility: 'visible' },
+        { yPercent: 0, opacity: 1, duration: 1.2, stagger: 0.08, ease: 'expo.out' });
+    };
+
+    if (reduce || !gsap) { reveal(); return; }
+    gsap.to(formParts(), {
+      y: -28, autoAlpha: 0, duration: 0.55, stagger: 0.05, ease: 'power2.in', onComplete: reveal,
+    });
+  };
+
+  // Back to the filled-in form after a failed send.
+  retry.addEventListener('click', () => {
+    status.textContent = '';
+    status.classList.remove('is-error');
+    const back = () => {
+      result.hidden = true;
+      form.hidden = false;
+      $('input[name="name"]', root)?.focus({ preventScroll: true });
+      if (reduce || !gsap) { gsap?.set(formParts(), { clearProps: 'opacity,visibility,transform' }); return; }
+      gsap.fromTo(formParts(), { y: 24, opacity: 0, visibility: 'visible' }, { y: 0, opacity: 1, duration: 0.9, stagger: 0.06, ease: 'expo.out' });
+    };
+    if (reduce || !gsap) { back(); return; }
+    gsap.to($$('.pf__result-item', result), { yPercent: -40, autoAlpha: 0, duration: 0.45, stagger: 0.04, ease: 'power2.in', onComplete: back });
+  });
 
   form.addEventListener('input', (event) => {
     event.target.closest('[data-field]')?.classList.remove('is-invalid');
@@ -229,13 +268,19 @@ export function initContactForm() {
     send.classList.remove('is-sending');
 
     if (!token) {
+      if (captchaState === 'ready') {
+        // Turnstile wants an interaction: keep the form and point at it.
+        showError('Please complete the verification above, then press Send again.');
+        return;
+      }
       const why = {
-        unconfigured: 'The form isn\'t set up yet — please email me at noahmhzaw@gmail.com.',
-        blocked: 'The verification couldn\'t load (an ad blocker may be stopping it). Please email me directly.',
-        error: `Verification error ${captchaError}. Please email me directly.`,
-      }[captchaState] || 'Please complete the verification above, then press Send again.';
-      showError(why);
-      if (captchaState === 'error') setupCaptcha(); // reset quietly so the next attempt can pass
+        unconfigured: 'The form isn\'t set up yet.',
+        blocked: 'The verification couldn\'t load — an ad blocker may be stopping it.',
+        error: `The verification failed (error ${captchaError}).`,
+      }[captchaState] || 'The verification couldn\'t finish.';
+      status.textContent = '';
+      showResult('failed', why);
+      if (captchaState === 'error') setupCaptcha(); // reset quietly so "Try again" can pass
       return;
     }
 
@@ -249,17 +294,22 @@ export function initContactForm() {
         headers: { 'content-type': 'application/json', accept: 'application/json' },
         body: JSON.stringify({ ...data, token }),
       });
-      const result = await response.json().catch(() => ({}));
-      if (!response.ok || !result.ok) {
-        showError(result.error || 'Could not send right now. Please email me directly.', result.fields || []);
-        if (window.turnstile && widgetId !== null) { window.turnstile.reset(widgetId); token = ''; }
+      const outcome = await response.json().catch(() => ({}));
+      if (window.turnstile && widgetId !== null && !(response.ok && outcome.ok)) { window.turnstile.reset(widgetId); token = ''; }
+      if (response.status === 422 && outcome.fields) {
+        // A field needs fixing: stay on the form and mark it.
+        showError(outcome.error || 'Please check the highlighted fields.', outcome.fields);
         return;
       }
-      form.reset();
       status.textContent = '';
-      showDone();
+      if (!response.ok || !outcome.ok) {
+        showResult('failed', `${(outcome.error || 'The message couldn\'t be sent right now.').replace(/\s*Please email me directly\.?/i, '')}`);
+        return;
+      }
+      showResult('sent');
     } catch {
-      showError('Could not send right now. Please email me directly.');
+      status.textContent = '';
+      showResult('failed', 'The message couldn\'t be sent — your connection may have dropped.');
     } finally {
       send.classList.remove('is-sending');
     }

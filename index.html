@@ -650,11 +650,15 @@
         <p class="pf__status label" role="status" aria-live="polite"></p>
       </form>
 
-      <div class="pf__done" hidden>
-        <p class="label muted pf__done-item">Message sent</p>
-        <p class="pf__done-title"><span class="pf__mask"><span class="pf__done-item">Thanks —</span></span><span class="pf__mask"><span class="pf__done-item accent">talk soon.</span></span></p>
-        <p class="pf__done-note muted pf__done-item">I usually reply within a day or two. You can also reach me at <a class="link-line" href="mailto:noahmhzaw@gmail.com">noahmhzaw@gmail.com</a>.</p>
-        <button class="pf__again link-line label pf__done-item" type="button" data-pf-close>Back to the site</button>
+      <!-- Result: the form fades out and this rises in its place (sent or not sent). -->
+      <div class="pf__result" hidden data-state="sent" role="status" aria-live="polite">
+        <p class="label muted pf__result-item" data-pf-r="label">Message sent</p>
+        <p class="pf__result-title"><span class="pf__mask"><span class="pf__result-item" data-pf-r="t1">Thanks —</span></span><span class="pf__mask"><span class="pf__result-item pf__result-accent" data-pf-r="t2">talk soon.</span></span></p>
+        <p class="pf__result-note muted pf__result-item"><span data-pf-r="note">I usually reply within a day or two.</span> You can also reach me at <a class="link-line" href="mailto:noahmhzaw@gmail.com">noahmhzaw@gmail.com</a>.</p>
+        <div class="pf__actions pf__result-item">
+          <button class="pf__action link-line label" type="button" data-pf-retry hidden>Try again</button>
+          <button class="pf__action link-line label" type="button" data-pf-close>Back to the site</button>
+        </div>
       </div>
     </div>
   </div>

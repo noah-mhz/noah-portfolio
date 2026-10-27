@@ -1897,7 +1897,7 @@ section[tabindex="-1"]:focus { outline: none; }
 .pf__close:focus-visible { color: var(--accent); }
 
 .pf__form,
-.pf__done {
+.pf__result {
   position: relative;
   flex: 1 0 auto;
   width: 100%;
@@ -1908,6 +1908,7 @@ section[tabindex="-1"]:focus { outline: none; }
 
 /* Title at the top, the sentence in the middle, Send on the bottom edge. */
 .pf__form { display: flex; flex-direction: column; }
+.pf__form[hidden] { display: none; }
 .pf__sentence { max-width: 80rem; }
 .pf__message { max-width: 46rem; }
 
@@ -2101,21 +2102,24 @@ section[tabindex="-1"]:focus { outline: none; }
 .pf__status { min-height: 1.5em; margin-top: 1.25rem; color: var(--muted); }
 .pf__status.is-error { color: #FF8A8A; }
 
-.pf__done { display: grid; gap: 1.5rem; align-content: center; }
-.pf__done[hidden] { display: none; }
+.pf__result { display: grid; gap: 1.5rem; align-content: center; }
+.pf__result[hidden] { display: none; }
 
-.pf__done-title {
-  font-size: var(--fs-display);
+.pf__result-title {
+  font-size: min(var(--fs-display), 22vh);
   font-weight: 500;
   line-height: 0.85;
   letter-spacing: -0.06em;
   text-transform: uppercase;
 }
 
-.pf__done-title .pf__mask { display: block; }
-.pf__done-title .accent { font-weight: 300; }
-.pf__done-note { max-width: 34rem; font-size: var(--fs-body); }
-.pf__again { justify-self: start; padding: 0; font: inherit; color: var(--text); background: none; border: 0; cursor: pointer; }
+.pf__result-title .pf__mask { display: block; }
+.pf__result-accent { font-weight: 300; color: var(--accent); }
+.pf__result[data-state="failed"] .pf__result-accent { color: #FF8A8A; }
+.pf__result-note { max-width: 36rem; font-size: var(--fs-body); }
+.pf__actions { display: flex; flex-wrap: wrap; gap: 1rem 2.5rem; margin-top: 0.5rem; }
+.pf__action { padding: 0; font: inherit; color: var(--text); background: none; border: 0; cursor: pointer; }
+.pf__action[hidden] { display: none; }
 
 @media (max-width: 767px) {
   .pf__sentence { max-width: none; font-size: min(clamp(1.45rem, 6.6vw, 2rem), 4.6vh); line-height: 1.6; }
@@ -2123,5 +2127,5 @@ section[tabindex="-1"]:focus { outline: none; }
   .pf__field input { width: 7.5em; }
   .pf__field[data-field="email"] input { width: 11em; }
   .pf__send { width: 100%; justify-content: center; }
-  .pf__done-title { font-size: min(var(--fs-display), 19vw); }
+  .pf__result-title { font-size: min(var(--fs-display), 19vw); }
 }
