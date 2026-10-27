@@ -1327,7 +1327,8 @@ a:focus-visible .arrow--diag { transform: translate(0.2em, -0.2em); }
   border-bottom: 1px solid var(--border);
 }
 
-.cap__num { color: var(--muted); }
+.cap__num { display: block; width: 1.75rem; height: 1px; background: var(--accent); opacity: 0.6; }
+.cap.is-active .cap__num { opacity: 1; }
 
 .cap__title {
   font-size: clamp(1.5rem, 4.5vw, 4.5rem);
@@ -2240,4 +2241,60 @@ section[tabindex="-1"]:focus { outline: none; }
 @media (max-width: 767px) {
   .process__list { grid-template-columns: 1fr; row-gap: 0; border-top: 0; }
   .process__step { padding: 1.4rem 0; border-top: 1px solid var(--border); }
+}
+
+.about__craft { color: var(--text); font-size: var(--fs-body); line-height: 1.55; }
+
+/* "Start a project" in the nav: the one mint link. */
+.nav__cta { color: var(--accent) !important; }
+
+/* Case study closing call to action. */
+.study-cta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem 3rem;
+  margin: 0 0 clamp(4rem, 10vh, 7rem);
+  padding: clamp(2rem, 5vh, 3rem) 0;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+
+.study-cta__line {
+  font-size: clamp(1.5rem, 3vw, 2.75rem);
+  font-weight: 300;
+  letter-spacing: -0.03em;
+}
+
+/* Case pages have no hover script: the CTA fill rises on hover in CSS. */
+.study-page .cta__fill { transition: transform 0.7s var(--ease-out); }
+.study-page .cta:hover .cta__fill,
+.study-page .cta:focus-visible .cta__fill { transform: none; }
+.study-page .cta:hover .cta__label,
+.study-page .cta:focus-visible .cta__label { color: var(--bg); }
+.study-page .cta:hover .marks,
+.study-page .cta:focus-visible .marks { --mark-color: var(--bg); }
+
+@media (max-width: 767px) {
+  .study-cta .cta { width: 100%; justify-content: center; }
+}
+
+/* Phones: timeline bullets fold away behind "Details +". */
+.tl__points.is-collapsed { display: none; }
+.tl__points { overflow: hidden; }
+
+.tl__more {
+  display: inline-flex;
+  gap: 0.5em;
+  margin-top: 1rem;
+  padding: 0.4rem 0;
+  font: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
+  color: var(--accent);
+  background: none;
+  border: 0;
+  border-bottom: 1px solid currentColor;
+  cursor: pointer;
 }

@@ -374,3 +374,60 @@ export function initClock() {
   tick();
   setInterval(tick, 30000);
 }
+
+/* --------------------------------------------------------------------------
+   Timeline details (phones): each role shows its summary; the bullet points
+   open behind a "Details +" toggle so the timeline isn't three screens long.
+   -------------------------------------------------------------------------- */
+
+export function initTimelineDetails() {
+  const lists = $$('.tl__points');
+  if (!lists.length) return;
+  const phone = window.matchMedia('(max-width: 767px)');
+  const refresh = () => window.ScrollTrigger?.refresh();
+
+  const setup = () => {
+    lists.forEach((list, index) => {
+      let button = list.previousElementSibling?.classList.contains('tl__more') ? list.previousElementSibling : null;
+      if (!phone.matches) {
+        button?.remove();
+        list.classList.remove('is-collapsed');
+        list.style.height = '';
+        list.removeAttribute('id');
+        return;
+      }
+      if (button) return;
+      list.id = list.id || `tl-points-${index}`;
+      list.classList.add('is-collapsed');
+      button = document.createElement('button');
+      button.type = 'button';
+      button.className = 'tl__more label';
+      button.setAttribute('aria-expanded', 'false');
+      button.setAttribute('aria-controls', list.id);
+      button.innerHTML = 'Details <span aria-hidden="true">+</span>';
+      list.before(button);
+
+      button.addEventListener('click', () => {
+        const open = button.getAttribute('aria-expanded') !== 'true';
+        button.setAttribute('aria-expanded', String(open));
+        button.innerHTML = `${open ? 'Less' : 'Details'} <span aria-hidden="true">${open ? '−' : '+'}</span>`;
+        const { gsap: g } = window;
+        if (!g || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+          list.classList.toggle('is-collapsed', !open);
+          refresh();
+          return;
+        }
+        if (open) {
+          list.classList.remove('is-collapsed');
+          g.fromTo(list, { height: 0 }, { height: 'auto', duration: 0.6, ease: 'expo.out', onComplete: refresh });
+        } else {
+          g.to(list, { height: 0, duration: 0.45, ease: 'power2.inOut', onComplete: () => { list.classList.add('is-collapsed'); list.style.height = ''; refresh(); } });
+        }
+      });
+    });
+    refresh();
+  };
+
+  setup();
+  phone.addEventListener('change', setup);
+}

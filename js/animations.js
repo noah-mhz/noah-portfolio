@@ -572,7 +572,7 @@ export function initCaseStudy({ pinned, handoff = false }) {
     scrollTrigger: {
       trigger: section,
       start: 'top top',
-      end: '+=500%',
+      end: '+=280%',
       pin: true,
       scrub: 1,
       anticipatePin: 1,
@@ -845,7 +845,6 @@ export function initScrollAnimations() {
     // Pins in page order: hero (desktop), then the Ganko sequence.
     const cleanupHero = isDesktop ? initReelHandoff() : initReelOpen({ isMobile });
     const cleanupCase = initCaseStudy({ pinned: isDesktop, handoff: isDesktop });
-    initWordStack({ isMobile });
     initTextReveal({ isMobile });
     initProjectAnimations({ isMobile });
     initTimeline();
@@ -855,7 +854,6 @@ export function initScrollAnimations() {
     const cleanupNav = initNavigation();
 
     if (!isMobile) {
-      initStatement();
       initParallax();
     }
 

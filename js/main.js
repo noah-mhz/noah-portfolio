@@ -1,6 +1,6 @@
 import { initScroll, initAnchors } from './scroll.js';
 import { initIntro, initScrollAnimations, prepareText } from './animations.js';
-import { initCursor, initMagnetic, initHoverAnimations, initClock, initInViewVideo, initHeroWeight } from './interactions.js';
+import { initCursor, initMagnetic, initHoverAnimations, initClock, initInViewVideo, initHeroWeight, initTimelineDetails } from './interactions.js';
 import { initContactForm } from './contact.js';
 
 function boot() {
@@ -37,6 +37,7 @@ function boot() {
   initHoverAnimations();
   initHeroWeight();
   initContactForm();
+  initTimelineDetails();
 
   // Re-measure once late-arriving fonts and images have settled layout.
   document.fonts?.ready.then(() => ScrollTrigger.refresh());

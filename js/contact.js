@@ -175,6 +175,19 @@ export function initContactForm() {
   };
 
   triggers.forEach((trigger) => trigger.addEventListener('click', openForm));
+
+  // Arriving from a case study's "Start a project" (…/#start): wait for the
+  // intro to finish, bring Contact into view, then open the form from its button.
+  if (window.location.hash === '#start') {
+    history.replaceState(null, '', window.location.pathname + window.location.search);
+    const cta = $('.contact [data-pf-open]') || triggers[0];
+    const whenReady = () => {
+      if (document.querySelector('.intro')) { setTimeout(whenReady, 150); return; }
+      document.getElementById('contact')?.scrollIntoView({ block: 'center' });
+      setTimeout(() => openForm({ currentTarget: cta, preventDefault() {} }), 500);
+    };
+    whenReady();
+  }
   $$('[data-pf-close]', root).forEach((button) => button.addEventListener('click', closeForm));
 
   // Escape closes; Tab stays inside the dialog.
