@@ -18,21 +18,53 @@ function listen(bindings) {
    Cursor
    -------------------------------------------------------------------------- */
 
+/*
+ * States: default (small dot) · hover (ring) · label (mint disc + text, on
+ * [data-cursor] media) · frame (viewfinder corners lock onto a link or button).
+ * Elements that already carry their own .marks frame keep them; the cursor
+ * just steps aside to a dot there. The frame follows its target every tick,
+ * so magnetic movement and scrolling never leave the corners behind.
+ */
+const FRAME_PAD = { x: 10, y: 7 };
+const FRAME_MAX_HEIGHT = 140; // big block links fall back to the ring
+
+function frameable(el) {
+  if (!el || el.matches('[data-cursor], input, select, textarea')) return false;
+  if (el.querySelector(':scope > .marks')) return false;
+  const rect = el.getBoundingClientRect();
+  return rect.width > 0 && rect.height > 0 && rect.height <= FRAME_MAX_HEIGHT;
+}
+
 export function initCursor() {
   const cursor = $('.cursor');
   if (!cursor) return;
 
   gsap.matchMedia().add(FINE_POINTER, () => {
     const root = document.documentElement;
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const circle = $('.cursor__circle', cursor);
     const label = $('.cursor__label', cursor);
     const xTo = gsap.quickTo(cursor, 'x', { duration: 0.5, ease: 'power3' });
     const yTo = gsap.quickTo(cursor, 'y', { duration: 0.5, ease: 'power3' });
-    let visible = false;
-    let state = 'default';
 
     root.classList.add('has-cursor');
     gsap.set(cursor, { autoAlpha: 0 });
+
+    const frame = document.createElement('div');
+    frame.className = 'cursor-frame';
+    frame.setAttribute('aria-hidden', 'true');
+    document.body.appendChild(frame);
+    const follow = reduce ? 0.01 : 0.38;
+    const fx = gsap.quickTo(frame, 'x', { duration: follow, ease: 'power3' });
+    const fy = gsap.quickTo(frame, 'y', { duration: follow, ease: 'power3' });
+    const fw = gsap.quickTo(frame, 'width', { duration: follow, ease: 'power3' });
+    const fh = gsap.quickTo(frame, 'height', { duration: follow, ease: 'power3' });
+    gsap.set(frame, { autoAlpha: 0, x: 0, y: 0, width: 0, height: 0 });
+
+    let visible = false;
+    let state = 'default';
+    let target = null;
+    const pointer = { x: -100, y: -100 };
 
     const setState = (next, text = '') => {
       if (next === state && (next !== 'label' || label.textContent === text)) return;
@@ -41,12 +73,63 @@ export function initCursor() {
       cursor.classList.toggle('is-label', next === 'label');
       if (text) label.textContent = text;
 
-      const scale = { default: 0.1, hover: 0.5, label: 1 }[next];
+      const scale = { default: 0.1, hover: 0.5, label: 1, frame: 0, marked: 0.06 }[next];
       gsap.to(circle, { scale, duration: 0.6, ease: 'expo.out', overwrite: true });
       gsap.to(label, { autoAlpha: next === 'label' ? 1 : 0, duration: 0.3, overwrite: true });
     };
 
+    // Each tick: keep the corners on the target, and let go if it moved out from under the pointer.
+    const track = () => {
+      if (!target) return;
+      const r = target.getBoundingClientRect();
+      const inside = r.width > 0
+        && pointer.x >= r.left - FRAME_PAD.x && pointer.x <= r.right + FRAME_PAD.x
+        && pointer.y >= r.top - FRAME_PAD.y && pointer.y <= r.bottom + FRAME_PAD.y;
+      if (!inside || !target.isConnected) {
+        release();
+        setState('default');
+        return;
+      }
+      fx(r.left - FRAME_PAD.x);
+      fy(r.top - FRAME_PAD.y);
+      fw(r.width + FRAME_PAD.x * 2);
+      fh(r.height + FRAME_PAD.y * 2);
+    };
+
+    function release() {
+      if (!target) return;
+      target = null;
+      gsap.ticker.remove(track);
+      // Corners close back in on the pointer and fade.
+      fx(pointer.x);
+      fy(pointer.y);
+      fw(0);
+      fh(0);
+      gsap.to(frame, { autoAlpha: 0, duration: 0.25, overwrite: 'auto' });
+    }
+
+    const lock = (el) => {
+      if (target === el) return;
+      const fresh = !target;
+      target = el;
+      if (fresh) {
+        // Open from the pointer so the corners visibly spread out to the edges.
+        gsap.set(frame, { x: pointer.x, y: pointer.y, width: 0, height: 0 });
+        fx(pointer.x);
+        fy(pointer.y);
+        fw(0);
+        fh(0);
+      }
+      gsap.to(frame, { autoAlpha: 1, duration: 0.2, overwrite: 'auto' });
+      setState('frame');
+      gsap.ticker.remove(track);
+      gsap.ticker.add(track);
+      track();
+    };
+
     const onMove = (event) => {
+      pointer.x = event.clientX;
+      pointer.y = event.clientY;
       if (!visible) {
         visible = true;
         gsap.set(cursor, { x: event.clientX, y: event.clientY });
@@ -58,27 +141,49 @@ export function initCursor() {
 
     const onOver = (event) => {
       const labelled = event.target.closest('[data-cursor]');
-      if (labelled) return setState('label', labelled.dataset.cursor);
-      if (event.target.closest('a, button')) return setState('hover');
+      if (labelled) { release(); return setState('label', labelled.dataset.cursor); }
+      const link = event.target.closest('a, button');
+      if (link) {
+        if (frameable(link)) return lock(link);
+        release();
+        return setState(link.querySelector(':scope > .marks') ? 'marked' : 'hover');
+      }
+      release();
       return setState('default');
+    };
+
+    // A click that opens the form or leaves the page lets go, so corners never hang on a covered link.
+    // In-page anchors keep the frame — the link is still under the pointer.
+    const onDown = () => {
+      if (!target) return;
+      const href = target.getAttribute('href') || '';
+      if (target.matches('[data-pf-open], [data-pf-close]') || (href && !href.startsWith('#'))) {
+        release();
+        setState('default');
+      }
     };
 
     const onLeave = () => {
       visible = false;
+      release();
       gsap.to(cursor, { autoAlpha: 0, duration: 0.3 });
     };
 
     const dispose = listen([
       [window, 'pointermove', onMove, { passive: true }],
       [document, 'pointerover', onOver],
+      [document, 'pointerdown', onDown],
       [root, 'pointerleave', onLeave],
     ]);
 
     return () => {
       dispose();
+      gsap.ticker.remove(track);
+      frame.remove();
       root.classList.remove('has-cursor');
     };
   });
+
 }
 
 /* --------------------------------------------------------------------------
@@ -284,51 +389,84 @@ function initCapabilities() {
 }
 
 /* --------------------------------------------------------------------------
-   Hero weight: characters near the pointer grow heavier, then ease back
+   Variable weight: characters near the pointer grow heavier, then ease back.
+   Used on the hero headline and the contact line. On touch screens the
+   contact line plays one weight wave as it comes into view instead.
    -------------------------------------------------------------------------- */
 
+const WEIGHT = { base: 500, peak: 850, radius: 280 };
+
 export function initHeroWeight() {
-  const title = $('[data-weight]');
-  if (!title) return;
+  const titles = $$('[data-weight]');
+  if (!titles.length) return;
 
   gsap.matchMedia().add(FINE_POINTER_MOTION, () => {
-    const chars = $$('.hero__ch', title);
-    const hero = title.closest('section');
-    const BASE = 500;
-    const PEAK = 850;
-    const RADIUS = 280;
-    const setters = chars.map((ch) => gsap.quickTo(ch, 'fontWeight', { duration: 0.7, ease: 'power3' }));
-    let centres = [];
-    let measuredAt = 0;
+    const disposers = titles.map((title) => {
+      const chars = $$('.hero__ch', title);
+      const region = title.closest('section') || title;
+      const setters = chars.map((ch) => gsap.quickTo(ch, 'fontWeight', { duration: 0.7, ease: 'power3' }));
+      let centres = [];
+      let measuredAt = 0;
 
-    // Positions shift slightly as weights change, so re-measure at most twice a second.
-    const measure = () => {
-      centres = chars.map((ch) => {
-        const r = ch.getBoundingClientRect();
-        return [r.left + r.width / 2, r.top + r.height / 2];
+      // Positions shift slightly as weights change, so re-measure at most twice a second.
+      const measure = () => {
+        centres = chars.map((ch) => {
+          const r = ch.getBoundingClientRect();
+          return [r.left + r.width / 2, r.top + r.height / 2];
+        });
+        measuredAt = performance.now();
+      };
+
+      const onMove = (event) => {
+        if (performance.now() - measuredAt > 500) measure();
+        centres.forEach(([x, y], i) => {
+          const d = Math.hypot(event.clientX - x, event.clientY - y);
+          const t = Math.max(0, 1 - d / WEIGHT.radius);
+          setters[i](WEIGHT.base + (WEIGHT.peak - WEIGHT.base) * t * t * (3 - 2 * t));
+        });
+      };
+
+      const onLeave = () => setters.forEach((set) => set(WEIGHT.base));
+      // Scrolling moves the text under a still pointer, so positions go stale.
+      const onScroll = () => { measuredAt = 0; };
+
+      const dispose = listen([
+        [region, 'pointermove', onMove, { passive: true }],
+        [region, 'pointerleave', onLeave],
+        [window, 'scroll', onScroll, { passive: true }],
+      ]);
+
+      return () => {
+        dispose();
+        gsap.set(chars, { clearProps: 'fontWeight' });
+      };
+    });
+
+    return () => disposers.forEach((dispose) => dispose());
+  });
+
+  // Touch: one left-to-right wave through the contact line once it has risen into view.
+  gsap.matchMedia().add('(prefers-reduced-motion: no-preference) and ((hover: none) or (max-width: 1023px))', () => {
+    const triggers = titles.filter((title) => !title.closest('.hero')).map((title) => {
+      const chars = $$('.hero__ch', title);
+      const wave = gsap.timeline({ paused: true })
+        .to(chars, {
+          fontWeight: 800,
+          duration: 0.45,
+          ease: 'sine.inOut',
+          stagger: { each: 0.035, yoyo: true, repeat: 1 },
+        });
+      return window.ScrollTrigger?.create({
+        trigger: title,
+        start: 'top 60%',
+        once: true,
+        onEnter: () => gsap.delayedCall(0.9, () => wave.play()),
       });
-      measuredAt = performance.now();
-    };
-
-    const onMove = (event) => {
-      if (performance.now() - measuredAt > 500) measure();
-      centres.forEach(([x, y], i) => {
-        const d = Math.hypot(event.clientX - x, event.clientY - y);
-        const t = Math.max(0, 1 - d / RADIUS);
-        setters[i](BASE + (PEAK - BASE) * t * t * (3 - 2 * t));
-      });
-    };
-
-    const onLeave = () => setters.forEach((set) => set(BASE));
-
-    const dispose = listen([
-      [hero, 'pointermove', onMove, { passive: true }],
-      [hero, 'pointerleave', onLeave],
-    ]);
+    });
 
     return () => {
-      dispose();
-      gsap.set(chars, { clearProps: 'fontWeight' });
+      triggers.forEach((trigger) => trigger?.kill());
+      titles.forEach((title) => gsap.set($$('.hero__ch', title), { clearProps: 'fontWeight' }));
     };
   });
 }
@@ -361,18 +499,24 @@ export function initInViewVideo() {
    -------------------------------------------------------------------------- */
 
 export function initClock() {
-  const el = $('[data-clock]');
-  if (!el) return;
+  const clocks = $$('[data-clock]');
+  if (!clocks.length) return;
 
   const format = new Intl.DateTimeFormat('en-GB', {
     timeZone: 'Asia/Singapore',
     hour: '2-digit',
     minute: '2-digit',
+    second: '2-digit',
+    hourCycle: 'h23',
   });
 
-  const tick = () => { el.textContent = `${format.format(new Date())} SGT`; };
+  const tick = () => {
+    const text = `${format.format(new Date())} SGT`;
+    clocks.forEach((el) => { el.textContent = text; });
+    // Re-align to the next whole second so the digits change with the real clock.
+    setTimeout(tick, 1000 - (Date.now() % 1000) + 5);
+  };
   tick();
-  setInterval(tick, 30000);
 }
 
 /* --------------------------------------------------------------------------

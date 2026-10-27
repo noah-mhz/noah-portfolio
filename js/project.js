@@ -7,7 +7,8 @@
 import { initScroll, initAnchors } from './scroll.js';
 import { MEDIA, initTextReveal, prepareText } from './animations.js';
 import { initNavigation } from './navigation.js';
-import { initCursor, initMagnetic, initInViewVideo } from './interactions.js';
+import { initCursor, initMagnetic, initInViewVideo, initClock } from './interactions.js';
+import { initScramble } from './scramble.js';
 import { TEXT_TARGETS } from './split.js';
 import { initPageEnter } from './transition.js';
 
@@ -81,6 +82,7 @@ function boot() {
   const { gsap, ScrollTrigger } = window;
 
   initInViewVideo();
+  initClock();
 
   if (!gsap || !ScrollTrigger) {
     document.documentElement.classList.remove('js', 'pt-enter');
@@ -117,6 +119,7 @@ function boot() {
 
   initCursor();
   initMagnetic();
+  initScramble();
 
   document.fonts?.ready.then(() => ScrollTrigger.refresh());
   window.addEventListener('load', () => ScrollTrigger.refresh(), { once: true });

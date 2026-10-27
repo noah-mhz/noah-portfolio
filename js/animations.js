@@ -1,5 +1,6 @@
 import { splitAll, wrapChars, TEXT_TARGETS } from './split.js';
 import { initNavigation } from './navigation.js';
+import { scramble } from './scramble.js';
 
 const { gsap, ScrollTrigger } = window;
 
@@ -68,12 +69,25 @@ export function initIntro({ reduceMotion, onComplete }) {
   gsap.set('.hero__rule', { scaleX: 0 });
   gsap.set('.hero__accent', { scale: 0 });
   gsap.set(scrollCue, { autoAlpha: 0 });
-  gsap.set('.grid-lines span', { scaleY: 0, transformOrigin: '50% 0%' });
+  // The page grid draws itself top to bottom before the type arrives, each line led by a short mint tick.
+  const gridLines = $$('.grid-lines:not(.pf__grid) span');
+  const gridHeads = gridLines.map((line) => {
+    const head = document.createElement('i');
+    head.className = 'grid-head';
+    line.appendChild(head);
+    return head;
+  });
+  gsap.set(gridLines, { clipPath: 'inset(0% 0% 100% 0%)' });
+  gsap.set(gridHeads, { yPercent: -100, top: '0%' });
 
   const tl = gsap.timeline({
     paused: true,
     defaults: { ease: 'power4.out' },
-    onComplete: () => intro.remove(),
+    onComplete: () => {
+      intro.remove();
+      gridHeads.forEach((head) => head.remove());
+      gsap.set(gridLines, { clearProps: 'clipPath' });
+    },
   });
 
   // 0 — the title card (already risen in CSS) finishes loading, then 1 — the page is revealed
@@ -95,8 +109,13 @@ export function initIntro({ reduceMotion, onComplete }) {
       ease: 'expo.out',
       clearProps: 'clipPath',
     }, 0.85)
-    // 3 — metadata
+    // 3 — metadata (the coordinates resolve out of noise)
     .to('[data-hero-meta]', { yPercent: 0, duration: 1.2, stagger: 0.05 }, '<0.1')
+    .add(() => $$('[data-scramble="intro"]').forEach((el) => scramble(el, { duration: 0.9 })), '<0.1')
+    // The grid draws in as the overlay clears, ahead of the headline.
+    .to(gridLines, { clipPath: 'inset(0% 0% 0% 0%)', duration: 1.6, stagger: 0.1, ease: 'expo.inOut' }, 0.45)
+    .fromTo(gridHeads, { top: '0%', autoAlpha: 1 }, { top: '100%', duration: 1.6, stagger: 0.1, ease: 'expo.inOut' }, 0.45)
+    .to(gridHeads, { autoAlpha: 0, duration: 0.4, stagger: 0.1, ease: 'power2.out' }, 1.75)
     // 4 + 5 — the title, line by line, each on its own path, rising as the overlay clears
     .addLabel('title', 0.8)
     .to(first, { yPercent: 0, duration: 1.8 }, 'title')
@@ -105,8 +124,6 @@ export function initIntro({ reduceMotion, onComplete }) {
     .to('.hero__rule', { scaleX: 1, duration: 1.8, ease: 'expo.inOut' }, 'title+=0.4')
     // 6 — accent
     .to('.hero__accent', { scale: 1, duration: 1, ease: 'expo.out' }, 'title+=1.1')
-    // 7 — the grid draws itself in behind everything
-    .to('.grid-lines span', { scaleY: 1, duration: 1.8, stagger: 0.1, ease: 'expo.inOut' }, 'title+=0.9')
     // 8 — scroll cue becomes active
     .to(scrollCue, { autoAlpha: 1, duration: 0.8, ease: 'power2.out' }, 'title+=1.6')
     .add(() => scrollCue.classList.add('is-active'), '<')
@@ -717,6 +734,59 @@ export function initWordStack({ isMobile }) {
    Timeline, capabilities entrance, contact → footer
    -------------------------------------------------------------------------- */
 
+/**
+ * Turns an entry's start year into odometer columns that roll from the year
+ * the role ended ("Now" = this year) down to the year it began. Only digits
+ * that change get a strip. Idempotent; returns the strips that roll.
+ */
+function buildOdometer(entry) {
+  const year = $('.tl__year [data-tl-item]', entry);
+  if (!year) return [];
+  if (year.dataset.odo) return $$('.odo__strip[data-from]', year);
+
+  const start = parseInt(year.textContent, 10);
+  const rangeText = $('.tl__range', entry)?.textContent || '';
+  const years = rangeText.match(/\d{4}/g) || [];
+  const end = /now/i.test(rangeText)
+    ? Number(new Intl.DateTimeFormat('en', { timeZone: 'Asia/Singapore', year: 'numeric' }).format(new Date()))
+    : parseInt(years[years.length - 1], 10);
+  year.dataset.odo = 'true';
+  if (!start || !end || end <= start || end - start > 9) return [];
+
+  const sequence = [];
+  for (let y = end; y >= start; y -= 1) sequence.push(String(y));
+
+  const odo = document.createElement('span');
+  odo.className = 'odo';
+  odo.setAttribute('aria-hidden', 'true');
+  [...String(start)].forEach((_, col) => {
+    const digits = sequence.map((y) => y[col]).filter((d, i, all) => i === 0 || d !== all[i - 1]);
+    const column = document.createElement('span');
+    column.className = 'odo__col';
+    const strip = document.createElement('span');
+    strip.className = 'odo__strip';
+    digits.forEach((d) => {
+      const digit = document.createElement('span');
+      digit.textContent = d;
+      strip.appendChild(digit);
+    });
+    if (digits.length > 1) {
+      // Resting (and reverted) state shows the real start year via `top`; the roll
+      // starts from a transform offset that shows the end year and eases it back to 0.
+      strip.style.setProperty('--odo-top', `${-(digits.length - 1)}em`);
+      strip.dataset.from = String(((digits.length - 1) / digits.length) * 100);
+    }
+    column.appendChild(strip);
+    odo.appendChild(column);
+  });
+
+  const label = document.createElement('span');
+  label.className = 'sr-only';
+  label.textContent = String(start);
+  year.replaceChildren(odo, label);
+  return $$('.odo__strip[data-from]', year);
+}
+
 export function initTimeline() {
   const track = $('[data-timeline]');
   if (!track) return;
@@ -729,13 +799,32 @@ export function initTimeline() {
 
   // Entries reveal as the line's leading edge (viewport 70%) reaches them.
   $$('[data-tl]', track).forEach((entry) => {
+    const strips = buildOdometer(entry);
+    const range = $('.tl__range [data-tl-item]', entry);
+
     gsap.fromTo($$('[data-tl-item]', entry), { yPercent: 110 }, {
       yPercent: 0,
       duration: 0.9,
       ease: 'expo.out',
       stagger: 0.05,
-      scrollTrigger: { trigger: entry, start: 'top 72%', toggleActions: 'play none none reverse' },
+      scrollTrigger: {
+        trigger: entry,
+        start: 'top 72%',
+        toggleActions: 'play none none reverse',
+        onEnter: () => scramble(range, { duration: 0.7, delay: 0.1 }),
+      },
     });
+
+    // The year counts back from when the role ended to when it began.
+    if (strips.length) {
+      gsap.fromTo(strips, { yPercent: (i, strip) => Number(strip.dataset.from) }, {
+        yPercent: 0,
+        duration: 1.3,
+        delay: 0.2,
+        ease: 'power3.inOut',
+        scrollTrigger: { trigger: entry, start: 'top 72%', toggleActions: 'play none none reverse' },
+      });
+    }
 
     ScrollTrigger.create({
       trigger: entry,

@@ -405,6 +405,17 @@ a:focus-visible .arrow--diag { transform: translate(0.2em, -0.2em); }
 
 .grid-lines span:last-child { border-right: 1px solid var(--border-soft); }
 
+/* Intro only: the short mint tick that leads each grid line as it draws. */
+.grid-head {
+  position: absolute;
+  top: 0;
+  left: -1px;
+  width: 1px;
+  height: 48px;
+  background: var(--accent);
+  pointer-events: none;
+}
+
 /* Contact: the grid resolves — each line redraws top to bottom, left to right. */
 .grid-lines span::after {
   content: '';
@@ -522,6 +533,25 @@ a:focus-visible .arrow--diag { transform: translate(0.2em, -0.2em); }
 
 .nav__logo { letter-spacing: 0.24em; }
 
+/* Live Singapore time, centred in the bar on wide screens only. Mono digits keep it from shifting. */
+.nav__clock {
+  position: absolute;
+  left: 0;
+  right: 0;
+  width: max-content;
+  margin: 0 auto;
+  font-family: var(--font-mono);
+  font-size: var(--fs-meta);
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+  pointer-events: none;
+}
+
+@media (max-width: 1279px) {
+  .nav__clock { display: none; }
+}
+
 .nav__right {
   position: relative;
   display: flex;
@@ -596,6 +626,12 @@ a:focus-visible .arrow--diag { transform: translate(0.2em, -0.2em); }
 @media (max-width: 767px) {
   .nav { font-size: 0.6875rem; }
   .nav__index { display: none; }
+  /* Five links don't fit a phone bar: About and Contact are a scroll away
+     (and "Start a project" opens the same contact), so they step out here. */
+  .nav__list li:has(> [data-nav-link="about"]),
+  .nav__list li:has(> [data-nav-link="contact"]) { display: none; }
+  .nav__list { gap: 1.1rem; }
+  .nav__link { white-space: nowrap; }
 }
 
 /* ==========================================================================
@@ -696,6 +732,9 @@ a:focus-visible .arrow--diag { transform: translate(0.2em, -0.2em); }
   left: 0;
   z-index: 0;
   overflow: hidden;
+  /* Sized by JS only while flying; at rest it takes no space, so its image can't widen the page on phones. */
+  width: 0;
+  height: 0;
   background: var(--surface);
   visibility: hidden;
   pointer-events: none;
@@ -2431,3 +2470,46 @@ html.pt-enter::after {
 }
 
 @keyframes pt-failsafe { to { visibility: hidden; } }
+
+/* Timeline years: odometer columns (built in JS). Digits are tabular, so columns never change width. */
+.odo { display: inline-flex; }
+.odo__col {
+  display: inline-block;
+  height: 1em;
+  overflow: hidden;
+}
+.odo__strip {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  top: var(--odo-top, 0);
+}
+.odo__strip > span { display: block; height: 1em; line-height: 1; }
+
+/* Viewfinder cursor: four corners that spread from the pointer to frame a link or button. */
+.cursor-frame {
+  --mark: 7px;
+  --mark-color: var(--text);
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 500;
+  pointer-events: none;
+  background:
+    linear-gradient(var(--mark-color), var(--mark-color)) 0 0 / var(--mark) 1px,
+    linear-gradient(var(--mark-color), var(--mark-color)) 0 0 / 1px var(--mark),
+    linear-gradient(var(--mark-color), var(--mark-color)) 100% 0 / var(--mark) 1px,
+    linear-gradient(var(--mark-color), var(--mark-color)) 100% 0 / 1px var(--mark),
+    linear-gradient(var(--mark-color), var(--mark-color)) 0 100% / var(--mark) 1px,
+    linear-gradient(var(--mark-color), var(--mark-color)) 0 100% / 1px var(--mark),
+    linear-gradient(var(--mark-color), var(--mark-color)) 100% 100% / var(--mark) 1px,
+    linear-gradient(var(--mark-color), var(--mark-color)) 100% 100% / 1px var(--mark);
+  background-repeat: no-repeat;
+  mix-blend-mode: difference;
+}
+
+/* Phones and tablets: the opening reel's picture is counter-scaled past the frame;
+   clip it at the hero so it never widens the page (clip-path alone doesn't). */
+@media (max-width: 1023px) {
+  .hero { overflow-x: clip; }
+}
