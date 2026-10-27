@@ -9,6 +9,7 @@ import { MEDIA, initTextReveal, prepareText } from './animations.js';
 import { initNavigation } from './navigation.js';
 import { initCursor, initMagnetic, initInViewVideo } from './interactions.js';
 import { TEXT_TARGETS } from './split.js';
+import { initPageEnter } from './transition.js';
 
 const $ = (selector, root = document) => root.querySelector(selector);
 const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
@@ -82,11 +83,12 @@ function boot() {
   initInViewVideo();
 
   if (!gsap || !ScrollTrigger) {
-    document.documentElement.classList.remove('js');
+    document.documentElement.classList.remove('js', 'pt-enter');
     return;
   }
 
   gsap.registerPlugin(ScrollTrigger);
+  initPageEnter();
   const reduceMotion = window.matchMedia(MEDIA.reduced).matches;
 
   prepareText();

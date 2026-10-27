@@ -20,6 +20,7 @@ css/project.css      case-study page styles
 work/ganko/          Ganko.sg case study (template for further project pages)
 work/luumens/        Luumens case study
 work/voyagaer/       Voyagaer case study
+js/transition.js     homepage → case study page transition (image expands, then settles)
 js/contact.js        "Start a project" popup form (animation, validation, Turnstile)
 functions/api/contact.js  Cloudflare Pages Function: verifies Turnstile, emails via Resend
 ```
@@ -75,4 +76,12 @@ your inbox through Resend. Set these in Cloudflare Pages → Settings → Variab
 and Secrets: `RESEND_API_KEY` (secret), `TURNSTILE_SECRET_KEY` (secret),
 `TURNSTILE_SITE_KEY`, `CONTACT_TO`. Without JavaScript the button is a plain
 mailto link.
+
+## Design system notes
+
+- Fonts are self-hosted in `assets/fonts/` (Inter Tight variable 100–900, JetBrains Mono 400/500, Latin).
+- Type scale tokens: `--fs-meta`, `--fs-small`, `--fs-body`, `--fs-lead`, `--fs-title`, `--fs-section`,
+  `--fs-hero`, `--fs-display`. Mono (`.label`) is for metadata only; readable content uses Inter Tight.
+- Mint (`--accent`) marks things you can act on, plus one accent per section. Each case study sets
+  its own `--accent` on `<body>` (Ganko #F0453B, Luumens #E33F4D, Voyagaer #48BDA9).
 

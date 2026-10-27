@@ -128,10 +128,12 @@ export function initIntro({ reduceMotion, onComplete }) {
    Reusable reveals
    -------------------------------------------------------------------------- */
 
+// Routine reveals stay quick so text never lags a fast scroll; the long, slow
+// motion is saved for the signature moments (intro, reel landing, form).
 const REVEAL = {
-  line: { duration: 1.5, stagger: 0.12 },
-  word: { duration: 1.4, stagger: 0.045 },
-  char: { duration: 1.2, stagger: 0.025 },
+  line: { duration: 0.95, stagger: 0.08 },
+  word: { duration: 0.9, stagger: 0.035 },
+  char: { duration: 0.85, stagger: 0.02 },
 };
 
 /** Masked reveal for any split element: [data-reveal="text"]. */
@@ -158,11 +160,11 @@ export function initTextReveal({ isMobile = false } = {}) {
 
   $$('[data-reveal="fade"]').forEach((el) => {
     gsap.fromTo(el,
-      { y: 28, autoAlpha: 0 },
+      { y: 24, autoAlpha: 0 },
       {
         y: 0,
         autoAlpha: 1,
-        duration: 1.4,
+        duration: 0.9,
         ease: 'power3.out',
         scrollTrigger: { trigger: el, start: 'top 90%', once: true },
       });
@@ -729,9 +731,9 @@ export function initTimeline() {
   $$('[data-tl]', track).forEach((entry) => {
     gsap.fromTo($$('[data-tl-item]', entry), { yPercent: 110 }, {
       yPercent: 0,
-      duration: 1.2,
+      duration: 0.9,
       ease: 'expo.out',
-      stagger: 0.07,
+      stagger: 0.05,
       scrollTrigger: { trigger: entry, start: 'top 72%', toggleActions: 'play none none reverse' },
     });
 

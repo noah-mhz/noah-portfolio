@@ -106,7 +106,7 @@ a:focus-visible .arrow--back { transform: translateX(-0.3em); }
 .study-hero__sub {
   margin-top: clamp(1rem, 3vh, 2rem);
   padding-left: 25%;
-  font-size: clamp(1.5rem, 3vw, 3rem);
+  font-size: var(--fs-lead);
   font-weight: 300;
   letter-spacing: -0.025em;
 }
@@ -184,7 +184,7 @@ a:focus-visible .arrow--back { transform: translateX(-0.3em); }
 
 .study-facts dd:nth-of-type(1) {
   margin: 0.6rem 0 0.4rem;
-  font-size: clamp(2.5rem, 5vw, 5rem);
+  font-size: var(--fs-title);
   font-weight: 300;
   line-height: 1;
   letter-spacing: -0.045em;
@@ -192,7 +192,7 @@ a:focus-visible .arrow--back { transform: translateX(-0.3em); }
 
 /* Four figures (e.g. product specifications) share the row at a smaller size. */
 .study-facts--four { grid-template-columns: repeat(4, 1fr); }
-.study-facts--four dd:nth-of-type(1) { font-size: clamp(2rem, 3.4vw, 3.75rem); white-space: nowrap; }
+.study-facts--four dd:nth-of-type(1) { font-size: clamp(1.875rem, 3.4vw, 3.75rem); white-space: nowrap; }
 
 .study-principles {
   display: grid;
@@ -209,7 +209,7 @@ a:focus-visible .arrow--back { transform: translateX(-0.3em); }
 .study-principles p {
   margin-top: 0.9rem;
   color: rgba(242, 242, 240, 0.82);
-  font-size: 1rem;
+  font-size: var(--fs-small);
   line-height: 1.5;
 }
 
@@ -243,7 +243,7 @@ a:focus-visible .arrow--back { transform: translateX(-0.3em); }
 .study-map li {
   padding: 0.9rem 0;
   border-bottom: 1px solid var(--border);
-  font-size: clamp(1.125rem, 1.6vw, 1.5rem);
+  font-size: var(--fs-body);
   letter-spacing: -0.015em;
 }
 
@@ -256,7 +256,7 @@ a:focus-visible .arrow--back { transform: translateX(-0.3em); }
   gap: 1rem;
   padding: 1.1rem 0;
   border-bottom: 1px solid var(--border);
-  font-size: clamp(1.25rem, 2vw, 2rem);
+  font-size: var(--fs-lead);
   letter-spacing: -0.02em;
 }
 
@@ -356,7 +356,7 @@ a:focus-visible .arrow--back { transform: translateX(-0.3em); }
 
 .study-next__name {
   display: inline-block;
-  font-size: clamp(2rem, 5vw, 4.5rem);
+  font-size: var(--fs-title);
   font-weight: 500;
   line-height: 1;
   letter-spacing: -0.04em;
@@ -435,8 +435,12 @@ a:focus-visible .arrow--back { transform: translateX(-0.3em); }
 }
 
 .study-brief dt { margin-bottom: 0.9rem; }
-.study-brief dd { font-size: clamp(1.05rem, 1.25vw, 1.35rem); line-height: 1.5; color: var(--text); }
+.study-brief dd { font-size: var(--fs-body); line-height: 1.5; color: var(--text); }
 
 @media (max-width: 767px) {
   .study-brief { grid-template-columns: 1fr; }
 }
+
+/* Case-study section headings in sentence case (project names stay in capitals). */
+.study-lead { text-transform: none; line-height: 1; letter-spacing: -0.04em; }
+.study-lead .l-mask, .study-lead .w-mask { padding-bottom: 0.18em; margin-bottom: -0.18em; }

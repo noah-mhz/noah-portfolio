@@ -1,4 +1,36 @@
 /* ==========================================================================
+   Fonts — self-hosted (Latin subsets; Inter Tight is one variable file 100–900)
+   ========================================================================== */
+
+@font-face {
+  font-family: 'Inter Tight';
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url('../assets/fonts/inter-tight-latin-wght-normal.woff2') format('woff2-variations'),
+       url('../assets/fonts/inter-tight-latin-wght-normal.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('../assets/fonts/jetbrains-mono-latin-400-normal.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('../assets/fonts/jetbrains-mono-latin-500-normal.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+/* ==========================================================================
    Tokens
    ========================================================================== */
 
@@ -11,6 +43,8 @@
   --accent: #A6FFCB;
   --border: rgba(242, 242, 240, 0.1);
   --border-soft: rgba(242, 242, 240, 0.045);
+  --tick: rgba(242, 242, 240, 0.38);          /* quiet markers: section ticks, steps */
+  --lift: rgba(242, 242, 240, 0.022);         /* lifted section surface; the grid still shows through */
 
   --font-sans: 'Inter Tight', 'Helvetica Neue', Arial, system-ui, sans-serif;
   --font-mono: 'JetBrains Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
@@ -18,8 +52,13 @@
   --fs-hero: clamp(4rem, 9vw, 10rem);
   --fs-section: clamp(3rem, 6vw, 7rem);
   --fs-display: clamp(4rem, 14vw, 16rem);
-  --fs-body: clamp(1rem, 0.92rem + 0.3vw, 1.25rem);
+  /* Type scale — eight steps, used everywhere:
+     meta (mono labels) · small · body · lead · title · section · hero · display */
   --fs-meta: 0.75rem;
+  --fs-small: clamp(0.9375rem, 0.9rem + 0.12vw, 1.0625rem);
+  --fs-body: clamp(1rem, 0.92rem + 0.3vw, 1.25rem);
+  --fs-lead: clamp(1.375rem, 1.05rem + 1vw, 2.25rem);
+  --fs-title: clamp(1.875rem, 1.2rem + 2.3vw, 4rem);
 
   --gutter: clamp(1.25rem, 2.5vw, 2.5rem);
   --nav-h: 5rem;
@@ -694,7 +733,7 @@ a:focus-visible .arrow--diag { transform: translate(0.2em, -0.2em); }
 .hero__role {
   display: flex;
   flex-direction: column;
-  font-size: clamp(0.9375rem, 1.1vw, 1.125rem);
+  font-size: var(--fs-small);
   line-height: 1.4;
 }
 
@@ -1112,7 +1151,7 @@ a:focus-visible .arrow--diag { transform: translate(0.2em, -0.2em); }
 }
 
 .case__lead {
-  font-size: clamp(1.5rem, 2.4vw, 2.5rem);
+  font-size: var(--fs-lead);
   font-weight: 400;
   line-height: 1.12;
   letter-spacing: -0.025em;
@@ -1132,7 +1171,7 @@ a:focus-visible .arrow--diag { transform: translate(0.2em, -0.2em); }
   border-bottom: 1px solid var(--border);
 }
 
-.case__stack li > span { font-size: clamp(1.125rem, 1.5vw, 1.5rem); letter-spacing: -0.01em; }
+.case__stack li > span { font-size: var(--fs-body); letter-spacing: -0.01em; }
 .case__stack li > span .label { align-self: center; }
 
 .case.is-pinned { padding: 0; }
@@ -1193,7 +1232,7 @@ a:focus-visible .arrow--diag { transform: translate(0.2em, -0.2em); }
 }
 
 .case__study-link {
-  font-size: clamp(1.125rem, 1.6vw, 1.5rem);
+  font-size: var(--fs-body);
   letter-spacing: -0.015em;
   color: var(--accent);
 }
@@ -1225,7 +1264,6 @@ a:focus-visible .arrow--diag { transform: translate(0.2em, -0.2em); }
     margin-left: calc(-1 * var(--gutter));
   }
   .case__stages { gap: 2.5rem; }
-  .case__lead { font-size: clamp(1.375rem, 6vw, 1.75rem); }
 }
 
 /* ==========================================================================
@@ -1331,7 +1369,7 @@ a:focus-visible .arrow--diag { transform: translate(0.2em, -0.2em); }
 .cap.is-active .cap__num { opacity: 1; }
 
 .cap__title {
-  font-size: clamp(1.5rem, 4.5vw, 4.5rem);
+  font-size: var(--fs-title);
   font-weight: 500;
   line-height: 1;
   letter-spacing: -0.035em;
@@ -1469,7 +1507,7 @@ a:focus-visible .arrow--diag { transform: translate(0.2em, -0.2em); }
 }
 
 .about__lead {
-  font-size: clamp(1.5rem, 2.4vw, 2.5rem);
+  font-size: var(--fs-lead);
   line-height: 1.15;
   letter-spacing: -0.025em;
 }
@@ -1519,7 +1557,7 @@ a:focus-visible .arrow--diag { transform: translate(0.2em, -0.2em); }
 }
 
 .timeline__title {
-  font-size: clamp(2.5rem, 4.5vw, 5rem);
+  font-size: var(--fs-section);
   font-weight: 500;
   line-height: 0.9;
   letter-spacing: -0.045em;
@@ -1576,7 +1614,7 @@ a:focus-visible .arrow--diag { transform: translate(0.2em, -0.2em); }
 }
 
 .tl__year {
-  font-size: clamp(2rem, 3.6vw, 3.75rem);
+  font-size: var(--fs-title);
   font-weight: 300;
   line-height: 1;
   letter-spacing: -0.045em;
@@ -1590,7 +1628,7 @@ a:focus-visible .arrow--diag { transform: translate(0.2em, -0.2em); }
 }
 
 .tl__company {
-  font-size: clamp(1.375rem, 2.2vw, 2.25rem);
+  font-size: var(--fs-lead);
   font-weight: 500;
   line-height: 1.05;
   letter-spacing: -0.03em;
@@ -1698,7 +1736,7 @@ a:focus-visible .arrow--diag { transform: translate(0.2em, -0.2em); }
 .cta.is-hover .arrow { transform: translateX(0.3em); }
 
 .contact__email {
-  font-size: clamp(1.25rem, 2.4vw, 2.25rem);
+  font-size: var(--fs-lead);
   letter-spacing: -0.02em;
   transition: color 1s var(--ease-out);
 }
@@ -1759,7 +1797,7 @@ a:focus-visible .arrow--diag { transform: translate(0.2em, -0.2em); }
   display: grid;
   gap: 0.5rem;
   align-content: start;
-  font-size: 0.875rem;
+  font-size: var(--fs-small);
   letter-spacing: 0.14em;
   text-transform: uppercase;
 }
@@ -2225,7 +2263,7 @@ section[tabindex="-1"]:focus { outline: none; }
 
 .process__name {
   font-family: var(--font-sans);
-  font-size: clamp(1.25rem, 1.6vw, 1.75rem);
+  font-size: var(--fs-body);
   font-weight: 500;
   letter-spacing: -0.02em;
   text-transform: none;
@@ -2262,7 +2300,7 @@ section[tabindex="-1"]:focus { outline: none; }
 }
 
 .study-cta__line {
-  font-size: clamp(1.5rem, 3vw, 2.75rem);
+  font-size: var(--fs-lead);
   font-weight: 300;
   letter-spacing: -0.03em;
 }
@@ -2298,3 +2336,98 @@ section[tabindex="-1"]:focus { outline: none; }
   border-bottom: 1px solid currentColor;
   cursor: pointer;
 }
+
+/* ==========================================================================
+   Type pass — content reads as text; mono stays for true metadata
+   ========================================================================== */
+
+.tl__points,
+.project__facts dd,
+.process__note,
+.cap__meta {
+  font-family: var(--font-sans);
+  font-size: var(--fs-small);
+  line-height: 1.5;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.cap__meta,
+.process__note { color: var(--muted); }
+.tl__points { color: rgba(242, 242, 240, 0.82); }
+.tl__points li + li { margin-top: 0.35rem; }
+
+/* Section headings in sentence case; capitals are kept for the hero, the
+   contact bookend, project names and other display moments. */
+.caps__title,
+.about__statement,
+.timeline__title,
+.tl__company,
+.pf__title {
+  text-transform: none;
+  line-height: 1;
+  letter-spacing: -0.04em;
+}
+
+.tl__company { letter-spacing: -0.025em; }
+
+/* Lowercase descenders need a little more room inside the reveal masks. */
+.caps__title .l-mask, .caps__title .w-mask,
+.about__statement .l-mask, .about__statement .w-mask,
+.timeline__title .l-mask, .timeline__title .w-mask,
+.pf__title .pf__mask {
+  padding-bottom: 0.18em;
+  margin-bottom: -0.18em;
+}
+
+/* ==========================================================================
+   Colour pass — mint means "you can act on this" (plus one accent per section)
+   ========================================================================== */
+
+.section-label::before,
+.process__step::before { background: var(--tick); }
+.cap__num { background: var(--tick); opacity: 1; }
+.cap.is-active .cap__num { background: var(--accent); }
+.hero__hello { color: var(--muted); }
+.project__num { color: var(--muted); }
+.tl__role { color: var(--text); }
+
+/* Section rhythm: Capabilities and Timeline sit on a lifted surface. */
+.caps,
+.timeline { background: var(--lift); }
+
+/* ==========================================================================
+   Page transition (homepage ⇄ case studies)
+   ========================================================================== */
+
+.pt {
+  position: fixed;
+  inset: 0;
+  z-index: 520; /* above the cursor while the page changes */
+  overflow: hidden;
+  pointer-events: none;
+  background: var(--surface);
+}
+
+.pt img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+  filter: brightness(0.9);
+}
+
+/* First frame of a case study reached through the transition. */
+html.pt-enter::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 520;
+  background: var(--surface) var(--pt-src, none) top center / cover no-repeat;
+  filter: brightness(0.9);
+  /* Safety net if scripts fail: never cover the page for long. */
+  animation: pt-failsafe 0.01s 2.5s forwards;
+}
+
+@keyframes pt-failsafe { to { visibility: hidden; } }

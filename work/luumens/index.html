@@ -13,19 +13,21 @@
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230A0A0A'/%3E%3Ccircle cx='16' cy='16' r='4' fill='%23A6FFCB'/%3E%3C/svg%3E">
 
   <style>html{background:#0A0A0A}</style>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@100..900&family=JetBrains+Mono:wght@400;500&display=swap">
+  <link rel="preload" href="../../assets/fonts/inter-tight-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="../../assets/fonts/jetbrains-mono-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="../../css/style.css">
   <link rel="stylesheet" href="../../css/project.css">
 
-  <script>document.documentElement.classList.add('js');</script>
+  <script>document.documentElement.classList.add('js');
+    // Arriving from the homepage transition: paint its image on the first frame.
+    try { var pt = sessionStorage.getItem('pt:image'); if (pt !== null && !matchMedia('(prefers-reduced-motion: reduce)').matches) { document.documentElement.classList.add('pt-enter'); if (pt) document.documentElement.style.setProperty('--pt-src', 'url("' + pt.replace(/"/g, '') + '")'); } } catch (e) {}
+  </script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js" defer></script>
   <script type="module" src="../../js/project.js"></script>
 </head>
-<body class="study-page">
+<body class="study-page" style="--accent: #E33F4D;">  <!-- Case tint: the client's colour replaces mint on this page. -->
   <a class="skip-link" href="#main">Skip to content</a>
 
   <div class="grid-lines" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
