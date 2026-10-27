@@ -835,6 +835,50 @@ export function initTimeline() {
   });
 }
 
+/**
+ * Process strip: a mint line travels along the shared rule from Discover to
+ * Launch as you scroll, lighting each step as it passes. Where the steps
+ * stack (tablet, phone), each step lights as it reaches the same point.
+ */
+export function initProcess({ isDesktop }) {
+  const list = $('.process__list');
+  if (!list) return undefined;
+  const steps = $$('.process__step', list);
+  list.classList.add('is-tracked');
+
+  if (isDesktop) {
+    const fill = document.createElement('span');
+    fill.className = 'process__fill';
+    fill.setAttribute('aria-hidden', 'true');
+    list.appendChild(fill);
+    const width = () => list.getBoundingClientRect().width;
+    const lefts = () => steps.map((step) => step.offsetLeft / width());
+
+    let marks = lefts();
+    gsap.fromTo(fill, { scaleX: 0 }, {
+      scaleX: 1,
+      ease: 'none',
+      scrollTrigger: {
+        trigger: list,
+        start: 'top 85%',
+        end: 'top 35%',
+        scrub: 0.8,
+        onRefresh: () => { marks = lefts(); },
+        onUpdate: (self) => steps.forEach((step, i) => step.classList.toggle('is-lit', self.progress >= marks[i] + 0.005)),
+      },
+    });
+    return () => { fill.remove(); list.classList.remove('is-tracked'); steps.forEach((s) => s.classList.remove('is-lit')); };
+  }
+
+  const triggers = steps.map((step) => ScrollTrigger.create({
+    trigger: step,
+    start: 'top 70%',
+    onEnter: () => step.classList.add('is-lit'),
+    onLeaveBack: () => step.classList.remove('is-lit'),
+  }));
+  return () => { triggers.forEach((t) => t.kill()); list.classList.remove('is-tracked'); steps.forEach((s) => s.classList.remove('is-lit')); };
+}
+
 export function initCapsEntrance() {
   gsap.fromTo('[data-cap]', { y: 40, autoAlpha: 0 }, {
     y: 0,
@@ -942,6 +986,7 @@ export function initScrollAnimations() {
     initCapsEntrance();
     initImageReveal();
     const cleanupSections = initSectionTransitions({ isMobile });
+    const cleanupProcess = initProcess({ isDesktop });
     const cleanupNav = initNavigation();
 
     if (!isMobile) {
@@ -955,6 +1000,7 @@ export function initScrollAnimations() {
       cleanupHero?.();
       cleanupNav?.();
       cleanupSections?.();
+      cleanupProcess?.();
     };
   });
 
