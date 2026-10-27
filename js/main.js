@@ -4,6 +4,7 @@ import { initCursor, initMagnetic, initHoverAnimations, initClock, initInViewVid
 import { initContactForm } from './contact.js';
 import { initPageLeave } from './transition.js';
 import { initScramble } from './scramble.js';
+import { initTouchFx } from './touch.js';
 
 function boot() {
   const { gsap, ScrollTrigger } = window;
@@ -42,6 +43,7 @@ function boot() {
   initTimelineDetails();
   initPageLeave();
   initScramble();
+  initTouchFx();
 
   // Re-measure once late-arriving fonts and images have settled layout.
   document.fonts?.ready.then(() => ScrollTrigger.refresh());

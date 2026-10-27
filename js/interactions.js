@@ -255,11 +255,12 @@ export function initHoverAnimations() {
       cta.classList.remove('is-hover');
       gsap.to(fill, { yPercent: -101, duration: 0.7, ease: 'expo.out', overwrite: true });
     };
+    // Mouse hover and keyboard focus only — touch presses are handled in touch.js.
     listen([
-      [cta, 'pointerenter', enter],
-      [cta, 'pointerleave', leave],
-      [cta, 'focus', enter],
-      [cta, 'blur', leave],
+      [cta, 'pointerenter', (event) => { if (event.pointerType === 'mouse') enter(); }],
+      [cta, 'pointerleave', (event) => { if (event.pointerType === 'mouse') leave(); }],
+      [cta, 'focus', () => { if (cta.matches(':focus-visible')) enter(); }],
+      [cta, 'blur', () => { if (cta.classList.contains('is-hover')) leave(); }],
     ]);
   });
 

@@ -1,3 +1,5 @@
+import { scramble } from './scramble.js';
+
 const { gsap, ScrollTrigger } = window;
 
 const $ = (selector, root = document) => root.querySelector(selector);
@@ -69,6 +71,8 @@ export function initNavigation({ reduceMotion = false } = {}) {
       onComplete: () => {
         text.textContent = next;
         gsap.fromTo(text, { yPercent: 110 }, { yPercent: 0, duration: 0.6, ease: 'power4.out' });
+        // The new section name resolves out of noise as it rises in.
+        scramble(text, { duration: 0.55 });
       },
     });
   };
