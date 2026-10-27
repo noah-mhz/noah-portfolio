@@ -469,7 +469,12 @@ a:focus-visible .arrow--diag { transform: translate(0.2em, -0.2em); }
   z-index: 500; /* above the project form (400) */
   display: none;
   pointer-events: none;
+  /* The dot and ring invert against whatever is behind them, so they stay visible on light images and pages. */
+  mix-blend-mode: difference;
 }
+
+/* The mint "View" disc keeps its own colours. */
+.cursor.is-label { mix-blend-mode: normal; }
 
 .has-cursor .cursor { display: block; }
 
