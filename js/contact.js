@@ -45,26 +45,58 @@ export function initContactForm() {
   let open = false;
   let widgetId = null;
   let token = '';
+  let captchaState = 'idle'; // idle | loading | ready | unconfigured | blocked | error
+  let captchaError = '';
+  let setupPromise = null;
 
   /* ---------- Turnstile ---------- */
 
-  const setupCaptcha = async () => {
-    if (widgetId !== null) return;
-    try {
-      const { siteKey } = await fetch('/api/contact', { headers: { accept: 'application/json' } }).then((r) => r.json());
-      if (!siteKey) throw new Error('missing key');
-      const turnstile = await loadTurnstile();
-      widgetId = turnstile.render(captcha, {
-        sitekey: siteKey,
-        theme: 'dark',
-        appearance: 'interaction-only',
-        callback: (t) => { token = t; },
-        'expired-callback': () => { token = ''; },
-        'error-callback': () => { token = ''; },
-      });
-    } catch {
-      widgetId = null;
+  const setupCaptcha = () => {
+    if (captchaState === 'ready' || captchaState === 'loading') return setupPromise;
+    if (widgetId !== null && window.turnstile) {
+      // Widget exists but errored: reset it instead of rendering a second one.
+      captchaState = 'ready'; captchaError = ''; token = '';
+      window.turnstile.reset(widgetId);
+      setupPromise = Promise.resolve();
+      return setupPromise;
     }
+    captchaState = 'loading';
+    setupPromise = (async () => {
+      let config;
+      try {
+        config = await fetch('/api/contact', { headers: { accept: 'application/json' } }).then((r) => r.json());
+      } catch {
+        captchaState = 'unconfigured';
+        return;
+      }
+      if (!config.siteKey || config.configured === false) { captchaState = 'unconfigured'; return; }
+      try {
+        const turnstile = await loadTurnstile();
+        widgetId = turnstile.render(captcha, {
+          sitekey: config.siteKey,
+          theme: 'dark',
+          appearance: 'interaction-only',
+          callback: (t) => { token = t; captchaError = ''; },
+          'expired-callback': () => { token = ''; },
+          'error-callback': (code) => { token = ''; captchaError = String(code || 'unknown'); captchaState = 'error'; return true; },
+        });
+        if (captchaState === 'loading') captchaState = 'ready';
+      } catch {
+        captchaState = 'blocked';
+      }
+    })();
+    return setupPromise;
+  };
+
+  // Turnstile runs in the background; wait for its token rather than failing at once.
+  const waitForToken = async (ms) => {
+    const end = Date.now() + ms;
+    while (Date.now() < end) {
+      if (!token && window.turnstile && widgetId !== null) token = window.turnstile.getResponse(widgetId) || '';
+      if (token || captchaState === 'error') return token;
+      await new Promise((resolve) => { setTimeout(resolve, 200); });
+    }
+    return token;
   };
 
   /* ---------- Open / close choreography ---------- */
@@ -189,12 +221,23 @@ export function initContactForm() {
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test((data.email || '').trim())) bad.push('email');
     if (bad.length) { showError(bad.includes('name') ? 'Please add your name.' : 'Please add a valid email.', bad); return; }
 
-    if (widgetId === null) await setupCaptcha();
-    if (!token && window.turnstile && widgetId !== null) {
-      // Interaction-only widgets may still be working; give them a moment.
-      await new Promise((resolve) => { setTimeout(resolve, 1500); });
+    status.textContent = 'Checking…';
+    status.classList.remove('is-error');
+    send.classList.add('is-sending');
+    if (captchaState !== 'ready' && captchaState !== 'error') await setupCaptcha();
+    if (captchaState === 'ready' && !token) await waitForToken(10000);
+    send.classList.remove('is-sending');
+
+    if (!token) {
+      const why = {
+        unconfigured: 'The form isn\'t set up yet — please email me at noahmhzaw@gmail.com.',
+        blocked: 'The verification couldn\'t load (an ad blocker may be stopping it). Please email me directly.',
+        error: `Verification error ${captchaError}. Please email me directly.`,
+      }[captchaState] || 'Please complete the verification above, then press Send again.';
+      showError(why);
+      if (captchaState === 'error') setupCaptcha(); // reset quietly so the next attempt can pass
+      return;
     }
-    if (!token) { showError('Verification is still loading — please try again in a second, or email me directly.'); return; }
 
     status.textContent = 'Sending…';
     status.classList.remove('is-error');

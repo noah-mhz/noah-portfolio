@@ -416,7 +416,7 @@ a:focus-visible .arrow--diag { transform: translate(0.2em, -0.2em); }
   position: fixed;
   top: 0;
   left: 0;
-  z-index: 200;
+  z-index: 500; /* above the project form (400) */
   display: none;
   pointer-events: none;
 }
@@ -425,7 +425,9 @@ a:focus-visible .arrow--diag { transform: translate(0.2em, -0.2em); }
 
 .has-cursor,
 .has-cursor a,
-.has-cursor button { cursor: none; }
+.has-cursor button,
+.has-cursor select,
+.has-cursor label { cursor: none; }
 
 .cursor__circle {
   position: absolute;
@@ -1857,6 +1859,8 @@ section[tabindex="-1"]:focus { outline: none; }
 .pf__wipe { background: var(--accent); }
 
 .pf__panel {
+  display: flex;
+  flex-direction: column;
   overflow-y: auto;
   overscroll-behavior: contain;
   background: var(--bg);
@@ -1895,17 +1899,36 @@ section[tabindex="-1"]:focus { outline: none; }
 .pf__form,
 .pf__done {
   position: relative;
-  max-width: 76rem;
-  padding: clamp(2rem, 8vh, 6rem) var(--gutter) clamp(3rem, 10vh, 6rem);
+  flex: 1 0 auto;
+  width: 100%;
+  min-height: calc(100vh - var(--nav-h));
+  min-height: calc(100dvh - var(--nav-h));
+  padding: clamp(1rem, 4vh, 3rem) var(--gutter) clamp(1.5rem, 5vh, 3.5rem);
 }
+
+/* Title at the top, the sentence in the middle, Send on the bottom edge. */
+.pf__form { display: flex; flex-direction: column; }
+.pf__sentence { max-width: 80rem; }
+.pf__message { max-width: 46rem; }
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  .pf__sentence { max-width: none; font-size: min(5vw, 4.4vh); }
+}
+
+@media (min-width: 1800px) {
+  .pf__sentence { max-width: 84%; font-size: min(3.3vw, 5.8vh); }
+  .pf__message textarea { font-size: 1.6rem; }
+  .pf__send { padding: 1.8rem 3rem; font-size: 1rem; }
+}
+.pf__foot { margin-top: auto !important; padding-top: clamp(1.5rem, 4vh, 3rem); }
 
 .pf__mask { display: inline-block; overflow: hidden; vertical-align: top; padding-bottom: 0.08em; }
 .pf__nb { display: inline-block; white-space: nowrap; vertical-align: top; }
 .pf__mask > * { display: inline-block; }
 
 .pf__title {
-  margin-bottom: clamp(2rem, 6vh, 4rem);
-  font-size: var(--fs-section);
+  margin-bottom: clamp(1.5rem, 5vh, 4rem);
+  font-size: min(var(--fs-section), 12vh);
   font-weight: 500;
   line-height: 0.9;
   letter-spacing: -0.05em;
@@ -1913,7 +1936,8 @@ section[tabindex="-1"]:focus { outline: none; }
 }
 
 .pf__sentence {
-  font-size: clamp(1.6rem, 3.3vw, 3.4rem);
+  margin-top: auto;
+  font-size: min(clamp(1.6rem, 3.3vw, 6rem), 6.4vh);
   font-weight: 300;
   line-height: 1.5;
   letter-spacing: -0.025em;
@@ -1988,7 +2012,8 @@ section[tabindex="-1"]:focus { outline: none; }
   display: grid;
   gap: 0.9rem;
   max-width: 46rem;
-  margin-top: clamp(2.5rem, 7vh, 4.5rem);
+  margin-top: clamp(1.5rem, 5vh, 4rem);
+  margin-bottom: auto;
 }
 
 .pf__message textarea {
@@ -2010,6 +2035,7 @@ section[tabindex="-1"]:focus { outline: none; }
 }
 
 .pf__captcha:empty { display: none; }
+.pf__captcha { min-height: 0; }
 
 .pf__send {
   position: relative;
@@ -2075,7 +2101,7 @@ section[tabindex="-1"]:focus { outline: none; }
 .pf__status { min-height: 1.5em; margin-top: 1.25rem; color: var(--muted); }
 .pf__status.is-error { color: #FF8A8A; }
 
-.pf__done { display: grid; gap: 1.5rem; align-content: center; min-height: calc(100svh - var(--nav-h)); padding-top: 0; }
+.pf__done { display: grid; gap: 1.5rem; align-content: center; }
 .pf__done[hidden] { display: none; }
 
 .pf__done-title {
@@ -2092,7 +2118,7 @@ section[tabindex="-1"]:focus { outline: none; }
 .pf__again { justify-self: start; padding: 0; font: inherit; color: var(--text); background: none; border: 0; cursor: pointer; }
 
 @media (max-width: 767px) {
-  .pf__sentence { font-size: clamp(1.45rem, 6.6vw, 2rem); line-height: 1.6; }
+  .pf__sentence { max-width: none; font-size: min(clamp(1.45rem, 6.6vw, 2rem), 4.6vh); line-height: 1.6; }
   .pf__field input, .pf__field select { height: 1.6em; line-height: 1.6; }
   .pf__field input { width: 7.5em; }
   .pf__field[data-field="email"] input { width: 11em; }

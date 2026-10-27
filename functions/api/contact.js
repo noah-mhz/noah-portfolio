@@ -36,7 +36,11 @@ const clean = (value, max, multiline = false) => {
 };
 
 export async function onRequestGet({ env }) {
-  return json({ siteKey: env.TURNSTILE_SITE_KEY || '' });
+  // Public: the site key, and whether everything is set (never the secrets themselves).
+  return json({
+    siteKey: env.TURNSTILE_SITE_KEY || '',
+    configured: Boolean(env.RESEND_API_KEY && env.TURNSTILE_SECRET_KEY && env.TURNSTILE_SITE_KEY && env.CONTACT_TO),
+  });
 }
 
 export async function onRequestPost({ request, env }) {
