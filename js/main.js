@@ -1,6 +1,7 @@
 import { initScroll, initAnchors } from './scroll.js';
 import { initIntro, initScrollAnimations, prepareText } from './animations.js';
 import { initCursor, initMagnetic, initHoverAnimations, initClock, initInViewVideo, initHeroWeight } from './interactions.js';
+import { initContactForm } from './contact.js';
 
 function boot() {
   const { gsap, ScrollTrigger } = window;
@@ -35,6 +36,7 @@ function boot() {
   initMagnetic();
   initHoverAnimations();
   initHeroWeight();
+  initContactForm();
 
   // Re-measure once late-arriving fonts and images have settled layout.
   document.fonts?.ready.then(() => ScrollTrigger.refresh());

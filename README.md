@@ -20,6 +20,8 @@ css/project.css      case-study page styles
 work/ganko/          Ganko.sg case study (template for further project pages)
 work/luumens/        Luumens case study
 work/voyagaer/       Voyagaer case study
+js/contact.js        "Start a project" popup form (animation, validation, Turnstile)
+functions/api/contact.js  Cloudflare Pages Function: verifies Turnstile, emails via Resend
 ```
 
 ## Visual system
@@ -64,3 +66,13 @@ work/voyagaer/       Voyagaer case study
 - Mobile <768px: reduced type scale, once-only reveals, no parallax or drift,
   shorter discipline pin; the nav status opens the links on tap.
 - prefers-reduced-motion: no Lenis, no intro, no scroll animation — content static.
+
+## Contact form
+
+"Start a project" opens a popup form that posts to `/api/contact`, a Cloudflare
+Pages Function. It checks a Cloudflare Turnstile token and sends the enquiry to
+your inbox through Resend. Set these in Cloudflare Pages → Settings → Variables
+and Secrets: `RESEND_API_KEY` (secret), `TURNSTILE_SECRET_KEY` (secret),
+`TURNSTILE_SITE_KEY`, `CONTACT_TO`. Without JavaScript the button is a plain
+mailto link.
+

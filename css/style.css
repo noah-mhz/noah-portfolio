@@ -1822,3 +1822,280 @@ a:focus-visible .arrow--diag { transform: translate(0.2em, -0.2em); }
 
 /* Sections receive programmatic focus from in-page anchors; no outline for those. */
 section[tabindex="-1"]:focus { outline: none; }
+
+/* ==========================================================================
+   Project form (popup from "Start a project")
+   ========================================================================== */
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.pf {
+  position: fixed;
+  inset: 0;
+  z-index: 400;
+}
+
+.pf[hidden] { display: none; }
+
+/* The mint wipe grows out of the button; the dark panel follows it in. */
+.pf__wipe,
+.pf__panel {
+  position: absolute;
+  inset: 0;
+}
+
+.pf__wipe { background: var(--accent); }
+
+.pf__panel {
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  background: var(--bg);
+  color: var(--text);
+}
+
+.pf__grid { position: absolute; }
+
+.pf__top {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: var(--nav-h);
+  padding: 0 var(--gutter);
+  background: var(--bg);
+  color: var(--muted);
+}
+
+.pf__close {
+  padding: 0.75rem 0;
+  font: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
+  color: var(--text);
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+
+.pf__close:hover,
+.pf__close:focus-visible { color: var(--accent); }
+
+.pf__form,
+.pf__done {
+  position: relative;
+  max-width: 76rem;
+  padding: clamp(2rem, 8vh, 6rem) var(--gutter) clamp(3rem, 10vh, 6rem);
+}
+
+.pf__mask { display: inline-block; overflow: hidden; vertical-align: top; padding-bottom: 0.08em; }
+.pf__nb { display: inline-block; white-space: nowrap; vertical-align: top; }
+.pf__mask > * { display: inline-block; }
+
+.pf__title {
+  margin-bottom: clamp(2rem, 6vh, 4rem);
+  font-size: var(--fs-section);
+  font-weight: 500;
+  line-height: 0.9;
+  letter-spacing: -0.05em;
+  text-transform: uppercase;
+}
+
+.pf__sentence {
+  font-size: clamp(1.6rem, 3.3vw, 3.4rem);
+  font-weight: 300;
+  line-height: 1.5;
+  letter-spacing: -0.025em;
+}
+
+.pf__field {
+  position: relative;
+  display: inline-block;
+  margin: 0 0.15em;
+  vertical-align: top;
+}
+
+.pf__field input,
+.pf__field select,
+.pf__message textarea {
+  font: inherit;
+  letter-spacing: inherit;
+  color: var(--accent);
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  outline: none;
+  caret-color: var(--accent);
+}
+
+.pf__field input,
+.pf__field select { height: 1.5em; line-height: 1.5; margin: 0; }
+
+.pf__field input {
+  width: 8.5em;
+  max-width: 78vw;
+  padding: 0 0.1em;
+}
+
+.pf__field[data-field="company"] input { width: 9.5em; }
+.pf__field[data-field="email"] input { width: 10.5em; }
+
+.pf__field select {
+  padding: 0 1.1em 0 0.1em;
+  appearance: none;
+  cursor: pointer;
+  background-image: linear-gradient(45deg, transparent 50%, var(--accent) 50%), linear-gradient(135deg, var(--accent) 50%, transparent 50%);
+  background-position: calc(100% - 0.55em) 55%, calc(100% - 0.3em) 55%;
+  background-size: 0.25em 0.25em;
+  background-repeat: no-repeat;
+}
+
+.pf__field select option { color: var(--text); background: var(--surface); }
+
+::placeholder { color: rgba(242, 242, 240, 0.28); opacity: 1; }
+
+/* Underlines draw in; the active field brightens to mint. */
+.pf__rule {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0.12em;
+  height: 1px;
+  background: rgba(242, 242, 240, 0.35);
+  transform-origin: left;
+  transition: background 0.4s var(--ease-out), height 0.4s var(--ease-out);
+}
+
+.pf__field:focus-within .pf__rule,
+.pf__message:focus-within .pf__rule { background: var(--accent); height: 2px; }
+
+.pf__field.is-invalid .pf__rule,
+.pf__message.is-invalid .pf__rule { background: #FF8A8A; }
+
+.pf__message {
+  position: relative;
+  display: grid;
+  gap: 0.9rem;
+  max-width: 46rem;
+  margin-top: clamp(2.5rem, 7vh, 4.5rem);
+}
+
+.pf__message textarea {
+  width: 100%;
+  padding: 0 0 0.6rem;
+  font-size: clamp(1.05rem, 1.4vw, 1.35rem);
+  line-height: 1.5;
+  resize: vertical;
+}
+
+.pf__hp { position: absolute; left: -10000px; width: 1px; height: 1px; overflow: hidden; }
+
+.pf__foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1.5rem 2.5rem;
+  margin-top: clamp(2.5rem, 7vh, 4.5rem);
+}
+
+.pf__captcha:empty { display: none; }
+
+.pf__send {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  padding: 1.4rem 2.4rem;
+  overflow: hidden;
+  font: inherit;
+  font-size: 0.875rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text);
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+
+.pf__send .marks { --mark: 10px; inset: 0; opacity: 1; transform: none; transition: none; }
+
+.pf__send-fill {
+  position: absolute;
+  inset: 0;
+  background: var(--accent);
+  transform: translateY(101%);
+  transition: transform 0.7s var(--ease-out);
+}
+
+.pf__send-label { position: relative; display: inline-flex; gap: 0.75rem; transition: color 0.5s var(--ease-out); }
+
+.pf__send:hover .pf__send-fill,
+.pf__send:focus-visible .pf__send-fill { transform: none; }
+.pf__send:hover .pf__send-label,
+.pf__send:focus-visible .pf__send-label { color: var(--bg); }
+.pf__send:hover .marks,
+.pf__send:focus-visible .marks { --mark-color: var(--bg); }
+
+/* While sending, the label gives way to a travelling line. */
+.pf__send-progress {
+  position: absolute;
+  left: 2.4rem;
+  right: 2.4rem;
+  top: 50%;
+  height: 1px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left;
+  opacity: 0;
+}
+
+.pf__send.is-sending { pointer-events: none; }
+.pf__send.is-sending .pf__send-label,
+.pf__send.is-sending .pf__send-fill { opacity: 0; }
+.pf__send.is-sending .pf__send-progress { opacity: 1; animation: pf-progress 1.2s var(--ease-in-out) infinite; }
+
+@keyframes pf-progress {
+  0% { transform: scaleX(0); transform-origin: left; }
+  50% { transform: scaleX(1); transform-origin: left; }
+  50.01% { transform-origin: right; }
+  100% { transform: scaleX(0); transform-origin: right; }
+}
+
+.pf__status { min-height: 1.5em; margin-top: 1.25rem; color: var(--muted); }
+.pf__status.is-error { color: #FF8A8A; }
+
+.pf__done { display: grid; gap: 1.5rem; align-content: center; min-height: calc(100svh - var(--nav-h)); padding-top: 0; }
+.pf__done[hidden] { display: none; }
+
+.pf__done-title {
+  font-size: var(--fs-display);
+  font-weight: 500;
+  line-height: 0.85;
+  letter-spacing: -0.06em;
+  text-transform: uppercase;
+}
+
+.pf__done-title .pf__mask { display: block; }
+.pf__done-title .accent { font-weight: 300; }
+.pf__done-note { max-width: 34rem; font-size: var(--fs-body); }
+.pf__again { justify-self: start; padding: 0; font: inherit; color: var(--text); background: none; border: 0; cursor: pointer; }
+
+@media (max-width: 767px) {
+  .pf__sentence { font-size: clamp(1.45rem, 6.6vw, 2rem); line-height: 1.6; }
+  .pf__field input, .pf__field select { height: 1.6em; line-height: 1.6; }
+  .pf__field input { width: 7.5em; }
+  .pf__field[data-field="email"] input { width: 11em; }
+  .pf__send { width: 100%; justify-content: center; }
+  .pf__done-title { font-size: min(var(--fs-display), 19vw); }
+}
