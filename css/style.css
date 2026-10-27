@@ -2151,3 +2151,36 @@ section[tabindex="-1"]:focus { outline: none; }
   background-color: transparent;
   box-shadow: 0 0 0 1000px var(--bg) inset;
 }
+
+/* Type panel: stands in for a project screenshot with the live domain itself. */
+.project__type {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  height: 100%;
+  /* The image layer is oversized for parallax (inset -6% -8%); keep content inside the visible frame. */
+  padding: calc(6% + clamp(1rem, 2vw, 1.75rem)) calc(8% + clamp(1rem, 2vw, 1.75rem));
+  background: var(--surface);
+  color: var(--text);
+}
+
+.project__type-top,
+.project__type-foot { display: flex; justify-content: space-between; gap: 1rem; color: var(--muted); }
+
+.project__type-domain {
+  align-self: center;
+  font-size: clamp(2rem, 5.6vw, 7rem);
+  font-weight: 300;
+  line-height: 0.95;
+  letter-spacing: -0.05em;
+  color: var(--accent);
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 767px) {
+  .project__type-domain { font-size: clamp(2rem, 11vw, 3.4rem); }
+}
+
+.about__resume { justify-self: start; color: var(--text); }
+.about__resume:hover,
+.about__resume:focus-visible { color: var(--accent); }
+.nav__link--file .arrow { margin-left: 0.15em; }

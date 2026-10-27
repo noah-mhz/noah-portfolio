@@ -423,3 +423,20 @@ a:focus-visible .arrow--back { transform: translateX(-0.3em); }
 
 /* Longer domains are sized to the viewport so the arrow always stays on the line. */
 .study-end__link--long { font-size: min(var(--fs-display), 11.5vw); }
+
+/* My role / The hard part — two short answers under the context figures. */
+.study-brief {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(1.5rem, 3vw, 3rem);
+  margin-top: clamp(2.5rem, 6vh, 4rem);
+  padding-top: 1.4rem;
+  border-top: 1px solid var(--border);
+}
+
+.study-brief dt { margin-bottom: 0.9rem; }
+.study-brief dd { font-size: clamp(1.05rem, 1.25vw, 1.35rem); line-height: 1.5; color: var(--text); }
+
+@media (max-width: 767px) {
+  .study-brief { grid-template-columns: 1fr; }
+}
