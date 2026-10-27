@@ -2184,3 +2184,60 @@ section[tabindex="-1"]:focus { outline: none; }
 .about__resume:hover,
 .about__resume:focus-visible { color: var(--accent); }
 .nav__link--file .arrow { margin-left: 0.15em; }
+
+.timeline__resume { display: inline-flex; margin-top: 2rem; color: var(--text); }
+.timeline__resume:hover,
+.timeline__resume:focus-visible { color: var(--accent); }
+
+/* Process strip: four steps in mono, linked by one rule. */
+.process {
+  position: relative;
+  padding: clamp(4rem, 10vh, 7rem) var(--gutter) 0;
+}
+
+.process__list {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--gutter);
+  list-style: none;
+  border-top: 1px solid var(--border);
+}
+
+.process__step {
+  position: relative;
+  display: grid;
+  gap: 0.6rem;
+  padding-top: 1.6rem;
+}
+
+/* A short mint tick marks each step on the shared rule. */
+.process__step::before {
+  content: '';
+  position: absolute;
+  top: -1px;
+  left: 0;
+  width: 1.75rem;
+  height: 1px;
+  background: var(--accent);
+}
+
+.process__name {
+  font-family: var(--font-sans);
+  font-size: clamp(1.25rem, 1.6vw, 1.75rem);
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  text-transform: none;
+  color: var(--text);
+}
+
+.process__note { color: var(--muted); line-height: 1.6; max-width: 22rem; }
+
+@media (max-width: 1023px) {
+  .process__list { grid-template-columns: repeat(2, 1fr); row-gap: 2.5rem; }
+}
+
+@media (max-width: 767px) {
+  .process__list { grid-template-columns: 1fr; row-gap: 0; border-top: 0; }
+  .process__step { padding: 1.4rem 0; border-top: 1px solid var(--border); }
+}
