@@ -444,3 +444,223 @@ a:focus-visible .arrow--back { transform: translateX(-0.3em); }
 /* Case-study section headings in sentence case (project names stay in capitals). */
 .study-lead { text-transform: none; line-height: 1; letter-spacing: -0.04em; }
 .study-lead .l-mask, .study-lead .w-mask { padding-bottom: 0.18em; margin-bottom: -0.18em; }
+
+/* ==========================================================================
+   Case study v2 pieces (Luumens): one role line, a held "decisions" chapter,
+   a recordings grid, an evolution strip, UI tiles and a phone row.
+   ========================================================================== */
+
+.study-brief--one { grid-template-columns: 1fr; max-width: 46ch; margin-left: auto; }
+
+/* Section heads shared by the full-width sections below. */
+.study-chapter__head,
+.study-details__head,
+.study-phones__head {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  column-gap: var(--gutter);
+  align-items: start;
+  margin-bottom: clamp(3rem, 8vh, 5rem);
+}
+
+.study-chapter__head .section-label,
+.study-details__head .section-label,
+.study-phones__head .section-label { grid-column: 1 / 4; }
+
+.study-chapter__head .study-lead,
+.study-details__head .study-lead,
+.study-phones__head .study-lead { grid-column: 4 / 12; }
+
+.study-phones__head .study-copy { grid-column: 4 / 12; max-width: 46ch; }
+
+/* ---------- Decisions chapter ---------- */
+
+.study-chapter { padding: clamp(6rem, 18vh, 12rem) var(--gutter) clamp(3rem, 8vh, 5rem); }
+
+.study-chapter__steps {
+  display: grid;
+  gap: clamp(4rem, 10vh, 6rem);
+  list-style: none;
+}
+
+.study-step__title {
+  margin: 0.9rem 0 0.8rem;
+  font-size: clamp(1.75rem, 1.2rem + 1.6vw, 2.75rem);
+  font-weight: 500;
+  line-height: 1.05;
+  letter-spacing: -0.035em;
+}
+
+.study-step__text { max-width: 40ch; font-size: var(--fs-body); line-height: 1.55; }
+.study-step__media { margin-top: clamp(1.5rem, 4vh, 2.5rem); }
+
+.frame--stage .frame__view {
+  position: relative;
+  aspect-ratio: 16 / 11;
+  overflow: hidden;
+}
+
+.frame--stage .frame__view img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+}
+
+.study-chapter__stage { display: none; }
+
+/* Desktop with motion: the steps scroll past while one frame holds and swaps its screen. */
+@media (min-width: 1024px) and (prefers-reduced-motion: no-preference) {
+  .js .study-chapter__grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    column-gap: var(--gutter);
+    align-items: start;
+  }
+
+  .js .study-chapter__steps { grid-column: 1 / 5; gap: 0; }
+
+  .js .study-step {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 72vh;
+    opacity: 0.28;
+    transition: opacity 0.6s var(--ease-out);
+  }
+
+  .js .study-step.is-active { opacity: 1; }
+  .js .study-step__media { display: none; }
+
+  .js .study-chapter__stage {
+    display: block;
+    grid-column: 6 / 13;
+    position: sticky;
+    top: max(calc(var(--nav-h) + 1rem), calc(50vh - 19.5vw));
+  }
+
+  .js .study-chapter__stage .frame__view img {
+    position: absolute;
+    inset: 0;
+  }
+
+  .js .study-chapter__stage .frame__view img:not(:first-child) { clip-path: inset(100% 0% 0% 0%); }
+}
+
+/* ---------- Recordings grid ---------- */
+
+.study-details { padding: clamp(6rem, 18vh, 12rem) var(--gutter); }
+
+.study-details__grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: clamp(3rem, 7vh, 5rem) var(--gutter);
+}
+
+.study-details__grid figure:nth-child(even) { margin-top: clamp(4rem, 12vh, 8rem); }
+
+/* ---------- How it's evolved ---------- */
+
+.study-evolve {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  column-gap: var(--gutter);
+  align-items: start;
+  padding: clamp(5rem, 14vh, 9rem) var(--gutter);
+}
+
+.study-evolve__text { grid-column: 1 / 5; position: sticky; top: calc(var(--nav-h) + 2rem); }
+.study-evolve__text .section-label { margin-bottom: clamp(1.5rem, 4vh, 2.5rem); }
+.study-evolve__text .study-copy { margin-left: 0; }
+
+.study-evolve__grid {
+  grid-column: 6 / 13;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2rem 1rem;
+}
+
+.study-evolve__shot { aspect-ratio: 16 / 10; border: 1px solid var(--border); }
+
+.study-evolve__shot img {
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+}
+
+/* The earlier version sits back; the current one is in full colour. */
+.study-evolve__grid figure:nth-child(odd) img { filter: grayscale(0.7) brightness(0.7); }
+
+/* ---------- UI tiles ---------- */
+
+.study-ui {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}
+
+.study-ui__tile {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(2rem, 4vw, 3.5rem) clamp(1.25rem, 3vw, 2.5rem);
+  overflow: hidden;
+  background: var(--tile, #F7F7F7);
+}
+
+.study-ui__tile img { width: 100%; height: auto; }
+.study-ui__tile--wide { grid-column: span 2; }
+
+/* ---------- Phones ---------- */
+
+.study-phones { padding: clamp(6rem, 18vh, 12rem) var(--gutter); }
+
+.study-phones__row {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: var(--gutter);
+  list-style: none;
+}
+
+.study-phones__row li:nth-child(even) { margin-top: clamp(3rem, 9vh, 6rem); }
+.study-phones__row img { display: block; width: 100%; height: auto; }
+
+@media (max-width: 1023px) {
+  .study-chapter__head,
+  .study-details__head,
+  .study-phones__head { grid-template-columns: 1fr; row-gap: 1.5rem; }
+
+  .study-chapter__head > *,
+  .study-details__head > *,
+  .study-phones__head > * { grid-column: 1 / -1 !important; }
+
+  .study-evolve { grid-template-columns: 1fr; row-gap: 3rem; }
+  .study-evolve__text,
+  .study-evolve__grid { grid-column: 1 / -1; position: static; }
+
+  /* Phones become a row you swipe. */
+  .study-phones__row {
+    display: flex;
+    gap: 1rem;
+    margin: 0 calc(var(--gutter) * -1);
+    padding: 0 var(--gutter) 1rem;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-padding: 0 var(--gutter);
+    scrollbar-width: none;
+    overscroll-behavior-x: contain;
+  }
+
+  .study-phones__row::-webkit-scrollbar { display: none; }
+  .study-phones__row li { flex: 0 0 34%; scroll-snap-align: start; }
+  .study-phones__row li:nth-child(even) { margin-top: 0; }
+}
+
+@media (max-width: 767px) {
+  .study-details__grid { grid-template-columns: 1fr; }
+  .study-details__grid figure:nth-child(even) { margin-top: 0; }
+  .study-ui { grid-template-columns: 1fr; }
+  .study-ui__tile--wide { grid-column: auto; }
+  .study-phones__row li { flex-basis: 62%; }
+}

@@ -58,6 +58,52 @@ function initMediaReveal({ gsap }, { isMobile }) {
   });
 }
 
+/**
+ * Decisions chapter (desktop): the step nearest the middle of the screen is
+ * active, and the held frame swaps to its screen — the new one wipes up over
+ * the old. Smaller screens and reduced motion get the stacked layout from CSS.
+ */
+function initChapter({ gsap }) {
+  const chapter = $('[data-chapter]');
+  if (!chapter) return undefined;
+  const steps = $$('[data-step]', chapter);
+  const imgs = $$('[data-stage-img]', chapter);
+  const url = $('[data-stage-url]', chapter);
+  let current = -1;
+  let layer = 1;
+
+  const show = (index) => {
+    if (index === current) return;
+    const first = current < 0;
+    current = index;
+    steps.forEach((step, i) => step.classList.toggle('is-active', i === index));
+    if (url) url.textContent = imgs[index].dataset.url || url.textContent;
+    layer += 1;
+    gsap.set(imgs[index], { zIndex: layer });
+    if (first) {
+      gsap.set(imgs[index], { clipPath: 'inset(0% 0% 0% 0%)' });
+      return;
+    }
+    gsap.fromTo(imgs[index],
+      { clipPath: 'inset(100% 0% 0% 0%)', scale: 1.06 },
+      { clipPath: 'inset(0% 0% 0% 0%)', scale: 1, duration: 1.1, ease: 'expo.inOut', overwrite: true });
+  };
+
+  const triggers = steps.map((step, i) => window.ScrollTrigger.create({
+    trigger: step,
+    start: 'top 55%',
+    end: 'bottom 55%',
+    onToggle: (self) => { if (self.isActive) show(i); },
+  }));
+  show(0);
+
+  return () => {
+    triggers.forEach((t) => t.kill());
+    steps.forEach((step) => step.classList.remove('is-active'));
+    gsap.set(imgs, { clearProps: 'clipPath,zIndex,scale' });
+  };
+}
+
 /** Long page captures scroll inside their frame as the frame passes through the viewport. */
 function initScrollThrough({ gsap }) {
   $$('[data-scroll-through]').forEach((frame) => {
@@ -108,10 +154,12 @@ function boot() {
     initTextReveal({ isMobile });
     initMediaReveal({ gsap }, { isMobile });
     if (!isMobile) initScrollThrough({ gsap });
+    const cleanupChapter = isDesktop ? initChapter({ gsap }) : undefined;
     const cleanupNav = initNavigation();
 
     return () => {
       cleanupNav?.();
+      cleanupChapter?.();
       $$('[data-scroll-through]').forEach((frame) => frame.classList.remove('is-scrolling'));
     };
   });

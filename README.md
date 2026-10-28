@@ -43,7 +43,7 @@ functions/api/contact.js  Cloudflare Pages Function: verifies Turnstile, emails 
 - Ganko.sg uses real captures: `assets/images/ganko-home-*.jpg` and the looping
   `assets/video/ganko-scroll.mp4` (plays only in view; poster for reduced motion).
 - Luumens uses real captures: `assets/images/luumens-*.jpg` (homepage card: `luumens-card-*`)
-  and `assets/video/luumens-scroll.mp4`.
+  and `assets/video/luumens-*.mp4` (hero, scroll, menu, tabs, htmfc).
 - Voyagaer uses real captures: `assets/images/voyagaer-*.jpg` (homepage card: `voyagaer-card-*`)
   and `assets/video/voyagaer-scroll.mp4`.
 - Images: Craftism and Evnergy are still Unsplash placeholders (marked with a comment).
