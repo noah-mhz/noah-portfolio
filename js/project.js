@@ -10,6 +10,7 @@ import { initNavigation } from './navigation.js';
 import { initCursor, initMagnetic, initInViewVideo, initClock } from './interactions.js';
 import { initScramble } from './scramble.js';
 import { initTouchFx } from './touch.js';
+import { initContactForm } from './contact.js';
 import { TEXT_TARGETS } from './split.js';
 import { initPageEnter } from './transition.js';
 
@@ -170,6 +171,7 @@ function boot() {
   initMagnetic();
   initScramble();
   initTouchFx({ home: false });
+  initContactForm();
 
   document.fonts?.ready.then(() => ScrollTrigger.refresh());
   window.addEventListener('load', () => ScrollTrigger.refresh(), { once: true });

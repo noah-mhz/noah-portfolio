@@ -47,7 +47,7 @@
         <li><a class="nav__link" href="../../#about" data-nav-link="about">About</a></li>
         <li><a class="nav__link" href="../../#contact" data-nav-link="contact">Contact</a></li>
         <li><a class="nav__link nav__link--file" href="../../assets/docs/Zaw_Min_Htut_Resume_2026.pdf" target="_blank" rel="noopener">Résumé <span class="arrow arrow--diag" aria-hidden="true">↗</span></a></li>
-        <li><a class="nav__link nav__cta" href="../../#start">Start a project</a></li>
+        <li><a class="nav__link nav__cta" href="../../#start" data-pf-open aria-haspopup="dialog" aria-controls="project-form">Start a project</a></li>
       </ul>
       <button class="nav__status" type="button" aria-label="Show navigation" data-nav-status>
         <span class="nav__status-text" data-nav-status-text></span>
@@ -319,7 +319,7 @@
       </h2>
       <div class="study-cta">
         <p class="study-cta__line">Have a project like this in mind?</p>
-        <a class="cta" href="../../#start">
+        <a class="cta" href="../../#start" data-pf-open aria-haspopup="dialog" aria-controls="project-form">
           <span class="cta__fill" aria-hidden="true"></span>
           <span class="marks" aria-hidden="true"></span>
           <span class="cta__label">Start a project <span class="arrow" aria-hidden="true">→</span></span>
@@ -361,5 +361,76 @@
       <span>Designed &amp; built by hand</span>
     </div>
   </footer>
+  <!-- Project enquiry (tinted with this case study's accent): opens from "Start a project". Sends through /api/contact (Cloudflare Pages Function). -->
+  <div class="pf" id="project-form" role="dialog" aria-modal="true" aria-labelledby="pf-title" hidden>
+    <span class="pf__wipe" aria-hidden="true"></span>
+    <div class="pf__panel">
+      <div class="grid-lines pf__grid" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
+      <header class="pf__top label">
+        <span class="pf__item"><span class="status-dot" aria-hidden="true"></span>New project</span>
+        <button class="pf__close" type="button" data-pf-close aria-label="Close the form"><span class="pf__item">Close <span aria-hidden="true">✕</span></span></button>
+      </header>
+
+      <form class="pf__form" novalidate>
+        <h2 class="pf__title" id="pf-title"><span class="pf__mask"><span class="pf__item">Tell me about it.</span></span></h2>
+
+        <p class="pf__sentence">
+          <span class="pf__mask"><span class="pf__item">Hi Noah, I'm</span></span>
+          <label class="pf__field" data-field="name"><span class="sr-only">Your name</span><input name="name" type="text" autocomplete="name" placeholder="your name" maxlength="80" required><span class="pf__rule" aria-hidden="true"></span></label>
+          <span class="pf__mask"><span class="pf__item">from</span></span>
+          <span class="pf__nb"><label class="pf__field" data-field="company"><span class="sr-only">Company (optional)</span><input name="company" type="text" autocomplete="organization" placeholder="company (optional)" maxlength="100"><span class="pf__rule" aria-hidden="true"></span></label><span class="pf__mask"><span class="pf__item">.</span></span></span>
+          <span class="pf__mask"><span class="pf__item">I need</span></span>
+          <label class="pf__field pf__field--select" data-field="type"><span class="sr-only">What you need</span>
+            <select name="type" required>
+              <option value="a new website">a new website</option>
+              <option value="a redesign">a redesign</option>
+              <option value="something else">something else</option>
+            </select><span class="pf__rule" aria-hidden="true"></span></label>
+          <span class="pf__mask"><span class="pf__item">and my budget is</span></span>
+          <span class="pf__nb"><label class="pf__field pf__field--select" data-field="budget"><span class="sr-only">Budget</span>
+            <select name="budget">
+              <option value="not sure yet">not sure yet</option>
+              <option value="under S$3k">under S$3k</option>
+              <option value="S$3k–8k">S$3k–8k</option>
+              <option value="S$8k–15k">S$8k–15k</option>
+              <option value="S$15k+">S$15k+</option>
+            </select><span class="pf__rule" aria-hidden="true"></span></label><span class="pf__mask"><span class="pf__item">.</span></span></span>
+          <span class="pf__mask"><span class="pf__item">Reach me at</span></span>
+          <span class="pf__nb"><label class="pf__field" data-field="email"><span class="sr-only">Your email</span><input name="email" type="email" autocomplete="email" placeholder="you@email.com" maxlength="254" required><span class="pf__rule" aria-hidden="true"></span></label><span class="pf__mask"><span class="pf__item">.</span></span></span>
+        </p>
+
+        <label class="pf__message" data-field="message">
+          <span class="label muted pf__item">Anything else? (optional)</span>
+          <textarea name="message" rows="3" maxlength="2000" placeholder="A link, a deadline, an idea…"></textarea>
+          <span class="pf__rule" aria-hidden="true"></span>
+        </label>
+
+        <!-- Honeypot: hidden from people, filled by bots. -->
+        <label class="pf__hp" aria-hidden="true">Website<input name="website" type="text" tabindex="-1" autocomplete="off"></label>
+
+        <div class="pf__foot">
+          <div class="pf__captcha" data-pf-captcha></div>
+          <button class="pf__send" type="submit">
+            <span class="pf__send-fill" aria-hidden="true"></span>
+            <span class="marks" aria-hidden="true"></span>
+            <span class="pf__send-label">Send <span class="arrow" aria-hidden="true">→</span></span>
+            <span class="pf__send-progress" aria-hidden="true"></span>
+          </button>
+        </div>
+        <p class="pf__status label" role="status" aria-live="polite"></p>
+      </form>
+
+      <!-- Result: the form fades out and this rises in its place (sent or not sent). -->
+      <div class="pf__result" hidden data-state="sent" role="status" aria-live="polite">
+        <p class="label muted pf__result-item" data-pf-r="label">Message sent</p>
+        <p class="pf__result-title"><span class="pf__mask"><span class="pf__result-item" data-pf-r="t1">Thanks —</span></span><span class="pf__mask"><span class="pf__result-item pf__result-accent" data-pf-r="t2">talk soon.</span></span></p>
+        <p class="pf__result-note muted pf__result-item"><span data-pf-r="note">I usually reply within a day or two.</span> You can also reach me at <a class="link-line" href="mailto:noahmhzaw@gmail.com">noahmhzaw@gmail.com</a>.</p>
+        <div class="pf__actions pf__result-item">
+          <button class="pf__action link-line label" type="button" data-pf-retry hidden>Try again</button>
+          <button class="pf__action link-line label" type="button" data-pf-close>Back to the site</button>
+        </div>
+      </div>
+    </div>
+  </div>
 </body>
 </html>
