@@ -21,7 +21,7 @@ export const TOUCH_MOTION = '(prefers-reduced-motion: no-preference) and ((hover
 
 function focusProjects() {
   const cleanups = $$('[data-project] .project__media').map((media) => {
-    const img = $('.project__img', media);
+    const img = $$('.project__img, .project__video', media);
     const clip = $('.project__clip', media);
     const external = /^https?:/.test(media.getAttribute('href') || '');
 

@@ -267,7 +267,8 @@ export function initHoverAnimations() {
   gsap.matchMedia().add(FINE_POINTER_MOTION, () => {
     const disposers = $$('[data-project]').map((project) => {
       const media = $('.project__media', project);
-      const img = $('.project__img', project);
+      // The poster image and, where there is one, the recording move as one.
+      const img = $$('.project__img, .project__video', project);
       const meta = $('.project__meta', project);
       const shift = project.classList.contains('project--alt') ? 10 : -10;
       const imgX = gsap.quickTo(img, 'xPercent', { duration: 1.2, ease: 'power3' });
@@ -469,6 +470,59 @@ export function initHeroWeight() {
       triggers.forEach((trigger) => trigger?.kill());
       titles.forEach((title) => gsap.set($$('.hero__ch', title), { clearProps: 'fontWeight' }));
     };
+  });
+}
+
+/* --------------------------------------------------------------------------
+   Project card recordings: play on hover (fine pointers) or while the card is
+   centred (touch). The poster image stays underneath, so the card never
+   flashes, and reduced motion keeps the still.
+   -------------------------------------------------------------------------- */
+
+export function initCardVideos() {
+  const videos = $$('[data-card-video]');
+  if (!videos.length || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  const controls = videos.map((video) => {
+    const media = video.closest('.project__media');
+    let stopCall = null;
+    video.addEventListener('playing', () => { if (media.dataset.want === '1') media.classList.add('is-playing'); });
+    return {
+      media,
+      start() {
+        media.dataset.want = '1';
+        stopCall?.kill();
+        if (video.preload === 'none') video.preload = 'auto';
+        video.play().catch(() => {});
+      },
+      // Fade back to the poster, then rewind so the next play starts at the hero.
+      stop() {
+        media.dataset.want = '0';
+        media.classList.remove('is-playing');
+        stopCall?.kill();
+        stopCall = gsap.delayedCall(0.7, () => { video.pause(); video.currentTime = 0; });
+      },
+    };
+  });
+
+  gsap.matchMedia().add(FINE_POINTER, () => {
+    const disposers = controls.map((c) => listen([
+      [c.media, 'pointerenter', () => c.start()],
+      [c.media, 'pointerleave', () => c.stop()],
+      [c.media, 'focus', () => c.start()],
+      [c.media, 'blur', () => c.stop()],
+    ]));
+    return () => { disposers.forEach((d) => d()); controls.forEach((c) => c.stop()); };
+  });
+
+  gsap.matchMedia().add('(hover: none), (max-width: 1023px)', () => {
+    const triggers = controls.map((c) => window.ScrollTrigger?.create({
+      trigger: c.media,
+      start: 'top 62%',
+      end: 'bottom 38%',
+      onToggle: (self) => (self.isActive ? c.start() : c.stop()),
+    }));
+    return () => { triggers.forEach((t) => t?.kill()); controls.forEach((c) => c.stop()); };
   });
 }
 

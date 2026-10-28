@@ -1,6 +1,6 @@
 import { initScroll, initAnchors } from './scroll.js';
 import { initIntro, initScrollAnimations, prepareText } from './animations.js';
-import { initCursor, initMagnetic, initHoverAnimations, initClock, initInViewVideo, initHeroWeight, initTimelineDetails } from './interactions.js';
+import { initCursor, initMagnetic, initHoverAnimations, initClock, initInViewVideo, initHeroWeight, initTimelineDetails, initCardVideos } from './interactions.js';
 import { initContactForm } from './contact.js';
 import { initPageLeave } from './transition.js';
 import { initScramble } from './scramble.js';
@@ -38,6 +38,7 @@ function boot() {
   initCursor();
   initMagnetic();
   initHoverAnimations();
+  initCardVideos();
   initHeroWeight();
   initContactForm();
   initTimelineDetails();
