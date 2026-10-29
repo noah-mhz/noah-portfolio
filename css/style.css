@@ -2794,3 +2794,30 @@ html[data-theme="daylight"] .theme-toggle__dot { background: transparent; }
 .theme-veil { background: #6E0B0B; opacity: 0; }  /* safelight red */
 .theme-veil.is-black { background: #050505; }
 .theme-paper { background: #F2F2F0; clip-path: inset(100% 0% 0% 0%); }
+
+/* --------------------------------------------------------------------------
+   Project titles: brand colour while in view, white where they cross the image
+   -------------------------------------------------------------------------- */
+.case { --brand-now: var(--brand); }
+.project { --brand-now: var(--brand); }
+html[data-theme="daylight"] .case,
+html[data-theme="daylight"] .project { --brand-now: var(--brand-day, var(--brand)); }
+
+.project__title,
+.case__title { transition: color 0.9s var(--ease-out); }
+
+.project.is-lit .project__title,
+.project:has(.project__media:hover) .project__title,
+.case.is-lit .case__title { color: var(--brand-now, var(--text)); }
+
+.title-over {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 3;
+  margin: 0;
+  color: #F2F2F0;
+  pointer-events: none;
+  user-select: none;
+  clip-path: inset(50% 50% 50% 50%);
+}

@@ -6,6 +6,7 @@ import { initPageLeave } from './transition.js';
 import { initScramble } from './scramble.js';
 import { initTouchFx } from './touch.js';
 import { initTheme } from './theme.js';
+import { initProjectTitles } from './titles.js';
 
 function boot() {
   const { gsap, ScrollTrigger } = window;
@@ -47,6 +48,7 @@ function boot() {
   initPageLeave();
   initScramble();
   initTouchFx();
+  initProjectTitles();
 
   // Re-measure once late-arriving fonts and images have settled layout.
   document.fonts?.ready.then(() => ScrollTrigger.refresh());
