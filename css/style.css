@@ -579,6 +579,8 @@ a:focus-visible .arrow--diag { transform: translate(0.2em, -0.2em); }
 .nav__status {
   display: none;
   align-items: center;
+  justify-content: flex-end; /* "Menu +" is the anchor; the name clips from the left while the box resizes */
+  overflow: hidden;
   gap: 0.7rem;
   padding: 0.5rem 0.8rem;
   border: 1px solid rgba(242, 242, 240, 0.4);
@@ -598,7 +600,8 @@ a:focus-visible .arrow--diag { transform: translate(0.2em, -0.2em); }
 .nav__status:focus-visible,
 .nav__right.is-open .nav__status { border-color: rgba(242, 242, 240, 0.9); }
 
-.nav__status-text { display: block; }
+.nav__status-text { display: block; flex: none; }
+.nav__status-menu { flex: none; }
 .nav__status-text:not(:empty)::after { content: '·'; margin-left: 0.7rem; opacity: 0.5; }
 .nav__status-menu { display: inline-flex; align-items: center; gap: 0.45rem; }
 .nav__status-icon {

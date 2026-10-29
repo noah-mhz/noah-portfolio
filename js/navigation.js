@@ -77,18 +77,37 @@ export function initNavigation({ reduceMotion = false } = {}) {
     showLinks(false);
   };
 
-  // The section name rolls: the old one leaves upward, the new one rises in and resolves out of noise.
+  // The section name changes inside a box that stays anchored on "Menu +":
+  // the box's left edge glides to the new width while the old name rolls out
+  // and the new one rises in, resolving out of noise.
+  const measure = (value) => {
+    const prev = text.textContent;
+    const prevWidth = status.style.width;
+    text.textContent = value;
+    status.style.width = 'auto';
+    const width = status.getBoundingClientRect().width;
+    text.textContent = prev;
+    status.style.width = prevWidth;
+    return width;
+  };
+
   const setLabel = (next) => {
     if (next === label) return;
     const was = label;
     label = next;
-    if (!next || !statusShown || !pace) { text.textContent = next; return; }
-    if (!was) { text.textContent = next; return; }
+    if (!next || !statusShown || !pace || !was) { text.textContent = next; gsap.set(status, { clearProps: 'width' }); return; }
+
+    const from = status.getBoundingClientRect().width;
+    const to = measure(next);
+    gsap.fromTo(status, { width: from }, {
+      width: to, duration: 0.7, ease: 'expo.inOut', overwrite: 'auto',
+      onComplete: () => gsap.set(status, { clearProps: 'width' }),
+    });
     gsap.to(text, {
-      yPercent: -110, duration: 0.3, ease: 'power3.in', overwrite: true,
+      yPercent: -110, duration: 0.28, ease: 'power3.in', overwrite: true,
       onComplete: () => {
-        text.textContent = next;
-        gsap.fromTo(text, { yPercent: 110 }, { yPercent: 0, duration: 0.6, ease: 'power4.out' });
+        text.textContent = label;
+        gsap.fromTo(text, { yPercent: 110 }, { yPercent: 0, duration: 0.55, ease: 'power4.out' });
         scramble(text, { duration: 0.55 });
       },
     });
@@ -102,6 +121,14 @@ export function initNavigation({ reduceMotion = false } = {}) {
     render();
   };
 
+  // One section leaves and the next enters in the same scroll tick; settle on
+  // the next frame so the button never blinks out between two sections.
+  let queued = 0;
+  const schedule = () => {
+    if (queued) return;
+    queued = requestAnimationFrame(() => { queued = 0; update(); });
+  };
+
   zones.forEach((zone) => {
     ScrollTrigger.create({
       trigger: zone.trigger,
@@ -110,7 +137,7 @@ export function initNavigation({ reduceMotion = false } = {}) {
       onToggle: (self) => {
         if (self.isActive) active.add(zone);
         else active.delete(zone);
-        update();
+        schedule();
       },
     });
   });
