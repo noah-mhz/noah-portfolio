@@ -8,6 +8,7 @@
   <meta name="theme-color" content="#0A0A0A">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230A0A0A'/%3E%3Ccircle cx='16' cy='16' r='4' fill='%23A6FFCB'/%3E%3C/svg%3E">
   <style>html{background:#0A0A0A}</style>
+  <script>try{if(localStorage.getItem("theme")==="daylight"){var d=document.documentElement;d.setAttribute("data-theme","daylight");d.style.background="#F2F2F0";}}catch(e){}</script>
   <!-- Absolute paths: Cloudflare Pages serves this page for any missing URL, at any depth. -->
   <link rel="preload" href="/assets/fonts/inter-tight-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="/assets/fonts/jetbrains-mono-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
@@ -66,7 +67,7 @@
       translate: -50% -50%;
       animation: nf-hunt 9s var(--ease-in-out) infinite;
     }
-    .nf-finder .marks { inset: 0; opacity: 1; transform: none; --mark: 18px; --mark-color: rgba(242, 242, 240, 0.85); }
+    .nf-finder .marks { inset: 0; opacity: 1; transform: none; --mark: 18px; --mark-color: rgba(var(--fg-rgb), 0.85); }
     .nf-cross { position: absolute; top: 50%; left: 50%; width: 18px; height: 18px; translate: -50% -50%; }
     .nf-cross::before, .nf-cross::after { content: ''; position: absolute; background: var(--accent); }
     .nf-cross::before { top: 50%; left: 0; right: 0; height: 1px; }

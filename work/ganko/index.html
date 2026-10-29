@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
+  <script>try{if(localStorage.getItem("theme")==="daylight"){var d=document.documentElement;d.setAttribute("data-theme","daylight");d.style.background="#F2F2F0";}}catch(e){}</script>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Ganko.sg — Case Study — Noah</title>
   <meta name="description" content="Website design and build for Ganko Sushi Singapore, the Singapore flagship of a Japanese sushi institution founded in Osaka in 1963.">
@@ -25,7 +26,7 @@
   <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js" defer></script>
   <script type="module" src="../../js/project.js"></script>
 </head>
-<body class="study-page" style="--accent: #F0453B;">  <!-- Case tint: the client's colour replaces mint on this page. -->
+<body class="study-page" style="--case: #F0453B; --case-day: #D90C18; --case-inv: #19E6D8;">  <!-- Case tint: the client's colour replaces mint on this page. -->
   <a class="skip-link" href="#main">Skip to content</a>
 
   <div class="grid-lines" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
@@ -40,6 +41,7 @@
     <a class="nav__logo" href="../../" aria-label="Noah — home">Noah</a>
     <span class="nav__clock" data-clock aria-hidden="true">— SGT</span>
     <nav class="nav__right" aria-label="Primary" data-nav>
+      <button class="theme-toggle" type="button" data-theme-toggle aria-pressed="false" aria-label="Darkroom mode — switch to daylight"><span class="theme-toggle__dot" aria-hidden="true"></span><span class="theme-toggle__label">Darkroom</span></button>
       <ul class="nav__list" id="nav-list">
         <li><a class="nav__link" href="../../#work" data-nav-link="work">Work</a></li>
         <li><a class="nav__link" href="../../#about" data-nav-link="about">About</a></li>

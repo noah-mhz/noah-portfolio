@@ -5,11 +5,13 @@ import { initContactForm } from './contact.js';
 import { initPageLeave } from './transition.js';
 import { initScramble } from './scramble.js';
 import { initTouchFx } from './touch.js';
+import { initTheme } from './theme.js';
 
 function boot() {
   const { gsap, ScrollTrigger } = window;
 
   initClock();
+  initTheme();
   initInViewVideo();
 
   // If the CDN fails, the page stays fully readable with no motion.

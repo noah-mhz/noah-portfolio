@@ -40,11 +40,14 @@
   --surface-2: #151515;
   --text: #F2F2F0;
   --muted: #858585;
+  --fg-rgb: 242, 242, 240;   /* text colour as channels, for translucent lines */
+  --bg-rgb: 10, 10, 10;
+  --error: #FF8A8A;
   --accent: #A6FFCB;
-  --border: rgba(242, 242, 240, 0.1);
-  --border-soft: rgba(242, 242, 240, 0.045);
-  --tick: rgba(242, 242, 240, 0.38);          /* quiet markers: section ticks, steps */
-  --lift: rgba(242, 242, 240, 0.022);         /* lifted section surface; the grid still shows through */
+  --border: rgba(var(--fg-rgb), 0.1);
+  --border-soft: rgba(var(--fg-rgb), 0.045);
+  --tick: rgba(var(--fg-rgb), 0.38);          /* quiet markers: section ticks, steps */
+  --lift: rgba(var(--fg-rgb), 0.022);         /* lifted section surface; the grid still shows through */
 
   --font-sans: 'Inter Tight', 'Helvetica Neue', Arial, system-ui, sans-serif;
   --font-mono: 'JetBrains Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
@@ -280,7 +283,7 @@ a:focus-visible .arrow--diag { transform: translate(0.2em, -0.2em); }
  */
 .marks {
   --mark: 14px;
-  --mark-color: rgba(242, 242, 240, 0.75);
+  --mark-color: rgba(var(--fg-rgb), 0.75);
   position: absolute;
   inset: 14px;
   pointer-events: none;
@@ -365,7 +368,7 @@ a:focus-visible .arrow--diag { transform: translate(0.2em, -0.2em); }
   right: var(--gutter);
   bottom: calc(var(--gutter) * 0.5);
   height: 1px;
-  background: rgba(242, 242, 240, 0.08);
+  background: rgba(var(--fg-rgb), 0.08);
   overflow: hidden;
 }
 
@@ -424,7 +427,7 @@ a:focus-visible .arrow--diag { transform: translate(0.2em, -0.2em); }
   bottom: 0;
   left: -1px;
   width: 1px;
-  background: rgba(242, 242, 240, 0.16);
+  background: rgba(var(--fg-rgb), 0.16);
   transform: scaleY(0);
   transform-origin: 50% 0%;
   transition: transform 1.8s var(--ease-in-out);
@@ -434,7 +437,7 @@ a:focus-visible .arrow--diag { transform: translate(0.2em, -0.2em); }
 .grid-lines span:nth-child(3)::after { transition-delay: 0.24s; }
 .grid-lines span:nth-child(4)::after { transition-delay: 0.36s; }
 
-.grid-lines.is-lit span { border-color: rgba(242, 242, 240, 0.08); }
+.grid-lines.is-lit span { border-color: rgba(var(--fg-rgb), 0.08); }
 .grid-lines.is-lit span::after { transform: scaleY(1); }
 .grid-lines:not(.is-lit) span::after { transition-delay: 0s; }
 
@@ -560,6 +563,10 @@ a:focus-visible .arrow--diag { transform: translate(0.2em, -0.2em); }
 /* The opened menu needs the clock's space. */
 .nav__clock { transition: opacity 0.3s var(--ease-out); }
 .nav:has(.nav__right.is-open) .nav__clock { opacity: 0; }
+/* With the theme toggle, the full link row reaches the centre below ~1800px, so the clock waits for the folded nav. */
+@media (max-width: 1799px) {
+  .nav:has(.nav__right:not(.has-status)) .nav__clock { opacity: 0; }
+}
 
 .nav__right {
   position: relative;
@@ -583,7 +590,7 @@ a:focus-visible .arrow--diag { transform: translate(0.2em, -0.2em); }
   overflow: hidden;
   gap: 0.7rem;
   padding: 0.5rem 0.8rem;
-  border: 1px solid rgba(242, 242, 240, 0.4);
+  border: 1px solid rgba(242, 242, 240, 0.4); /* fixed: the nav renders through difference blending */
   background: none;
   color: inherit;
   font-family: var(--font-mono);
@@ -2179,7 +2186,7 @@ section[tabindex="-1"]:focus { outline: none; }
 
 .pf__field select option { color: var(--text); background: var(--surface); }
 
-::placeholder { color: rgba(242, 242, 240, 0.28); opacity: 1; }
+::placeholder { color: rgba(var(--fg-rgb), 0.28); opacity: 1; }
 
 /* Underlines draw in; the active field brightens to mint. */
 .pf__rule {
@@ -2188,7 +2195,7 @@ section[tabindex="-1"]:focus { outline: none; }
   right: 0;
   bottom: 0.12em;
   height: 1px;
-  background: rgba(242, 242, 240, 0.35);
+  background: rgba(var(--fg-rgb), 0.35);
   transform-origin: left;
   transition: background 0.4s var(--ease-out), height 0.4s var(--ease-out);
 }
@@ -2197,7 +2204,7 @@ section[tabindex="-1"]:focus { outline: none; }
 .pf__message:focus-within .pf__rule { background: var(--accent); height: 2px; }
 
 .pf__field.is-invalid .pf__rule,
-.pf__message.is-invalid .pf__rule { background: #FF8A8A; }
+.pf__message.is-invalid .pf__rule { background: var(--error); }
 
 .pf__message {
   position: relative;
@@ -2291,7 +2298,7 @@ section[tabindex="-1"]:focus { outline: none; }
 }
 
 .pf__status { min-height: 1.5em; margin-top: 1.25rem; color: var(--muted); }
-.pf__status.is-error { color: #FF8A8A; }
+.pf__status.is-error { color: var(--error); }
 
 .pf__result { display: grid; gap: 1.5rem; align-content: center; }
 .pf__result[hidden] { display: none; }
@@ -2306,7 +2313,7 @@ section[tabindex="-1"]:focus { outline: none; }
 
 .pf__result-title .pf__mask { display: block; }
 .pf__result-accent { font-weight: 300; color: var(--accent); }
-.pf__result[data-state="failed"] .pf__result-accent { color: #FF8A8A; }
+.pf__result[data-state="failed"] .pf__result-accent { color: var(--error); }
 .pf__result-note { max-width: 36rem; font-size: var(--fs-body); }
 .pf__actions { display: flex; flex-wrap: wrap; gap: 1rem 2.5rem; margin-top: 0.5rem; }
 .pf__action { padding: 0; font: inherit; color: var(--text); background: none; border: 0; cursor: pointer; }
@@ -2509,7 +2516,7 @@ section[tabindex="-1"]:focus { outline: none; }
 
 .cap__meta,
 .process__note { color: var(--muted); }
-.tl__points { color: rgba(242, 242, 240, 0.82); }
+.tl__points { color: rgba(var(--fg-rgb), 0.82); }
 .tl__points li + li { margin-top: 0.35rem; }
 
 /* Section headings in sentence case; capitals are kept for the hero, the
@@ -2693,3 +2700,97 @@ html.pt-enter::after {
 
 /* Sideways drags bold the hero headline; vertical swipes still scroll. */
 .hero__title.is-draggable { touch-action: pan-y; }
+
+/* ==========================================================================
+   Darkroom / Daylight
+   Darkroom (dark) is the default. html[data-theme="daylight"] swaps the
+   tokens; everything built on them follows.
+   ========================================================================== */
+
+/* Things drawn through difference blending, or over photographs, keep fixed
+   light colours in both modes so they always invert / read correctly. */
+.nav { color: #F2F2F0; }
+.cursor__circle { background: #F2F2F0; }
+.cursor.is-hover .cursor__circle { box-shadow: inset 0 0 0 2px #F2F2F0; }
+.cursor-frame { --mark-color: #F2F2F0; }
+.project__rec, .project__soon, .project__focus { color: #F2F2F0; border-color: rgba(242, 242, 240, 0.14); }
+.hero__reel-tag { color: #A6A6A2; }
+.project__media .marks,
+.hero__reel .marks,
+.reel-flyer .marks,
+.case__media .marks,
+.cap-preview .marks { --mark-color: rgba(242, 242, 240, 0.75); }
+
+html[data-theme="daylight"] {
+  --bg: #F2F2F0;
+  --surface: #E8E8E4;
+  --surface-2: #E2E2DD;
+  --text: #0A0A0A;
+  --muted: #6B6B67;
+  --accent: #0B7A53;
+  --fg-rgb: 10, 10, 10;
+  --bg-rgb: 242, 242, 240;
+  --error: #B3261E;
+  --border: rgba(10, 10, 10, 0.12);
+  --border-soft: rgba(10, 10, 10, 0.06);
+  --tick: rgba(10, 10, 10, 0.38);
+  --lift: rgba(10, 10, 10, 0.025);
+  color-scheme: light;
+}
+
+/* The nav is difference-blended: colours inside it are the inverse of what
+   should appear on paper (paper − green shows as green). */
+html[data-theme="daylight"] .nav { --accent: #E7789D; }
+
+/* Case studies: each client colour, deepened just enough to read on paper. */
+.study-page { --accent: var(--case, #A6FFCB); }
+html[data-theme="daylight"] .study-page { --accent: var(--case-day, var(--case, #0B7A53)); }
+html[data-theme="daylight"] .study-page .nav { --accent: var(--case-inv, #E7789D); }
+
+/* ---------- The switch ---------- */
+
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.25rem 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font-family: var(--font-mono);
+  font-size: var(--fs-meta);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.theme-toggle__dot {
+  width: 0.6rem;
+  height: 0.6rem;
+  border: 1px solid currentColor;
+  border-radius: 50%;
+  background: currentColor;
+  transition: background-color 0.4s var(--ease-out);
+}
+
+html[data-theme="daylight"] .theme-toggle__dot { background: transparent; }
+
+@media (max-width: 767px) {
+  .theme-toggle__label { display: none; }
+  .theme-toggle { padding: 0.4rem; }
+}
+
+/* ---------- The develop transition layers ---------- */
+
+.theme-veil,
+.theme-paper {
+  position: fixed;
+  inset: 0;
+  z-index: 600;
+  pointer-events: none;
+}
+
+.theme-veil { background: #6E0B0B; opacity: 0; }  /* safelight red */
+.theme-veil.is-black { background: #050505; }
+.theme-paper { background: #F2F2F0; clip-path: inset(100% 0% 0% 0%); }

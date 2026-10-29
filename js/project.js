@@ -10,6 +10,7 @@ import { initNavigation } from './navigation.js';
 import { initCursor, initMagnetic, initInViewVideo, initClock } from './interactions.js';
 import { initScramble } from './scramble.js';
 import { initTouchFx } from './touch.js';
+import { initTheme } from './theme.js';
 import { initContactForm } from './contact.js';
 import { initGlitch } from './glitch.js';
 import { TEXT_TARGETS } from './split.js';
@@ -51,12 +52,14 @@ function initMediaReveal({ gsap }, { isMobile }) {
       .fromTo(img, { scale: 1.12 }, { scale: 1, duration: 2, ease: 'expo.out' }, 0);
   });
 
-  gsap.fromTo('[data-swatch]', { scaleY: 0 }, {
-    scaleY: 1,
-    duration: 1.2,
-    ease: 'expo.inOut',
-    stagger: 0.1,
-    scrollTrigger: { trigger: '.study-palette', start: 'top 85%', once: true },
+  $$('.study-palette').forEach((palette) => {
+    gsap.fromTo($$('[data-swatch]', palette), { scaleY: 0 }, {
+      scaleY: 1,
+      duration: 1.2,
+      ease: 'expo.inOut',
+      stagger: 0.1,
+      scrollTrigger: { trigger: palette, start: 'top 85%', once: true },
+    });
   });
 }
 
@@ -132,6 +135,7 @@ function boot() {
 
   initInViewVideo();
   initClock();
+  initTheme();
 
   if (!gsap || !ScrollTrigger) {
     document.documentElement.classList.remove('js', 'pt-enter');
