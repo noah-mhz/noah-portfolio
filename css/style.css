@@ -2823,7 +2823,6 @@ html[data-theme="daylight"] .project { --brand-now: var(--brand-day, var(--brand
   clip-path: inset(50% 50% 50% 50%);
 }
 
-.project__media--soon { cursor: default; }
 
 /* Back to Darkroom: the new theme opens through a viewfinder from the centre. */
 html.vt-finder::view-transition-old(root),
