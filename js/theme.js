@@ -5,7 +5,8 @@
  *
  * To Daylight the page develops like a print: a red safelight wash, a sheet
  * of paper rising from the bottom, then the light page fading up through it.
- * Back to Darkroom is "lights off": a dip to black, and the grid redraws.
+ * Back to Darkroom closes through the viewfinder: a dark frame opens from the
+ * centre and widens to the screen edges (a dip to black where unsupported).
  */
 
 const KEY = 'theme';
@@ -61,6 +62,40 @@ export function initTheme() {
         .add(() => { apply('daylight'); gsap.set(veil, { opacity: 0 }); }, 0.85)
         // The image comes up through the paper: washed out first, then full contrast.
         .to(paper, { opacity: 0, duration: 0.9, ease: 'power2.in' }, 0.9);
+      return;
+    }
+
+    // Back to Darkroom through the lens: a dark frame opens from the centre, corner
+    // marks riding its edges, with Daylight still outside it. View Transitions let
+    // both themes be on screen at once; older browsers get the dip to black below.
+    if (document.startViewTransition) {
+      const root = document.documentElement;
+      const finder = document.createElement('div');
+      finder.className = 'theme-finder';
+      finder.setAttribute('aria-hidden', 'true');
+      finder.innerHTML = '<i></i><i></i><i></i><i></i><b></b>';
+      root.classList.add('vt-finder');
+      const vt = document.startViewTransition(() => {
+        apply('darkroom');
+        document.body.append(finder);
+      });
+      const EASE = 'cubic-bezier(0.76, 0, 0.24, 1)';
+      const DUR = 950;
+      vt.ready.then(() => {
+        root.animate(
+          { clipPath: ['inset(46% 46% 46% 46%)', 'inset(0% 0% 0% 0%)'] },
+          { duration: DUR, easing: EASE, pseudoElement: '::view-transition-new(root)', fill: 'both' },
+        );
+        finder.animate(
+          { inset: ['46% 46% 46% 46%', '0% 0% 0% 0%'] },
+          { duration: DUR, easing: EASE, fill: 'both' },
+        );
+      }).catch(() => {});
+      vt.finished.finally(() => {
+        root.classList.remove('vt-finder');
+        gsap.to(finder, { autoAlpha: 0, duration: 0.5, ease: 'power2.out', onComplete: () => finder.remove() });
+        done();
+      });
       return;
     }
 

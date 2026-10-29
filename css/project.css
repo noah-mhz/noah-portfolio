@@ -961,3 +961,6 @@ a:focus-visible .arrow--back { transform: translateX(-0.3em); }
 .colo-daylight__toggle { color: var(--text); }
 .colo-daylight__toggle .theme-toggle__label { display: inline; }
 .colo-daylight__palette { margin-top: 1rem; }
+
+/* A live site that isn't launched yet: the address, unlinked. */
+.study-end__soon { display: inline-flex; white-space: nowrap; color: var(--muted); }

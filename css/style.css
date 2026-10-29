@@ -1123,6 +1123,7 @@ a:focus-visible .arrow--diag { transform: translate(0.2em, -0.2em); }
 /* Case study first, live site second. */
 .project__links { display: flex; flex-wrap: wrap; gap: 0.75rem 1.75rem; }
 .project__links .project__link.muted { color: var(--muted); }
+.project__links .project__link.accent { color: var(--accent); }
 
 .project__media.is-hover .marks,
 .project__media:focus-visible .marks {
@@ -2821,3 +2822,21 @@ html[data-theme="daylight"] .project { --brand-now: var(--brand-day, var(--brand
   user-select: none;
   clip-path: inset(50% 50% 50% 50%);
 }
+
+.project__media--soon { cursor: default; }
+
+/* Back to Darkroom: the new theme opens through a viewfinder from the centre. */
+html.vt-finder::view-transition-old(root),
+html.vt-finder::view-transition-new(root) { animation: none; mix-blend-mode: normal; }
+html.vt-finder::view-transition-new(root) { clip-path: inset(46% 46% 46% 46%); }
+
+.theme-finder { position: fixed; inset: 46%; z-index: 650; pointer-events: none; --m: clamp(14px, 2vw, 26px); }
+.theme-finder i { position: absolute; width: var(--m); height: var(--m); border: 0 solid #F2F2F0; }
+.theme-finder i:nth-child(1) { top: 14px; left: 14px; border-top-width: 1px; border-left-width: 1px; }
+.theme-finder i:nth-child(2) { top: 14px; right: 14px; border-top-width: 1px; border-right-width: 1px; }
+.theme-finder i:nth-child(3) { bottom: 14px; left: 14px; border-bottom-width: 1px; border-left-width: 1px; }
+.theme-finder i:nth-child(4) { bottom: 14px; right: 14px; border-bottom-width: 1px; border-right-width: 1px; }
+.theme-finder b { position: absolute; top: 50%; left: 50%; width: 16px; height: 16px; translate: -50% -50%; }
+.theme-finder b::before, .theme-finder b::after { content: ''; position: absolute; background: #A6FFCB; }
+.theme-finder b::before { top: 50%; left: 0; right: 0; height: 1px; }
+.theme-finder b::after { left: 50%; top: 0; bottom: 0; width: 1px; }

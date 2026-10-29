@@ -25,6 +25,16 @@ function focusProjects() {
     const clip = $('.project__clip', media);
     const external = /^https?:/.test(media.getAttribute('href') || '');
 
+    // Not linked yet (site and case study coming soon): the image focuses, no label.
+    if (!media.hasAttribute('href')) {
+      const focusImg = (on) => {
+        media.classList.toggle('is-focus', on);
+        gsap.to(img, { scale: on ? 1.04 : 1, duration: 1.2, ease: 'expo.out', overwrite: 'auto' });
+      };
+      const t = ScrollTrigger.create({ trigger: media, start: 'top 62%', end: 'bottom 38%', onToggle: (self) => focusImg(self.isActive) });
+      return () => { t.kill(); media.classList.remove('is-focus'); gsap.set(img, { clearProps: 'scale' }); };
+    }
+
     const label = document.createElement('span');
     label.className = 'project__focus label';
     label.setAttribute('aria-hidden', 'true');
