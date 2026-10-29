@@ -28,7 +28,10 @@ function focusProjects() {
     const label = document.createElement('span');
     label.className = 'project__focus label';
     label.setAttribute('aria-hidden', 'true');
-    label.innerHTML = external ? 'Visit site <span class="arrow arrow--diag">↗</span>' : 'View case <span class="arrow">→</span>';
+    const colophon = /colophon/.test(media.getAttribute('href') || '');
+    label.innerHTML = external ? 'Visit site <span class="arrow arrow--diag">↗</span>'
+      : colophon ? 'Read the colophon <span class="arrow">→</span>'
+        : 'View case <span class="arrow">→</span>';
     clip.appendChild(label);
     gsap.set(label, { autoAlpha: 0, y: 10 });
 

@@ -68,7 +68,7 @@ export function initPageLeave() {
     if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || link.target === '_blank') return;
 
     const url = new URL(link.href, window.location.href);
-    if (url.origin !== window.location.origin || !/\/work\/[^/]+\/?$/.test(url.pathname)) return;
+    if (url.origin !== window.location.origin || !/\/(work\/[^/]+|colophon)\/?$/.test(url.pathname)) return;
 
     const source = sourceFor(link);
     if (!source?.el) return;

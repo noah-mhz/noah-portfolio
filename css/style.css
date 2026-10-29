@@ -1046,6 +1046,42 @@ a:focus-visible .arrow--diag { transform: translate(0.2em, -0.2em); }
 .project__media:focus-visible .project__video,
 .project__media.is-focus .project__video { filter: grayscale(0) brightness(0.95); }
 
+/* Frame zero: a mint REC tag pulses while the site's own recording plays. */
+.project__rec {
+  position: absolute;
+  top: 26px;
+  right: 28px;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4rem 0.65rem;
+  border: 1px solid var(--border);
+  background: rgba(10, 10, 10, 0.72);
+  color: var(--text);
+  opacity: 0;
+  transform: translateY(-6px);
+  transition: opacity 0.5s var(--ease-out), transform 0.5s var(--ease-out);
+  pointer-events: none;
+}
+
+.project__rec::before {
+  content: '';
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--accent);
+  animation: rec-pulse 1.2s steps(2, jump-none) infinite;
+}
+
+.project__media.is-playing .project__rec { opacity: 1; transform: none; }
+
+@keyframes rec-pulse { 50% { opacity: 0.15; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .project__rec::before { animation: none; }
+}
+
 /* Projects without a case study yet. */
 .project__soon {
   position: absolute;
