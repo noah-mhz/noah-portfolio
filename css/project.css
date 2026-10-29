@@ -883,3 +883,67 @@ a:focus-visible .arrow--back { transform: translateX(-0.3em); }
   .colo-type { grid-template-columns: 1fr; }
   .colo-weights { grid-template-columns: repeat(2, 1fr); }
 }
+
+/* ---------- Colophon: the 404 glitch ---------- */
+
+.colo-glitch { grid-column: 1 / -1; }
+.colo-glitch .frame__url { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+.colo-glitch__view {
+  position: relative;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  background: #0A0A0A;
+}
+
+.colo-glitch__view > img,
+.colo-glitch__slice,
+.colo-glitch__ghost {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.colo-glitch__view > img { object-fit: cover; }
+
+/* Without JavaScript (or with reduced motion) the 404 simply shows. */
+.colo-glitch__a { opacity: 0; }
+
+.colo-glitch__slice,
+.colo-glitch__ghost {
+  background: center / cover no-repeat;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.colo-glitch__ghost { mix-blend-mode: screen; }
+.colo-glitch__ghost--mint { filter: grayscale(1) sepia(1) hue-rotate(95deg) saturate(5) brightness(1.1); }
+.colo-glitch__ghost--white { filter: grayscale(1) brightness(1.5); }
+
+.colo-glitch__live {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1440px;
+  height: 900px;
+  border: 0;
+  transform-origin: 0 0;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.colo-glitch figcaption { justify-content: flex-start; gap: 2rem; }
+
+.colo-glitch__replay {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--text);
+  font: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
+  cursor: pointer;
+}

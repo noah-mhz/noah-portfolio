@@ -152,7 +152,8 @@
   <script>
     (function () {
       // Show the missing path (trimmed), the Singapore time, and a readout that keeps hunting.
-      var path = decodeURIComponent(location.pathname || '/');
+      // Previewed inside the colophon, the frame passes the 'missing' path in the hash.
+      var path = decodeURIComponent((location.hash.indexOf('#/') === 0 ? location.hash.slice(1) : location.pathname) || '/');
       var el = document.querySelector('[data-nf-path]');
       if (el) el.textContent = path.length > 42 ? path.slice(0, 40) + '…' : path;
 

@@ -11,6 +11,7 @@ import { initCursor, initMagnetic, initInViewVideo, initClock } from './interact
 import { initScramble } from './scramble.js';
 import { initTouchFx } from './touch.js';
 import { initContactForm } from './contact.js';
+import { initGlitch } from './glitch.js';
 import { TEXT_TARGETS } from './split.js';
 import { initPageEnter } from './transition.js';
 
@@ -172,6 +173,7 @@ function boot() {
   initScramble();
   initTouchFx({ home: false });
   initContactForm();
+  initGlitch({ gsap, ScrollTrigger });
 
   document.fonts?.ready.then(() => ScrollTrigger.refresh());
   window.addEventListener('load', () => ScrollTrigger.refresh(), { once: true });
