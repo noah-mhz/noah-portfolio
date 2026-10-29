@@ -2854,3 +2854,13 @@ html.vt-finder::view-transition-new(root) { clip-path: inset(46% 46% 46% 46%); }
 @media (max-width: 419px) {
   .nav__list li:has(> [data-nav-link="work"]) { display: none; }
 }
+
+/* Phones: a long section name never pushes the bar off screen. Below 420px the
+   switch steps aside while the section button shows (it's back at the top). */
+@media (max-width: 767px) {
+  .nav__status-text { flex: 0 1 auto; min-width: 0; max-width: calc(100vw - 20rem); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+}
+@media (max-width: 419px) {
+  .nav__right.has-status .theme-toggle--nav { display: none; }
+  .nav__status-text { max-width: calc(100vw - 17.5rem); }
+}
