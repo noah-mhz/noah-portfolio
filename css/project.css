@@ -783,3 +783,103 @@ a:focus-visible .arrow--back { transform: translateX(-0.3em); }
   .journey__steps li:not(:last-child)::after { content: '↓'; top: auto; bottom: -1.5rem; right: auto; left: 1.25rem; transform: none; }
   .study-ui:has(.study-ui__tile--half) { grid-template-columns: 1fr; }
 }
+
+/* ==========================================================================
+   Colophon
+   ========================================================================== */
+
+.colophon-hero .study-hero__title { padding-bottom: clamp(3rem, 8vh, 5rem); }
+
+.colo-type {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: 7fr 5fr;
+  gap: var(--gutter);
+}
+
+.colo-specimen {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: clamp(18rem, 40vh, 28rem);
+  padding: clamp(1.5rem, 3vw, 2.5rem);
+  border: 1px solid var(--border);
+  background: var(--surface);
+}
+
+/* The variable font breathes through its whole weight range. */
+.colo-specimen__big {
+  font-size: clamp(8rem, 20vw, 18rem);
+  font-weight: 100;
+  line-height: 0.8;
+  letter-spacing: -0.06em;
+  animation: colo-breathe 6s var(--ease-in-out) infinite alternate;
+}
+
+@keyframes colo-breathe {
+  from { font-weight: 100; }
+  to { font-weight: 900; }
+}
+
+.colo-specimen__mono {
+  font-family: var(--font-mono);
+  font-size: clamp(1.25rem, 2.2vw, 2rem);
+  line-height: 1.4;
+  letter-spacing: 0.02em;
+}
+
+.colo-specimen__mono [data-clock] { color: var(--accent); }
+
+.colo-weights {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--gutter);
+  list-style: none;
+  font-size: var(--fs-title);
+  letter-spacing: -0.04em;
+}
+
+.colo-weights li { padding-top: 1rem; border-top: 1px solid var(--border); }
+
+.colo-tints {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem 2.5rem;
+  margin-top: clamp(2rem, 5vh, 3rem);
+  list-style: none;
+}
+
+.colo-tints a { display: inline-flex; align-items: center; gap: 0.75rem; font-size: var(--fs-lead); letter-spacing: -0.02em; }
+.colo-tints__dot { width: 0.7rem; height: 0.7rem; border-radius: 50%; background: var(--tint); }
+
+/* A live viewfinder: the corner marks close in when you point at it. */
+.colo-frame {
+  grid-column: 1 / -1;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: clamp(14rem, 34vh, 22rem);
+  border: 1px solid var(--border);
+  background: var(--surface);
+}
+
+.colo-frame .marks { inset: 18px; }
+.colo-frame:hover .marks,
+.colo-frame:focus-visible .marks,
+.colo-frame:active .marks { opacity: 1; transform: scale(1); }
+.colo-frame__label { color: var(--muted); }
+
+@media (hover: none) {
+  .colo-frame .marks { opacity: 1; transform: scale(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .colo-specimen__big { animation: none; font-weight: 500; }
+}
+
+@media (max-width: 767px) {
+  .colo-type { grid-template-columns: 1fr; }
+  .colo-weights { grid-template-columns: repeat(2, 1fr); }
+}

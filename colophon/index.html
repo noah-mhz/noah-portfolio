@@ -1,0 +1,285 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Colophon — Noah</title>
+  <meta name="description" content="How noah-portfolio was made: the type, colour, grid, motion rules and stack behind the site.">
+  <meta name="theme-color" content="#0A0A0A">
+  <meta property="og:title" content="Colophon — Noah">
+  <meta property="og:description" content="How this site was made.">
+  <meta property="og:type" content="article">
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230A0A0A'/%3E%3Ccircle cx='16' cy='16' r='4' fill='%23A6FFCB'/%3E%3C/svg%3E">
+
+  <style>html{background:#0A0A0A}</style>
+  <link rel="preload" href="../assets/fonts/inter-tight-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="../assets/fonts/jetbrains-mono-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/project.css">
+
+  <script>document.documentElement.classList.add('js');
+    // Arriving from the homepage transition: paint its image on the first frame.
+    try { var pt = sessionStorage.getItem('pt:image'); if (pt !== null && !matchMedia('(prefers-reduced-motion: reduce)').matches) { document.documentElement.classList.add('pt-enter'); if (pt) document.documentElement.style.setProperty('--pt-src', 'url("' + pt.replace(/"/g, '') + '")'); } } catch (e) {}
+  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js" defer></script>
+  <script type="module" src="../js/project.js"></script>
+</head>
+<body class="study-page colophon-page">
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <div class="grid-lines" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
+  <div class="progress" aria-hidden="true"><span class="progress__bar"></span></div>
+
+  <div class="cursor" aria-hidden="true">
+    <span class="cursor__circle"></span>
+    <span class="cursor__label"></span>
+  </div>
+
+  <header class="nav">
+    <a class="nav__logo" href="../" aria-label="Noah — home">Noah</a>
+    <span class="nav__clock" data-clock aria-hidden="true">— SGT</span>
+    <nav class="nav__right" aria-label="Primary" data-nav>
+      <ul class="nav__list" id="nav-list">
+        <li><a class="nav__link" href="../#work" data-nav-link="work">Work</a></li>
+        <li><a class="nav__link" href="../#about" data-nav-link="about">About</a></li>
+        <li><a class="nav__link" href="../#contact" data-nav-link="contact">Contact</a></li>
+        <li><a class="nav__link nav__link--file" href="../assets/docs/Zaw_Min_Htut_Resume_2026.pdf" target="_blank" rel="noopener">Résumé <span class="arrow arrow--diag" aria-hidden="true">↗</span></a></li>
+      </ul>
+      <button class="nav__status" type="button" aria-expanded="false" aria-controls="nav-list" data-nav-status>
+        <span class="nav__status-text" data-nav-status-text></span>
+        <span class="nav__status-menu"><span class="nav__status-word">Menu</span><i class="nav__status-icon" aria-hidden="true">+</i></span>
+      </button>
+      <a class="nav__link nav__cta" href="../#start" data-pf-open aria-haspopup="dialog" aria-controls="project-form">Start a project</a>
+    </nav>
+  </header>
+
+  <main id="main">
+
+    <!-- Hero -->
+    <section class="study-hero colophon-hero" id="top" data-nav-label="">
+      <div class="study-hero__top label muted">
+        <a class="study-back link-line" href="../"><span class="arrow arrow--back" aria-hidden="true">←</span> Home</a>
+        <span class="hide-sm">Colophon</span>
+        <span><span class="status-dot" aria-hidden="true"></span>Singapore</span>
+      </div>
+      <div class="study-hero__title">
+        <h1 class="study-hero__name" data-split="chars" data-hero-title>Colophon</h1>
+        <p class="study-hero__sub" data-hero-sub>How this site was made.</p>
+      </div>
+      <dl class="study-meta label">
+        <div data-hero-meta><dt>Design</dt><dd>Noah</dd></div>
+        <div data-hero-meta><dt>Build</dt><dd>By hand, no framework</dd></div>
+        <div data-hero-meta><dt>Hosting</dt><dd>Cloudflare Pages</dd></div>
+        <div data-hero-meta><dt>Year</dt><dd>2026</dd></div>
+      </dl>
+    </section>
+
+    <!-- Type -->
+    <section class="study-section study-section--stack" data-nav-section="work" data-nav-label="Type" aria-labelledby="type-title">
+      <div class="study-section__head"><div class="section-label" data-reveal="fade"><span>Type</span></div></div>
+      <div class="study-section__body">
+        <h2 class="study-lead" id="type-title" data-split="lines" data-reveal="text"><span class="line">Two typefaces,</span><span class="line">two jobs.</span></h2>
+        <p class="study-copy muted" data-reveal="fade">Inter Tight carries the voice — huge and tight for headlines, quiet for reading. JetBrains Mono handles the data: labels, coordinates, dates and the clock. Both are self-hosted, and only the weights the site uses are loaded.</p>
+      </div>
+      <div class="colo-type">
+        <figure class="colo-specimen" data-reveal="fade">
+          <p class="colo-specimen__big" aria-label="Aa">Aa</p>
+          <figcaption class="label muted"><span>Inter Tight</span><span>Variable · 100–900</span></figcaption>
+        </figure>
+        <figure class="colo-specimen colo-specimen--mono" data-reveal="fade">
+          <p class="colo-specimen__mono">1.3521° N<br>103.8198° E<br><span data-clock>— SGT</span></p>
+          <figcaption class="label muted"><span>JetBrains Mono</span><span>400 · 500</span></figcaption>
+        </figure>
+      </div>
+      <ul class="colo-weights" aria-label="Inter Tight weights" data-reveal="fade">
+        <li style="font-weight:200">Design</li>
+        <li style="font-weight:400">Design</li>
+        <li style="font-weight:600">Design</li>
+        <li style="font-weight:800">Design</li>
+      </ul>
+    </section>
+
+    <!-- Colour -->
+    <section class="study-section study-section--stack" data-nav-section="work" data-nav-label="Colour" aria-labelledby="colour-title">
+      <div class="study-section__head"><div class="section-label" data-reveal="fade"><span>Colour</span></div></div>
+      <div class="study-section__body">
+        <h2 class="study-lead" id="colour-title" data-split="lines" data-reveal="text"><span class="line">Near-black, off-white,</span><span class="line">one <em class="accent">mint.</em></span></h2>
+        <ul class="study-palette" aria-label="Site palette">
+          <li style="--swatch:#0A0A0A;--ink:#F2F2F0;box-shadow:inset 0 0 0 1px rgba(242,242,240,.16)" data-swatch><span class="label">Ink</span><span class="label">#0A0A0A</span></li>
+          <li style="--swatch:#F2F2F0;--ink:#0A0A0A" data-swatch><span class="label">Paper</span><span class="label">#F2F2F0</span></li>
+          <li style="--swatch:#858585;--ink:#0A0A0A" data-swatch><span class="label">Muted</span><span class="label">#858585</span></li>
+          <li style="--swatch:#A6FFCB;--ink:#0A0A0A" data-swatch><span class="label">Mint</span><span class="label">#A6FFCB</span></li>
+        </ul>
+        <p class="study-copy muted" data-reveal="fade">Mint is the only colour, and it's used sparingly: links, the form, progress lines and one word per section. On each case study it steps aside for the client's own colour.</p>
+        <ul class="colo-tints" aria-label="Case study colours" data-reveal="fade">
+          <li><a href="../work/ganko/" style="--tint:#F0453B"><span class="colo-tints__dot" aria-hidden="true"></span>Ganko.sg</a></li>
+          <li><a href="../work/luumens/" style="--tint:#E33F4D"><span class="colo-tints__dot" aria-hidden="true"></span>Luumens</a></li>
+          <li><a href="../work/voyagaer/" style="--tint:#48BDA9"><span class="colo-tints__dot" aria-hidden="true"></span>Voyagaer</a></li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Grid + viewfinder -->
+    <section class="study-section study-section--stack" data-nav-section="work" data-nav-label="Grid" aria-labelledby="grid-title">
+      <div class="study-section__head"><div class="section-label" data-reveal="fade"><span>Grid &amp; viewfinder</span></div></div>
+      <div class="study-section__body">
+        <h2 class="study-lead" id="grid-title" data-split="lines" data-reveal="text"><span class="line">Four columns and</span><span class="line">a viewfinder.</span></h2>
+        <p class="study-copy muted" data-reveal="fade">The four-column grid is never hidden — it draws itself in when the site opens and brightens at the contact. Corner marks borrowed from a camera viewfinder frame whatever you're looking at: project images, buttons, and the cursor itself.</p>
+      </div>
+      <a class="colo-frame" href="../#work" data-cursor="Work" data-reveal="fade">
+        <span class="colo-frame__label label">Point at it</span>
+        <span class="marks" aria-hidden="true"></span>
+      </a>
+    </section>
+
+    <!-- Motion -->
+    <section class="study-section" data-nav-section="work" data-nav-label="Motion" aria-labelledby="motion-title">
+      <div class="study-section__head"><div class="section-label" data-reveal="fade"><span>Motion</span></div></div>
+      <div class="study-section__body">
+        <h2 class="study-lead" id="motion-title" data-split="lines" data-reveal="text"><span class="line">Slow, deliberate,</span><span class="line">never in the way.</span></h2>
+        <ul class="study-principles">
+          <li data-reveal="fade"><span class="label muted">Easing</span><p>Expo and power-four curves for entrances and wipes. Nothing bounces.</p></li>
+          <li data-reveal="fade"><span class="label muted">Timing</span><p>About 0.9 seconds for everyday reveals; up to 2 seconds for the opening moments.</p></li>
+          <li data-reveal="fade"><span class="label muted">Three versions</span><p>Every effect has a desktop version, a touch version and a still one for reduced motion.</p></li>
+          <li data-reveal="fade"><span class="label muted">Cheap to run</span><p>Only transform, opacity and clip-path move. Videos load late and play only while on screen.</p></li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Stack -->
+    <section class="study-section" data-nav-section="work" data-nav-label="Stack" aria-labelledby="stack-title">
+      <div class="study-section__head"><div class="section-label" data-reveal="fade"><span>Stack</span></div></div>
+      <div class="study-section__body">
+        <h2 class="study-lead" id="stack-title" data-split="lines" data-reveal="text"><span class="line">No framework,</span><span class="line">no build step.</span></h2>
+        <ul class="study-stack">
+          <li data-reveal="fade"><span>HTML, CSS &amp; JavaScript modules</span><span class="label muted">Written by hand</span></li>
+          <li data-reveal="fade"><span>GSAP &amp; ScrollTrigger</span><span class="label muted">Motion</span></li>
+          <li data-reveal="fade"><span>Lenis</span><span class="label muted">Smooth scroll</span></li>
+          <li data-reveal="fade"><span>Cloudflare Pages</span><span class="label muted">Hosting &amp; the contact function</span></li>
+          <li data-reveal="fade"><span>Resend &amp; Turnstile</span><span class="label muted">Email delivery &amp; spam check</span></li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- End -->
+    <section class="study-end" data-nav-section="contact" data-nav-label="Contact" aria-label="Get in touch">
+      <p class="study-outcome" data-reveal="fade"><span class="label accent">Built</span><span>By hand, in Singapore, 2026.</span></p>
+      <div class="study-cta">
+        <p class="study-cta__line">Want something made like this?</p>
+        <a class="cta" href="../#start" data-pf-open aria-haspopup="dialog" aria-controls="project-form">
+          <span class="cta__fill" aria-hidden="true"></span>
+          <span class="marks" aria-hidden="true"></span>
+          <span class="cta__label">Start a project <span class="arrow" aria-hidden="true">→</span></span>
+        </a>
+      </div>
+      <nav class="study-next" aria-label="More">
+        <a class="study-next__back link-line label" href="../"><span class="arrow arrow--back" aria-hidden="true">←</span> Home</a>
+        <a class="study-next__project" href="../#work" data-magnetic="0.2">
+          <span class="label muted">See the work</span>
+          <span class="study-next__name" data-magnetic-inner>Selected work <span class="arrow" aria-hidden="true">→</span></span>
+        </a>
+      </nav>
+    </section>
+  </main>
+
+  <footer class="footer" data-nav-section="contact" data-nav-label="Contact">
+    <div class="footer__grid">
+      <div class="footer__brand">
+        <p class="footer__name">Noah</p>
+        <p class="muted">Creative Developer<br>Web Designer</p>
+      </div>
+      <nav class="footer__nav" aria-label="Footer">
+        <ul class="footer__links">
+          <li><a class="link-line" href="../#work">Work</a></li>
+          <li><a class="link-line" href="../#about">About</a></li>
+          <li><a class="link-line" href="../#contact">Contact</a></li>
+        </ul>
+        <ul class="footer__links">
+          <li><a class="link-line" href="https://sg.linkedin.com/in/zaw-min-htut-a672b11a2" target="_blank" rel="noopener">LinkedIn <span class="arrow arrow--diag" aria-hidden="true">↗</span></a></li>
+          <li><a class="link-line" href="https://github.com/noah-mhz" target="_blank" rel="noopener">GitHub <span class="arrow arrow--diag" aria-hidden="true">↗</span></a></li>
+        </ul>
+      </nav>
+      <a class="footer__back label" href="#top" data-magnetic><span data-magnetic-inner>Back to top ↑</span></a>
+    </div>
+    <p class="footer__mark" aria-hidden="true"><span>N</span><span>O</span><span>A</span><span>H</span></p>
+    <div class="footer__bottom label muted">
+      <span>© 2026 Noah</span>
+      <span>1.3521° N — 103.8198° E</span>
+      <a class="link-line" href="./">Designed &amp; built by hand — colophon</a>
+    </div>
+  </footer>
+  <!-- Project enquiry : opens from "Start a project". Sends through /api/contact (Cloudflare Pages Function). -->
+  <div class="pf" id="project-form" role="dialog" aria-modal="true" aria-labelledby="pf-title" hidden>
+    <span class="pf__wipe" aria-hidden="true"></span>
+    <div class="pf__panel">
+      <div class="grid-lines pf__grid" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
+      <header class="pf__top label">
+        <span class="pf__item"><span class="status-dot" aria-hidden="true"></span>New project</span>
+        <button class="pf__close" type="button" data-pf-close aria-label="Close the form"><span class="pf__item">Close <span aria-hidden="true">✕</span></span></button>
+      </header>
+
+      <form class="pf__form" novalidate>
+        <h2 class="pf__title" id="pf-title"><span class="pf__mask"><span class="pf__item">Tell me about it.</span></span></h2>
+
+        <p class="pf__sentence">
+          <span class="pf__mask"><span class="pf__item">Hi Noah, I'm</span></span>
+          <label class="pf__field" data-field="name"><span class="sr-only">Your name</span><input name="name" type="text" autocomplete="name" placeholder="your name" maxlength="80" required><span class="pf__rule" aria-hidden="true"></span></label>
+          <span class="pf__mask"><span class="pf__item">from</span></span>
+          <span class="pf__nb"><label class="pf__field" data-field="company"><span class="sr-only">Company (optional)</span><input name="company" type="text" autocomplete="organization" placeholder="company (optional)" maxlength="100"><span class="pf__rule" aria-hidden="true"></span></label><span class="pf__mask"><span class="pf__item">.</span></span></span>
+          <span class="pf__mask"><span class="pf__item">I need</span></span>
+          <label class="pf__field pf__field--select" data-field="type"><span class="sr-only">What you need</span>
+            <select name="type" required>
+              <option value="a new website">a new website</option>
+              <option value="a redesign">a redesign</option>
+              <option value="something else">something else</option>
+            </select><span class="pf__rule" aria-hidden="true"></span></label>
+          <span class="pf__mask"><span class="pf__item">and my budget is</span></span>
+          <span class="pf__nb"><label class="pf__field pf__field--select" data-field="budget"><span class="sr-only">Budget</span>
+            <select name="budget">
+              <option value="not sure yet">not sure yet</option>
+              <option value="under S$3k">under S$3k</option>
+              <option value="S$3k–8k">S$3k–8k</option>
+              <option value="S$8k–15k">S$8k–15k</option>
+              <option value="S$15k+">S$15k+</option>
+            </select><span class="pf__rule" aria-hidden="true"></span></label><span class="pf__mask"><span class="pf__item">.</span></span></span>
+          <span class="pf__mask"><span class="pf__item">Reach me at</span></span>
+          <span class="pf__nb"><label class="pf__field" data-field="email"><span class="sr-only">Your email</span><input name="email" type="email" autocomplete="email" placeholder="you@email.com" maxlength="254" required><span class="pf__rule" aria-hidden="true"></span></label><span class="pf__mask"><span class="pf__item">.</span></span></span>
+        </p>
+
+        <label class="pf__message" data-field="message">
+          <span class="label muted pf__item">Anything else? (optional)</span>
+          <textarea name="message" rows="3" maxlength="2000" placeholder="A link, a deadline, an idea…"></textarea>
+          <span class="pf__rule" aria-hidden="true"></span>
+        </label>
+
+        <!-- Honeypot: hidden from people, filled by bots. -->
+        <label class="pf__hp" aria-hidden="true">Website<input name="website" type="text" tabindex="-1" autocomplete="off"></label>
+
+        <div class="pf__foot">
+          <div class="pf__captcha" data-pf-captcha></div>
+          <button class="pf__send" type="submit">
+            <span class="pf__send-fill" aria-hidden="true"></span>
+            <span class="marks" aria-hidden="true"></span>
+            <span class="pf__send-label">Send <span class="arrow" aria-hidden="true">→</span></span>
+            <span class="pf__send-progress" aria-hidden="true"></span>
+          </button>
+        </div>
+        <p class="pf__status label" role="status" aria-live="polite"></p>
+      </form>
+
+      <!-- Result: the form fades out and this rises in its place (sent or not sent). -->
+      <div class="pf__result" hidden data-state="sent" role="status" aria-live="polite">
+        <p class="label muted pf__result-item" data-pf-r="label">Message sent</p>
+        <p class="pf__result-title"><span class="pf__mask"><span class="pf__result-item" data-pf-r="t1">Thanks —</span></span><span class="pf__mask"><span class="pf__result-item pf__result-accent" data-pf-r="t2">talk soon.</span></span></p>
+        <p class="pf__result-note muted pf__result-item"><span data-pf-r="note">I usually reply within a day or two.</span> You can also reach me at <a class="link-line" href="mailto:noahmhzaw@gmail.com">noahmhzaw@gmail.com</a>.</p>
+        <div class="pf__actions pf__result-item">
+          <button class="pf__action link-line label" type="button" data-pf-retry hidden>Try again</button>
+          <button class="pf__action link-line label" type="button" data-pf-close>Back to the site</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

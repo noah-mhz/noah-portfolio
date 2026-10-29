@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Out of frame — Noah</title>
+  <meta name="robots" content="noindex">
+  <meta name="theme-color" content="#0A0A0A">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230A0A0A'/%3E%3Ccircle cx='16' cy='16' r='4' fill='%23A6FFCB'/%3E%3C/svg%3E">
+  <style>html{background:#0A0A0A}</style>
+  <!-- Absolute paths: Cloudflare Pages serves this page for any missing URL, at any depth. -->
+  <link rel="preload" href="/assets/fonts/inter-tight-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/assets/fonts/jetbrains-mono-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/css/style.css">
+  <style>
+    .nf-page { min-height: 100vh; min-height: 100svh; display: grid; grid-template-rows: auto 1fr auto; overflow: hidden; }
+
+    .nf-top, .nf-foot {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      padding: 1.6rem var(--gutter);
+    }
+    .nf-top a { color: var(--text); }
+    .nf-top .nf-logo { font-family: var(--font-sans); font-size: 0.8125rem; font-weight: 500; letter-spacing: 0.24em; }
+
+    .nf-main {
+      position: relative;
+      z-index: 2;
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      column-gap: var(--gutter);
+      align-content: center;
+      padding: 0 var(--gutter);
+    }
+    .nf-text { grid-column: 1 / 8; }
+    .nf-title {
+      margin: 1.5rem 0 2rem;
+      font-size: var(--fs-hero);
+      font-weight: 500;
+      line-height: 0.88;
+      letter-spacing: -0.05em;
+      text-transform: uppercase;
+    }
+    .nf-title em { font-style: normal; }
+    .nf-copy { max-width: 40ch; font-size: var(--fs-body); line-height: 1.6; color: var(--muted); }
+
+    .nf-links { display: flex; flex-wrap: wrap; gap: 1rem 2.25rem; margin-top: clamp(2rem, 6vh, 3.5rem); }
+    .nf-links a { color: var(--text); font-size: var(--fs-lead); letter-spacing: -0.02em; }
+    .nf-links a.accent { color: var(--accent); }
+    .nf-cases { display: flex; flex-wrap: wrap; gap: 0.5rem 1.5rem; margin-top: 1.5rem; }
+    .nf-cases a { color: var(--muted); }
+    .nf-cases a:hover { color: var(--text); }
+
+    /* The viewfinder hunts for a subject it can't find. */
+    .nf-stage { position: absolute; inset: 0; z-index: 1; pointer-events: none; }
+    .nf-finder {
+      position: absolute;
+      top: 50%;
+      left: 72%;
+      width: clamp(10rem, 22vw, 20rem);
+      aspect-ratio: 4 / 3;
+      translate: -50% -50%;
+      animation: nf-hunt 9s var(--ease-in-out) infinite;
+    }
+    .nf-finder .marks { inset: 0; opacity: 1; transform: none; --mark: 18px; --mark-color: rgba(242, 242, 240, 0.85); }
+    .nf-cross { position: absolute; top: 50%; left: 50%; width: 18px; height: 18px; translate: -50% -50%; }
+    .nf-cross::before, .nf-cross::after { content: ''; position: absolute; background: var(--accent); }
+    .nf-cross::before { top: 50%; left: 0; right: 0; height: 1px; }
+    .nf-cross::after { left: 50%; top: 0; bottom: 0; width: 1px; }
+    .nf-readout {
+      position: absolute;
+      left: 0;
+      top: calc(100% + 0.9rem);
+      display: flex;
+      gap: 1rem;
+      white-space: nowrap;
+      color: var(--muted);
+    }
+    .nf-readout b { font-weight: 400; color: var(--accent); }
+
+    @keyframes nf-hunt {
+      0%   { transform: translate(0, 0) scale(1); }
+      14%  { transform: translate(-18vw, -14vh) scale(0.8); }
+      26%  { transform: translate(-18vw, -14vh) scale(0.84); }
+      40%  { transform: translate(8vw, 12vh) scale(1.15); }
+      52%  { transform: translate(8vw, 12vh) scale(1.08); }
+      66%  { transform: translate(-6vw, 18vh) scale(0.9); }
+      78%  { transform: translate(-6vw, 18vh) scale(0.95); }
+      100% { transform: translate(0, 0) scale(1); }
+    }
+
+    @media (max-width: 1023px) {
+      .nf-text { grid-column: 1 / -1; }
+      .nf-finder { left: 70%; top: 26%; opacity: 0.55; }
+    }
+    @media (max-width: 767px) {
+      .nf-foot span:nth-child(3) { display: none; }
+      .nf-finder { left: 66%; top: 20%; }
+      .nf-readout { display: none; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .nf-finder { animation: none; }
+    }
+  </style>
+</head>
+<body class="nf-page">
+  <div class="grid-lines" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
+
+  <header class="nf-top label">
+    <a class="nf-logo" href="/" aria-label="Noah — home">Noah</a>
+    <span class="muted">Error 404</span>
+    <a class="accent" href="/#start">Start a project</a>
+  </header>
+
+  <div class="nf-stage" aria-hidden="true">
+    <div class="nf-finder">
+      <span class="marks"></span>
+      <span class="nf-cross"></span>
+      <span class="nf-readout label"><b data-nf-status>Searching</b><span data-nf-coords>X 0.000 · Y 0.000</span></span>
+    </div>
+  </div>
+
+  <main class="nf-main" id="main">
+    <div class="nf-text">
+      <p class="label muted">Error 404 — <span data-nf-path>/</span></p>
+      <h1 class="nf-title">Out of<br><em class="accent">frame.</em></h1>
+      <p class="nf-copy">The page you're after isn't in shot. It may have moved, or the link may be mistyped.</p>
+      <nav class="nf-links" aria-label="Where to next">
+        <a class="link-line" href="/">Back home <span class="arrow" aria-hidden="true">→</span></a>
+        <a class="link-line" href="/#work">Selected work</a>
+        <a class="link-line accent" href="/#start">Start a project</a>
+      </nav>
+      <p class="nf-cases label">
+        <span class="muted">Case studies —</span>
+        <a class="link-line" href="/work/ganko/">Ganko.sg</a>
+        <a class="link-line" href="/work/luumens/">Luumens</a>
+        <a class="link-line" href="/work/voyagaer/">Voyagaer</a>
+      </p>
+    </div>
+  </main>
+
+  <footer class="nf-foot label muted">
+    <span>© 2026 Noah</span>
+    <span data-nf-clock>— SGT</span>
+    <span>1.3521° N — 103.8198° E</span>
+  </footer>
+
+  <script>
+    (function () {
+      // Show the missing path (trimmed), the Singapore time, and a readout that keeps hunting.
+      var path = decodeURIComponent(location.pathname || '/');
+      var el = document.querySelector('[data-nf-path]');
+      if (el) el.textContent = path.length > 42 ? path.slice(0, 40) + '…' : path;
+
+      var clock = document.querySelector('[data-nf-clock]');
+      var fmt = new Intl.DateTimeFormat('en-GB', { timeZone: 'Asia/Singapore', hour: '2-digit', minute: '2-digit', second: '2-digit', hourCycle: 'h23' });
+      (function tick() { if (clock) clock.textContent = fmt.format(new Date()) + ' SGT'; setTimeout(tick, 1000 - (Date.now() % 1000) + 5); })();
+
+      if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      var status = document.querySelector('[data-nf-status]');
+      var coords = document.querySelector('[data-nf-coords]');
+      var states = ['Searching', 'No subject', 'Re-framing', 'Searching'];
+      var i = 0;
+      setInterval(function () { i = (i + 1) % states.length; if (status) status.textContent = states[i]; }, 2250);
+      setInterval(function () {
+        if (coords) coords.textContent = 'X ' + Math.random().toFixed(3) + ' · Y ' + Math.random().toFixed(3);
+      }, 180);
+    })();
+  </script>
+</body>
+</html>
