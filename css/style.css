@@ -563,10 +563,7 @@ a:focus-visible .arrow--diag { transform: translate(0.2em, -0.2em); }
 /* The opened menu needs the clock's space. */
 .nav__clock { transition: opacity 0.3s var(--ease-out); }
 .nav:has(.nav__right.is-open) .nav__clock { opacity: 0; }
-/* With the theme toggle, the full link row reaches the centre below ~1800px, so the clock waits for the folded nav. */
-@media (max-width: 1799px) {
-  .nav:has(.nav__right:not(.has-status)) .nav__clock { opacity: 0; }
-}
+
 
 .nav__right {
   position: relative;
@@ -664,10 +661,8 @@ a:focus-visible .arrow--diag { transform: translate(0.2em, -0.2em); }
 @media (max-width: 767px) {
   .nav { font-size: 0.6875rem; }
   .nav__index { display: none; }
-  /* Five links don't fit a phone bar: About and Contact are a scroll away
-     (and "Start a project" opens the same contact), so they step out here. */
-  .nav__list li:has(> [data-nav-link="about"]),
-  .nav__list li:has(> [data-nav-link="contact"]) { display: none; }
+  /* The full row doesn't fit a phone bar: About is a scroll away, so it steps out here. */
+  .nav__list li:has(> [data-nav-link="about"]) { display: none; }
   .nav__list { gap: 1.1rem; }
   .nav__link { white-space: nowrap; }
   .nav__right { gap: 1.1rem; }
@@ -2839,3 +2834,23 @@ html.vt-finder::view-transition-new(root) { clip-path: inset(46% 46% 46% 46%); }
 .theme-finder b::before, .theme-finder b::after { content: ''; position: absolute; background: #A6FFCB; }
 .theme-finder b::before { top: 50%; left: 0; right: 0; height: 1px; }
 .theme-finder b::after { left: 50%; top: 0; bottom: 0; width: 1px; }
+
+/* In the nav the switch is just the dot; its mode shows as a caption on hover. */
+.theme-toggle--nav { position: relative; padding: 0.5rem; margin: -0.5rem 0; }
+.theme-toggle--nav .theme-toggle__label {
+  position: absolute;
+  top: calc(100% + 0.35rem);
+  left: 50%;
+  translate: -50% -4px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s var(--ease-out), translate 0.3s var(--ease-out);
+}
+.theme-toggle--nav:hover .theme-toggle__label,
+.theme-toggle--nav:focus-visible .theme-toggle__label { opacity: 1; translate: -50% 0; }
+@media (hover: none) { .theme-toggle--nav .theme-toggle__label { display: none; } }
+
+/* Narrow phones: Work is the next thing down the page, so Résumé keeps the slot. */
+@media (max-width: 419px) {
+  .nav__list li:has(> [data-nav-link="work"]) { display: none; }
+}
