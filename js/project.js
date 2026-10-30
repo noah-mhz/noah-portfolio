@@ -15,6 +15,7 @@ import { initContactForm } from './contact.js';
 import { initGlitch } from './glitch.js';
 import { TEXT_TARGETS } from './split.js';
 import { initPageEnter } from './transition.js';
+import { initSectionIndex } from './sections.js';
 
 const $ = (selector, root = document) => root.querySelector(selector);
 const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
@@ -110,50 +111,6 @@ function initChapter({ gsap }) {
 }
 
 /** Long page captures scroll inside their frame as the frame passes through the viewport. */
-/**
- * Case-study progress bar: a tick for each section, like frames on a strip of
- * film, so readers can see how long the page is and where they are in it.
- * Ticks they've passed take the accent.
- */
-function initProgressTicks({ ScrollTrigger }) {
-  const bar = $('.progress');
-  if (!bar) return;
-  const sections = [];
-  let last = '';
-  $$('[data-nav-section][data-nav-label]').forEach((el) => {
-    const label = el.dataset.navLabel;
-    if (!label || label === last) return;
-    last = label;
-    sections.push(el);
-  });
-  if (sections.length < 2) return;
-
-  const ticks = sections.map(() => {
-    const tick = document.createElement('span');
-    tick.className = 'progress__tick';
-    bar.appendChild(tick);
-    return tick;
-  });
-  let marks = [];
-
-  const place = () => {
-    const max = document.documentElement.scrollHeight - window.innerHeight;
-    if (max <= 0) return;
-    marks = sections.map((el) => Math.min(1, Math.max(0, (el.getBoundingClientRect().top + window.scrollY - window.innerHeight * 0.5) / max)));
-    ticks.forEach((tick, i) => { tick.style.left = `${marks[i] * 100}%`; });
-    light();
-  };
-  const light = () => {
-    const max = document.documentElement.scrollHeight - window.innerHeight;
-    const p = max > 0 ? window.scrollY / max : 0;
-    ticks.forEach((tick, i) => tick.classList.toggle('is-passed', p >= marks[i] - 0.001));
-  };
-
-  place();
-  window.addEventListener('scroll', light, { passive: true });
-  ScrollTrigger?.addEventListener('refresh', place);
-  window.addEventListener('resize', place, { passive: true });
-}
 
 function initScrollThrough({ gsap }) {
   $$('[data-scroll-through]').forEach((frame) => {
@@ -223,7 +180,7 @@ function boot() {
   initTouchFx({ home: false });
   initContactForm();
   initGlitch({ gsap, ScrollTrigger });
-  initProgressTicks({ ScrollTrigger });
+  initSectionIndex({ ScrollTrigger });
 
   document.fonts?.ready.then(() => ScrollTrigger.refresh());
   window.addEventListener('load', () => ScrollTrigger.refresh(), { once: true });

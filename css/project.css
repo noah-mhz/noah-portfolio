@@ -524,7 +524,7 @@ a:focus-visible .arrow--back { transform: translateX(-0.3em); }
     display: flex;
     flex-direction: column;
     justify-content: center;
-    min-height: 72vh;
+    min-height: 46vh; /* each step holds just long enough to read; the frame swaps quicker */
     opacity: 0.28;
     transition: opacity 0.6s var(--ease-out);
   }
