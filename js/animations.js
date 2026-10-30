@@ -822,7 +822,7 @@ export function initTimeline({ isDesktop = false } = {}) {
   const track = $('[data-timeline]');
   if (!track) return;
 
-  // Desktop: one horizontal strip of years (layout in CSS, switching in
+  // One strip of role columns at every width (layout in CSS, switching in
   // interactions.js). The line draws across and every column rolls in together.
   if (isDesktop) {
     gsap.fromTo('[data-timeline-fill]', { scaleX: 0 }, {
@@ -1039,7 +1039,7 @@ export function initScrollAnimations() {
     const cleanupCase = initCaseStudy({ pinned: isDesktop, handoff: isDesktop });
     initTextReveal({ isMobile });
     initProjectAnimations({ isMobile });
-    initTimeline({ isDesktop });
+    initTimeline({ isDesktop: true }); // the column strip at every width
     initCapsEntrance();
     initImageReveal();
     const cleanupSections = initSectionTransitions({ isMobile });

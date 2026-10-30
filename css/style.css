@@ -2897,8 +2897,8 @@ html.vt-finder::view-transition-new(root) { clip-path: inset(46% 46% 46% 46%); }
   }
 }
 
-/* Phones: the theme dot says what it is at the very top of the page and while the menu is open. */
-@media (hover: none) and (max-width: 767px) {
+/* Touch screens: the theme dot says what it is at the very top of the page and while the menu is open. */
+@media (hover: none) {
   html.at-top .nav__right:not(.has-status) .theme-toggle--nav .theme-toggle__label,
   .nav__right.is-open .theme-toggle--nav .theme-toggle__label {
     display: block;
@@ -2910,67 +2910,89 @@ html.vt-finder::view-transition-new(root) { clip-path: inset(46% 46% 46% 46%); }
 }
 
 /* --------------------------------------------------------------------------
-   Desktop timeline: one horizontal strip of roles. Each column is a role;
-   the selected one's details open in a full-width row underneath.
+   Timeline: one column per role (a 2 × 2 grid on tablet and phone); the
+   selected role's details open in a full-width row underneath.
    -------------------------------------------------------------------------- */
-@media (min-width: 1024px) {
-  .timeline { padding-bottom: clamp(6rem, 16vh, 10rem); }
-  .timeline__head {
-    grid-column: 1 / -1;
-    position: static;
-    display: flex;
-    flex-wrap: wrap;
-    align-items: flex-end;
-    justify-content: space-between;
-    gap: 1rem 3rem;
-    margin-bottom: clamp(3rem, 8vh, 5rem);
-  }
-  .timeline__head .section-label { flex-basis: 100%; margin-bottom: 1rem; }
-  .timeline__resume { margin-top: 0; }
-  .timeline__track { grid-column: 1 / -1; padding-left: 0; }
-  .timeline__line { top: 4px; bottom: auto; left: 0; right: 0; width: auto; height: 1px; }
-  .timeline__fill { transform-origin: left; }
+.timeline { padding-bottom: clamp(6rem, 16vh, 10rem); }
+.timeline__head {
+  grid-column: 1 / -1;
+  position: static;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem 3rem;
+  margin-bottom: clamp(3rem, 8vh, 5rem);
+}
+.timeline__head .section-label { flex-basis: 100%; margin-bottom: 1rem; }
+.timeline__resume { margin-top: 0; }
+.timeline__track { grid-column: 1 / -1; padding-left: 0; }
+.timeline__line { top: 4px; bottom: auto; left: 0; right: 0; width: auto; height: 1px; }
+.timeline__fill { transform-origin: left; }
 
-  .timeline__list {
-    position: relative;
-    display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    column-gap: var(--gutter);
-  }
-  .tl, .tl__body { display: contents; }
+.timeline__list {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  column-gap: var(--gutter);
+}
+.tl, .tl__body { display: contents; }
 
-  .tl__dot { position: relative; top: 0; left: 0; grid-row: 1; justify-self: start; }
-  .tl__when { grid-row: 2; padding-top: 2rem; display: grid; gap: 0.75rem; }
-  .tl__year { font-size: clamp(3rem, 5.4vw, 6rem); }
-  .tl__company { grid-row: 3; margin-top: 1.5rem; font-size: clamp(1.1rem, 1.6vw, 1.6rem); transition: color 0.5s var(--ease-out); }
-  .tl__role { grid-row: 4; margin-top: 0.6rem; }
-  .tl__desc { grid-row: 5; grid-column: 1 / 3; margin-top: clamp(2.5rem, 6vh, 4rem); padding-top: 1.4rem; border-top: 1px solid var(--border); max-width: 40ch; }
-  .tl__points { grid-row: 5; grid-column: 3 / 5; margin-top: clamp(2.5rem, 6vh, 4rem); }
+.tl__dot { position: relative; top: 0; left: 0; grid-row: 1; justify-self: start; }
+.tl__when { grid-row: 2; padding-top: 2rem; display: grid; gap: 0.75rem; }
+.tl__year { font-size: clamp(3rem, 5.4vw, 6rem); }
+.tl__company { grid-row: 3; margin-top: 1.5rem; font-size: clamp(1.1rem, 1.6vw, 1.6rem); transition: color 0.5s var(--ease-out); }
+.tl__role { grid-row: 4; margin-top: 0.6rem; }
+.tl__desc { grid-row: 5; grid-column: 1 / 3; margin-top: clamp(2.5rem, 6vh, 4rem); padding-top: 1.4rem; border-top: 1px solid var(--border); max-width: 40ch; }
+.tl__points { grid-row: 5; grid-column: 3 / 5; margin-top: clamp(2.5rem, 6vh, 4rem); }
 
+.tl:nth-child(1) > :is(.tl__dot, .tl__when, .tl__pick), .tl:nth-child(1) .tl__body > :is(.tl__company, .tl__role) { grid-column: 1; }
+.tl:nth-child(2) > :is(.tl__dot, .tl__when, .tl__pick), .tl:nth-child(2) .tl__body > :is(.tl__company, .tl__role) { grid-column: 2; }
+.tl:nth-child(3) > :is(.tl__dot, .tl__when, .tl__pick), .tl:nth-child(3) .tl__body > :is(.tl__company, .tl__role) { grid-column: 3; }
+.tl:nth-child(4) > :is(.tl__dot, .tl__when, .tl__pick), .tl:nth-child(4) .tl__body > :is(.tl__company, .tl__role) { grid-column: 4; }
+
+.tl:not(.is-current) :is(.tl__desc, .tl__points) { display: none; }
+.tl:not(.is-current) :is(.tl__year, .tl__company) { color: var(--muted); }
+.tl:not(.is-current) .tl__role { color: var(--muted); }
+.tl.is-current .tl__dot { border-color: var(--accent); background: var(--accent); transform: scale(1.3); }
+.tl:not(.is-current) .tl__dot { border-color: var(--muted); background: var(--bg); transform: none; }
+.tl__year, .tl__role { transition: color 0.5s var(--ease-out); }
+
+/* The whole column is the switch. */
+.tl__pick {
+  grid-row: 1 / 5;
+  z-index: 1;
+  margin: -1rem -0.75rem;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+}
+.tl:not(.is-current):has(.tl__pick:hover) :is(.tl__year, .tl__company) { color: var(--text); }
+.tl__pick:focus-visible { outline: 1px solid var(--accent); outline-offset: 2px; }
+
+
+/* Tablet & phone: the four roles as a 2 × 2 grid of switches. */
+@media (max-width: 1023px) {
+  .timeline__head { margin-bottom: 2rem; }
+  .timeline__line { display: none; }
+  .timeline__list { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 0; }
+  .tl__year { font-size: clamp(2.2rem, 8vw, 3.6rem); }
+  .tl__when { padding-top: 1rem; grid-auto-flow: row; gap: 0.4rem; }
+  .tl__company { margin-top: 0.9rem; font-size: clamp(1rem, 3.6vw, 1.35rem); }
   .tl:nth-child(1) > :is(.tl__dot, .tl__when, .tl__pick), .tl:nth-child(1) .tl__body > :is(.tl__company, .tl__role) { grid-column: 1; }
   .tl:nth-child(2) > :is(.tl__dot, .tl__when, .tl__pick), .tl:nth-child(2) .tl__body > :is(.tl__company, .tl__role) { grid-column: 2; }
-  .tl:nth-child(3) > :is(.tl__dot, .tl__when, .tl__pick), .tl:nth-child(3) .tl__body > :is(.tl__company, .tl__role) { grid-column: 3; }
-  .tl:nth-child(4) > :is(.tl__dot, .tl__when, .tl__pick), .tl:nth-child(4) .tl__body > :is(.tl__company, .tl__role) { grid-column: 4; }
-
-  .tl:not(.is-current) :is(.tl__desc, .tl__points) { display: none; }
-  .tl:not(.is-current) :is(.tl__year, .tl__company) { color: var(--muted); }
-  .tl:not(.is-current) .tl__role { color: var(--muted); }
-  .tl.is-current .tl__dot { border-color: var(--accent); background: var(--accent); transform: scale(1.3); }
-  .tl:not(.is-current) .tl__dot { border-color: var(--muted); background: var(--bg); transform: none; }
-  .tl__year, .tl__role { transition: color 0.5s var(--ease-out); }
-
-  /* The whole column is the switch. */
-  .tl__pick {
-    grid-row: 1 / 5;
-    z-index: 1;
-    margin: -1rem -0.75rem;
-    padding: 0;
-    border: 0;
-    background: none;
-    cursor: pointer;
-  }
-  .tl:not(.is-current):has(.tl__pick:hover) :is(.tl__year, .tl__company) { color: var(--text); }
-  .tl__pick:focus-visible { outline: 1px solid var(--accent); outline-offset: 2px; }
+  .tl:nth-child(3) > :is(.tl__dot, .tl__when, .tl__pick), .tl:nth-child(3) .tl__body > :is(.tl__company, .tl__role) { grid-column: 1; }
+  .tl:nth-child(4) > :is(.tl__dot, .tl__when, .tl__pick), .tl:nth-child(4) .tl__body > :is(.tl__company, .tl__role) { grid-column: 2; }
+  .tl:nth-child(n+3) > .tl__dot { grid-row: 5; margin-top: 2rem; }
+  .tl:nth-child(n+3) > .tl__when { grid-row: 6; }
+  .tl:nth-child(n+3) .tl__company { grid-row: 7; }
+  .tl:nth-child(n+3) .tl__role { grid-row: 8; }
+  .tl:nth-child(-n+2) > .tl__pick { grid-row: 1 / 5; }
+  .tl:nth-child(n+3) > .tl__pick { grid-row: 5 / 9; }
+  .tl__desc { grid-row: 9; grid-column: 1 / -1; max-width: none; margin-top: 2.25rem; }
+  .tl__points { grid-row: 10; grid-column: 1 / -1; margin-top: 1rem; }
+  .tl__pick { margin: -0.5rem -0.4rem; }
 }
 
 /* Rack-focus corners: driven by script, independent of the hover marks. */
@@ -2980,12 +3002,12 @@ html.vt-finder::view-transition-new(root) { clip-path: inset(46% 46% 46% 46%); }
 
 /* --------------------------------------------------------------------------
    Voyagaer: two screens side by side — the homepage and a product page —
-   with the facts as one row underneath. Desktop only; smaller screens keep
-   the single card.
+   with the facts as one row underneath (tablet and up). Phones swipe
+   between the two screens.
    -------------------------------------------------------------------------- */
-.project__second { display: none; }
+.project__pair { display: contents; }
 
-@media (min-width: 1024px) {
+@media (min-width: 768px) {
   .project--pair .project__media { grid-column: 1 / 8; }
   .project--pair .project__second {
     display: grid;
@@ -3169,4 +3191,42 @@ html.vt-finder::view-transition-new(root) { clip-path: inset(46% 46% 46% 46%); }
     color: var(--text);
   }
   .section-menu a.is-current { color: var(--accent); }
+}
+
+/* Phones: the two Voyagaer screens sit in a row you swipe through. */
+@media (max-width: 767px) {
+  .project--pair .project__pair {
+    display: flex;
+    grid-column: 1 / -1;
+    grid-row: 2;
+    gap: 0.75rem;
+    margin: 0 calc(-1 * var(--gutter));
+    padding: 0 var(--gutter);
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-padding: 0 var(--gutter);
+    scrollbar-width: none;
+    overscroll-behavior-x: contain;
+  }
+  .project--pair .project__pair::-webkit-scrollbar { display: none; }
+  .project--pair .project__media,
+  .project--pair .project__second {
+    flex: 0 0 84%;
+    margin: 0;
+    scroll-snap-align: start;
+  }
+  .project--pair .project__second { display: grid; gap: 0.6rem; align-content: start; }
+  .project__second-clip { position: relative; display: block; aspect-ratio: 4 / 5; overflow: hidden; background: var(--surface); }
+  .project__second-clip img { width: 100%; height: 100%; object-fit: cover; object-position: top center; filter: grayscale(0.9) brightness(0.85); }
+  .project--pair .project__second .marks { --mark-color: #F2F2F0; opacity: 1; transform: none; }
+  .project--pair .project__media::after {
+    content: 'Swipe →';
+    display: block;
+    margin-top: 0.6rem;
+    font-family: var(--font-mono);
+    font-size: var(--fs-meta);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
 }

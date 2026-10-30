@@ -581,14 +581,13 @@ export function initClock() {
    -------------------------------------------------------------------------- */
 
 /**
- * Desktop timeline: one column per role, and a click (or Enter) on a column
- * shows that role's details in the shared row underneath.
+ * Timeline: one column per role (2 × 2 on tablet and phone), and a click,
+ * tap or Enter on a column shows that role's details in the row underneath.
  */
 function initTimelineSwitch() {
   const list = $('.timeline__list');
   if (!list) return;
   const entries = $$('[data-tl]', list);
-  const wide = window.matchMedia('(min-width: 1024px)');
   let buttons = [];
 
   const show = (index, animate = true) => {
@@ -606,8 +605,6 @@ function initTimelineSwitch() {
 
   const setup = () => {
     buttons.forEach((b) => b.remove());
-    buttons = [];
-    if (!wide.matches) return;
     buttons = entries.map((entry, i) => {
       const button = document.createElement('button');
       button.type = 'button';
@@ -621,11 +618,12 @@ function initTimelineSwitch() {
     });
   };
   setup();
-  wide.addEventListener('change', setup);
 }
 
 export function initTimelineDetails() {
   initTimelineSwitch();
+  // The role switches replace the phone-only "Details +" toggles at every width.
+  if (document.querySelector('.timeline__list')) return;
   const lists = $$('.tl__points');
   if (!lists.length) return;
   const phone = window.matchMedia('(max-width: 767px)');
