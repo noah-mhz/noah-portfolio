@@ -7,6 +7,7 @@ import { initScramble } from './scramble.js';
 import { initTouchFx } from './touch.js';
 import { initTheme } from './theme.js';
 import { initProjectTitles } from './titles.js';
+import { initSectionIndex } from './sections.js';
 
 const RETURN_KEY = 'home-return';
 
@@ -101,6 +102,7 @@ function boot() {
   initScramble();
   initTouchFx();
   initProjectTitles();
+  initSectionIndex({ ScrollTrigger, ticks: false, menu: false });
 
   // Re-measure once late-arriving fonts and images have settled layout.
   document.fonts?.ready.then(() => ScrollTrigger.refresh());

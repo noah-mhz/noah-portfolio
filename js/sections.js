@@ -7,6 +7,8 @@
  *            The current one is lit; hover the rail to read the names; click to jump.
  *   Menu   — tablet & phone: opening the nav's section button also lists the
  *            page's sections under the bar.
+ *
+ * The homepage takes only the rail (its nav already links the main sections).
  */
 import { getLenis } from './scroll.js';
 
@@ -16,10 +18,13 @@ const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
 function collect() {
   const sections = [];
   let last = '';
-  $$('[data-nav-section][data-nav-label]').forEach((el) => {
-    const label = el.dataset.navLabel;
+  $$('[data-nav-section][data-nav-label]').forEach((node) => {
+    if (node.dataset.rail === 'skip') return;
+    const label = node.dataset.railLabel || node.dataset.navLabel;
     if (!label || label === last) return;
     last = label;
+    // A pinned section is measured (and jumped to) through its spacer.
+    const el = node.parentElement?.classList.contains('pin-spacer') ? node.parentElement : node;
     sections.push({ el, label });
   });
   return sections;
@@ -29,7 +34,9 @@ const reduce = () => window.matchMedia('(prefers-reduced-motion: reduce)').match
 
 function jump(el) {
   const nav = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--nav-h')) || 72;
-  const y = el.getBoundingClientRect().top + window.scrollY - nav - 8;
+  // A pinned sequence starts exactly at its spacer's top; anything else clears the bar.
+  const pinned = el.classList.contains('pin-spacer');
+  const y = el.getBoundingClientRect().top + window.scrollY - (pinned ? 0 : nav + 8);
   const lenis = getLenis();
   if (lenis) lenis.scrollTo(y, { duration: 1.4, easing: (t) => 1 - Math.pow(1 - t, 4) });
   else window.scrollTo({ top: y, behavior: reduce() ? 'auto' : 'smooth' });
@@ -37,12 +44,12 @@ function jump(el) {
   el.focus({ preventScroll: true });
 }
 
-export function initSectionIndex({ ScrollTrigger } = {}) {
+export function initSectionIndex({ ScrollTrigger, ticks: withTicks = true, menu: withMenu = true } = {}) {
   const sections = collect();
   if (sections.length < 2) return;
 
   /* ---------- Ticks on the progress bar ---------- */
-  const bar = $('.progress');
+  const bar = withTicks ? $('.progress') : null;
   const ticks = bar ? sections.map(({ el, label }) => {
     const tick = document.createElement('button');
     tick.type = 'button';
@@ -65,11 +72,11 @@ export function initSectionIndex({ ScrollTrigger } = {}) {
   const railLinks = $$('a', rail);
 
   /* ---------- Menu list (tablet & phone) ---------- */
-  const menu = document.createElement('nav');
+  const menu = document.createElement(withMenu ? 'nav' : 'div');
   menu.className = 'section-menu';
   menu.setAttribute('aria-label', 'On this page');
   menu.innerHTML = `<p class="section-menu__title label">On this page</p><ol>${sections.map(({ label }, i) => `<li><a href="#" data-i="${i}">${label}</a></li>`).join('')}</ol>`;
-  document.body.appendChild(menu);
+  if (withMenu) document.body.appendChild(menu);
   const menuLinks = $$('a', menu);
 
   const right = $('[data-nav]');
@@ -91,7 +98,7 @@ export function initSectionIndex({ ScrollTrigger } = {}) {
   const place = () => {
     const max = document.documentElement.scrollHeight - window.innerHeight;
     if (max <= 0) return;
-    marks = sections.map(({ el }) => Math.min(1, Math.max(0, (el.getBoundingClientRect().top + window.scrollY - window.innerHeight * 0.5) / max)));
+    marks = sections.map(({ el }) => Math.min(1, Math.max(0, (el.getBoundingClientRect().top + window.scrollY - window.innerHeight * 0.3) / max)));
     ticks.forEach((tick, i) => { tick.style.left = `${marks[i] * 100}%`; });
     update();
   };
