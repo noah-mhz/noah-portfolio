@@ -580,7 +580,52 @@ export function initClock() {
    open behind a "Details +" toggle so the timeline isn't three screens long.
    -------------------------------------------------------------------------- */
 
+/**
+ * Desktop timeline: one column per role, and a click (or Enter) on a column
+ * shows that role's details in the shared row underneath.
+ */
+function initTimelineSwitch() {
+  const list = $('.timeline__list');
+  if (!list) return;
+  const entries = $$('[data-tl]', list);
+  const wide = window.matchMedia('(min-width: 1024px)');
+  let buttons = [];
+
+  const show = (index, animate = true) => {
+    entries.forEach((entry, i) => {
+      entry.classList.toggle('is-current', i === index);
+      buttons[i]?.setAttribute('aria-pressed', String(i === index));
+    });
+    const { gsap: g } = window;
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (!animate || !g || reduce) return;
+    const details = $$('.tl__desc, .tl__points', entries[index]);
+    g.fromTo(details, { autoAlpha: 0, y: 14 }, { autoAlpha: 1, y: 0, duration: 0.7, stagger: 0.06, ease: 'expo.out', overwrite: true });
+    g.fromTo($$('.tl__points li', entries[index]), { autoAlpha: 0, x: -10 }, { autoAlpha: 1, x: 0, duration: 0.6, stagger: 0.04, delay: 0.1, ease: 'expo.out' });
+  };
+
+  const setup = () => {
+    buttons.forEach((b) => b.remove());
+    buttons = [];
+    if (!wide.matches) return;
+    buttons = entries.map((entry, i) => {
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.className = 'tl__pick';
+      const company = $('.tl__company', entry)?.textContent.trim() || '';
+      button.setAttribute('aria-label', `Show details: ${company}`);
+      button.setAttribute('aria-pressed', String(entry.classList.contains('is-current')));
+      button.addEventListener('click', () => show(i));
+      entry.appendChild(button);
+      return button;
+    });
+  };
+  setup();
+  wide.addEventListener('change', setup);
+}
+
 export function initTimelineDetails() {
+  initTimelineSwitch();
   const lists = $$('.tl__points');
   if (!lists.length) return;
   const phone = window.matchMedia('(max-width: 767px)');

@@ -37,6 +37,12 @@ function sourceFor(link) {
     const video = link.querySelector('video');
     return { el: link, src: video?.getAttribute('poster') };
   }
+  // Next project: its preview frame grows into the next page.
+  const peek = link.querySelector('.study-next__peek');
+  if (peek && peek.getBoundingClientRect().height) {
+    const img = peek.querySelector('img');
+    return { el: peek, src: img?.currentSrc || img?.src || '' };
+  }
   const caseEl = link.closest('.case');
   if (caseEl) {
     const media = caseEl.querySelector('.case__media');

@@ -464,6 +464,16 @@ export function initProjectAnimations({ isMobile }) {
     const num = $('[data-project-num]', project);
     const meta = $$('.project__facts > div, .project__link', project);
 
+    // Rack focus: the image starts soft and pulls sharp as it arrives, while a set
+    // of viewfinder corners closes in on it and then steps away.
+    let finder = $('.marks--focus', clip);
+    if (!finder) {
+      finder = document.createElement('span');
+      finder.className = 'marks marks--focus';
+      finder.setAttribute('aria-hidden', 'true');
+      clip.appendChild(finder);
+    }
+
     if (isMobile) {
       // Mobile: one short, ordered sequence per project — image, number, metadata.
       gsap.timeline({
@@ -472,6 +482,9 @@ export function initProjectAnimations({ isMobile }) {
       })
         .fromTo(clip, { clipPath: path.clip }, { clipPath: 'inset(0% 0% 0% 0%)', duration: 1.5 }, 0)
         .fromTo(inner, { scale: 1.12 }, { scale: 1, duration: 2 }, 0)
+        .fromTo(inner, { filter: 'blur(8px)' }, { filter: 'blur(0px)', duration: 1.6, ease: 'power2.out', clearProps: 'filter' }, 0.1)
+        .fromTo(finder, { autoAlpha: 0, scale: 1.12 }, { autoAlpha: 1, scale: 1, duration: 1.2 }, 0.2)
+        .to(finder, { autoAlpha: 0, duration: 0.6, ease: 'power2.in' }, 1.6)
         .fromTo(num, { yPercent: 110 }, { yPercent: 0, duration: 1, ease: 'power4.out' }, 0.2)
         .fromTo(meta, { y: 16, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 1.1, stagger: 0.06 }, 0.55);
       return;
@@ -509,6 +522,9 @@ export function initProjectAnimations({ isMobile }) {
       .fromTo(media, { x: mediaX, yPercent: path.media.yPercent }, { x: 0, yPercent: 0, duration: 3, ease: 'power2.out' }, 0)
       .fromTo(inner, { scale: 1.12 }, { scale: 1, duration: 5, ease: 'power1.out' }, 0)
       .fromTo(inner, { xPercent: -4, yPercent: 3 }, { xPercent: 4, yPercent: -3, duration: 10 }, 0)
+      .fromTo(inner, { filter: 'blur(10px)' }, { filter: 'blur(0px)', duration: 3, ease: 'power2.out' }, 0)
+      .fromTo(finder, { autoAlpha: 0, scale: 1.14 }, { autoAlpha: 1, scale: 1, duration: 2, ease: 'power3.out' }, 0.3)
+      .to(finder, { autoAlpha: 0, duration: 1, ease: 'power1.in' }, 2.6)
       .fromTo(group, { x: titleTravel }, { x: 0, duration: 3, ease: 'power3.out' }, 1)
       .fromTo(num, { yPercent: 110 }, { yPercent: 0, duration: 1.2, ease: 'power3.out' }, 1.4)
       .fromTo(meta,
@@ -787,9 +803,35 @@ function buildOdometer(entry) {
   return $$('.odo__strip[data-from]', year);
 }
 
-export function initTimeline() {
+export function initTimeline({ isDesktop = false } = {}) {
   const track = $('[data-timeline]');
   if (!track) return;
+
+  // Desktop: one horizontal strip of years (layout in CSS, switching in
+  // interactions.js). The line draws across and every column rolls in together.
+  if (isDesktop) {
+    gsap.fromTo('[data-timeline-fill]', { scaleX: 0 }, {
+      scaleX: 1,
+      duration: 1.6,
+      ease: 'expo.inOut',
+      scrollTrigger: { trigger: track, start: 'top 75%', once: true },
+    });
+    $$('[data-tl]', track).forEach((entry, i) => {
+      const strips = buildOdometer(entry);
+      const range = $('.tl__range [data-tl-item]', entry);
+      const at = { trigger: track, start: 'top 75%', toggleActions: 'play none none none' };
+      gsap.fromTo($$('.tl__when [data-tl-item], .tl__company [data-tl-item], .tl__role [data-tl-item]', entry), { yPercent: 110 }, {
+        yPercent: 0, duration: 0.9, ease: 'expo.out', stagger: 0.05, delay: 0.25 + i * 0.12,
+        scrollTrigger: { ...at, onEnter: () => scramble(range, { duration: 0.7, delay: 0.35 + i * 0.12 }) },
+      });
+      if (strips.length) {
+        gsap.fromTo(strips, { yPercent: (k, strip) => Number(strip.dataset.from) }, {
+          yPercent: 0, duration: 1.3, delay: 0.4 + i * 0.12, ease: 'power3.inOut', scrollTrigger: at,
+        });
+      }
+    });
+    return;
+  }
 
   gsap.fromTo('[data-timeline-fill]', { scaleY: 0 }, {
     scaleY: 1,
@@ -982,7 +1024,7 @@ export function initScrollAnimations() {
     const cleanupCase = initCaseStudy({ pinned: isDesktop, handoff: isDesktop });
     initTextReveal({ isMobile });
     initProjectAnimations({ isMobile });
-    initTimeline();
+    initTimeline({ isDesktop });
     initCapsEntrance();
     initImageReveal();
     const cleanupSections = initSectionTransitions({ isMobile });

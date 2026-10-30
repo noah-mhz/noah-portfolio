@@ -964,3 +964,38 @@ a:focus-visible .arrow--back { transform: translateX(-0.3em); }
 
 /* A live site that isn't launched yet: the address, unlinked. */
 .study-end__soon { display: inline-flex; white-space: nowrap; color: var(--muted); }
+
+/* Next project: a frame of the next site develops above the link on hover. */
+.study-next__project { position: relative; }
+.study-next__peek {
+  position: absolute;
+  right: 0;
+  bottom: calc(100% + 1.25rem);
+  width: clamp(14rem, 24vw, 24rem);
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  background: var(--surface);
+  clip-path: inset(100% 0% 0% 0%);
+  transition: clip-path 0.9s var(--ease-out);
+  pointer-events: none;
+}
+.study-next__peek img { width: 100%; height: 100%; object-fit: cover; object-position: left top; transform: scale(1.12); transition: transform 1.2s var(--ease-out); }
+.study-next__peek .marks { --mark-color: #F2F2F0; }
+.study-next__project:hover .study-next__peek,
+.study-next__project:focus-visible .study-next__peek { clip-path: inset(0% 0% 0% 0%); }
+.study-next__project:hover .study-next__peek img,
+.study-next__project:focus-visible .study-next__peek img { transform: scale(1); }
+.study-next__project:hover .study-next__peek .marks,
+.study-next__project:focus-visible .study-next__peek .marks { opacity: 1; transform: scale(1); }
+
+/* Touch: no hover, so the frame simply sits above the link. */
+@media (hover: none) {
+  .study-next__peek { position: relative; bottom: auto; width: min(100%, 22rem); margin-bottom: 1rem; clip-path: none; }
+  .study-next__peek img { transform: none; }
+}
+@media (hover: none) and (max-width: 767px) {
+  .study-next__peek { justify-self: start; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .study-next__peek, .study-next__peek img { transition: none; }
+}
