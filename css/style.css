@@ -3145,3 +3145,11 @@ html.vt-finder::view-transition-new(root) { clip-path: inset(46% 46% 46% 46%); }
     color: var(--muted);
   }
 }
+
+/* Form fields use the site's dot cursor too, not the system text cursor. */
+.has-cursor input,
+.has-cursor textarea,
+.has-cursor select,
+.has-cursor option,
+.has-cursor .pf__field,
+.has-cursor .pf__message { cursor: none; }
