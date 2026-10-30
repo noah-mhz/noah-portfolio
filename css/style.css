@@ -2864,3 +2864,47 @@ html.vt-finder::view-transition-new(root) { clip-path: inset(46% 46% 46% 46%); }
 /* Into Daylight the viewfinder's marks are ink, and the crosshair deep green. */
 .theme-finder.is-day i { border-color: #0A0A0A; }
 .theme-finder.is-day b::before, .theme-finder.is-day b::after { background: #0B7A53; }
+
+/* In progress: real projects that aren't out yet, as a compact list, no images. */
+.wip { padding: clamp(4rem, 10vh, 7rem) var(--gutter) clamp(2rem, 5vh, 4rem); }
+.wip__list { margin-top: 2rem; border-top: 1px solid var(--border); }
+.wip__item {
+  display: grid;
+  grid-template-columns: 6rem minmax(0, 1.2fr) minmax(0, 1.4fr) minmax(0, 1fr);
+  align-items: baseline;
+  gap: 1rem 2rem;
+  padding: 1.6rem 0;
+  border-bottom: 1px solid var(--border);
+}
+.wip__num { color: var(--accent); }
+.wip__name { font-size: var(--fs-lead); font-weight: 500; letter-spacing: -0.03em; text-transform: uppercase; line-height: 1; }
+@media (max-width: 1023px) {
+  .wip__item { grid-template-columns: 4.5rem minmax(0, 1fr); }
+  .wip__sector, .wip__build { grid-column: 2; }
+}
+
+/* Contact: a second route beside the form. */
+.contact__alt { display: grid; gap: 0.6rem; }
+.contact__note { font-size: var(--fs-body); }
+.contact__linkedin { justify-self: start; font-size: var(--fs-body); }
+
+/* Touch: small text links get a 44px-tall tap area without changing how they look. */
+@media (pointer: coarse) {
+  .link-line::before {
+    content: '';
+    position: absolute;
+    inset: min(0px, calc((100% - 44px) / 2)) -0.4rem;
+  }
+}
+
+/* Phones: the theme dot says what it is at the very top of the page and while the menu is open. */
+@media (hover: none) and (max-width: 767px) {
+  html.at-top .nav__right:not(.has-status) .theme-toggle--nav .theme-toggle__label,
+  .nav__right.is-open .theme-toggle--nav .theme-toggle__label {
+    display: block;
+    opacity: 1;
+    translate: -50% 0;
+    font-size: 0.5625rem;
+  }
+  .nav__right.is-open .theme-toggle--nav { display: inline-flex; }
+}

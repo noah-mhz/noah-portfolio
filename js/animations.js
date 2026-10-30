@@ -591,7 +591,7 @@ export function initCaseStudy({ pinned, handoff = false }) {
     scrollTrigger: {
       trigger: section,
       start: 'top top',
-      end: '+=280%',
+      end: '+=150%', // short enough that the page never feels stuck
       pin: true,
       scrub: 1,
       anticipatePin: 1,

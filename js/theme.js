@@ -36,6 +36,11 @@ function apply(mode) {
 export function initTheme() {
   const toggles = [...document.querySelectorAll('[data-theme-toggle]')];
   sync();
+
+  // Phones label the switch only at the very top of the page (see CSS), so mark it.
+  const atTop = () => document.documentElement.classList.toggle('at-top', window.scrollY < 40);
+  atTop();
+  window.addEventListener('scroll', atTop, { passive: true });
   if (!toggles.length) return;
 
   let busy = false;
