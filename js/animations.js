@@ -490,6 +490,21 @@ export function initProjectAnimations({ isMobile }) {
       return;
     }
 
+    // A second screen (Voyagaer): develops up from the bottom, pulls focus,
+    // and drifts a little faster than the first for depth.
+    const second = $('.project__second-clip', project);
+    if (second) {
+      const img2 = $('img', second);
+      gsap.timeline({
+        defaults: { ease: 'none' },
+        scrollTrigger: { trigger: project, start: 'top bottom', end: 'bottom top', scrub: 1, invalidateOnRefresh: true },
+      })
+        .fromTo(second, { clipPath: 'inset(100% 0% 0% 0%)' }, { clipPath: 'inset(0% 0% 0% 0%)', duration: 3.2, ease: 'power2.out' }, 0.6)
+        .fromTo(img2, { scale: 1.14 }, { scale: 1, duration: 3.6, ease: 'power2.out' }, 0.6)
+        .fromTo(second, { filter: 'blur(10px)' }, { filter: 'blur(0px)', duration: 3.6, ease: 'power2.out' }, 0.6)
+        .fromTo(second, { yPercent: 10 }, { yPercent: -10, duration: 10 }, 0);
+    }
+
     // Title + number move as one group, toward the page centre and back.
     const group = [numWrap, title];
     const titleTravel = () => {

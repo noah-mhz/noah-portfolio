@@ -2988,3 +2988,53 @@ html.vt-finder::view-transition-new(root) { clip-path: inset(46% 46% 46% 46%); }
   transition: background-color 0.4s var(--ease-out);
 }
 .progress__tick.is-passed { background: var(--accent); }
+
+/* --------------------------------------------------------------------------
+   Voyagaer: two screens side by side — the homepage and a product page —
+   with the facts as one row underneath. Desktop only; smaller screens keep
+   the single card.
+   -------------------------------------------------------------------------- */
+.project__second { display: none; }
+
+@media (min-width: 1024px) {
+  .project--pair .project__media { grid-column: 1 / 8; }
+  .project--pair .project__second {
+    display: grid;
+    gap: 0.9rem;
+    grid-column: 8 / 13;
+    grid-row: 2;
+    align-self: start;
+    margin-top: clamp(4rem, 14vh, 9rem);
+  }
+  .project__second-clip {
+    position: relative;
+    display: block;
+    aspect-ratio: 4 / 5;
+    overflow: hidden;
+    background: var(--surface);
+  }
+  .project__second-clip img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top center;
+    filter: grayscale(0.9) brightness(0.85);
+    transition: filter 1s var(--ease-out);
+  }
+  .project__second:hover .project__second-clip img { filter: grayscale(0) brightness(0.97); }
+  .project__second:hover .marks { opacity: 1; transform: scale(1); }
+  .project__second .marks { --mark-color: #F2F2F0; }
+
+  .project--pair .project__meta {
+    grid-column: 1 / -1;
+    grid-row: 3;
+    align-self: start;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: end;
+    gap: 2rem 4rem;
+    margin-top: clamp(2.5rem, 6vh, 4rem);
+    padding-top: 1.4rem;
+    border-top: 1px solid var(--border);
+  }
+  .project--pair .project__facts { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}
