@@ -818,35 +818,9 @@ function buildOdometer(entry) {
   return $$('.odo__strip[data-from]', year);
 }
 
-export function initTimeline({ isDesktop = false } = {}) {
+export function initTimeline() {
   const track = $('[data-timeline]');
   if (!track) return;
-
-  // One strip of role columns at every width (layout in CSS, switching in
-  // interactions.js). The line draws across and every column rolls in together.
-  if (isDesktop) {
-    gsap.fromTo('[data-timeline-fill]', { scaleX: 0 }, {
-      scaleX: 1,
-      duration: 1.6,
-      ease: 'expo.inOut',
-      scrollTrigger: { trigger: track, start: 'top 75%', once: true },
-    });
-    $$('[data-tl]', track).forEach((entry, i) => {
-      const strips = buildOdometer(entry);
-      const range = $('.tl__range [data-tl-item]', entry);
-      const at = { trigger: track, start: 'top 75%', toggleActions: 'play none none none' };
-      gsap.fromTo($$('.tl__when [data-tl-item], .tl__company [data-tl-item], .tl__role [data-tl-item]', entry), { yPercent: 110 }, {
-        yPercent: 0, duration: 0.9, ease: 'expo.out', stagger: 0.05, delay: 0.25 + i * 0.12,
-        scrollTrigger: { ...at, onEnter: () => scramble(range, { duration: 0.7, delay: 0.35 + i * 0.12 }) },
-      });
-      if (strips.length) {
-        gsap.fromTo(strips, { yPercent: (k, strip) => Number(strip.dataset.from) }, {
-          yPercent: 0, duration: 1.3, delay: 0.4 + i * 0.12, ease: 'power3.inOut', scrollTrigger: at,
-        });
-      }
-    });
-    return;
-  }
 
   gsap.fromTo('[data-timeline-fill]', { scaleY: 0 }, {
     scaleY: 1,
@@ -1039,7 +1013,7 @@ export function initScrollAnimations() {
     const cleanupCase = initCaseStudy({ pinned: isDesktop, handoff: isDesktop });
     initTextReveal({ isMobile });
     initProjectAnimations({ isMobile });
-    initTimeline({ isDesktop: true }); // the column strip at every width
+    initTimeline();
     initCapsEntrance();
     initImageReveal();
     const cleanupSections = initSectionTransitions({ isMobile });
