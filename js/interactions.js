@@ -67,16 +67,22 @@ export function initCursor() {
     let target = null;
     const pointer = { x: -100, y: -100 };
 
+    // [scaleX, scaleY] of the 80px circle. "text" is a thin caret over form
+    // fields; "select" is a ring with a caret mark over the form's choices.
+    const SHAPES = { default: [0.1, 0.1], hover: [0.5, 0.5], label: [1, 1], frame: [0, 0], marked: [0.06, 0.06], text: [0.025, 0.34], select: [0.42, 0.42] };
     const setState = (next, text = '') => {
       if (next === state && (next !== 'label' || label.textContent === text)) return;
       state = next;
-      cursor.classList.toggle('is-hover', next === 'hover');
+      cursor.classList.toggle('is-hover', next === 'hover' || next === 'select');
       cursor.classList.toggle('is-label', next === 'label');
-      if (text) label.textContent = text;
+      cursor.classList.toggle('is-text', next === 'text');
+      cursor.classList.toggle('is-select', next === 'select');
+      if (next === 'select') label.textContent = '▾';
+      else if (text) label.textContent = text;
 
-      const scale = { default: 0.1, hover: 0.5, label: 1, frame: 0, marked: 0.06 }[next];
-      gsap.to(circle, { scale, duration: 0.6, ease: 'expo.out', overwrite: true });
-      gsap.to(label, { autoAlpha: next === 'label' ? 1 : 0, duration: 0.3, overwrite: true });
+      const [scaleX, scaleY] = SHAPES[next];
+      gsap.to(circle, { scaleX, scaleY, borderRadius: next === 'text' ? '2px' : '50%', duration: 0.6, ease: 'expo.out', overwrite: true });
+      gsap.to(label, { autoAlpha: next === 'label' || next === 'select' ? 1 : 0, duration: 0.3, overwrite: true });
     };
 
     // Each tick: keep the corners on the target, and let go if it moved out from under the pointer.
@@ -128,9 +134,21 @@ export function initCursor() {
       track();
     };
 
+    // While typing, the cursor steps out of the way; any movement brings it back.
+    let typing = false;
+    const onKey = (event) => {
+      if (typing || !event.target.closest?.('input, textarea')) return;
+      typing = true;
+      gsap.to(cursor, { autoAlpha: 0, duration: 0.25, overwrite: 'auto' });
+    };
+
     const onMove = (event) => {
       pointer.x = event.clientX;
       pointer.y = event.clientY;
+      if (typing) {
+        typing = false;
+        gsap.to(cursor, { autoAlpha: 1, duration: 0.3, overwrite: 'auto' });
+      }
       if (!visible) {
         visible = true;
         gsap.set(cursor, { x: event.clientX, y: event.clientY });
@@ -141,6 +159,10 @@ export function initCursor() {
     };
 
     const onOver = (event) => {
+      // Form fields: a caret over text, a ring over the choices.
+      if (event.target.closest('.pf input, .pf textarea')) { release(); return setState('text'); }
+      if (event.target.closest('.pf__pick')) { release(); return setState('select'); }
+      if (event.target.closest('.pf__opt')) { release(); return setState('marked'); }
       const labelled = event.target.closest('[data-cursor]');
       if (labelled) { release(); return setState('label', labelled.dataset.cursor); }
       const link = event.target.closest('a, button');
@@ -173,6 +195,7 @@ export function initCursor() {
     const dispose = listen([
       [window, 'pointermove', onMove, { passive: true }],
       [document, 'pointerover', onOver],
+      [document, 'keydown', onKey],
       [document, 'pointerdown', onDown],
       [root, 'pointerleave', onLeave],
     ]);

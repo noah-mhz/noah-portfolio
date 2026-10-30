@@ -3153,3 +3153,131 @@ html.vt-finder::view-transition-new(root) { clip-path: inset(46% 46% 46% 46%); }
 .has-cursor option,
 .has-cursor .pf__field,
 .has-cursor .pf__message { cursor: none; }
+
+/* --------------------------------------------------------------------------
+   Project form details (js/formfx.js)
+   -------------------------------------------------------------------------- */
+
+/* Choice button: reads like the old dropdown, in mint with a caret. */
+.pf__pick {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35em;
+  height: 1.5em;
+  margin: 0;
+  padding: 0 0.1em;
+  border: 0;
+  background: none;
+  font: inherit;
+  letter-spacing: inherit;
+  line-height: 1.5;
+  color: var(--accent);
+  white-space: nowrap;
+  cursor: pointer;
+}
+.pf__pick:focus-visible { outline: none; }
+.pf__pick-caret {
+  width: 0.28em;
+  height: 0.28em;
+  margin-top: -0.1em;
+  border-right: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  transform: rotate(45deg);
+  transition: transform 0.45s var(--ease-out), margin 0.45s var(--ease-out);
+}
+.pf__field.is-open .pf__pick-caret { transform: rotate(225deg); margin-top: 0.2em; }
+.pf__field--select:focus-within .pf__rule { background: var(--accent); height: 2px; }
+
+/* The list: the site's own, in the same large type. */
+.pf__list {
+  position: absolute;
+  top: calc(100% + 0.35rem);
+  left: 0;
+  z-index: 5;
+  min-width: 100%;
+  margin: 0;
+  padding: 0.35em 0;
+  list-style: none;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  outline: none;
+}
+.pf__list[hidden] { display: none; }
+.pf__opt {
+  position: relative;
+  padding: 0.12em 1.6em 0.12em 0.55em;
+  color: rgba(var(--fg-rgb), 0.55);
+  white-space: nowrap;
+  transition: color 0.3s var(--ease-out);
+}
+.pf__opt-mask { display: block; overflow: hidden; }
+.pf__opt-text { display: block; }
+.pf__opt .marks { --mark: 10px; inset: 4px; }
+.pf__opt.is-active { color: var(--accent); }
+.pf__opt.is-active .marks { opacity: 1; transform: scale(1); }
+.pf__opt[aria-selected="true"]::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  right: 0.6em;
+  width: 6px;
+  height: 6px;
+  margin-top: -3px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+.has-cursor .pf__opt, .has-cursor .pf__pick { cursor: none; }
+
+/* Placeholders slide up and fade as the field takes focus. */
+.pf__ph {
+  position: absolute;
+  top: 0;
+  left: 0.1em;
+  height: 1.5em;
+  line-height: 1.5;
+  color: rgba(var(--fg-rgb), 0.28);
+  white-space: nowrap;
+  pointer-events: none;
+  transition: opacity 0.4s var(--ease-out), transform 0.55s var(--ease-out);
+}
+.pf__field:focus-within .pf__ph { opacity: 0; transform: translateY(-0.45em); }
+.pf__field.has-value .pf__ph { opacity: 0; transform: none; transition: none; }
+.pf__message textarea::placeholder { transition: opacity 0.4s var(--ease-out); }
+.pf__message textarea:focus::placeholder { opacity: 0; }
+
+/* The underline draws across in mint when a field takes focus. */
+.pf__rule::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.7s var(--ease-out);
+}
+.pf__field:focus-within .pf__rule::after,
+.pf__message:focus-within .pf__rule::after { transform: scaleX(1); }
+.pf__field.is-invalid .pf__rule::after,
+.pf__message.is-invalid .pf__rule::after { background: var(--error); transform: scaleX(1); }
+
+/* An invalid field shakes once. */
+@keyframes pf-shake {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-6px); }
+  40% { transform: translateX(5px); }
+  60% { transform: translateX(-3px); }
+  80% { transform: translateX(2px); }
+}
+.pf__field.is-shaking.is-invalid,
+.pf__message.is-shaking.is-invalid { animation: pf-shake 0.45s var(--ease-out); }
+
+/* Cursor over the form: a slow-blinking caret over text, a ring with ▾ over choices. */
+@keyframes cursor-caret { 0%, 55% { opacity: 1; } 70%, 90% { opacity: 0.25; } 100% { opacity: 1; } }
+.cursor.is-text .cursor__circle { animation: cursor-caret 1.2s var(--ease-out) infinite; }
+.cursor.is-select .cursor__label { color: #F2F2F0; font-size: 0.875rem; letter-spacing: 0; }
+
+@media (prefers-reduced-motion: reduce) {
+  .pf__ph, .pf__rule::after, .pf__pick-caret { transition: none; }
+  .pf__field.is-shaking.is-invalid, .pf__message.is-shaking.is-invalid { animation: none; }
+  .cursor.is-text .cursor__circle { animation: none; }
+}

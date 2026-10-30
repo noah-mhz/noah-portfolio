@@ -6,6 +6,7 @@
  * Without JavaScript the button stays a plain mailto link.
  */
 import { getLenis } from './scroll.js';
+import { initFormFx, flagInvalid } from './formfx.js';
 
 const $ = (selector, root = document) => root.querySelector(selector);
 const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
@@ -30,6 +31,7 @@ export function initContactForm() {
   const root = $('#project-form');
   const triggers = $$('[data-pf-open]');
   if (!root || !triggers.length) return;
+  initFormFx(root);
 
   const { gsap } = window;
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -104,7 +106,7 @@ export function initContactForm() {
 
   const items = () => $$('.pf__top .pf__item, .pf__title .pf__item, .pf__sentence .pf__item', root);
   const rules = () => $$('.pf__rule', root);
-  const fields = () => $$('.pf__field input, .pf__field select', root);
+  const fields = () => $$('.pf__field input, .pf__field .pf__pick', root);
   const formParts = () => $$('.pf__title, .pf__sentence, .pf__message, .pf__foot, .pf__status', form);
 
   const insetFrom = (el) => {
@@ -210,7 +212,8 @@ export function initContactForm() {
     status.textContent = message;
     status.classList.add('is-error');
     $$('[data-field]', root).forEach((field) => field.classList.toggle('is-invalid', bad.includes(field.dataset.field)));
-    const firstBad = bad.length && $(`[data-field="${bad[0]}"] input, [data-field="${bad[0]}"] select, [data-field="${bad[0]}"] textarea`, root);
+    flagInvalid($$('[data-field].is-invalid', root));
+    const firstBad = bad.length && $(`[data-field="${bad[0]}"] input, [data-field="${bad[0]}"] .pf__pick, [data-field="${bad[0]}"] textarea`, root);
     firstBad?.focus();
   };
 
@@ -229,7 +232,10 @@ export function initContactForm() {
 
     const reveal = () => {
       form.hidden = true;
-      if (state === 'sent') form.reset(); // clear only once the form is out of sight
+      if (state === 'sent') {
+        form.reset(); // clear only once the form is out of sight
+        form.dispatchEvent(new Event('pf:reset'));
+      }
       result.hidden = false;
       (state === 'failed' ? retry : $('[data-pf-close]', result))?.focus({ preventScroll: true });
       if (reduce || !gsap) return;
