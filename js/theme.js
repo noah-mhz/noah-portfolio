@@ -3,10 +3,9 @@
  * The inline script in each page's <head> applies a saved Daylight before
  * anything paints, so there's never a dark flash.
  *
- * To Daylight the page develops like a print: a red safelight wash, a sheet
- * of paper rising from the bottom, then the light page fading up through it.
- * Back to Darkroom closes through the viewfinder: a dark frame opens from the
- * centre and widens to the screen edges (a dip to black where unsupported).
+ * Both ways the new theme opens through a viewfinder from the centre of the
+ * screen. Where that isn't supported, Daylight develops like a print (a red
+ * safelight wash, then paper rising) and Darkroom is a dip to black.
  */
 
 const KEY = 'theme';
@@ -48,35 +47,19 @@ export function initTheme() {
     busy = true;
     const done = () => { busy = false; };
 
-    if (to === 'daylight') {
-      const veil = document.createElement('div');
-      const paper = document.createElement('div');
-      veil.className = 'theme-veil';
-      paper.className = 'theme-paper';
-      document.body.append(veil, paper);
-      gsap.timeline({ onComplete: () => { veil.remove(); paper.remove(); done(); } })
-        // Safelight on.
-        .to(veil, { opacity: 0.85, duration: 0.35, ease: 'power2.out' }, 0)
-        // Paper slides into the tray.
-        .fromTo(paper, { clipPath: 'inset(100% 0% 0% 0%)' }, { clipPath: 'inset(0% 0% 0% 0%)', duration: 0.6, ease: 'expo.inOut' }, 0.25)
-        .add(() => { apply('daylight'); gsap.set(veil, { opacity: 0 }); }, 0.85)
-        // The image comes up through the paper: washed out first, then full contrast.
-        .to(paper, { opacity: 0, duration: 0.9, ease: 'power2.in' }, 0.9);
-      return;
-    }
-
-    // Back to Darkroom through the lens: a dark frame opens from the centre, corner
-    // marks riding its edges, with Daylight still outside it. View Transitions let
-    // both themes be on screen at once; older browsers get the dip to black below.
+    // Either way, the new theme opens through a viewfinder: a frame grows from the
+    // centre, corner marks riding its edges, with the old theme still outside it.
+    // View Transitions let both themes be on screen at once; older browsers get
+    // the safelight (to Daylight) or the dip to black (to Darkroom) below.
     if (document.startViewTransition) {
       const root = document.documentElement;
       const finder = document.createElement('div');
-      finder.className = 'theme-finder';
+      finder.className = to === 'daylight' ? 'theme-finder is-day' : 'theme-finder';
       finder.setAttribute('aria-hidden', 'true');
       finder.innerHTML = '<i></i><i></i><i></i><i></i><b></b>';
       root.classList.add('vt-finder');
       const vt = document.startViewTransition(() => {
-        apply('darkroom');
+        apply(to);
         document.body.append(finder);
       });
       const EASE = 'cubic-bezier(0.76, 0, 0.24, 1)';
@@ -98,6 +81,24 @@ export function initTheme() {
       });
       return;
     }
+
+    if (to === 'daylight') {
+      const veil = document.createElement('div');
+      const paper = document.createElement('div');
+      veil.className = 'theme-veil';
+      paper.className = 'theme-paper';
+      document.body.append(veil, paper);
+      gsap.timeline({ onComplete: () => { veil.remove(); paper.remove(); done(); } })
+        // Safelight on.
+        .to(veil, { opacity: 0.85, duration: 0.35, ease: 'power2.out' }, 0)
+        // Paper slides into the tray.
+        .fromTo(paper, { clipPath: 'inset(100% 0% 0% 0%)' }, { clipPath: 'inset(0% 0% 0% 0%)', duration: 0.6, ease: 'expo.inOut' }, 0.25)
+        .add(() => { apply('daylight'); gsap.set(veil, { opacity: 0 }); }, 0.85)
+        // The image comes up through the paper: washed out first, then full contrast.
+        .to(paper, { opacity: 0, duration: 0.9, ease: 'power2.in' }, 0.9);
+      return;
+    }
+
 
     const veil = document.createElement('div');
     veil.className = 'theme-veil is-black';

@@ -453,7 +453,7 @@ a:focus-visible .arrow--diag { transform: translate(0.2em, -0.2em); }
   left: 0;
   right: 0;
   z-index: 60;
-  height: 1px;
+  height: 3px;
   pointer-events: none;
 }
 
@@ -962,7 +962,7 @@ a:focus-visible .arrow--diag { transform: translate(0.2em, -0.2em); }
   display: flex;
   align-items: flex-start;
   gap: clamp(1rem, 3vw, 3rem);
-  margin-bottom: -0.3em;
+  margin-bottom: 0.12em; /* sits clear of the image, so it reads on any frame */
   font-size: clamp(3rem, 10vw, 11rem);
   pointer-events: none;
 }
@@ -2792,7 +2792,7 @@ html[data-theme="daylight"] .theme-toggle__dot { background: transparent; }
 .theme-paper { background: #F2F2F0; clip-path: inset(100% 0% 0% 0%); }
 
 /* --------------------------------------------------------------------------
-   Project titles: brand colour while in view, white where they cross the image
+   Project titles: always their brand colour; white wherever they cross an image
    -------------------------------------------------------------------------- */
 .case { --brand-now: var(--brand); }
 .project { --brand-now: var(--brand); }
@@ -2800,11 +2800,7 @@ html[data-theme="daylight"] .case,
 html[data-theme="daylight"] .project { --brand-now: var(--brand-day, var(--brand)); }
 
 .project__title,
-.case__title { transition: color 0.9s var(--ease-out); }
-
-.project.is-lit .project__title,
-.project:has(.project__media:hover) .project__title,
-.case.is-lit .case__title { color: var(--brand-now, var(--text)); }
+.case__title { color: var(--brand-now, var(--text)); }
 
 .title-over {
   position: absolute;
@@ -2864,3 +2860,7 @@ html.vt-finder::view-transition-new(root) { clip-path: inset(46% 46% 46% 46%); }
   .nav__right.has-status .theme-toggle--nav { display: none; }
   .nav__status-text { max-width: calc(100vw - 17.5rem); }
 }
+
+/* Into Daylight the viewfinder's marks are ink, and the crosshair deep green. */
+.theme-finder.is-day i { border-color: #0A0A0A; }
+.theme-finder.is-day b::before, .theme-finder.is-day b::after { background: #0B7A53; }

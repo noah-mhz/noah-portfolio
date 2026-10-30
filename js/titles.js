@@ -1,9 +1,8 @@
 /*
  * Project titles on the homepage.
  *
- * Colour: a title takes its brand colour (data in --brand / --brand-day on the
- * article) while its project holds the middle of the screen, or while its image
- * is hovered. Projects without a brand colour stay ink.
+ * Colour: each title is set in its brand colour (--brand / --brand-day on the
+ * article, in CSS). Projects without a brand colour stay ink.
  *
  * Overlap: where a title crosses its image, that part is drawn in white. A
  * white twin of the title sits over the original, clipped to the visible image;
@@ -117,15 +116,6 @@ function overlap({ title, layers, until }) {
   sync();
 }
 
-const light = (el, trigger, until) => window.ScrollTrigger.create({
-  trigger,
-  refreshPriority: -1, // measure after the pinned sections have added their spacing
-  start: 'top 62%',
-  // A pinned section ends where the next one lights up, not at its own (unpinned) bottom.
-  ...(until ? { endTrigger: until, end: 'top 62%' } : { end: 'bottom 38%' }),
-  onToggle: (self) => el.classList.toggle('is-lit', self.isActive),
-});
-
 export function initProjectTitles() {
   const { gsap, ScrollTrigger } = window;
   if (!gsap || !ScrollTrigger) return;
@@ -136,7 +126,6 @@ export function initProjectTitles() {
   const caseMedia = $('.case__media', caseEl || document);
   if (caseEl && caseTitle && caseMedia) {
     const next = $('[data-project] .project__media');
-    light(caseEl, caseTitle.parentElement, next);
     overlap({ title: caseTitle, layers: [caseMedia], until: next });
   }
 
@@ -145,7 +134,6 @@ export function initProjectTitles() {
     const clip = $('.project__clip', project);
     const title = $('.project__title', project);
     if (!media || !clip || !title) return;
-    light(project, media);
     overlap({ title, layers: [clip, media] });
   });
 }
