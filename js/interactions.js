@@ -44,8 +44,9 @@ export function initCursor() {
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const circle = $('.cursor__circle', cursor);
     const label = $('.cursor__label', cursor);
-    const xTo = gsap.quickTo(cursor, 'x', { duration: 0.5, ease: 'power3' });
-    const yTo = gsap.quickTo(cursor, 'y', { duration: 0.5, ease: 'power3' });
+    // The cursor sits exactly on the pointer, with no lag.
+    const xTo = gsap.quickSetter(cursor, 'x', 'px');
+    const yTo = gsap.quickSetter(cursor, 'y', 'px');
 
     root.classList.add('has-cursor');
     gsap.set(cursor, { autoAlpha: 0 });
