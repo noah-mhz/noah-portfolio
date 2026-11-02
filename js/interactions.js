@@ -1,5 +1,7 @@
 const { gsap } = window;
 
+import { preparePoints, pointsTimeline } from './points.js';
+
 const $ = (selector, root = document) => root.querySelector(selector);
 const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
 
@@ -643,6 +645,9 @@ export function initTimelineDetails() {
         if (open) {
           list.classList.remove('is-collapsed');
           g.fromTo(list, { height: 0 }, { height: 'auto', duration: 0.6, ease: 'expo.out', onComplete: refresh });
+          // The points arrive one by one as the box opens.
+          preparePoints(list.parentElement);
+          pointsTimeline(list, { delay: 0.1 }).play(0);
         } else {
           g.to(list, { height: 0, duration: 0.45, ease: 'power2.inOut', onComplete: () => { list.classList.add('is-collapsed'); list.style.height = ''; refresh(); } });
         }

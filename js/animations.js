@@ -1,4 +1,5 @@
 import { splitAll, wrapChars, TEXT_TARGETS } from './split.js';
+import { preparePoints, pointsTimeline } from './points.js';
 import { initNavigation } from './navigation.js';
 import { scramble } from './scramble.js';
 
@@ -822,6 +823,7 @@ function buildOdometer(entry) {
 export function initTimeline() {
   const track = $('[data-timeline]');
   if (!track) return;
+  preparePoints(track);
 
   gsap.fromTo('[data-timeline-fill]', { scaleY: 0 }, {
     scaleY: 1,
@@ -834,7 +836,7 @@ export function initTimeline() {
     const strips = buildOdometer(entry);
     const range = $('.tl__range [data-tl-item]', entry);
 
-    gsap.fromTo($$('[data-tl-item]', entry), { yPercent: 110 }, {
+    gsap.fromTo($$('[data-tl-item]', entry).filter((el) => !el.closest('.tl__points')), { yPercent: 110 }, {
       yPercent: 0,
       duration: 0.9,
       ease: 'expo.out',
@@ -846,6 +848,17 @@ export function initTimeline() {
         onEnter: () => scramble(range, { duration: 0.7, delay: 0.1 }),
       },
     });
+
+    // Achievements: dashes draw, points rise one by one, figures count up.
+    const points = $('.tl__points', entry);
+    if (points) {
+      ScrollTrigger.create({
+        trigger: entry,
+        start: 'top 72%',
+        animation: pointsTimeline(points, { delay: 0.35 }),
+        toggleActions: 'play none none reverse',
+      });
+    }
 
     // The year counts back from when the role ended to when it began.
     if (strips.length) {

@@ -3283,3 +3283,30 @@ html.vt-finder::view-transition-new(root) { clip-path: inset(46% 46% 46% 46%); }
   .pf__field.is-shaking.is-invalid, .pf__message.is-shaking.is-invalid { animation: none; }
   .cursor.is-text .cursor__circle { animation: none; }
 }
+
+/* --------------------------------------------------------------------------
+   Timeline achievements (js/points.js): drawn dashes, figures in the accent
+   -------------------------------------------------------------------------- */
+.tl__points li > span::before { content: none; }
+.tl__points li { position: relative; padding-left: 1.45em; }
+.tl__dash {
+  position: absolute;
+  top: 0.78em;
+  left: 0;
+  width: 0.85em;
+  height: 1px;
+  background: var(--muted);
+  transform-origin: left;
+  transition: width 0.45s var(--ease-out), background-color 0.45s var(--ease-out);
+}
+.tl__points li > span { display: block; transition: color 0.35s var(--ease-out), translate 0.45s var(--ease-out); }
+.tl__num { font-weight: 500; color: var(--accent); font-variant-numeric: tabular-nums; }
+
+/* Desktop: a point answers the pointer — longer dash, small nudge, full brightness. */
+@media (hover: hover) and (pointer: fine) {
+  .tl__points li:hover .tl__dash { width: 1.15em; background: var(--accent); }
+  .tl__points li:hover > span { color: var(--text); translate: 0.3em 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .tl__dash, .tl__points li > span { transition: none; }
+}
