@@ -2888,7 +2888,7 @@ html.vt-finder::view-transition-new(root) { clip-path: inset(46% 46% 46% 46%); }
 /* Contact: a second route beside the form. */
 .contact__alt { display: grid; gap: 0.6rem; }
 .contact__note { font-size: var(--fs-body); }
-.contact__linkedin { justify-self: start; font-size: var(--fs-body); }
+
 
 /* Touch: small text links get a 44px-tall tap area without changing how they look. */
 @media (pointer: coarse) {
