@@ -61,9 +61,18 @@ function sourceFor(link) {
 export function initPageLeave() {
   const { gsap } = window;
 
-  // Coming back with the browser's Back button: clear any overlay left behind.
+  // Coming back with Back/Forward, the browser may restore this page from its
+  // memory exactly as it was left: mid page-transition, with scrolling paused.
+  // Undo all of that so the page and its scroll animations pick up cleanly.
+  let leaving = null;
   window.addEventListener('pageshow', (event) => {
-    if (event.persisted) document.querySelectorAll('.pt').forEach((el) => el.remove());
+    if (!event.persisted) return;
+    leaving?.kill();
+    leaving = null;
+    document.querySelectorAll('.pt').forEach((el) => el.remove());
+    document.documentElement.classList.remove('pt-enter');
+    getLenis()?.start();
+    window.ScrollTrigger?.refresh();
   });
 
   if (!gsap || reduce()) return;
@@ -87,7 +96,7 @@ export function initPageLeave() {
     try { sessionStorage.setItem(KEY, source.src || ''); } catch { /* private mode: no hand-off, still navigates */ }
 
     getLenis()?.stop();
-    gsap.timeline({ onComplete: () => { window.location.href = url.href; } })
+    leaving = gsap.timeline({ onComplete: () => { window.location.href = url.href; } })
       .fromTo(layer, { clipPath: insetOf(rect) }, { clipPath: 'inset(0px 0px 0px 0px)', duration: 0.85, ease: 'expo.inOut' }, 0)
       .fromTo(img, { scale: 1.12 }, { scale: 1, duration: 1, ease: 'expo.out' }, 0);
   });

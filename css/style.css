@@ -1408,7 +1408,9 @@ a:focus-visible .arrow--diag { transform: translate(0.2em, -0.2em); }
 .case.is-pinned .case__next span:last-child { color: var(--text); }
 
 /* Desktop only: the next project rises over the pinned frame as it releases. */
-.project.is-overlapping { margin-top: -70vh; }
+/* The next project rises over the pinned Ganko frame only once Ganko's title has left:
+   the last ~1 of 9 units of a 200vh pin is ~22vh (see initCaseStudy). */
+.project.is-overlapping { margin-top: -22vh; }
 
 @media (max-width: 767px) {
   .case { padding: 3rem var(--gutter) 1rem; }

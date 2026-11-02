@@ -14,7 +14,7 @@ import { initTheme } from './theme.js';
 import { initContactForm } from './contact.js';
 import { initGlitch } from './glitch.js';
 import { TEXT_TARGETS } from './split.js';
-import { initPageEnter } from './transition.js';
+import { initPageEnter, initPageLeave } from './transition.js';
 import { initSectionIndex } from './sections.js';
 
 const $ = (selector, root = document) => root.querySelector(selector);
@@ -179,6 +179,7 @@ function boot() {
   initScramble();
   initTouchFx({ home: false });
   initContactForm();
+  initPageLeave();
   initGlitch({ gsap, ScrollTrigger });
   initSectionIndex({ ScrollTrigger });
 

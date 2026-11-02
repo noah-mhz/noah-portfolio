@@ -599,10 +599,11 @@ export function initCaseStudy({ pinned, handoff = false }) {
    * 4 stack & role · 5 image shifts position · 6 exit + next cue ·
    * 7 hold while the next project rises over the frame, then release.
    */
-  const stageIn = [1.5, 2.9, 4.3, 6.0];
-  const stageOut = [2.6, 4.0, 5.4, 7.0];
-  const exitAt = 7.0;
-  const total = 9.6;
+  // Each stage holds ~1.3 units (about 290px of scroll at a 200% pin) so it can be read.
+  const stageIn = [1.2, 2.8, 4.4, 6.0];
+  const stageOut = [2.5, 4.1, 5.7, 7.2];
+  const exitAt = 7.2;
+  const total = 9.0;
   let currentStep = -1;
 
   const setStep = (index) => {
@@ -622,7 +623,7 @@ export function initCaseStudy({ pinned, handoff = false }) {
     scrollTrigger: {
       trigger: section,
       start: 'top top',
-      end: '+=150%', // short enough that the page never feels stuck
+      end: '+=200%', // long enough to read each stage, short enough never to feel stuck
       pin: true,
       scrub: 1,
       anticipatePin: 1,
