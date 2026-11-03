@@ -45,7 +45,8 @@ README.md has the file-by-file structure and the motion tiers; read it before la
   Nook, Little Rösti in `concepts/<slug>/`, noindex). The real names, logos, photos, posters,
   addresses and handles must never appear on the site; originals, decks and recordings live in
   the private repo noah-mhz/portfolio-concepts. Design notes on the page come from Noah's own
-  notes and code comments only.
+  notes and code comments only. Mochi's Card Nook is hidden from the page for now (its section
+  is in git history, commit 5bbe15a); its files stay in `concepts/mochi-card-nook/`, unlinked.
 
 ## Design system
 
