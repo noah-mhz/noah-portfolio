@@ -2880,6 +2880,16 @@ html.vt-finder::view-transition-new(root) { clip-path: inset(46% 46% 46% 46%); }
 }
 .wip__num { color: var(--accent); }
 .wip__name { font-size: var(--fs-lead); font-weight: 500; letter-spacing: -0.03em; text-transform: uppercase; line-height: 1; }
+.wip--concepts { padding-top: clamp(2rem, 5vh, 4rem); }
+.wip__item--link { color: var(--text); text-decoration: none; transition: padding 0.6s var(--ease-out); }
+.wip__item--link .arrow { display: inline-block; transition: transform 0.6s var(--ease-out); }
+@media (hover: hover) {
+  .wip__item--link:hover { padding-left: 1rem; }
+  .wip__item--link:hover .arrow { transform: translateX(0.3em); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .wip__item--link, .wip__item--link .arrow { transition: none; }
+}
 @media (max-width: 1023px) {
   .wip__item { grid-template-columns: 4.5rem minmax(0, 1fr); }
   .wip__sector, .wip__build { grid-column: 2; }

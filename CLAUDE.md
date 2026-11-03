@@ -40,6 +40,12 @@ README.md has the file-by-file structure and the motion tiers; read it before la
 - Craftism and Evnergy: real projects, sites and case studies not live yet ("In progress" list,
   no links). No brand colours yet.
 - No metrics and no client quotes are available.
+- Concepts (`/concepts/`): homepages Noah designed and built to pitch small businesses (two card
+  shops, a rösti café). Pitched, not commissioned. Shown only anonymised (Pixel Pull, Mochi's Card
+  Nook, Little Rösti in `concepts/<slug>/`, noindex). The real names, logos, photos, posters,
+  addresses and handles must never appear on the site; originals, decks and recordings live in
+  the private repo noah-mhz/portfolio-concepts. Design notes on the page come from Noah's own
+  notes and code comments only.
 
 ## Design system
 

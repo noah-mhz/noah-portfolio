@@ -1,0 +1,76 @@
+/* ==========================================================================
+   Concepts page (/concepts/): pitched homepages. Builds on project.css.
+   ========================================================================== */
+
+/* Hero: the three homepages side by side; each one jumps to its section. */
+.concepts-hero {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--gutter);
+  margin-top: clamp(4rem, 10vh, 7rem);
+}
+
+.concepts-hero__item { display: grid; gap: 1rem; text-decoration: none; color: var(--text); }
+.concepts-hero__item .frame { display: block; overflow: hidden; }
+.concepts-hero__item .frame__bar { display: flex; }
+.concepts-hero__item img { transition: transform 1.2s var(--ease-out); }
+.concepts-hero__item .accent { margin-right: 0.6rem; }
+
+@media (hover: hover) {
+  .concepts-hero__item:hover img { transform: scale(1.04); }
+}
+
+/* Each concept: text in the usual columns, then its recording across the full width. */
+.concept__media {
+  grid-column: 1 / -1;
+  margin-top: clamp(3.5rem, 9vh, 6rem);
+}
+
+.concept__media figcaption a { white-space: nowrap; }
+
+/* Hand-over map: page sections against the Shopify sections they become. */
+.concept-map {
+  width: 100%;
+  margin-top: clamp(2.5rem, 6vh, 4rem);
+  border-collapse: collapse;
+  font-size: var(--fs-body);
+  line-height: 1.45;
+}
+
+.concept-map th,
+.concept-map td {
+  padding: 1rem 1.5rem 1rem 0;
+  border-top: 1px solid var(--border);
+  text-align: left;
+  vertical-align: baseline;
+}
+
+.concept-map thead th { padding-top: 0; border-top: 0; font-weight: 400; }
+.concept-map tbody th { width: 38%; font-weight: 500; color: var(--text); }
+.concept-map td { color: var(--muted); }
+.concept-map tbody tr:last-child > * { border-bottom: 1px solid var(--border); }
+
+.concept-map code {
+  font-family: var(--font-mono);
+  font-size: 0.86em;
+  color: var(--accent);
+}
+
+@media (max-width: 1023px) {
+  .concepts-hero { grid-template-columns: repeat(3, minmax(15rem, 1fr)); overflow-x: auto; padding-bottom: 0.5rem; scroll-snap-type: x mandatory; }
+  .concepts-hero__item { scroll-snap-align: start; }
+}
+
+@media (max-width: 767px) {
+  .concepts-hero { grid-template-columns: repeat(3, 78%); margin-right: calc(var(--gutter) * -1); padding-right: var(--gutter); }
+  .concept-map thead { display: none; }
+  .concept-map tr { display: grid; gap: 0.3rem; padding: 1rem 0; border-top: 1px solid var(--border); }
+  .concept-map th,
+  .concept-map td { width: auto; padding: 0; border: 0; }
+  .concept-map tbody tr:last-child { border-bottom: 1px solid var(--border); }
+  .concept-map tbody tr:last-child > * { border-bottom: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .concepts-hero__item img { transition: none; }
+}

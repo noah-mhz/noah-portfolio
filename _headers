@@ -37,6 +37,12 @@
 /README.md
   X-Robots-Tag: noindex
 
-# Concept pages are shown inside the portfolio, not as sites in their own right.
-/concepts/*
+# The anonymised concept homepages are shown through /concepts/, not as sites in their own right.
+/concepts/little-rosti/*
+  X-Robots-Tag: noindex
+
+/concepts/pixel-pull/*
+  X-Robots-Tag: noindex
+
+/concepts/mochi-card-nook/*
   X-Robots-Tag: noindex
