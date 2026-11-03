@@ -1,0 +1,1140 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Mochi's Card Nook · Homepage concept</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="Homepage concept for a cozy neighbourhood trading card game shop. Brand, copy, prices and images are placeholders.">
+<meta name="robots" content="noindex">
+<link rel="stylesheet" href="css/fonts.css">
+<style>
+/* Layout concept: a little shop counter seen through the shop pet's eyes — asymmetric collage hero,
+   bento "shelves", a house-menu panel styled like a counter price menu, and a pet-photo editorial (illustrated stand-ins here). */
+:root{
+  color-scheme: light;
+  /* Brand colours (placeholder brand) */
+  --sky:#E1F5F7;          /* primary background */
+  --sky-deep:#C9EBEF;     /* tint for depth */
+  --sky-ink:#9FD6DD;      /* lines on sky */
+  --orange:#FC8B20;       /* mascot orange */
+  --orange-deep:#E0700A;  /* hover / pressed */
+  --peach:#FECC93;        /* warm accent */
+  --peach-soft:#FFE6C7;
+  --brush:#EEA890;        /* the peach brushstroke behind eyebrows */
+  --paper:#FFFDF8;        /* warm white surfaces */
+  --ink:#292522;          /* soft charcoal type */
+  --ink-2:#5B524C;        /* secondary text */
+  --menu-blue:#2F4F94;    /* price & menu blue */
+  --line:rgba(41,37,34,.12);
+
+  --f-display:"Fredoka","Nunito","Arial Rounded MT Bold",system-ui,sans-serif;
+  --f-body:"DM Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-hand:"Gaegu","Comic Neue","Segoe Print",cursive;
+
+  --t-hero:clamp(2.7rem,1.4rem + 4.6vw,5.4rem);
+  --t-h2:clamp(2rem,1.3rem + 2.4vw,3.4rem);
+  --t-h3:clamp(1.25rem,1.05rem + .7vw,1.6rem);
+  --t-lead:clamp(1.05rem,.98rem + .3vw,1.22rem);
+
+  --r-sm:10px; --r-md:18px; --r-lg:28px;
+  --shadow-soft:0 18px 40px -22px rgba(41,37,34,.35);
+  --shadow-print:0 2px 0 rgba(41,37,34,.06),0 24px 50px -28px rgba(41,37,34,.45);
+  --ease:cubic-bezier(.2,.8,.2,1);
+  --gut-l:max(20px, env(safe-area-inset-left,0px));
+  --gut-r:max(20px, env(safe-area-inset-right,0px));
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--sky);color:var(--ink);font-family:var(--f-body);font-size:1rem;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:60;background:var(--sky)}
+img{max-width:100%;height:auto;display:block}
+a{color:inherit}
+h1,h2,h3{font-family:var(--f-display);font-weight:600;line-height:1.02;letter-spacing:-.015em;margin:0;text-wrap:balance}
+p{margin:0}
+:focus-visible{outline:3px solid var(--orange);outline-offset:3px;border-radius:6px}
+.wrap{max-width:1240px;margin-inline:auto;padding-left:var(--gut-l);padding-right:var(--gut-r)}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.hand{font-family:var(--f-hand);font-weight:700;letter-spacing:.01em}
+.demo-tag{font:600 .66rem/1 var(--f-body);letter-spacing:.12em;text-transform:uppercase;color:var(--ink-2);background:rgba(41,37,34,.06);padding:.38em .6em;border-radius:999px;white-space:nowrap}
+svg.paw{fill:currentColor}
+
+/* eyebrow on a brushstroke */
+.eyebrow{display:inline-flex;align-items:center;gap:.5rem;font:700 1.35rem/1 var(--f-hand);color:var(--ink);padding:.55rem 1.4rem .5rem;background:url(assets/images/brush.webp) center/100% 100% no-repeat;white-space:nowrap}
+.eyebrow.light{color:var(--paper)}
+
+/* buttons */
+.btn{--bg:var(--orange);--fg:var(--ink);position:relative;display:inline-flex;align-items:center;gap:.6rem;font:600 1rem/1 var(--f-display);letter-spacing:.01em;padding:1rem 1.5rem;border-radius:999px;background:var(--bg);color:var(--fg);text-decoration:none;border:2px solid var(--ink);box-shadow:0 4px 0 var(--ink);transition:transform .2s var(--ease),box-shadow .2s var(--ease),background .2s;cursor:pointer}
+/* invisible hit area that stays put while the button lifts, so hover does not flicker at the edges */
+.btn::after{content:"";position:absolute;inset:-4px -4px -10px -4px;border-radius:inherit}
+.btn:hover{transform:translateY(-2px);box-shadow:0 6px 0 var(--ink)}
+.btn:active{transform:translateY(3px);box-shadow:0 1px 0 var(--ink)}
+.btn.ghost{--bg:var(--paper)}
+.btn.ghost:hover{--bg:var(--peach-soft)}
+.btn svg{width:1.05em;height:1.05em}
+.btn .paw-pop,.paw-pop{position:absolute;width:16px;height:16px;color:var(--orange-deep);pointer-events:none;z-index:3}
+
+/* ---------- A. announcement + nav ---------- */
+.ticker{background:var(--ink);color:var(--paper);font:500 .86rem/1 var(--f-body);overflow:hidden;position:relative}
+.ticker-track{display:flex;gap:3rem;padding-block:.7rem;width:max-content;animation:tick 38s linear infinite}
+.ticker:hover .ticker-track{animation-play-state:paused}
+.ticker span{display:inline-flex;align-items:center;gap:.7rem;white-space:nowrap}
+.ticker svg{width:13px;height:13px;color:var(--peach)}
+.ticker b{color:var(--peach);font-weight:600}
+@keyframes tick{to{transform:translateX(-50%)}}
+
+.nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:50;transition:background .3s,box-shadow .3s}
+.nav.scrolled{background:rgba(255,253,248,.94);box-shadow:0 1px 0 var(--line),0 10px 30px -24px rgba(41,37,34,.5);backdrop-filter:saturate(1.2) blur(6px)}
+.nav-in{display:flex;align-items:center;gap:1.5rem;padding-block:.8rem}
+.logo{display:flex;align-items:center;gap:.6rem;text-decoration:none;flex-shrink:0}
+.logo .lm{width:58px;transition:transform .4s var(--ease)}
+.logo:hover .lm{transform:rotate(-8deg) translateY(-2px)}
+.logo .lw{display:flex;flex-direction:column;gap:5px}
+.logo .lw img:first-child{height:24px;width:auto}
+.logo .lw img:last-child{height:8px;width:auto;opacity:.9}
+.nav-in > nav{flex:1;display:flex;justify-content:center;min-width:0}
+.nav-links{display:flex;gap:clamp(.1rem,1vw,.8rem);list-style:none;padding:0;margin:0}
+.nav-links a{position:relative;display:block;text-decoration:none;font:500 .98rem/1 var(--f-display);padding:.7rem .85rem;border-radius:999px;transition:background .2s,color .2s}
+.nav-links a:hover{background:var(--peach-soft)}
+.nav-links a[aria-current="page"]::after{content:"";position:absolute;left:50%;bottom:.15rem;width:6px;height:6px;margin-left:-3px;border-radius:50%;background:var(--orange)}
+.nav-tools{display:flex;align-items:center;gap:.4rem}
+.icon-btn{position:relative;display:grid;place-items:center;width:44px;height:44px;border-radius:50%;border:0;background:transparent;color:var(--ink);cursor:pointer;text-decoration:none;transition:background .2s}
+.icon-btn:hover{background:var(--peach-soft)}
+.icon-btn svg{width:22px;height:22px}
+.bag-count{position:absolute;top:4px;right:2px;min-width:19px;height:19px;padding:0 5px;border-radius:999px;background:var(--orange);color:var(--ink);border:2px solid var(--ink);font:700 .68rem/15px var(--f-body);text-align:center;transition:transform .3s var(--ease)}
+.bag-count.bump{animation:bump .5s var(--ease)}
+@keyframes bump{40%{transform:scale(1.35)}}
+.menu-btn{display:none}
+
+.mnav{position:fixed;inset:0;z-index:70;background:var(--sky);display:flex;flex-direction:column;padding:calc(1rem + env(safe-area-inset-top,0px)) var(--gut-r) calc(1.5rem + env(safe-area-inset-bottom,0px)) var(--gut-l);transform:translateY(-102%);transition:transform .55s var(--ease);visibility:hidden}
+.mnav.open{transform:none;visibility:visible}
+.mnav-top{display:flex;justify-content:space-between;align-items:center}
+.mnav ul{list-style:none;padding:0;margin:2.2rem 0 0;display:grid;gap:.2rem}
+.mnav ul a{display:flex;justify-content:space-between;align-items:baseline;text-decoration:none;font:600 2.1rem/1.15 var(--f-display);padding:.45rem 0;border-bottom:2px dashed var(--sky-ink)}
+.mnav ul a small{font:700 1.1rem var(--f-hand);color:var(--ink-2)}
+.mnav-foot{margin-top:auto;display:flex;align-items:flex-end;justify-content:space-between;gap:1rem}
+.mnav-foot p{font-size:.92rem;color:var(--ink-2)}
+.mnav-foot img{width:120px}
+
+/* ---------- B. hero ---------- */
+.hero{position:relative;padding-block:clamp(2rem,4vw,3.5rem) clamp(4rem,7vw,6rem)}
+.hero-grid{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:clamp(2rem,4vw,4rem);align-items:center}
+.hero-copy{display:grid;gap:1.6rem;justify-items:start}
+.hero h1{font-size:var(--t-hero);font-weight:600}
+.hero h1 .line{display:block}
+.hero h1 .hp{position:relative;display:inline-block;color:var(--ink)}
+.hero h1 .hp svg{position:absolute;left:-2%;bottom:-.16em;width:104%;height:.38em;overflow:visible}
+.hero h1 .hp path{fill:none;stroke:var(--orange);stroke-width:7;stroke-linecap:round}
+.hero .lead{font-size:var(--t-lead);max-width:34ch;color:var(--ink-2)}
+.ctas{display:flex;flex-wrap:wrap;gap:.9rem}
+.hero-meta{display:flex;flex-wrap:wrap;gap:.5rem 1.4rem;font-size:.9rem;color:var(--ink-2);padding-top:.4rem}
+.hero-meta span{display:inline-flex;align-items:center;gap:.45rem}
+.hero-meta svg{width:16px;height:16px;color:var(--orange-deep)}
+
+.stage{position:relative;width:100%;max-width:640px;aspect-ratio:1/1;justify-self:end}
+.stage > *{position:absolute}
+.s-photo{width:60%;right:3%;top:13%;transform:rotate(3deg);background:var(--paper);padding:10px 10px 44px;border-radius:16px;box-shadow:var(--shadow-print)}
+.s-photo img{aspect-ratio:3/4;object-fit:cover;border-radius:9px;width:100%}
+.s-photo figcaption{position:absolute;right:18px;bottom:9px;font:700 1.25rem/1 var(--f-hand);color:var(--ink-2)}
+.s-mascot{width:29%;right:22%;top:-6%;z-index:4;transform-origin:50% 90%}
+.s-pack{width:14.5%;filter:drop-shadow(0 12px 14px rgba(41,37,34,.28));z-index:2}
+.s-pack.p1{left:4%;top:12%;transform:rotate(-16deg)}
+.s-pack.p2{left:14%;top:7%;transform:rotate(-4deg)}
+.s-pack.p3{left:24.5%;top:10%;transform:rotate(9deg)}
+.s-box1{width:36%;left:0;bottom:8%;z-index:3;filter:drop-shadow(0 18px 18px rgba(41,37,34,.3))}
+.s-box2{width:31%;left:27%;bottom:-1%;z-index:4;filter:drop-shadow(0 18px 18px rgba(41,37,34,.32))}
+.s-sticker{width:22%;right:-4%;top:14%;z-index:5;aspect-ratio:1;color:var(--ink)}
+.s-sticker .ring{width:100%;height:100%;animation:spin 22s linear infinite}
+.s-sticker .ring text{font:700 11.5px var(--f-body);letter-spacing:.2em;text-transform:uppercase;fill:var(--ink)}
+.s-sticker .core{position:absolute;inset:20%;border-radius:50%;background:var(--orange);border:2px solid var(--ink);display:grid;place-items:center}
+.s-sticker .core svg{width:46%;color:var(--ink)}
+@keyframes spin{to{transform:rotate(360deg)}}
+.s-note{left:4%;top:45%;font:700 1.35rem/1.05 var(--f-hand);color:var(--ink);transform:rotate(-6deg);z-index:5;display:none}
+.s-star{width:5%;color:var(--orange);z-index:1}
+.s-star.a{left:44%;top:4%}
+.s-star.b{right:1%;bottom:12%;width:3.6%;color:var(--menu-blue)}
+.s-star.c{left:6%;top:56%;width:3.4%}
+
+/* paw trail between sections */
+.trail{display:flex;justify-content:center;gap:clamp(.8rem,3vw,2rem);padding-block:.6rem;color:var(--ink);opacity:.85}
+.trail svg{width:22px;height:22px}
+.trail svg:nth-child(odd){transform:translateY(8px) rotate(-12deg)}
+.trail svg:nth-child(even){transform:rotate(12deg)}
+
+/* ---------- section heads ---------- */
+section{position:relative}
+.band{padding-block:clamp(4rem,8vw,7rem)}
+.band.paper{background:var(--paper)}
+.band.peach{background:var(--peach-soft)}
+.head{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:end;gap:1.2rem 2rem;margin-bottom:clamp(2rem,4vw,3rem)}
+.head h2{font-size:var(--t-h2)}
+.head p{color:var(--ink-2);font-size:var(--t-lead);margin-top:.8rem;max-width:44ch}
+.head .demo-tag{justify-self:start;align-self:end}
+.head .more{font:600 1rem var(--f-display);text-decoration:none;display:inline-flex;gap:.4rem;align-items:center;padding-bottom:3px;border-bottom:2px solid var(--orange)}
+.head .more:hover{color:var(--orange-deep)}
+.head-sit{position:relative;display:inline-block}
+.head-sit img{position:absolute;width:74px;right:-84px;bottom:-4px}
+
+/* ---------- C. collections (bento shelves) ---------- */
+.shelves{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));grid-auto-rows:minmax(250px,auto);gap:clamp(.9rem,1.6vw,1.3rem)}
+.shelf{position:relative;isolation:isolate}
+.shelf .peek{position:absolute;width:96px;top:0;left:22px;z-index:0;transform:translateY(10%);transition:transform .5s var(--ease)}
+.shelf:hover .peek,.shelf:focus-within .peek{transform:translateY(-62%)}
+.shelf.right .peek{left:auto;right:28px}
+.tile{position:relative;z-index:1;height:100%;display:flex;flex-direction:column;justify-content:space-between;gap:1.2rem;padding:clamp(1.3rem,2.4vw,2rem);border-radius:var(--r-lg);text-decoration:none;overflow:hidden;border:2px solid var(--ink);transition:transform .4s var(--ease),box-shadow .4s var(--ease)}
+.tile:hover{transform:translateY(-4px);box-shadow:0 8px 0 var(--ink)}
+.tile h3{font-size:var(--t-h3);display:flex;align-items:center;gap:.6rem}
+.tile .desc{color:var(--ink-2);max-width:32ch;font-size:.97rem;margin-top:.5rem}
+.tile .go{display:inline-flex;align-items:center;gap:.5rem;font:600 .95rem var(--f-display)}
+.tile .go i{display:grid;place-items:center;width:36px;height:36px;border-radius:50%;background:var(--ink);color:var(--paper);transition:transform .35s var(--ease),background .3s}
+.tile:hover .go i{transform:translateX(4px) rotate(-12deg);background:var(--orange);color:var(--ink)}
+.tile .go svg{width:16px;height:16px}
+.tile .tags{display:flex;flex-wrap:wrap;gap:.35rem}
+.tile .tags span{font:600 .74rem/1 var(--f-body);padding:.42rem .62rem;border-radius:999px;background:rgba(255,253,248,.75);border:1px solid var(--line)}
+
+.sh-poke{grid-column:span 2;grid-row:span 2}.sh-rift{grid-column:span 2}.sh-acc{grid-column:span 4}
+.t-poke{background:var(--sky)}
+.t-poke .art{position:relative;flex:1;min-height:260px}
+.t-poke .art img{position:absolute;filter:drop-shadow(0 16px 16px rgba(41,37,34,.25));transition:transform .6s var(--ease)}
+.t-poke .a1{width:38%;left:4%;bottom:6%;transform:rotate(-5deg)}
+.t-poke .a2{width:42%;left:32%;bottom:0;z-index:2}
+.t-poke .a3{width:34%;right:2%;bottom:10%;transform:rotate(6deg)}
+.t-poke .a4{width:16%;left:30%;top:2%;transform:rotate(-12deg)}
+.t-poke .a5{width:16%;left:47%;top:0;transform:rotate(8deg)}
+.t-poke:hover .a1{transform:rotate(-9deg) translate(-6px,-6px)}
+.t-poke:hover .a3{transform:rotate(10deg) translate(6px,-6px)}
+.t-poke:hover .a4{transform:rotate(-18deg) translateY(-10px)}
+.t-poke:hover .a5{transform:rotate(14deg) translateY(-12px)}
+
+.t-rift{background:var(--peach);flex-direction:row;align-items:stretch}
+.t-rift .txt{display:flex;flex-direction:column;justify-content:space-between;gap:1rem;flex:1;min-width:0}
+.t-rift .art{position:relative;width:42%;flex-shrink:0;min-height:200px}
+.t-rift .art img{position:absolute;filter:drop-shadow(0 14px 14px rgba(41,37,34,.3));transition:transform .6s var(--ease)}
+.t-rift .b1{width:72%;right:0;bottom:-6%}
+.t-rift .b2{width:36%;left:0;bottom:-2%;transform:rotate(-6deg)}
+.t-rift:hover .b1{transform:translateY(-8px) rotate(2deg)}
+.t-rift:hover .b2{transform:translateY(-12px) rotate(-10deg)}
+
+.t-kuji{background:var(--menu-blue);color:var(--paper)}
+.t-kuji .desc{color:rgba(255,253,248,.82)}
+.t-kuji .go i{background:var(--paper);color:var(--menu-blue)}
+.t-kuji ul{list-style:none;padding:0;margin:.9rem 0 0;display:grid;gap:.25rem;font:700 1.12rem/1.2 var(--f-hand)}
+.t-kuji li{display:flex;justify-content:space-between;gap:.6rem;border-bottom:1px dashed rgba(255,253,248,.35);padding-bottom:.25rem}
+.t-kuji li b{font-family:var(--f-body);font-size:.82rem;font-weight:600;white-space:nowrap}
+.t-kuji .paws{position:absolute;right:14px;top:14px;display:flex;gap:6px;color:var(--paper);opacity:.9}
+.t-kuji .paws svg{width:16px;height:16px}
+
+.t-cyber{background:#0f0f0f;color:var(--paper);padding:0;border-color:var(--ink)}
+.t-cyber .bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .8s var(--ease)}
+.t-cyber:hover .bg{transform:scale(1.05)}
+.t-cyber .over{position:relative;margin-top:auto;padding:1.2rem 1.4rem 1.3rem;background:linear-gradient(to top,rgba(15,15,15,.94) 55%,rgba(15,15,15,0))}
+.t-cyber .desc{color:rgba(255,253,248,.8)}
+.t-cyber .go i{background:var(--paper);color:#111}
+
+.t-acc{background:var(--paper);flex-direction:row;align-items:center;gap:clamp(1rem,3vw,2.5rem);min-height:0}
+.t-acc .art{width:clamp(130px,18vw,210px);flex-shrink:0;transition:transform .6s var(--ease)}
+.t-acc:hover .art{transform:rotate(-4deg) scale(1.04)}
+.t-acc .txt{flex:1;min-width:0}
+.t-acc .swatches{display:flex;gap:.5rem;margin-top:.9rem;align-items:center;flex-wrap:wrap}
+.t-acc .sw{width:26px;height:36px;border-radius:5px;border:2px solid var(--ink)}
+.t-acc .swatches small{font-size:.85rem;color:var(--ink-2);margin-left:.4rem}
+
+/* ---------- D. products ---------- */
+.products{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:clamp(.9rem,1.6vw,1.4rem)}
+.pcard{position:relative;display:flex;flex-direction:column;background:var(--paper);border-radius:var(--r-md);border:1.5px solid var(--line);transition:transform .4s var(--ease),box-shadow .4s var(--ease),border-color .3s}
+.pcard:hover{transform:translateY(-6px);box-shadow:var(--shadow-soft);border-color:rgba(41,37,34,.3)}
+.pimg{position:relative;aspect-ratio:1/1;display:grid;place-items:center;padding:12%;border-radius:calc(var(--r-md) - 2px) calc(var(--r-md) - 2px) 0 0;background:radial-gradient(70% 60% at 50% 60%,var(--paper),var(--sky) 100%);overflow:hidden}
+.pimg img{max-height:100%;width:auto;object-fit:contain;filter:drop-shadow(0 16px 14px rgba(41,37,34,.22));transition:transform .6s var(--ease)}
+.pcard:hover .pimg img{transform:translateY(-6px) rotate(-2deg) scale(1.04)}
+.pstat{position:absolute;left:12px;top:12px;display:inline-flex;align-items:center;gap:.35rem;font:600 .74rem/1 var(--f-body);padding:.45rem .6rem;border-radius:999px;background:var(--paper);border:1.5px solid var(--ink)}
+.pstat i{width:7px;height:7px;border-radius:50%;background:#3E9B5C}
+.pstat.low i{background:var(--orange)}
+.pstat.out{background:var(--ink);color:var(--paper)}
+.pstat.out i{background:var(--paper)}
+.burst{position:absolute;right:-8px;top:-14px;width:96px;transform:rotate(8deg);z-index:2;pointer-events:none}
+.pbody{display:flex;flex-direction:column;gap:.35rem;padding:1rem 1.1rem 1.1rem;flex:1}
+.pcat{font:600 .72rem/1 var(--f-body);letter-spacing:.12em;text-transform:uppercase;color:var(--ink-2)}
+.pname{font:600 1.08rem/1.25 var(--f-display);letter-spacing:-.005em}
+.prow{display:flex;align-items:center;justify-content:space-between;gap:.6rem;margin-top:auto;padding-top:.8rem}
+.price{font:700 1.4rem/1 var(--f-display);color:var(--menu-blue);font-variant-numeric:tabular-nums}
+.price small{font-size:.62em;font-weight:600;margin-right:.1em}
+.add{display:inline-flex;align-items:center;gap:.4rem;font:600 .9rem/1 var(--f-display);padding:.7rem .95rem;border-radius:999px;border:2px solid var(--ink);background:var(--orange);color:var(--ink);cursor:pointer;transition:transform .2s var(--ease),background .2s}
+.add:hover{transform:translateY(-2px);background:var(--peach)}
+.add.notify{background:var(--paper)}
+.add svg{width:16px;height:16px}
+.add.done{background:var(--ink);color:var(--paper)}
+.peek-side{position:absolute;width:110px;right:-46px;top:34%;transform:rotate(90deg);z-index:-1;transition:right .5s var(--ease)}
+.pcard:hover .peek-side{right:-74px}
+.products .pcard:last-child{z-index:1}
+
+.clearance{margin-top:clamp(2rem,4vw,3rem);display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:clamp(1rem,3vw,2.5rem);padding:clamp(1.2rem,2.6vw,1.8rem) clamp(1.2rem,3vw,2.4rem);border-radius:var(--r-lg);background:var(--paper);border:2px dashed var(--sky-ink)}
+.clearance .fan{display:flex;width:clamp(150px,18vw,220px)}
+.clearance .fan img{width:36%;margin-right:-6%;filter:drop-shadow(0 8px 8px rgba(41,37,34,.22));transition:transform .4s var(--ease)}
+.clearance .fan img:nth-child(1){transform:rotate(-12deg)}
+.clearance .fan img:nth-child(3){transform:rotate(12deg)}
+.clearance:hover .fan img:nth-child(1){transform:rotate(-18deg) translateY(-6px)}
+.clearance:hover .fan img:nth-child(3){transform:rotate(18deg) translateY(-6px)}
+.clearance h3{font-size:var(--t-h3)}
+.clearance dl{display:flex;flex-wrap:wrap;gap:.4rem 1.6rem;margin:.6rem 0 0}
+.clearance dl div{display:flex;gap:.45rem;align-items:baseline}
+.clearance dt{font-size:.92rem;color:var(--ink-2)}
+.clearance dd{margin:0;font:700 1.15rem var(--f-display);color:var(--menu-blue);font-variant-numeric:tabular-nums}
+
+/* ---------- E. meet the mascot ---------- */
+.meet{overflow:hidden}
+.meet-grid{display:grid;grid-template-columns:minmax(0,6fr) minmax(0,5fr);gap:clamp(2rem,5vw,5rem);align-items:center}
+.meet-photos{position:relative;padding-bottom:12%}
+.meet-main{border-radius:46% 54% 42% 58% / 38% 40% 60% 62%;overflow:hidden;aspect-ratio:4/5;border:3px solid var(--ink);box-shadow:var(--shadow-print);width:86%}
+.meet-main img{width:100%;height:116% !important;object-fit:cover;object-position:50% 78%}
+.meet-polaroid{position:absolute;right:0;bottom:0;width:44%;background:var(--paper);padding:8px 8px 40px;border-radius:10px;transform:rotate(5deg);box-shadow:var(--shadow-print)}
+.meet-polaroid img{aspect-ratio:1;object-fit:cover;object-position:40% 55%;border-radius:6px;width:100%}
+.meet-polaroid figcaption{position:absolute;left:12px;right:8px;bottom:8px;font:700 1.25rem/1 var(--f-hand)}
+.tape{position:absolute;top:-12px;left:50%;width:84px;height:24px;margin-left:-42px;background:rgba(254,204,147,.85);transform:rotate(-4deg);border-radius:3px}
+.anno{position:absolute;font:700 1.35rem/1.05 var(--f-hand);color:var(--ink)}
+.anno svg{width:60px;height:46px;stroke:var(--ink);fill:none;stroke-width:2.4;stroke-linecap:round;display:block}
+.anno.a1{left:-1%;top:-2%;transform:rotate(-8deg)}
+.anno.a1 svg{margin-left:46px;margin-top:2px}
+.meet-copy{display:grid;gap:1.4rem;justify-items:start}
+.meet-copy h2{font-size:var(--t-h2)}
+.meet-copy p{font-size:var(--t-lead);color:var(--ink-2);max-width:40ch}
+.twins{display:grid;grid-template-columns:1fr 1fr;gap:1rem;width:100%;max-width:440px;margin-top:.4rem}
+.twin{position:relative;background:var(--paper);border-radius:var(--r-md);border:1.5px solid var(--line);padding:1rem;display:grid;gap:.6rem;justify-items:center;text-align:center}
+.twin .face{width:100%;aspect-ratio:1;border-radius:14px;overflow:hidden;display:grid;place-items:center;background:var(--sky)}
+.twin .face img.photo{width:100%;height:100%;object-fit:cover;object-position:62% 36%}
+.twin .face img.il{width:78%}
+.twin b{font:600 1rem var(--f-display)}
+.twin small{font-size:.82rem;color:var(--ink-2);line-height:1.35}
+.meet-walker{position:absolute;width:clamp(90px,10vw,140px);right:4%;bottom:-6px}
+
+/* ---------- F. more than cards ---------- */
+.more-grid{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:clamp(2rem,5vw,4.5rem);align-items:start}
+.bigline{font-family:var(--f-display);font-weight:600;font-size:clamp(2.4rem,1.2rem + 4.2vw,5rem);line-height:1.05;letter-spacing:-.02em;text-wrap:balance}
+.bigline .chip{display:inline-block;vertical-align:middle;height:.82em;border-radius:999px;border:3px solid var(--ink);overflow:hidden;margin:0 .12em;background:var(--sky);position:relative;top:-.06em}
+.bigline .chip img{height:100%;width:100%;object-fit:cover}
+.bigline .c1{width:1.7em;background:var(--peach)}
+.bigline .c1 img{object-fit:contain;padding:.06em 0}
+.bigline .c2{width:1.35em}
+.bigline .c2 img{object-fit:contain;padding:.08em}
+.bigline .c3{width:1.9em}
+.bigline .c3 img{object-position:50% 55%}
+.bigline .nw{white-space:nowrap}
+.bigline em{font-style:normal;color:var(--orange-deep)}
+.more-intro{margin-top:1.6rem;color:var(--ink-2);font-size:var(--t-lead);max-width:46ch}
+.housemenu{border-radius:var(--r-lg);overflow:hidden;background:var(--paper);border:2px solid var(--ink);box-shadow:0 8px 0 var(--ink)}
+.hm-top{position:relative;background:var(--menu-blue);color:var(--paper);padding:1.3rem 1.4rem 1.6rem}
+.hm-top .tab{display:inline-block;background:var(--paper);color:var(--menu-blue);font:700 1.3rem/1 var(--f-hand);padding:.55rem 1.1rem .5rem;border-radius:999px;letter-spacing:.06em;text-transform:uppercase}
+.hm-top img{position:absolute;right:16px;bottom:-12px;width:92px}
+.hm-top .paws{position:absolute;right:120px;top:16px;display:flex;gap:10px}
+.hm-top .paws svg{width:18px;height:18px;color:var(--paper)}
+.housemenu ul{list-style:none;margin:0;padding:1.2rem 1.4rem 1.4rem;display:grid;gap:1rem}
+.housemenu li{display:grid;gap:.25rem}
+.housemenu .row{display:flex;align-items:baseline;gap:.5rem;font:600 1.12rem/1.2 var(--f-display)}
+.housemenu .row::after{content:"";order:2;flex:1;border-bottom:2px dotted var(--sky-ink);transform:translateY(-4px)}
+.housemenu .row span{order:3;font:700 1rem/1 var(--f-hand);color:var(--orange-deep);white-space:nowrap}
+.housemenu li p{font-size:.93rem;color:var(--ink-2);max-width:40ch}
+
+/* ---------- G. store ---------- */
+.store{background:var(--sky-deep)}
+.store-card{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);background:var(--paper);border-radius:clamp(22px,3vw,36px);border:2px solid var(--ink);overflow:hidden;box-shadow:0 10px 0 var(--ink)}
+.store-media{display:grid;grid-template-columns:2fr 1fr;grid-template-rows:1fr 1fr;gap:10px;padding:10px;min-height:520px}
+.ph{position:relative;border-radius:18px;overflow:hidden;background:repeating-linear-gradient(-45deg,var(--peach-soft) 0 14px,var(--paper) 14px 28px);border:1.5px dashed rgba(41,37,34,.3);display:grid;place-items:center;text-align:center;padding:1rem}
+.ph.big{grid-row:span 2}
+.ph .ph-lab{display:grid;gap:.4rem;justify-items:center;max-width:24ch}
+.ph .ph-lab svg{width:34px;height:34px;color:var(--ink-2)}
+.ph .ph-lab b{font:600 1.05rem var(--f-display)}
+.ph .ph-lab small{font-size:.82rem;color:var(--ink-2);line-height:1.35}
+.ph.poster{padding:0;background:var(--paper);border-style:solid}
+.ph.poster img{width:100%;height:100%;object-fit:cover;object-position:50% 20%}
+.ph.poster .pin{position:absolute;left:10px;bottom:10px;font:600 .72rem/1 var(--f-body);padding:.45rem .6rem;border-radius:999px;background:var(--ink);color:var(--paper)}
+.store-info{padding:clamp(1.6rem,3.4vw,2.8rem);display:flex;flex-direction:column;gap:1.4rem}
+.store-info h2{font-size:clamp(2rem,1.4rem + 2vw,3rem)}
+.store-info > p{color:var(--ink-2)}
+.facts{display:grid;gap:1rem;margin:0}
+.facts div{display:grid;grid-template-columns:40px minmax(0,1fr);gap:.8rem;align-items:start}
+.facts dt{width:40px;height:40px;border-radius:12px;background:var(--sky);display:grid;place-items:center}
+.facts dt svg{width:20px;height:20px;color:var(--orange-deep)}
+.facts dd{margin:0}
+.facts dd b{display:block;font:600 1.05rem/1.3 var(--f-display)}
+.facts dd span{font-size:.92rem;color:var(--ink-2)}
+.map{position:relative;height:150px;border-radius:16px;overflow:hidden;background:var(--sky);border:1.5px solid var(--line)}
+.map .rd{position:absolute;background:var(--paper);border-radius:4px}
+.map .r1{left:-10%;right:-10%;top:52%;height:16px;transform:rotate(-8deg)}
+.map .r2{left:30%;top:-20%;bottom:-20%;width:10px;transform:rotate(14deg)}
+.map .r3{left:68%;top:-20%;bottom:-20%;width:8px;transform:rotate(-20deg)}
+.map .green{position:absolute;right:6%;top:8%;width:22%;height:30%;border-radius:40% 60% 50% 50%;background:#cfe9d6}
+.map .lab{position:absolute;left:8%;top:62%;font:600 .7rem var(--f-body);letter-spacing:.14em;text-transform:uppercase;color:var(--ink-2);transform:rotate(-8deg)}
+.map .pin{position:absolute;left:46%;top:14%;width:58px;display:grid;justify-items:center}
+.map .pin img{width:58px;animation:hop 2.6s var(--ease) infinite}
+.map .pin::after{content:"";width:22px;height:6px;border-radius:50%;background:rgba(41,37,34,.25)}
+.map .ph-note{position:absolute;right:8px;bottom:8px}
+@keyframes hop{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-8px)}}
+.store-ctas{display:flex;flex-wrap:wrap;gap:.8rem}
+
+/* ---------- H. updates ---------- */
+.updates{display:grid;grid-template-columns:minmax(0,6fr) minmax(0,5fr);gap:clamp(1.2rem,2.6vw,2rem)}
+.feature{position:relative;display:grid;grid-template-rows:auto 1fr;border-radius:var(--r-lg);overflow:hidden;background:var(--peach-soft);text-decoration:none;border:2px solid var(--ink)}
+.feature .fimg{aspect-ratio:16/10;overflow:hidden;background:var(--paper)}
+.feature .fimg img{width:100%;height:100%;object-fit:cover;object-position:50% 34%;transition:transform .8s var(--ease)}
+.feature:hover .fimg img{transform:scale(1.04)}
+.feature .fbody{padding:1.4rem 1.6rem 1.6rem;display:grid;gap:.6rem;align-content:start}
+.feature h3{font-size:clamp(1.5rem,1.2rem + 1vw,2.1rem)}
+.feature p{color:var(--ink-2);max-width:48ch}
+.meta{display:flex;flex-wrap:wrap;gap:.5rem;align-items:center}
+.date{font:600 .78rem/1 var(--f-body);letter-spacing:.08em;text-transform:uppercase;padding:.45rem .65rem;border-radius:999px;background:var(--ink);color:var(--paper)}
+.kind{font:700 1.05rem/1 var(--f-hand);color:var(--orange-deep)}
+.ulist{display:grid;gap:0;align-content:start;border-top:2px solid var(--ink)}
+.uitem{display:grid;grid-template-columns:92px minmax(0,1fr);gap:1.1rem;padding:1.2rem 0;border-bottom:1.5px dashed var(--sky-ink);text-decoration:none;align-items:center}
+.uitem .thumb{width:92px;aspect-ratio:1;border-radius:16px;overflow:hidden;background:var(--sky);border:1.5px solid var(--line);display:grid;place-items:center}
+.uitem .thumb img{width:100%;height:100%;object-fit:cover;transition:transform .5s var(--ease)}
+.uitem .thumb img.fit{object-fit:contain;padding:10%}
+.uitem:hover .thumb img{transform:scale(1.07)}
+.uitem h3{font-size:1.18rem;line-height:1.2;margin-top:.35rem;transition:color .2s}
+.uitem:hover h3{color:var(--orange-deep)}
+.uitem p{font-size:.9rem;color:var(--ink-2);margin-top:.25rem}
+.thumb.cal{background:var(--orange);display:grid;place-items:center;align-content:center;gap:2px;font-family:var(--f-display)}
+.thumb.cal b{font-size:1.9rem;line-height:1}
+.thumb.cal small{font:600 .7rem var(--f-body);letter-spacing:.1em;text-transform:uppercase}
+
+/* ---------- I. instagram ---------- */
+.ig-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));grid-auto-rows:clamp(150px,19vw,250px);gap:clamp(.6rem,1.2vw,1rem)}
+.ig{position:relative;border-radius:var(--r-md);overflow:hidden;background:var(--paper);display:block}
+.ig img{width:100%;height:100%;object-fit:cover;transition:transform .7s var(--ease)}
+.ig:hover img{transform:scale(1.06)}
+.ig .ov{position:absolute;inset:0;display:flex;align-items:flex-end;justify-content:space-between;padding:.8rem;background:linear-gradient(to top,rgba(41,37,34,.65),rgba(41,37,34,0) 55%);color:var(--paper);opacity:0;transition:opacity .35s}
+.ig:hover .ov,.ig:focus-visible .ov{opacity:1}
+.ig .ov span{font:700 1.1rem/1 var(--f-hand)}
+.ig .ov svg{width:20px;height:20px}
+.ig.tall{grid-row:span 2}
+.ig.wide{grid-column:span 2}
+.ig.ph{border-radius:var(--r-md)}
+.ig-foot{display:flex;justify-content:center;margin-top:2rem}
+
+/* ---------- J. newsletter + footer ---------- */
+.news{padding-block:clamp(5rem,9vw,7rem) clamp(3rem,6vw,5rem)}
+.news-card{position:relative;max-width:860px;margin-inline:auto;background:var(--orange);border:2px solid var(--ink);border-radius:clamp(24px,3vw,40px);padding:clamp(2.2rem,5vw,3.6rem) clamp(1.4rem,5vw,4rem);text-align:center;box-shadow:0 10px 0 var(--ink)}
+.news-card h2{font-size:var(--t-h2)}
+.news-card p{max-width:46ch;margin:1rem auto 0;font-size:var(--t-lead)}
+.sleeper{position:absolute;left:50%;top:0;width:150px;transform:translate(-50%,-78%)}
+.zzz{position:absolute;left:calc(50% + 70px);top:-96px;font:700 1.6rem/1 var(--f-hand);color:var(--ink);display:flex;gap:.1rem}
+.zzz span{display:inline-block;animation:zz 2.4s ease-in-out infinite}
+.zzz span:nth-child(2){animation-delay:.3s;font-size:1.25em}
+.zzz span:nth-child(3){animation-delay:.6s;font-size:1.5em}
+@keyframes zz{0%,100%{transform:translateY(0);opacity:.35}50%{transform:translateY(-8px);opacity:1}}
+.nform{display:flex;gap:.6rem;max-width:520px;margin:1.8rem auto 0;background:var(--paper);border:2px solid var(--ink);border-radius:999px;padding:6px}
+.nform input{flex:1;min-width:0;border:0;background:transparent;font:500 1rem var(--f-body);padding:.7rem 1rem;color:var(--ink);border-radius:999px}
+.nform input:focus{outline:none}
+.nform:focus-within{box-shadow:0 0 0 4px var(--peach)}
+.nform button{border:0;border-radius:999px;background:var(--ink);color:var(--paper);font:600 1rem var(--f-display);padding:.8rem 1.4rem;cursor:pointer;transition:background .2s}
+.nform button:hover{background:#000}
+.nmsg{min-height:1.6em;margin-top:.9rem;font:700 1.2rem var(--f-hand)}
+.nfine{font-size:.82rem !important;opacity:.8;margin-top:.2rem !important}
+
+footer{position:relative;background:var(--ink);color:var(--paper);padding-block:clamp(4rem,7vw,5.5rem) calc(2rem + env(safe-area-inset-bottom,0px))}
+.foot-cat{position:absolute;top:0;right:clamp(20px,10vw,140px);width:120px;transform:translateY(-82%)}
+.foot-grid{display:grid;grid-template-columns:minmax(0,1.4fr) repeat(3,minmax(0,1fr));gap:2rem}
+.foot-brand{display:grid;gap:1rem;align-content:start}
+.foot-brand .badge{display:inline-flex;align-items:center;gap:.7rem;background:var(--sky);border-radius:20px;padding:.8rem 1rem;justify-self:start}
+.foot-brand .badge img:first-child{width:58px}
+.foot-brand .badge div{display:grid;gap:5px}
+.foot-brand .badge div img:first-child{height:24px;width:auto}
+.foot-brand .badge div img:last-child{height:8px;width:auto}
+.foot-brand p{color:rgba(255,253,248,.7);max-width:34ch;font-size:.95rem}
+footer h4{font:600 .78rem/1 var(--f-body);letter-spacing:.14em;text-transform:uppercase;color:var(--peach);margin:0 0 1rem}
+footer ul{list-style:none;margin:0;padding:0;display:grid;gap:.55rem}
+footer ul a{text-decoration:none;color:rgba(255,253,248,.85);transition:color .2s}
+footer ul a:hover{color:var(--peach)}
+footer address{font-style:normal;color:rgba(255,253,248,.85);font-size:.95rem;display:grid;gap:.55rem}
+footer address span{color:rgba(255,253,248,.55);font-size:.85rem}
+.foot-base{display:flex;flex-wrap:wrap;justify-content:space-between;gap:1rem;margin-top:3rem;padding-top:1.4rem;border-top:1px solid rgba(255,253,248,.14);font-size:.85rem;color:rgba(255,253,248,.55)}
+
+/* toast + concept chip */
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));z-index:80;transform:translate(-50%,160%);display:flex;align-items:center;gap:.7rem;background:var(--ink);color:var(--paper);padding:.8rem 1.1rem .8rem .8rem;border-radius:999px;font:500 .95rem var(--f-body);transition:transform .45s var(--ease);max-width:calc(100vw - 32px)}
+.toast.show{transform:translate(-50%,0)}
+.toast img{width:38px}
+.concept{position:fixed;left:calc(14px + env(safe-area-inset-left,0px));bottom:calc(14px + env(safe-area-inset-bottom,0px));z-index:40;display:flex;align-items:center;gap:.5rem;background:var(--paper);border:1.5px solid var(--ink);border-radius:999px;padding:.45rem .8rem .45rem .5rem;font:600 .74rem/1.2 var(--f-body);box-shadow:var(--shadow-soft)}
+.concept i{width:8px;height:8px;border-radius:50%;background:var(--orange);box-shadow:0 0 0 4px rgba(252,139,32,.25)}
+.concept button{border:0;background:none;padding:0 0 0 .3rem;font-size:1rem;line-height:1;cursor:pointer;color:var(--ink-2)}
+
+/* ---------- responsive ---------- */
+@media (max-width:1080px){
+  .nav-links{display:none}
+  .menu-btn{display:grid}
+  .nav-tools{margin-left:auto}
+  .products{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .peek-side{display:none}
+  .foot-grid{grid-template-columns:1fr 1fr}
+  .foot-brand{grid-column:1/-1}
+}
+@media (max-width:900px){
+  .hero-grid,.meet-grid,.more-grid,.store-card,.updates{grid-template-columns:minmax(0,1fr)}
+  .stage{justify-self:center;max-width:560px;margin-top:1rem}
+  .shelves{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .sh-poke,.sh-rift,.sh-acc{grid-column:span 2}
+  .sh-poke{grid-row:auto}
+  .store-media{min-height:380px}
+  .meet-photos{max-width:560px}
+  .ig-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .ig.hide-md{display:none}
+  .clearance{grid-template-columns:minmax(0,1fr)}
+  .clearance .fan{order:-1}
+}
+@media (max-width:600px){
+  :root{--gut-l:max(16px, env(safe-area-inset-left,0px));--gut-r:max(16px, env(safe-area-inset-right,0px))}
+  .logo .lm{width:46px}
+  .logo .lw img:first-child{height:19px}
+  .logo .lw img:last-child{height:6.5px}
+  .icon-btn.ig-link{display:none}
+  .head{grid-template-columns:minmax(0,1fr)}
+  .head-sit img{width:56px;right:0;bottom:100%}
+  .shelves{grid-template-columns:minmax(0,1fr)}
+  .sh-poke,.sh-rift,.sh-acc{grid-column:auto}
+  .t-rift,.t-acc{flex-direction:column;align-items:stretch}
+  .t-rift .art{width:100%;min-height:210px}
+  .t-acc .art{width:150px}
+  .t-cyber{min-height:320px}
+  .products{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:.7rem}
+  .pbody{padding:.8rem}
+  .pname{font-size:.98rem}
+  .prow{flex-direction:column;align-items:flex-start}
+  .add{width:100%;justify-content:center}
+  .burst{width:70px}
+  .store-media{grid-template-columns:1fr 1fr;grid-template-rows:200px 150px;min-height:0}
+  .ph.big{grid-column:span 2;grid-row:auto}
+  .ig-grid{grid-template-columns:repeat(2,minmax(0,1fr));grid-auto-rows:150px}
+  .ig.wide{grid-column:span 2}
+  .ig.hide-sm{display:none}
+  .uitem{grid-template-columns:72px minmax(0,1fr)}
+  .uitem .thumb{width:72px}
+  .nform{flex-direction:column;border-radius:22px}
+  .nform button{width:100%}
+  .foot-grid{grid-template-columns:minmax(0,1fr)}
+  .concept span{display:none}
+  .twins{grid-template-columns:1fr 1fr}
+  .hm-top .paws{display:none}
+  .bigline{font-size:clamp(1.9rem,8.4vw,2.6rem)}
+  .s-sticker{width:27%}
+}
+/* cat-paw cursor (hotspot on the top toes) */
+html,body{cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='-2 -2 44 44'%3E%3Cg transform='rotate(-18 20 20)' fill='%23FECC93' stroke='%23292522' stroke-width='2.6' stroke-linejoin='round'%3E%3Cpath d='M20 19c-6.3 0-11.4 5.6-11.4 10.4 0 3.6 2.8 5.2 5.6 5.2 2.4 0 3.6-1.3 5.8-1.3s3.4 1.3 5.8 1.3c2.8 0 5.6-1.6 5.6-5.2C31.4 24.6 26.3 19 20 19z'/%3E%3Cellipse cx='8' cy='16.5' rx='3.6' ry='4.6' transform='rotate(-24 8 16.5)'/%3E%3Cellipse cx='15.2' cy='9.5' rx='3.8' ry='5' transform='rotate(-8 15.2 9.5)'/%3E%3Cellipse cx='24.8' cy='9.5' rx='3.8' ry='5' transform='rotate(8 24.8 9.5)'/%3E%3Cellipse cx='32' cy='16.5' rx='3.6' ry='4.6' transform='rotate(24 32 16.5)'/%3E%3C/g%3E%3C/svg%3E") 11 6,auto}
+a,button,label,summary,[role=button],.tile,.ig,.pcard .add{cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='-2 -2 44 44'%3E%3Cg transform='rotate(-18 20 20)' fill='%23FC8B20' stroke='%23292522' stroke-width='2.6' stroke-linejoin='round'%3E%3Cpath d='M20 19c-6.3 0-11.4 5.6-11.4 10.4 0 3.6 2.8 5.2 5.6 5.2 2.4 0 3.6-1.3 5.8-1.3s3.4 1.3 5.8 1.3c2.8 0 5.6-1.6 5.6-5.2C31.4 24.6 26.3 19 20 19z'/%3E%3Cellipse cx='8' cy='16.5' rx='3.6' ry='4.6' transform='rotate(-24 8 16.5)'/%3E%3Cellipse cx='15.2' cy='9.5' rx='3.8' ry='5' transform='rotate(-8 15.2 9.5)'/%3E%3Cellipse cx='24.8' cy='9.5' rx='3.8' ry='5' transform='rotate(8 24.8 9.5)'/%3E%3Cellipse cx='32' cy='16.5' rx='3.6' ry='4.6' transform='rotate(24 32 16.5)'/%3E%3C/g%3E%3C/svg%3E") 11 6,pointer}
+input,textarea{cursor:text}
+@media (pointer:coarse){html,body,a,button{cursor:auto}}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none !important;transition:none !important;scroll-behavior:auto !important}
+}
+</style>
+
+</head>
+<body>
+<!-- shared icons -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="paw" viewBox="0 0 40 40"><path d="M20 19c-6.3 0-11.4 5.6-11.4 10.4 0 3.6 2.8 5.2 5.6 5.2 2.4 0 3.6-1.3 5.8-1.3s3.4 1.3 5.8 1.3c2.8 0 5.6-1.6 5.6-5.2C31.4 24.6 26.3 19 20 19z"/><ellipse cx="8" cy="16.5" rx="3.6" ry="4.6" transform="rotate(-24 8 16.5)"/><ellipse cx="15.2" cy="9.5" rx="3.8" ry="5" transform="rotate(-8 15.2 9.5)"/><ellipse cx="24.8" cy="9.5" rx="3.8" ry="5" transform="rotate(8 24.8 9.5)"/><ellipse cx="32" cy="16.5" rx="3.6" ry="4.6" transform="rotate(24 32 16.5)"/></symbol>
+  <symbol id="star" viewBox="0 0 40 40"><path d="M20 2c1.6 9.6 4.8 14.6 18 18-13.2 3.4-16.4 8.4-18 18-1.6-9.6-4.8-14.6-18-18 13.2-3.4 16.4-8.4 18-18z"/></symbol>
+  <symbol id="arrow" viewBox="0 0 24 24"><path d="M5 12h13m-5-6 6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="bag" viewBox="0 0 24 24"><path d="M5 8h14l-1.2 11.2a2 2 0 0 1-2 1.8H8.2a2 2 0 0 1-2-1.8L5 8zm4 0V6.5a3 3 0 0 1 6 0V8" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round" stroke-linecap="round"/></symbol>
+  <symbol id="insta" viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="17" height="17" rx="5" fill="none" stroke="currentColor" stroke-width="1.9"/><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="1.9"/><circle cx="17.2" cy="6.8" r="1.2" fill="currentColor"/></symbol>
+  <symbol id="pin" viewBox="0 0 24 24"><path d="M12 21s-7-6.1-7-11.5a7 7 0 0 1 14 0C19 14.9 12 21 12 21z" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"/><circle cx="12" cy="9.5" r="2.5" fill="none" stroke="currentColor" stroke-width="1.9"/></symbol>
+  <symbol id="clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5" fill="none" stroke="currentColor" stroke-width="1.9"/><path d="M12 7.5V12l3 2" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></symbol>
+  <symbol id="cam" viewBox="0 0 24 24"><path d="M4 8.5A1.5 1.5 0 0 1 5.5 7H8l1.5-2h5L16 7h2.5A1.5 1.5 0 0 1 20 8.5v9a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 4 17.5z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><circle cx="12" cy="12.5" r="3.4" fill="none" stroke="currentColor" stroke-width="1.8"/></symbol>
+  <symbol id="train" viewBox="0 0 24 24"><rect x="6" y="3.5" width="12" height="13" rx="3" fill="none" stroke="currentColor" stroke-width="1.9"/><path d="M6 11h12M9 20l-1.5 1.5M15 20l1.5 1.5M9 14h.01M15 14h.01" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></symbol>
+</svg>
+
+<div class="ticker" aria-label="Store announcements">
+  <div class="ticker-track">
+    <span><svg><use href="#paw"/></svg><b>Now open</b> at [Shop address]</span>
+    <span><svg><use href="#paw"/></svg><b>Restocked:</b> Riftbound – [Set name]</span>
+    <span><svg><use href="#paw"/></svg><b>Pokémon clearance:</b> booster packs from S$6.10</span>
+    <span><svg><use href="#paw"/></svg><b>New:</b> Cyberpunk TCG has landed</span>
+    <span><svg><use href="#paw"/></svg><b>Kuji &amp; Rip and Ship</b> available online</span>
+    <span aria-hidden="true"><svg><use href="#paw"/></svg><b>Now open</b> at [Shop address]</span>
+    <span aria-hidden="true"><svg><use href="#paw"/></svg><b>Restocked:</b> Riftbound – [Set name]</span>
+    <span aria-hidden="true"><svg><use href="#paw"/></svg><b>Pokémon clearance:</b> booster packs from S$6.10</span>
+    <span aria-hidden="true"><svg><use href="#paw"/></svg><b>New:</b> Cyberpunk TCG has landed</span>
+    <span aria-hidden="true"><svg><use href="#paw"/></svg><b>Kuji &amp; Rip and Ship</b> available online</span>
+  </div>
+</div>
+
+<header class="nav" id="nav">
+  <div class="wrap nav-in">
+    <a class="logo" href="#top" aria-label="Mochi's Card Nook, home">
+      <img class="lm" src="assets/images/mascot.webp" alt="" width="483" height="356">
+      <span class="lw"><img src="assets/images/wordmark.webp" alt="Mochi's" width="639" height="167"><img src="assets/images/cardnook.webp" alt="Card Nook" width="854" height="65"></span>
+    </a>
+    <nav aria-label="Main">
+      <ul class="nav-links">
+        <li><a href="#top" aria-current="page">Home</a></li>
+        <li><a href="#fresh">Shop</a></li>
+        <li><a href="#collections">Collections</a></li>
+        <li><a href="#mochi">About Us</a></li>
+        <li><a href="#visit">Visit Our Store</a></li>
+      </ul>
+    </nav>
+    <div class="nav-tools">
+      <a class="icon-btn ig-link" href="#" aria-label="Instagram"><svg><use href="#insta"/></svg></a>
+      <button class="icon-btn" id="bagBtn" aria-label="Shopping bag, 0 items"><svg><use href="#bag"/></svg><span class="bag-count" id="bagCount">0</span></button>
+      <button class="icon-btn menu-btn" id="menuBtn" aria-label="Open menu" aria-expanded="false" aria-controls="mnav">
+        <svg viewBox="0 0 24 24"><path d="M4 8h16M4 16h11" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" fill="none"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<div class="mnav" id="mnav" aria-label="Menu" role="dialog" aria-modal="true">
+  <div class="mnav-top">
+    <a class="logo" href="#top" data-close><img class="lm" src="assets/images/mascot.webp" alt="" style="width:46px"><span class="lw"><img src="assets/images/wordmark.webp" alt="Mochi's" style="height:19px"><img src="assets/images/cardnook.webp" alt="Card Nook" style="height:6.5px"></span></a>
+    <button class="icon-btn" id="menuClose" aria-label="Close menu"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" fill="none"/></svg></button>
+  </div>
+  <ul>
+    <li><a href="#top" data-close>Home <small>welcome in</small></a></li>
+    <li><a href="#fresh" data-close>Shop <small>fresh packs</small></a></li>
+    <li><a href="#collections" data-close>Collections <small>by game</small></a></li>
+    <li><a href="#mochi" data-close>About Us <small>meet Mochi</small></a></li>
+    <li><a href="#visit" data-close>Visit Our Store <small>[Neighbourhood]</small></a></li>
+    <li><a href="#">Instagram <small>@yourshop</small></a></li>
+  </ul>
+  <div class="mnav-foot">
+    <p>[Street address], #00-00<br>Singapore 000000</p>
+    <img src="assets/images/mascot-flip.webp" alt="">
+  </div>
+</div>
+
+<main id="top">
+<!-- B. HERO -->
+<section class="hero" aria-labelledby="hero-title">
+  <div class="wrap hero-grid">
+    <div class="hero-copy">
+      <span class="eyebrow h-in">Welcome to Mochi's Card Nook</span>
+      <h1 id="hero-title" class="h-in"><span class="line">Every collector</span><span class="line">has a <span class="hp">happy place.<svg viewBox="0 0 300 30" preserveAspectRatio="none" aria-hidden="true"><path id="squiggle" d="M4 20c40-14 80-14 120-4s90 10 120-2 40-8 52-4"/></svg></span></span></h1>
+      <p class="lead h-in">From exciting new pulls to treasured collectibles, there's always something waiting to be discovered. Come on in and make yourself at home!</p>
+      <div class="ctas h-in">
+        <a class="btn paws" href="#collections">Explore the Collection <svg><use href="#arrow"/></svg></a>
+        <a class="btn ghost paws" href="#visit"><svg><use href="#pin"/></svg> Find Our Store</a>
+      </div>
+      <div class="hero-meta h-in">
+        <span><svg><use href="#star"/></svg>Pokémon · Riftbound · One Piece · Cyberpunk TCG</span>
+        <span><svg><use href="#pin"/></svg>[Neighbourhood], Singapore</span>
+      </div>
+    </div>
+
+    <div class="stage" id="stage" aria-hidden="true">
+      <svg class="s-star a"><use href="#star"/></svg>
+      <svg class="s-star b"><use href="#star"/></svg>
+      <svg class="s-star c"><use href="#star"/></svg>
+      <figure class="s-photo" style="margin:0"><img src="assets/images/scene-monitor.webp" alt="" width="960" height="1280"><figcaption>the real Mochi ♡</figcaption></figure>
+      <img class="s-mascot" id="heroMascot" src="assets/images/mascot.webp" alt="">
+      <img class="s-pack p1" src="assets/images/pack-a.webp" alt="">
+      <img class="s-pack p2" src="assets/images/pack-b.webp" alt="">
+      <img class="s-pack p3" src="assets/images/pack-c.webp" alt="">
+      <img class="s-box1" src="assets/images/box-a.webp" alt="">
+      <img class="s-box2" src="assets/images/box-c.webp" alt="">
+      <div class="s-sticker">
+        <svg class="ring" viewBox="0 0 200 200"><defs><path id="circ" d="M100,100 m-82,0 a82,82 0 1,1 164,0 a82,82 0 1,1 -164,0"/></defs><circle cx="100" cy="100" r="98" fill="#FFFDF8" stroke="#292522" stroke-width="3"/><text><textPath href="#circ">Now open · [Shop address] · Now open · come say hi ·</textPath></text></svg>
+        <div class="core"><svg><use href="#paw"/></svg></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="trail" aria-hidden="true"><svg><use href="#paw"/></svg><svg><use href="#paw"/></svg><svg><use href="#paw"/></svg><svg><use href="#paw"/></svg><svg><use href="#paw"/></svg></div>
+
+<!-- C. COLLECTIONS -->
+<section class="band paper" id="collections" aria-labelledby="col-title">
+  <div class="wrap">
+    <div class="head reveal">
+      <div>
+        <h2 id="col-title"><span class="head-sit">Find your next favourite pull.<img src="assets/images/mascot.webp" alt=""></span></h2>
+        <p>A little something for every kind of collector.</p>
+      </div>
+      <a class="more" href="#fresh">Shop everything <svg width="18" height="18"><use href="#arrow"/></svg></a>
+    </div>
+
+    <div class="shelves">
+      <div class="shelf sh-poke">
+        <img class="peek" src="assets/images/mascot.webp" alt="">
+        <a class="tile t-poke" href="#fresh" style="height:100%">
+          <div>
+            <h3>Pokémon TCG</h3>
+            <p class="desc">Booster boxes, Elite Trainer Boxes and single packs from the latest sets.</p>
+          </div>
+          <div class="art" aria-hidden="true">
+            <img class="a4" src="assets/images/pack-a.webp" alt="">
+            <img class="a5" src="assets/images/pack-b.webp" alt="">
+            <img class="a1" src="assets/images/box-b.webp" alt="">
+            <img class="a3" src="assets/images/trainer-box.webp" alt="">
+            <img class="a2" src="assets/images/box-a.webp" alt="">
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap">
+            <div class="tags"><span>[Set name]</span><span>[Set name]</span><span>[Set name]</span></div>
+            <span class="go">Explore <i><svg><use href="#arrow"/></svg></i></span>
+          </div>
+        </a>
+      </div>
+
+      <div class="shelf right sh-rift">
+        <img class="peek" src="assets/images/mascot-flip.webp" alt="">
+        <a class="tile t-rift" href="#fresh">
+          <div class="txt">
+            <div>
+              <h3>Riftbound</h3>
+              <p class="desc">The League of Legends TCG. Booster boxes and slim boxes from the current sets.</p>
+            </div>
+            <span class="go">Explore <i><svg><use href="#arrow"/></svg></i></span>
+          </div>
+          <div class="art" aria-hidden="true">
+            <img class="b1" src="assets/images/box-c.webp" alt="">
+            <img class="b2" src="assets/images/slim-box.webp" alt="">
+          </div>
+        </a>
+      </div>
+
+      <div class="shelf">
+        <img class="peek" src="assets/images/mascot.webp" alt="">
+        <a class="tile t-kuji" href="#more">
+          <div class="paws" aria-hidden="true"><svg><use href="#paw"/></svg><svg><use href="#paw"/></svg></div>
+          <div>
+            <h3>One Piece &amp; Kuji</h3>
+            <p class="desc">Lucky-draw kuji from your favourite series.</p>
+            <ul>
+              <li>[Kuji series] <b>S$15</b></li>
+              <li>[Kuji series] <b>S$12</b></li>
+              <li>[Kuji series] <b>S$15</b></li>
+            </ul>
+          </div>
+          <span class="go">See the kuji menu <i><svg><use href="#arrow"/></svg></i></span>
+        </a>
+      </div>
+
+      <div class="shelf right">
+        <img class="peek" src="assets/images/mascot-flip.webp" alt="">
+        <a class="tile t-cyber" href="#fresh">
+          <img class="bg" src="assets/images/promo-new-game.webp" alt="">
+          <div class="over">
+            <h3>Cyberpunk TCG</h3>
+            <p class="desc">Night City, now in card form. Starter decks and boosters.</p>
+            <span class="go" style="margin-top:.8rem">Explore <i><svg><use href="#arrow"/></svg></i></span>
+          </div>
+        </a>
+      </div>
+
+      <div class="shelf sh-acc">
+        <img class="peek" src="assets/images/mascot.webp" alt="" style="left:auto;right:30%">
+        <a class="tile t-acc" href="#fresh">
+          <img class="art" src="assets/images/sleeves.webp" alt="" aria-hidden="true">
+          <div class="txt">
+            <h3>Accessories &amp; Blind Boxes</h3>
+            <p class="desc" style="max-width:56ch">Standard sleeves to keep every pull safe, plus character blind boxes for a little extra surprise.</p>
+            <div class="swatches" aria-label="Sleeve colours">
+              <span class="sw" style="background:#1d1b1a" title="Pure Black"></span>
+              <span class="sw" style="background:#2F4F94" title="Royal Blue"></span>
+              <span class="sw" style="background:#C8352B" title="Fiery Red"></span>
+              <span class="sw" style="background:#FFFDF8" title="Plain White"></span>
+              <small>Standard sleeves in four colours</small>
+            </div>
+          </div>
+          <span class="go">Explore <i><svg><use href="#arrow"/></svg></i></span>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- D. FRESH FROM THE PACKS -->
+<section class="band" id="fresh" aria-labelledby="fresh-title">
+  <div class="wrap">
+    <div class="head reveal">
+      <div>
+        <span class="eyebrow" style="margin-bottom:.9rem">New arrivals</span>
+        <h2 id="fresh-title">Fresh from the packs.</h2>
+      </div>
+      <span class="demo-tag">Demo prices &amp; stock</span>
+    </div>
+
+    <div class="products" id="products">
+      <article class="pcard">
+        <div class="pimg">
+          <span class="pstat"><i></i>In stock</span>
+          <img src="assets/images/box-c.webp" alt="Booster box (placeholder art)" loading="lazy">
+        </div>
+        <img class="burst" src="assets/images/restocked.webp" alt="Restocked">
+        <div class="pbody">
+          <span class="pcat">Riftbound</span>
+          <h3 class="pname">League of Legends TCG – [Set name] Booster Box</h3>
+          <div class="prow"><span class="price"><small>S$</small>189.00</span><button class="add paws" data-name="Riftbound Booster Box"><svg><use href="#bag"/></svg>Add</button></div>
+        </div>
+      </article>
+      <article class="pcard">
+        <div class="pimg">
+          <span class="pstat low"><i></i>Clearance</span>
+          <img src="assets/images/trainer-box.webp" alt="Elite Trainer Box (placeholder art)" loading="lazy">
+        </div>
+        <div class="pbody">
+          <span class="pcat">Pokémon TCG</span>
+          <h3 class="pname">[Set name] Elite Trainer Box</h3>
+          <div class="prow"><span class="price"><small>S$</small>99.00</span><button class="add paws" data-name="Elite Trainer Box"><svg><use href="#bag"/></svg>Add</button></div>
+        </div>
+      </article>
+      <article class="pcard">
+        <div class="pimg">
+          <span class="pstat"><i></i>In stock</span>
+          <img src="assets/images/box-b.webp" alt="Booster box (placeholder art)" loading="lazy">
+        </div>
+        <div class="pbody">
+          <span class="pcat">Pokémon TCG</span>
+          <h3 class="pname">[Set name] Booster Box (36 packs)</h3>
+          <div class="prow"><span class="price"><small>S$</small>219.60</span><button class="add paws" data-name="Booster Box (36 packs)"><svg><use href="#bag"/></svg>Add</button></div>
+        </div>
+      </article>
+      <article class="pcard">
+        <img class="peek-side" src="assets/images/mascot.webp" alt="">
+        <div class="pimg">
+          <span class="pstat out"><i></i>Sold out</span>
+          <img src="assets/images/sleeves.webp" alt="Standard sleeves (placeholder art)" loading="lazy">
+        </div>
+        <div class="pbody">
+          <span class="pcat">Accessories</span>
+          <h3 class="pname">Pure Black Standard Sleeves (100)</h3>
+          <div class="prow"><span class="price"><small>S$</small>18.00</span><button class="add notify" data-notify data-name="Pure Black Sleeves"><svg><use href="#paw"/></svg>Notify me</button></div>
+        </div>
+      </article>
+    </div>
+
+    <div class="clearance reveal">
+      <div class="fan" aria-hidden="true">
+        <img src="assets/images/pack-a.webp" alt="">
+        <img src="assets/images/pack-b.webp" alt="">
+        <img src="assets/images/pack-c.webp" alt="">
+      </div>
+      <div>
+        <h3>Pokémon clearance is on.</h3>
+        <dl>
+          <div><dt>Booster packs</dt><dd>S$6.10</dd></div>
+          <div><dt>18-pack displays</dt><dd>S$109.80</dd></div>
+          <div><dt>36-pack boxes</dt><dd>S$219.60</dd></div>
+        </dl>
+      </div>
+      <a class="btn ghost paws" href="#fresh">Shop clearance <svg><use href="#arrow"/></svg></a>
+    </div>
+  </div>
+</section>
+
+<!-- E. MEET MOCHI -->
+<section class="band peach meet" id="mochi" aria-labelledby="mochi-title">
+  <div class="wrap meet-grid">
+    <div class="meet-photos">
+      <div class="meet-main parallax"><img src="assets/images/scene-scratch.webp" alt="Illustrated stand-in: Mochi the hamster getting a head scratch" loading="lazy"></div>
+      <figure class="meet-polaroid" style="margin:0"><span class="tape"></span><img src="assets/images/scene-nap.webp" alt="Illustrated stand-in: Mochi asleep on a starry sheet" loading="lazy"><figcaption>nap break ♡</figcaption></figure>
+      <div class="anno a1" aria-hidden="true">the little boss
+        <svg viewBox="0 0 60 46"><path d="M4 4c10 2 26 10 30 30"/><path d="M26 30l8 6 4-9"/></svg>
+      </div>
+    </div>
+    <div class="meet-copy">
+      <span class="eyebrow">About us</span>
+      <h2 id="mochi-title" class="reveal">The little boss behind the counter.</h2>
+      <p class="reveal">Every cozy shop needs a little character. Meet Mochi, our fluffy little inspiration and the face behind the name.</p>
+      <div class="twins reveal">
+        <div class="twin"><div class="face"><img class="photo" src="assets/images/scene-monitor.webp" alt="Illustrated stand-in: Mochi beside a computer monitor" loading="lazy"></div><b>In real life</b><small>Round and very fluffy</small></div>
+        <div class="twin"><div class="face"><img class="il" id="meetMascot" src="assets/images/mascot.webp" alt="The illustrated Mochi mascot"></div><b>On every poster</b><small>Our hand-drawn mascot</small></div>
+      </div>
+    </div>
+  </div>
+  <img class="meet-walker" id="walker" src="assets/images/mascot-flip.webp" alt="" aria-hidden="true">
+</section>
+
+<!-- F. MORE THAN JUST CARDS -->
+<section class="band paper" id="more" aria-labelledby="more-title">
+  <div class="wrap more-grid">
+    <div>
+      <h2 id="more-title" class="bigline reveal"><span class="nw">Good cards<span class="chip c1"><img src="assets/images/pack-b.webp" alt=""></span>.</span> <span class="nw">Great company<span class="chip c2"><img src="assets/images/mascot.webp" alt=""></span>.</span> <span class="nw"><em>Cozy</em> vibes<span class="chip c3"><img src="assets/images/scene-scratch.webp" alt=""></span>.</span></h2>
+      <p class="more-intro reveal">Mochi's Card Nook is a place to slow down. Browse new releases, open packs with people who get just as excited as you do, and swap stories (and cards) with fellow collectors.</p>
+    </div>
+    <aside class="housemenu reveal" aria-label="What you can do at the corner">
+      <div class="hm-top">
+        <span class="tab">House menu</span>
+        <div class="paws" aria-hidden="true"><svg><use href="#paw"/></svg><svg><use href="#paw"/></svg><svg><use href="#paw"/></svg></div>
+        <img src="assets/images/mascot.webp" alt="">
+      </div>
+      <ul>
+        <li><div class="row">Rip &amp; Ship<span>online</span></div><p>Can't make it down? Pick your packs and we'll open them for you, then ship the pulls.</p></li>
+        <li><div class="row">Kuji draws<span>from S$12</span></div><p>Lucky draws from your favourite anime and game series.</p></li>
+        <li><div class="row">Open packs together<span>in store</span></div><p>Every good pull deserves an audience. Crack yours at the counter.</p></li>
+        <li><div class="row">Trade &amp; chat<span>all welcome</span></div><p>Meet other collectors, compare binders and make a fair trade.</p></li>
+        <li><div class="row">New releases<span>as they land</span></div><p>Fresh sets on the shelf, with announcements on our Instagram first.</p></li>
+      </ul>
+    </aside>
+  </div>
+</section>
+
+<!-- G. VISIT -->
+<section class="band store" id="visit" aria-labelledby="visit-title">
+  <div class="wrap">
+    <div class="store-card reveal">
+      <div class="store-media">
+        <div class="ph big parallax-soft">
+          <div class="ph-lab"><svg><use href="#cam"/></svg><b>Shopfront photo</b><small>Placeholder. A wide shot of the storefront goes here.</small></div>
+        </div>
+        <div class="ph">
+          <div class="ph-lab"><svg><use href="#cam"/></svg><b>Interior</b><small>Display cases &amp; counter</small></div>
+        </div>
+        <div class="ph poster">
+          <img src="assets/images/ig-grand-opening.webp" alt="Grand opening poster (placeholder art)" loading="lazy">
+          <span class="pin">Opened [date]</span>
+        </div>
+      </div>
+      <div class="store-info">
+        <span class="eyebrow" style="justify-self:start;align-self:flex-start">Visit our store</span>
+        <h2 id="visit-title">Your little corner is waiting.</h2>
+        <p>Nothing beats discovering your next favourite card in person. Drop by, browse our collections and enjoy a little time in Mochi's nook.</p>
+        <dl class="facts">
+          <div><dt><svg><use href="#pin"/></svg></dt><dd><b>[Street address], #00-00</b><span>Singapore 000000</span></dd></div>
+          <div><dt><svg><use href="#clock"/></svg></dt><dd><b>Opening hours</b><span>To be confirmed by the shop <span class="demo-tag" style="margin-left:.3rem">Placeholder</span></span></dd></div>
+          <div><dt><svg><use href="#train"/></svg></dt><dd><b>Getting here</b><span>Transport directions to be added <span class="demo-tag" style="margin-left:.3rem">Placeholder</span></span></dd></div>
+        </dl>
+        <div class="map" aria-label="Map placeholder">
+          <div class="green"></div>
+          <span class="rd r1"></span><span class="rd r2"></span><span class="rd r3"></span>
+          <span class="lab">[Street name]</span>
+          <div class="pin"><img src="assets/images/mascot.webp" alt=""></div>
+          <span class="demo-tag ph-note">Live Google Map on launch</span>
+        </div>
+        <div class="store-ctas">
+          <a class="btn paws" href="#"><svg><use href="#pin"/></svg> Get Directions</a>
+          <a class="btn ghost paws" href="#"><svg><use href="#insta"/></svg> Instagram</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- H. UPDATES -->
+<section class="band paper" id="updates" aria-labelledby="upd-title">
+  <div class="wrap">
+    <div class="head reveal">
+      <div>
+        <h2 id="upd-title">What's happening around the corner?</h2>
+        <p>Releases, restocks, promos and get-togethers.</p>
+      </div>
+      <a class="more" href="#">All updates <svg width="18" height="18"><use href="#arrow"/></svg></a>
+    </div>
+    <div class="updates">
+      <a class="feature reveal" href="#">
+        <div class="fimg"><img src="assets/images/ig-grand-opening.webp" alt="Grand opening poster (placeholder art)" loading="lazy" style="object-position:50% 0"></div>
+        <div class="fbody">
+          <div class="meta"><span class="date">[Date]</span><span class="kind">announcement</span></div>
+          <h3>We're officially open!</h3>
+          <p>Thank you to everyone who came down for our grand opening. Our first physical nook is now open at [Shop address].</p>
+        </div>
+      </a>
+      <div class="ulist">
+        <a class="uitem reveal" href="#fresh">
+          <div class="thumb"><img class="fit" src="assets/images/box-c.webp" alt="" loading="lazy"></div>
+          <div><div class="meta"><span class="kind">restock</span></div><h3>Riftbound [Set name] is back on the shelf</h3><p>Booster boxes available in store and online.</p></div>
+        </a>
+        <a class="uitem reveal" href="#fresh">
+          <div class="thumb"><img src="assets/images/ig-clearance.webp" alt="" loading="lazy"></div>
+          <div><div class="meta"><span class="kind">promotion</span></div><h3>Pokémon clearance: packs from S$6.10</h3><p>Selected sets while stocks last.</p></div>
+        </a>
+        <a class="uitem reveal" href="#more">
+          <div class="thumb cal"><b>??</b><small>Date TBC</small></div>
+          <div><div class="meta"><span class="kind">event</span><span class="demo-tag">Placeholder</span></div><h3>Weekend trading session</h3><p>Bring your binders and trade with fellow collectors. Details to be announced.</p></div>
+        </a>
+        <a class="uitem reveal" href="#more">
+          <div class="thumb cal" style="background:var(--peach)"><b>??</b><small>Date TBC</small></div>
+          <div><div class="meta"><span class="kind">release</span><span class="demo-tag">Placeholder</span></div><h3>Next set launch night</h3><p>Pre-orders and opening-day packs. Details to be announced.</p></div>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- I. INSTAGRAM -->
+<section class="band" id="instagram" aria-labelledby="ig-title">
+  <div class="wrap">
+    <div class="head reveal">
+      <div>
+        <h2 id="ig-title">A little peek into our world.</h2>
+        <p>New arrivals, store moments and plenty of Mochi. <span class="hand" style="font-size:1.2em;color:var(--ink)">@yourshop</span></p>
+      </div>
+    </div>
+    <div class="ig-grid">
+      <a class="ig tall" href="#"><img src="assets/images/scene-monitor.webp" alt="Illustrated stand-in: Mochi by a monitor" loading="lazy"><span class="ov"><span>gaming buddy</span><svg><use href="#insta"/></svg></span></a>
+      <a class="ig" href="#"><img src="assets/images/ig-restock.webp" alt="Restock post (placeholder art)" loading="lazy"><span class="ov"><span>restocked!</span><svg><use href="#insta"/></svg></span></a>
+      <a class="ig wide" href="#"><img src="assets/images/scene-nap.webp" alt="Illustrated stand-in: Mochi napping" loading="lazy" style="object-position:50% 58%"><span class="ov"><span>nap o'clock</span><svg><use href="#insta"/></svg></span></a>
+      <a class="ig" href="#"><img src="assets/images/ig-clearance.webp" alt="Clearance price list (placeholder art)" loading="lazy"><span class="ov"><span>clearance</span><svg><use href="#insta"/></svg></span></a>
+      <a class="ig hide-sm" href="#"><img src="assets/images/promo-new-game.webp" alt="New game promo (placeholder art)" loading="lazy"><span class="ov"><span>new game</span><svg><use href="#insta"/></svg></span></a>
+      <div class="ig ph hide-md hide-sm"><div class="ph-lab"><svg><use href="#cam"/></svg><b>Store atmosphere</b><small>Placeholder for in-store photos</small></div></div>
+    </div>
+    <div class="ig-foot"><a class="btn paws" href="#"><svg><use href="#insta"/></svg> Follow us on Instagram</a></div>
+  </div>
+</section>
+
+<!-- J. NEWSLETTER -->
+<section class="news" aria-labelledby="news-title">
+  <div class="wrap">
+    <div class="news-card reveal">
+      <img class="sleeper" src="assets/images/mascot-sleep.webp" alt="">
+      <div class="zzz" aria-hidden="true"><span>z</span><span>z</span><span>z</span></div>
+      <h2 id="news-title">Stay in Mochi's good books.</h2>
+      <p>Be the first to know about new arrivals, exciting releases and little surprises from our corner.</p>
+      <form class="nform" id="nform" novalidate>
+        <label class="sr-only" for="nemail">Email address</label>
+        <input id="nemail" name="email" type="email" placeholder="your@email.com" autocomplete="email" required>
+        <button type="submit">Sign me up</button>
+      </form>
+      <p class="nmsg" id="nmsg" role="status" aria-live="polite"></p>
+      <p class="nfine">Prototype form. No email is stored or sent.</p>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <img class="foot-cat" src="assets/images/mascot-flip.webp" alt="" aria-hidden="true">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <span class="badge"><img src="assets/images/mascot.webp" alt=""><div><img src="assets/images/wordmark.webp" alt="Mochi's"><img src="assets/images/cardnook.webp" alt="Card Nook"></div></span>
+        <p>A cozy trading card game shop in [Neighbourhood], Singapore. Pokémon, Riftbound, One Piece, Cyberpunk TCG, kuji and accessories.</p>
+      </div>
+      <div>
+        <h4>Shop</h4>
+        <ul><li><a href="#collections">Pokémon TCG</a></li><li><a href="#collections">Riftbound</a></li><li><a href="#collections">One Piece &amp; Kuji</a></li><li><a href="#collections">Cyberpunk TCG</a></li><li><a href="#collections">Accessories</a></li></ul>
+      </div>
+      <div>
+        <h4>Help</h4>
+        <ul><li><a href="#top">Shipping &amp; Rip and Ship</a></li><li><a href="#top">Pre-orders</a></li><li><a href="#top">FAQ</a></li><li><a href="#top">Contact us</a></li></ul>
+      </div>
+      <div>
+        <h4>Visit</h4>
+        <address>
+          [Street address], #00-00<br>Singapore 000000
+          <span>Hours: to be confirmed</span>
+          <span>Email &amp; phone: to be confirmed</span>
+          <a href="#" style="color:var(--peach);text-decoration:none">@yourshop</a>
+        </address>
+      </div>
+    </div>
+    <div class="foot-base">
+      <span>Homepage concept by Noah. Brand, copy, prices and images are placeholders.</span>
+      <span>Website concept. Prices, stock and events shown are for demonstration.</span>
+    </div>
+  </div>
+</footer>
+
+<div class="toast" id="toast" role="status" aria-live="polite"><img src="assets/images/mascot.webp" alt=""><span id="toastMsg">Added to bag</span></div>
+<div class="concept" id="concept"><i></i><span>Website concept · demo content</span><button aria-label="Hide concept label" id="conceptX">×</button></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script>
+(function(){
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const $ = (s,c=document)=>c.querySelector(s), $$=(s,c=document)=>[...c.querySelectorAll(s)];
+
+  /* nav state */
+  const nav=$('#nav');
+  const onScroll=()=>nav.classList.toggle('scrolled',scrollY>40);
+  addEventListener('scroll',onScroll,{passive:true}); onScroll();
+
+  /* mobile menu */
+  const mnav=$('#mnav'), mbtn=$('#menuBtn');
+  const setMenu=open=>{mnav.classList.toggle('open',open);mbtn.setAttribute('aria-expanded',open);document.body.style.overflow=open?'hidden':'';if(open)$('#menuClose').focus();else mbtn.focus({preventScroll:true});};
+  mbtn.addEventListener('click',()=>setMenu(true));
+  $('#menuClose').addEventListener('click',()=>setMenu(false));
+  $$('[data-close]',mnav).forEach(a=>a.addEventListener('click',()=>setMenu(false)));
+  addEventListener('keydown',e=>{if(e.key==='Escape'&&mnav.classList.contains('open'))setMenu(false)});
+
+  /* paw-print pop on buttons */
+  const NS='http://www.w3.org/2000/svg';
+  function pawPop(el){
+    if(reduce) return;
+    for(let i=0;i<3;i++){
+      const s=document.createElementNS(NS,'svg'); s.setAttribute('class','paw-pop');
+      const u=document.createElementNS(NS,'use'); u.setAttribute('href','#paw'); s.appendChild(u);
+      s.style.left=(20+i*28+Math.random()*10)+'%'; s.style.top='-6px';
+      el.appendChild(s);
+      const a=s.animate([{transform:'translateY(0) scale(.2) rotate(0deg)',opacity:0},{transform:`translateY(-${16+i*6}px) scale(1) rotate(${(i-1)*18}deg)`,opacity:1,offset:.45},{transform:`translateY(-${26+i*8}px) scale(.9) rotate(${(i-1)*22}deg)`,opacity:0}],{duration:900,delay:i*110,easing:'cubic-bezier(.2,.8,.2,1)'});
+      a.onfinish=()=>s.remove();
+    }
+  }
+  $$('.paws').forEach(b=>{let t=0;b.addEventListener('pointerenter',()=>{const n=Date.now();if(n-t>1200){t=n;pawPop(b)}})});
+
+  /* bag + toast */
+  let bag=0; const bagCount=$('#bagCount'), bagBtn=$('#bagBtn'), toast=$('#toast'), tmsg=$('#toastMsg'); let tt;
+  function showToast(m){tmsg.textContent=m;toast.classList.add('show');clearTimeout(tt);tt=setTimeout(()=>toast.classList.remove('show'),2600)}
+  $$('.add').forEach(b=>b.addEventListener('click',()=>{
+    const name=b.dataset.name;
+    if(b.hasAttribute('data-notify')){b.classList.add('done');b.lastChild.textContent=' We’ll let you know';showToast(name+': we’ll ping you when it’s back (demo)');return;}
+    bag++; bagCount.textContent=bag; bagBtn.setAttribute('aria-label','Shopping bag, '+bag+' item'+(bag>1?'s':''));
+    bagCount.classList.remove('bump'); void bagCount.offsetWidth; bagCount.classList.add('bump');
+    pawPop(b); showToast(name+' added to your bag');
+  }));
+  bagBtn.addEventListener('click',()=>showToast(bag?`${bag} item${bag>1?'s':''} in your bag. Checkout comes in the full build.`:'Your bag is empty. Mochi suggests a booster pack.'));
+
+  /* newsletter */
+  $('#nform').addEventListener('submit',e=>{
+    e.preventDefault(); const v=$('#nemail').value.trim(), m=$('#nmsg');
+    if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)){m.textContent='Hmm, that email doesn’t look right. Try name@example.com.';$('#nemail').focus();return;}
+    m.textContent='Yay! You’re in Mochi’s good books. (demo, nothing was sent)'; e.target.reset();
+  });
+
+  /* concept chip */
+  $('#conceptX').addEventListener('click',()=>{$('#concept').hidden=true});
+
+  if(reduce || !window.gsap) return;
+  gsap.registerPlugin(ScrollTrigger);
+
+  /* hero intro */
+  const sq=$('#squiggle'), L=sq.getTotalLength(); sq.style.strokeDasharray=L; sq.style.strokeDashoffset=L;
+  const tl=gsap.timeline({defaults:{ease:'power3.out'}});
+  tl.from('.h-in',{y:28,duration:.8,stagger:.08})
+    .to(sq,{strokeDashoffset:0,duration:.9,ease:'power2.inOut'},'-=.5')
+    .from('.s-photo',{y:40,rotate:10,duration:1},0.1)
+    .from('.s-pack',{y:-60,rotate:-30,stagger:.08,duration:.8,ease:'back.out(1.6)'},.3)
+    .from(['.s-box1','.s-box2'],{y:80,stagger:.1,duration:.9,ease:'back.out(1.3)'},.35)
+    .from('#heroMascot',{y:-120,duration:.9,ease:'bounce.out'},.55)
+    .from('.s-sticker',{scale:0,rotate:-90,duration:.7,ease:'back.out(2)'},.8)
+    .from('.s-star',{scale:0,stagger:.1,duration:.5,ease:'back.out(3)'},.9);
+  /* safety: if the intro is interrupted (tab hidden, reload), snap it to the end */
+  setTimeout(()=>{ if(tl.progress()<1) tl.progress(1); },2500);
+
+  /* mascot follows cursor (subtle) */
+  const hm=$('#heroMascot');
+  const qx=gsap.quickTo(hm,'x',{duration:.8,ease:'power3'}), qr=gsap.quickTo(hm,'rotation',{duration:.8,ease:'power3'});
+  addEventListener('pointermove',e=>{const r=hm.getBoundingClientRect(); if(r.bottom<0) return; const dx=(e.clientX-(r.left+r.width/2))/innerWidth; qx(gsap.utils.clamp(-24,24,dx*60)); qr(gsap.utils.clamp(-8,8,dx*16));});
+  gsap.to('.s-pack',{y:'-=8',duration:2.4,ease:'sine.inOut',yoyo:true,repeat:-1,stagger:.3,delay:1.6});
+
+  /* parallax in hero */
+  gsap.to('.s-photo',{yPercent:-6,ease:'none',scrollTrigger:{trigger:'.hero',start:'top top',end:'bottom top',scrub:true}});
+  gsap.to(['.s-box1','.s-box2'],{yPercent:-14,ease:'none',scrollTrigger:{trigger:'.hero',start:'top top',end:'bottom top',scrub:true}});
+
+  /* paw trails */
+  $$('.trail').forEach(t=>gsap.from(t.children,{scale:0,stagger:.12,duration:.4,ease:'back.out(3)',scrollTrigger:{trigger:t,start:'top 92%'}}));
+
+  /* generic reveals (transform only — text stays readable at rest) */
+  $$('.reveal').forEach(el=>gsap.from(el,{y:44,duration:.9,ease:'power3.out',scrollTrigger:{trigger:el,start:'top 90%'}}));
+
+  /* staggered shelves + products */
+  gsap.from('.shelf',{y:60,rotate:i=>i%2?1.2:-1.2,duration:.9,stagger:.09,ease:'power3.out',scrollTrigger:{trigger:'.shelves',start:'top 85%'}});
+  gsap.from('.pcard',{y:70,scale:.96,duration:.9,stagger:.1,ease:'power3.out',scrollTrigger:{trigger:'#products',start:'top 88%'}});
+  gsap.from('.burst',{scale:0,rotate:-40,duration:.7,ease:'back.out(2.4)',scrollTrigger:{trigger:'#products',start:'top 75%'}});
+
+  /* meet the mascot */
+  gsap.fromTo('.meet-main img',{yPercent:-8},{yPercent:0,ease:'none',scrollTrigger:{trigger:'.meet',start:'top bottom',end:'bottom top',scrub:true}});
+  gsap.from('.meet-polaroid',{y:80,rotate:16,duration:1,ease:'power3.out',scrollTrigger:{trigger:'.meet',start:'top 70%'}});
+  gsap.from('.anno',{opacity:0,y:-10,duration:.6,scrollTrigger:{trigger:'.meet',start:'top 60%'}});
+  gsap.from('#meetMascot',{x:90,rotation:18,opacity:0,duration:1,ease:'back.out(1.6)',scrollTrigger:{trigger:'.twins',start:'top 85%'}});
+  gsap.fromTo('#walker',{x:220},{x:-40,ease:'none',scrollTrigger:{trigger:'.meet',start:'top 80%',end:'bottom 40%',scrub:1}});
+
+  /* store */
+  gsap.from('.map .pin',{y:-60,opacity:0,duration:.8,ease:'bounce.out',scrollTrigger:{trigger:'.map',start:'top 88%'}});
+
+  /* instagram */
+  gsap.from('.ig',{y:40,scale:.95,duration:.8,stagger:.06,ease:'power3.out',scrollTrigger:{trigger:'.ig-grid',start:'top 88%'}});
+
+  /* sleeper + footer cat */
+  gsap.from('.sleeper',{y:30,duration:1,ease:'power3.out',scrollTrigger:{trigger:'.news',start:'top 85%'}});
+  gsap.from('.foot-cat',{y:60,opacity:0,duration:.9,ease:'back.out(1.6)',scrollTrigger:{trigger:'footer',start:'top 95%'}});
+})();
+</script>
+</body>
+</html>
