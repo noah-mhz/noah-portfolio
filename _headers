@@ -36,3 +36,7 @@
 
 /README.md
   X-Robots-Tag: noindex
+
+# Concept pages are shown inside the portfolio, not as sites in their own right.
+/concepts/*
+  X-Robots-Tag: noindex

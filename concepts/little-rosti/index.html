@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Little Rösti — homepage concept</title>
+<meta name="description" content="Homepage concept for a rosti café, designed by Noah. Brand, copy and images are placeholders.">
+<link rel="stylesheet" href="css/fonts.css">
+<link rel="stylesheet" href="css/styles.css">
+<link rel="icon" href="assets/images/mascot.webp"><meta name="robots" content="noindex"></head>
+<body>
+<nav id="nav" aria-label="Main">
+ <a class="brand" href="#top"><img src="assets/images/mascot.webp" alt="">Little Rösti</a>
+ <button class="burger" aria-expanded="false" aria-controls="links" aria-label="Menu"><i></i></button>
+ <div class="links" id="links">
+  <a href="#top">Home</a><a href="#menu">Our Menu</a><a href="#story">Our Story</a><a href="#find">Find Us</a>
+  <a class="btn fill" href="#menu">View Menu</a>
+ </div>
+</nav>
+<main id="top">
+<header class="hero">
+ <div class="wrap">
+  <div>
+   <h1><span>Good things</span><span>come in</span><span>crispy layers.</span></h1>
+   <p class="lead" data-c="heroLead"></p>
+   <div class="cta"><a class="btn fill" href="#menu">Explore our menu</a><a class="btn line" href="#find">Find our store</a></div>
+  </div>
+  <div class="plate">
+   <div class="arch"><img src="assets/images/hero.webp" alt="Illustration: golden rosti topped with a smoked salmon rose"></div>
+   <div class="note n1 hand">crispy outside,<br>soft inside<svg width="60" height="40" viewBox="0 0 60 40"><path d="M4 4C30 2 46 14 52 34M52 34l-9-5M52 34l1-10"/></svg></div>
+   <div class="note n2 hand">made fresh,<br>never rushed</div>
+   <img class="mascot" src="assets/images/mascot.webp" alt="Potato mascot">
+  </div>
+ </div>
+ <div class="torn" style="margin-top:2rem" aria-hidden="true"></div>
+</header>
+
+<section id="picks"><div class="wrap">
+ <div class="head"><div><span class="hand">start here</span><h2>Meet your new favourites.</h2></div><p data-c="picksNote"></p></div>
+ <div class="picks" id="picksList"></div>
+</div></section>
+
+<section id="menu" class="menu"><div class="wrap">
+ <div class="head"><div><span class="hand">what’s cooking</span><h2>Our menu</h2></div></div>
+ <div class="tabs" role="tablist" aria-label="Menu categories" id="tabs"></div>
+ <div class="list" id="menuList" role="tabpanel"></div>
+ <p class="fine hand" data-c="menuNote"></p>
+</div></section>
+<div class="chk" aria-hidden="true"></div>
+
+<section id="story" class="story"><div class="wrap">
+ <div class="head"><div><span class="hand">our backstory</span><h2>A little potato goes a long way.</h2></div><p>[The founders’ story, told in four short chapters.]</p></div>
+ <div id="chapters"></div>
+ <blockquote>“[A line from the founders]”</blockquote>
+</div></section>
+
+<section id="promo" class="promo"><div class="wrap">
+ <div>
+  <span class="hand" style="color:var(--choc)">on the noticeboard</span>
+  <h2>Something good is cooking.</h2>
+  <p data-c="promoLead" style="max-width:28em;margin-top:1rem"></p>
+  <div class="ticket"><h3 data-c="promoTitle"></h3><p data-c="promoBody"></p></div>
+ </div>
+ <div class="poster"><img src="assets/images/promo.webp" alt="Poster placeholder: open for lunch this holiday" loading="lazy"></div>
+</div></section>
+
+<section id="find" class="find"><div class="wrap">
+ <div>
+  <h2>Come say hello.</h2>
+  <div class="info" id="info"></div>
+  <div class="cta"><a class="btn fill" id="dir" href="#find">Get directions</a><a class="btn line" href="#find">@[handle]</a></div>
+ </div>
+ <div class="map"><div><span class="hand">map goes here</span><p data-c="mapNote" style="max-width:20em;margin:.4rem auto 0"></p></div></div>
+</div></section>
+
+<section class="social"><div class="wrap">
+ <div class="head"><div><span class="hand">on the ’gram</span><h2>Follow the crumbs.</h2></div><a class="btn fill" href="#top">Follow @[handle]</a></div>
+ <div class="grid" id="grid"></div>
+</div></section>
+</main>
+
+<footer><div class="wrap">
+ <div><a class="brand" href="#top" style="display:flex"><img src="assets/images/mascot.webp" alt="">Little Rösti</a><p data-c="footerLine" style="max-width:22em"></p></div>
+ <div><h3>Explore</h3><a href="#menu">Our Menu</a><a href="#story">Our Story</a><a href="#find">Find Us</a></div>
+ <div><h3>Visit</h3><div id="fAddr"></div></div>
+ <div><h3>Say hi</h3><a href="#top">Instagram</a><div id="fContact"></div></div>
+</div><div class="legal">Homepage concept by Noah. Brand, copy, prices and images are placeholders.</div></footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script type="module" src="js/main.js"></script>
+</body></html>
