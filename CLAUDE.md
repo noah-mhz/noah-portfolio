@@ -69,6 +69,9 @@ README.md has the file-by-file structure and the motion tiers; read it before la
   `js/notfound.js` (404, absolute paths because it is served at any depth).
 - Every page has the inline `<head>` boot script that applies a saved Daylight theme before paint.
 - Images are WebP. `_headers` sets caching (CSS/JS always revalidate) and security headers.
+- Every repo file deploys. `functions/_middleware.js` returns the 404 page for working files
+  (CLAUDE.md, READMEs, .gitignore); `_routes.json` limits which paths run functions. Add any new
+  function route (e.g. `/api/*`) and any new private file to both.
 - Contact: `functions/api/contact.js` (Turnstile + Resend). The form is in each page's markup;
   `js/contact.js` + `js/formfx.js` (custom dropdowns, placeholders, error shake).
 - Search: titles name "Noah Zaw Min Htut"; Person/WebSite JSON-LD on the homepage; canonical
