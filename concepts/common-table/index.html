@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Common Table · Homepage concept</title>
-<meta name="description" content="Homepage concept for a neighbourhood restaurant. Brand, copy, prices and images are placeholders.">
+<meta name="description" content="Homepage concept for a neighbourhood restaurant. Brand, copy and prices are placeholders; photos are stock.">
 <meta name="robots" content="noindex">
 <link rel="stylesheet" href="css/fonts.css">
 <style>
@@ -113,18 +113,18 @@ footer .lg{display:inline-block;font:400 34px/1 var(--hand);margin-bottom:12px}
 <div class="note tag">good food, shared slowly.</div>
 <p>A welcoming place to slow down, enjoy thoughtful food and share a moment surrounded by nature.</p>
 <a class="btn f" href="#menu">Explore Our Menu</a><a class="btn" href="#find">Find Your Way Here</a></div>
-<div class="collage"><span class="note n">come hungry →</span><img class="a" data-img="table" alt="Photo placeholder: a table of dishes"><img class="b" data-img="tray" alt="Photo placeholder: a plate on a tray"></div>
+<div class="collage"><span class="note n">come hungry →</span><img class="a" data-img="table" alt="A table set with shared plates"><img class="b" data-img="tray" alt="Two place settings with a plate of roasted vegetables"></div>
 </header>
 
 <section class="wrap sg" id="philosophy"><div class="split">
-<div class="stack"><img class="m" data-img="mirror" alt="Photo placeholder: the dining room"><img class="t" data-img="timber" alt="Photo placeholder: table detail"></div>
+<div class="stack"><img class="m" data-img="mirror" alt="A bright dining room with plants and garden views"><img class="t" data-img="timber" alt="Window seats against green tiles"></div>
 <div><div class="note">our philosophy</div><h2 class="rv">More than a meal. <em>A moment shared.</em></h2>
 <p class="rv" style="margin-top:30px">Common Table is a dining room with big windows, warm timber and tables made for passing bowls across. Good food, good company, and a little more time than usual. It’s a place to slow down and share.</p></div></div></section>
 
 <section class="wrap ol" id="plate">
 <div class="note">build your plate</div><h2 class="rv">Find your <em>balance.</em></h2>
 <p class="rv" style="max-width:54ch;margin-top:26px">Pick what you like from each part of the menu and build a plate that’s yours.</p>
-<div class="nour"><div class="sticky"><img id="nimg" data-img="build" alt="Photo placeholder: an empty tray"></div>
+<div class="nour"><div class="sticky"><img id="nimg" data-img="build" alt="Dishes spread across a wooden table"></div>
 <div id="steps"><div class="step on" data-i="build"><b>1 grain</b><h3>Start with comfort</h3><p>Herb rice, couscous or cold soba.</p></div>
 <div class="step" data-i="main"><b>1 protein</b><h3>Choose a main</h3><p>Chicken, fish or a vegetarian main.</p></div>
 <div class="step" data-i="tray"><b>2 sides</b><h3>Add a little more</h3><p>Egg, greens, roasted vegetables and more.</p></div>
@@ -136,10 +136,10 @@ footer .lg{display:inline-block;font:400 34px/1 var(--hand);margin-bottom:12px}
 <p class="fine">Sample menu content for portfolio purposes only. Everything above lives in the <code>CONTENT</code> object, so updating it doesn’t touch the layout.</p></section>
 
 <section class="wrap" id="space"><div class="note">the space</div><h2 class="rv">Rooted in <em>nature.</em></h2>
-<div class="gal"><figure class="g1 im"><img data-img="space" alt="Photo placeholder: the dining room"></figure>
-<figure class="g2"><div class="im" style="height:290px"><img data-img="hands" alt="Photo placeholder: passing a bowl across"></div><figcaption>passing things across</figcaption></figure>
-<figure class="g3 im"><img data-img="plants" alt="Photo placeholder: plants"></figure>
-<figure class="g4"><div class="im" style="height:400px"><img data-img="food" alt="Photo placeholder: dishes on a table"></div><figcaption>natural light, none of the afternoon roast</figcaption></figure></div></section>
+<div class="gal"><figure class="g1 im"><img data-img="space" alt="Timber tables by windows onto trees"></figure>
+<figure class="g2"><div class="im" style="height:290px"><img data-img="hands" alt="Hands passing a plate across the table"></div><figcaption>passing things across</figcaption></figure>
+<figure class="g3 im"><img data-img="plants" alt="Plants and a lantern on a sunny windowsill"></figure>
+<figure class="g4"><div class="im" style="height:400px"><img data-img="food" alt="A brick-walled dining room with globe lights"></div><figcaption>natural light, none of the afternoon roast</figcaption></figure></div></section>
 
 <section class="wrap rd"><div class="note">community</div><h2 class="rv">Good things happen <em>around a table.</em></h2><div style="margin-top:40px" id="events"></div></section>
 
@@ -150,7 +150,7 @@ footer .lg{display:inline-block;font:400 34px/1 var(--hand);margin-bottom:12px}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 <script>
-const IMG=Object.fromEntries(['space','table','mirror','food','timber','hands','plants','tray','build','main'].map(k=>[k,new URL(`assets/images/${k}.svg`,location.href).href]));
+const IMG=Object.fromEntries(['space','table','mirror','food','timber','hands','plants','tray','build','main'].map(k=>[k,new URL(`assets/images/${k}.webp`,location.href).href]));
 document.querySelectorAll('[data-img]').forEach(e=>e.src=IMG[e.dataset.img]);
 const CONTENT={
 menu:{
@@ -186,7 +186,7 @@ show("Plates");
 $('#events').innerHTML=CONTENT.events.map(e=>`<div class="ev"><b>${e[0]}</b><span>${e[1]}</span></div>`).join('');
 $('#facts').innerHTML=`<div><h3>Address</h3>${V.address}<br><a href="${V.maps}">Get directions →</a></div><div><h3>Hours</h3>${V.hours}</div><div><h3>Say hello</h3><a href="#">${V.phone}</a><br><a href="${V.igUrl}">${V.ig}</a></div><div><h3>Alfresco</h3>Outdoor seating.</div>`;
 $('#ig').innerHTML=['table','food','hands','mirror','plants','tray','timber','space'].map(k=>`<a href="${V.igUrl}" aria-label="Social post placeholder"><img src="${IMG[k]}" alt="" loading="lazy"></a>`).join('');
-$('#foot').innerHTML=`<div><span class="lg">Common Table</span><br>Good food, shared slowly.</div><div>${V.address}<br>${V.hours}</div><div>${V.phone}<br><a href="${V.igUrl}">${V.ig}</a></div><div style="flex-basis:100%;font-size:13px;opacity:.85">Homepage concept by Noah. Brand, copy, prices and images are placeholders.</div>`;
+$('#foot').innerHTML=`<div><span class="lg">Common Table</span><br>Good food, shared slowly.</div><div>${V.address}<br>${V.hours}</div><div>${V.phone}<br><a href="${V.igUrl}">${V.ig}</a></div><div style="flex-basis:100%;font-size:13px;opacity:.85">Homepage concept by Noah. Brand, copy and prices are placeholders; photos are stock.</div>`;
 const nav=$('#nav');addEventListener('scroll',()=>nav.classList.toggle('s',scrollY>30),{passive:true});
 $('#burger').onclick=()=>{const o=nav.classList.toggle('o');$('#burger').setAttribute('aria-expanded',o)};
 document.querySelectorAll('#links a').forEach(a=>a.onclick=()=>nav.classList.remove('o'));
