@@ -2,7 +2,7 @@
  * Timeline achievements.
  *
  *   Each point gets a short dash that draws in before its text rises, one
- *   point after another. Figures in a point ("20%", "25%") are picked out in
+ *   point after another. Figures in a point ("10%", "10–15%") are picked out in
  *   the accent and count up from zero as they appear. The figures are Noah's
  *   own résumé numbers, taken from the markup; nothing is added.
  */
@@ -20,7 +20,8 @@ export function preparePoints(root = document) {
     li.prepend(dash);
     const text = li.querySelector('[data-tl-item]');
     if (!text) return;
-    text.innerHTML = text.innerHTML.replace(/(\d+)%/g, '<b class="tl__num" data-count="$1">$1%</b>');
+    // A range ("10–15%") counts up as one figure, both ends together.
+    text.innerHTML = text.innerHTML.replace(/(\d+)(?:–(\d+))?%/g, (m, a, b) => `<b class="tl__num" data-count="${a}"${b ? ` data-count-to="${b}"` : ''}>${m}</b>`);
   });
 }
 
@@ -37,12 +38,16 @@ export function pointsTimeline(list, { delay = 0 } = {}) {
     if (text) tl.fromTo(text, { yPercent: 110 }, { yPercent: 0, duration: 0.8, ease: 'expo.out' }, at + 0.12);
     $$('.tl__num', li).forEach((num) => {
       const end = Number(num.dataset.count);
+      const endTo = num.dataset.countTo ? Number(num.dataset.countTo) : null;
       const counter = { v: 0 };
       tl.fromTo(counter, { v: 0 }, {
-        v: end,
+        v: 1,
         duration: 1.1,
         ease: 'power2.out',
-        onUpdate: () => { num.textContent = `${Math.round(counter.v)}%`; },
+        onUpdate: () => {
+          const a = Math.round(end * counter.v);
+          num.textContent = endTo === null ? `${a}%` : `${a}–${Math.round(endTo * counter.v)}%`;
+        },
       }, at + 0.2);
     });
   });
