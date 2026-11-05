@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Crumb &amp; Kin · Homepage concept</title>
+<meta name="description" content="Homepage concept for a small-batch bakery. Brand, copy and prices are placeholders; photos are stock.">
+<meta name="robots" content="noindex">
+<link rel="stylesheet" href="css/fonts.css">
+<style>
+:root{--bg:#FFF6EC;--bg2:#FCEBD5;--ink:#171513;--wood:#80543A;--oat:#E8B995;--cin:#80543A;--terra:#C4553A;--dk:#C4553A;--dki:#FFF6EC;--blend:multiply;
+--serif:'Fraunces',Georgia,serif;--sans:'DM Sans',system-ui,sans-serif;--hand:'Caveat','Bradley Hand',cursive;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-behavior:smooth;scroll-padding-top:70px}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 1.05rem/1.65 var(--sans);overflow-x:hidden}
+img{display:block;max-width:100%}a{color:inherit}
+h1,h2,h3{font-family:var(--serif);font-weight:700;line-height:1;margin:0;letter-spacing:-.02em}
+h2{font-size:clamp(2.4rem,7vw,5.4rem);color:var(--terra);font-weight:800}h2::after{content:'';display:block;width:130px;height:14px;margin-top:1rem;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 130 14'%3E%3Cpath d='M2 8c10-10 18 8 28 0s18 8 28 0 18 8 28 0 18 8 28 0 10 4 14 0' fill='none' stroke='%23E8B995' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat}.phil h2::after{margin-inline:auto}
+em{font-style:italic;color:var(--ink);font-weight:600}
+body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:100;opacity:.07;mix-blend-mode:multiply;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='.8' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 .5 0 0 0 0 .35 0 0 0 0 .2 0 0 0 .9 0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E")}
+.hand{font-family:var(--hand);font-size:1.35rem;line-height:1.1;color:var(--cin)}
+.lab{font:500 .72rem/1 var(--sans);letter-spacing:.18em;text-transform:uppercase;color:var(--wood)}
+.wrap{max-width:1240px;margin:0 auto;padding:0 clamp(1.2rem,4vw,3rem)}
+section{padding:clamp(4rem,10vw,8rem) 0;position:relative}
+.btn{display:inline-block;padding:.95rem 1.7rem;border:1.5px solid var(--ink);text-decoration:none;font-weight:500;font-size:.95rem;transition:.3s}
+.btn.p{background:var(--terra);border-color:var(--terra);color:#FFF6EC}.btn:hover{background:var(--ink);border-color:var(--ink);color:#FFF6EC;transform:translateY(-2px)}
+.mask{overflow:hidden}.mask img{width:100%;height:100%;object-fit:cover}
+.ph{display:grid;place-items:center;background:repeating-linear-gradient(45deg,var(--oat) 0 2px,transparent 2px 14px),var(--bg2);border:1px dashed var(--wood);text-align:center;padding:1rem}
+/* nav */
+nav{position:fixed;inset:env(safe-area-inset-top,0px) 0 auto;z-index:50;transition:.4s;padding:.9rem 0}
+nav.s{background:color-mix(in srgb,var(--bg) 94%,transparent);backdrop-filter:blur(8px);padding:.5rem 0;box-shadow:0 1px 0 var(--oat)}
+nav .wrap{display:flex;align-items:center;justify-content:space-between;gap:1rem}
+.logo{height:58px;mix-blend-mode:var(--blend);border-radius:3px}
+nav ul{display:flex;gap:2rem;list-style:none;margin:0;padding:0;align-items:center}
+nav a{text-decoration:none;font-size:.92rem}nav ul a:not(.btn):hover{color:var(--terra)}
+nav .btn{padding:.6rem 1.1rem;font-size:.85rem}
+#bg{display:none;background:none;border:0;color:var(--ink);font:500 .85rem var(--sans);letter-spacing:.14em;padding:.6rem}
+@media(max-width:860px){#bg{display:block}nav ul{position:fixed;inset:0;background:var(--bg);flex-direction:column;justify-content:center;font:400 2rem var(--serif);transform:translateY(-100%);transition:.5s;gap:1.5rem}nav ul.o{transform:none}nav ul a{font-size:2rem}nav{z-index:60}#bg{position:relative;z-index:70}}
+/* hero */
+.hero{position:relative;min-height:100svh;padding:7.5rem 0 4rem;overflow:hidden;isolation:isolate}.hero::before{content:'';position:absolute;right:-8%;top:8%;width:52vw;height:62vw;max-width:760px;max-height:820px;background:var(--bg2);border-radius:58% 42% 47% 53%/46% 55% 45% 54%;z-index:-1}
+.hero .wrap{display:grid;grid-template-columns:1.05fr 1fr;gap:2rem;align-items:center}
+.hero h1{font-size:clamp(3rem,7.6vw,7.4rem);font-weight:800;line-height:.88;color:var(--terra);text-transform:lowercase}
+.hero h1 span{display:inline-block}.hero h1 i{font-weight:800;color:var(--ink)}
+.hero p{max-width:30rem;margin:1.8rem 0}
+.cta{display:flex;gap:.8rem;flex-wrap:wrap}
+.col{position:relative;height:min(78vh,640px)}
+.col>*{position:absolute}
+.col .a{width:64%;aspect-ratio:3/4;right:6%;top:0;box-shadow:0 20px 40px -20px #0006}
+.col .b{width:42%;aspect-ratio:1;left:0;bottom:2%;border:7px solid var(--bg)}
+.col .c{width:30%;aspect-ratio:1;right:0;bottom:10%;border:6px solid var(--bg)}
+.col .n{white-space:nowrap}
+.stamp{width:112px;left:4%;top:4%;color:var(--ink);animation:sp 22s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+@media(max-width:860px){.hero .wrap{grid-template-columns:1fr}.col{height:105vw;max-height:520px;margin-top:1rem}}
+/* story */
+.story .wrap{display:grid;grid-template-columns:5fr 6fr;gap:clamp(2rem,6vw,6rem);align-items:center}
+.story .ph14{aspect-ratio:4/5;transform:rotate(-1.5deg)}
+.story h2{margin:1rem 0 1.5rem}
+.def{margin-top:2rem;padding:1.4rem 1.6rem;background:var(--bg2);border-left:3px solid var(--terra);max-width:26rem}
+.def b{font:800 2rem var(--serif);color:var(--terra)}.def small{display:block;font-style:italic;opacity:.7}
+.note{font-size:.85rem;opacity:.65;border:1px dashed var(--wood);padding:.6rem .9rem;margin-top:1.2rem;display:inline-block}
+@media(max-width:860px){.story .wrap{grid-template-columns:1fr}}
+/* bakes */
+.bakes{background:var(--bg2)}
+.bakes .hd{max-width:40rem;margin-bottom:4rem}
+.bake{display:grid;grid-template-columns:7fr 5fr;gap:clamp(1.5rem,5vw,5rem);align-items:end;margin-bottom:clamp(3rem,8vw,6rem)}
+.bake:nth-child(even){grid-template-columns:5fr 7fr}.bake:nth-child(even) .m{order:2}
+.bake .m{aspect-ratio:5/4}.bake:nth-child(even) .m{aspect-ratio:4/5;margin-top:3rem}
+.bake h3{font-size:clamp(2rem,4vw,3.4rem);margin:.8rem 0;color:var(--terra)}
+.bake .num{font:italic 6rem/1 var(--serif);color:var(--oat)}
+.m img{transition:transform .9s}.m:hover img{transform:scale(1.06)}
+@media(max-width:860px){.bake,.bake:nth-child(even){grid-template-columns:1fr}.bake:nth-child(even) .m{order:0;margin-top:0}.bake .m,.bake:nth-child(even) .m{aspect-ratio:4/3}.bake .num{font-size:3.5rem}}
+/* signature */
+.sig .wrap{display:grid;grid-template-columns:6fr 5fr;gap:clamp(2rem,5vw,5rem)}
+.sig .big{aspect-ratio:3/4;position:sticky;top:90px;align-self:start}
+.sig ol{list-style:none;padding:0;margin:2rem 0}
+.sig li{display:flex;gap:1rem;align-items:baseline;padding:1rem 0;border-top:1px solid var(--oat);font:400 clamp(1.2rem,2.4vw,1.7rem) var(--serif)}
+.sig li small{font:.8rem var(--sans);opacity:.6;margin-left:auto;text-align:right}
+.pair{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:2rem}.pair .m{aspect-ratio:1}.pair .hand{margin-top:.4rem}
+@media(max-width:860px){.sig .wrap{grid-template-columns:1fr}.sig .big{position:static}}
+/* seasonal */
+.seas{background:var(--dk);color:var(--dki)}
+.seas .wrap{display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:center}
+.seas h2{font-size:clamp(3rem,9vw,7.5rem);color:var(--dki)}.seas em{color:var(--ink)}.seas .lab{color:var(--bg2)}
+.seas .m{aspect-ratio:3/4;transform:rotate(1.5deg)}.seas p{max-width:28rem}
+.tag{display:inline-block;border:1px solid var(--bg2);padding:.4rem .8rem;font-size:.78rem;letter-spacing:.08em;margin-top:1rem}
+@media(max-width:860px){.seas .wrap{grid-template-columns:1fr}}
+/* philosophy */
+.phil{text-align:center}.phil h2{max-width:14ch;margin:1rem auto 3rem}
+.tri{display:grid;grid-template-columns:repeat(3,1fr);gap:2rem;text-align:left}
+.tri div{border-top:2px solid var(--terra);padding-top:1.2rem}.tri h3{font-size:1.7rem;margin-bottom:.6rem;color:var(--terra)}
+.tri .m{aspect-ratio:4/3;margin-top:1.2rem}
+@media(max-width:860px){.tri{grid-template-columns:1fr}}
+/* visit */
+.visit{background:var(--bg2);color:var(--ink)}
+.visit .wrap{display:grid;grid-template-columns:1fr 1fr;gap:clamp(2rem,5vw,5rem)}
+.visit address{font-style:normal;font:400 1.4rem/1.4 var(--serif);margin:1.5rem 0}
+.visit .map{min-height:320px;border-color:var(--terra);background-color:var(--bg)}
+@media(max-width:860px){.visit .wrap{grid-template-columns:1fr}}
+/* gallery */
+.gal h2{margin-bottom:2.5rem}
+.grid{display:grid;grid-template-columns:repeat(6,1fr);grid-auto-rows:clamp(110px,16vw,200px);gap:.8rem}
+.grid a{position:relative;display:block;overflow:hidden}.grid img{width:100%;height:100%;object-fit:cover;transition:transform .8s}
+.grid a:hover img{transform:scale(1.08)}
+.grid a span{position:absolute;left:.8rem;bottom:.6rem;color:#FFFCF6;font:1.3rem var(--hand);opacity:0;transition:.4s;text-shadow:0 1px 6px #000a}.grid a:hover span{opacity:1}
+.g1{grid-column:span 2;grid-row:span 3}.g2{grid-column:span 2;grid-row:span 2}.g3{grid-column:span 2;grid-row:span 3}.g4{grid-column:span 2;grid-row:span 2}.g5{grid-column:span 2;grid-row:span 2}.g6{grid-column:span 2;grid-row:span 2}
+@media(max-width:700px){.grid{grid-template-columns:repeat(2,1fr)}.grid a{grid-column:span 1!important;grid-row:span 2!important}.g1{grid-column:span 2!important}}
+footer{background:var(--dk);color:var(--dki);padding:4rem 0 2.5rem}
+footer .wrap{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:2rem}
+footer .logo{background:#FDF5E8;padding:6px;mix-blend-mode:normal;height:84px}
+footer a{display:block;text-decoration:none;opacity:.8;margin:.3rem 0}footer a:hover{color:var(--ink);opacity:1}
+footer p{max-width:22rem;opacity:.8}footer small{grid-column:1/-1;opacity:.55;border-top:1px solid #fff2;padding-top:1.2rem}
+@media(max-width:860px){footer .wrap{grid-template-columns:1fr 1fr}footer .wrap>div:first-child{grid-column:1/-1}}
+.mask img[data-sp]{transform:scale(1.2)}
+.wm{font:800 1.7rem/1 var(--serif);color:var(--terra);letter-spacing:-.02em;text-decoration:none;white-space:nowrap}.wm i{color:var(--ink);font-weight:600}footer .wm{background:var(--bg);padding:.7rem 1rem;font-size:2rem;display:inline-block}.map img{width:100%;height:100%;min-height:320px;object-fit:cover}
+</style></head><body>
+<nav id="nav"><div class="wrap">
+<a class="wm" href="#top" aria-label="Crumb &amp; Kin home">Crumb <i>&amp;</i> Kin</a>
+<button id="bg" aria-expanded="false">MENU</button>
+<ul id="menu"><li><a href="#top">Home</a></li><li><a href="#story">Our Story</a></li><li><a href="#bakes">The Bakes</a></li><li><a href="#visit">Visit Us</a></li><li><a href="#">Instagram</a></li><li><a class="btn p" href="#bakes">Explore Our Bakes</a></li></ul>
+</div></nav>
+<main id="top">
+<header class="hero"><div class="wrap">
+<div><p class="lab tx">Small batches. Made with heart.</p><br>
+<h1 id="h1"><span>Good</span> <span>things</span> <span>take</span> <span>a</span> <i><span>little</span> <span>time.</span></i></h1>
+<p class="tx">A little bakery built on a shared love for baking, thoughtful flavours and the joy of making something special.</p>
+<div class="cta tx"><a class="btn p" href="#bakes">Explore Our Bakes</a><a class="btn" href="#story">Our Story</a></div></div>
+<div class="col">
+<div class="a mask"><img data-i="8" alt="Strawberry and pistachio tart on a white plate" data-sp="-8"></div>
+<div class="b mask"><img data-i="2" alt="Rows of sesame and fruit bagels on wooden racks" data-sp="10"></div>
+<div class="c mask"><img data-i="9" alt="Strawberry and pistachio pavlova" data-sp="-14"></div>
+<span class="hand n an" style="left:-2%;top:30%;transform:rotate(-6deg)">fresh strawberries ✦</span>
+<span class="hand n an" style="right:4%;bottom:-1%;transform:rotate(3deg)">fresh from our kitchen →</span>
+<svg class="stamp" viewBox="0 0 120 120" aria-hidden="true"><defs><path id="cp" d="M60 60m-46 0a46 46 0 1 1 92 0a46 46 0 1 1-92 0"/></defs><text font-size="9.5" letter-spacing="2" fill="currentColor" font-family="DM Sans" font-weight="500"><textPath href="#cp">SMALL BATCHES • MADE WITH HEART •</textPath></text><circle cx="60" cy="60" r="5" fill="#C4553A"/></svg>
+</div></div></header>
+
+<section class="story" id="story"><div class="wrap">
+<div><div class="ph14 mask rv"><img data-i="1" alt="Sourdough loaf cut open to show its crumb" data-sp="-6"></div><p class="hand" style="margin-top:.8rem">the very first batch ✦</p></div>
+<div><p class="lab tx">Our story</p><h2 class="tx">From our home to <em>yours.</em></h2>
+<p class="tx">Crumb &amp; Kin is a mother-and-daughter bakery. It started at a home kitchen table, grew through weekend pop-ups, and now has a small shopfront of its own.</p>
+<p class="tx">Two generations, one kitchen, and a shared love for making good things.</p>
+<div class="def tx"><b>kin</b> /kɪn/<small>noun — your family; the people you share a table with.</small></div>
+</div></div></section>
+
+<section class="bakes" id="bakes"><div class="wrap">
+<div class="hd"><p class="lab tx">The bakes</p><h2 class="tx">Made fresh. Worth <em>slowing down</em> for.</h2></div>
+<div id="bl"></div></div></section>
+
+<section class="sig"><div class="wrap">
+<div class="big mask rv"><img data-i="11" alt="Pistachio cake slice with chocolate sauce and a strawberry" data-sp="-5"></div>
+<div><p class="lab tx">Signature creations</p><h2 class="tx">Recognisably <em>ours.</em></h2>
+<p class="tx" style="margin-top:1.2rem">Soft pistachio sponge, cream in the middle, and a ribbon of chocolate sauce on the side.</p>
+<ol id="sl" class="tx"></ol>
+<div class="pair"><div><div class="m mask rv"><img data-i="5" alt="Green layer cake slice with cream and citrus"></div><p class="hand">herb &amp; citrus layers</p></div><div><div class="m mask rv"><img data-i="6" alt="Blue marbled celebration cake with meringues and macarons"></div><p class="hand">galaxy celebration cake</p></div></div></div></div></section>
+
+<section class="seas"><div class="wrap">
+<div><p class="lab tx">Seasonal &amp; limited</p><h2 class="tx">A little something <em>special.</em></h2>
+<p class="tx" style="margin:1.5rem 0">Limited flavours, festive collections and new arrivals land here first. Pre-orders open a week before each drop.</p>
+<p class="hand tx" style="color:var(--bg2)">Festive Swirl Cookies · Strawberry Pistachio Tart</p>
+<span class="tag tx">FESTIVE COLLECTION · PRE-ORDERS OPEN SOON</span></div>
+<div class="m mask rv"><img data-i="7" alt="Slicing a swirl cookie log rolled in sprinkles"></div></div></section>
+
+<section class="phil"><div class="wrap"><p class="lab tx">Our baking philosophy</p><h2 class="tx">Made by hand. Made with <em>care.</em></h2>
+<div class="tri"><div class="tx"><h3>The craft</h3><p>Baking is something you refine over time, and every batch is a chance to do it a little better.</p></div>
+<div class="tx"><h3>The play</h3><p>We love trying unexpected flavour pairings and textures, from pistachio and strawberry to herbs and citrus.</p></div>
+<div class="tx"><h3>The scale</h3><p>Crumb &amp; Kin is a small bakery, so the focus stays on making things we’re proud to share.</p></div></div>
+<div class="tri" style="margin-top:2rem"><div class="m mask rv" style="border:0;padding:0"><img data-i="1" alt="Sourdough loaf cut open to show its crumb"></div><div class="m mask rv" style="border:0;padding:0;aspect-ratio:4/3"><img data-i="12" alt="Sourdough loaves baking in the oven"></div><div class="m mask rv" style="border:0;padding:0;aspect-ratio:4/3"><img data-i="3" alt="Basket of sesame and chia bagels"></div></div>
+</div></section>
+
+<section class="visit" id="visit"><div class="wrap">
+<div><p class="lab tx">Visit us</p><h2 class="tx">Come by for something <em>fresh.</em></h2>
+<address class="tx">Crumb &amp; Kin<br>18 Lantern Lane, #01-04<br>Singapore</address>
+<p class="tx"><b>Opening hours:</b> Tue–Sun, 9am–6pm (closed Mondays)<br><b>Orders:</b> pre-orders by message</p>
+<div class="cta tx" style="margin-top:1.5rem"><a class="btn p" href="#visit">Get directions</a><a class="btn" href="#">Instagram</a></div></div>
+<div class="map tx"><img data-i="20" alt="Illustrated map showing the bakery on Lantern Lane"></div></div></section>
+
+<section class="gal"><div class="wrap"><p class="lab tx">Instagram</p><h2 class="tx">A peek inside <em>the shop.</em></h2>
+<div class="grid tx" id="gl"></div>
+<p style="margin-top:2rem"><a class="btn" href="#">Follow along on Instagram</a></p></div></section>
+</main>
+<footer><div class="wrap">
+<div><span class="wm">Crumb <i>&amp;</i> Kin</span><p style="margin-top:1.2rem">A mother-and-daughter bakery. Small batches, made with heart.</p></div>
+<div><p class="lab" style="color:var(--bg2)">Explore</p><a href="#story">Our Story</a><a href="#bakes">The Bakes</a><a href="#visit">Visit Us</a></div>
+<div><p class="lab" style="color:var(--bg2)">Find us</p><a href="#visit">Crumb &amp; Kin<br>18 Lantern Lane, #01-04<br>Singapore</a><a href="#visit">Tue–Sun, 9am–6pm</a></div>
+<div><p class="lab" style="color:var(--bg2)">Say hi</p><a href="#">Instagram</a><a href="#visit">Pre-orders by message</a></div>
+<small>Homepage concept by Noah. Brand and copy are placeholders; photos are stock (Pexels).</small></div></footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script>
+const IMG={"20": "assets/images/map.svg", "1": "assets/images/bake-01.webp", "2": "assets/images/bake-02.webp", "3": "assets/images/bake-03.webp", "4": "assets/images/bake-04.webp", "5": "assets/images/bake-05.webp", "6": "assets/images/bake-06.webp", "7": "assets/images/bake-07.webp", "8": "assets/images/bake-08.webp", "9": "assets/images/bake-09.webp", "10": "assets/images/bake-10.webp", "11": "assets/images/bake-11.webp", "12": "assets/images/bake-12.webp"};
+// ---- Content (edit here; ready for CMS/Shopify later) ----
+const BAKES=[
+ {n:'Sourdough Loaves',d:'Baked fresh each morning, with a crackling crust and a soft, open crumb.',i:12},
+ {n:'Sourdough Bagels',d:'Sesame, chia and sweet flavours, baked in small batches.',i:3},
+ {n:'Layer & Chiffon Cakes',d:'Light chiffon and layered cakes, big on texture and light on sugar.',i:4},
+ {n:'Tarts & Celebration Cakes',d:'Seasonal fruit tarts and custom cakes for the people you love.',i:10}];
+const SIG=[['Pistachio Cake with Chocolate Sauce','signature'],['Strawberry Pistachio Tart','signature'],['Berry Cream Tart','seasonal'],['Everything Sesame Bagel','signature'],['Strawberry Pistachio Pavlova','new']];
+const GAL=[[6,'celebrations'],[2,'fresh bagels'],[9,'strawberry pavlova'],[10,'berries, always'],[5,'layer cakes'],[11,'a slice of pistachio']];
+// ---- Render ----
+document.getElementById('bl').innerHTML=BAKES.map((b,k)=>`<article class="bake"><div class="m mask rv">${b.i?`<img data-i="${b.i}" alt="${b.n}">`:`<div class="ph" style="height:100%"><span class="hand">photo to come ✦</span></div>`}</div><div class="tx"><div class="num">0${k+1}</div><h3>${b.n}</h3><p>${b.d}</p></div></article>`).join('');
+document.getElementById('sl').innerHTML=SIG.map((s,k)=>`<li><span class="hand">0${k+1}</span>${s[0]}<small>${s[1]}</small></li>`).join('');
+document.getElementById('gl').innerHTML=GAL.map((g,k)=>`<a class="g${k+1}" href="#"><img data-i="${g[0]}" alt="Crumb &amp; Kin on Instagram"><span>${g[1]}</span></a>`).join('');
+document.querySelectorAll('img[data-i]').forEach(e=>e.src=IMG[e.dataset.i]);
+// ---- Nav ----
+const nav=document.getElementById('nav'),menu=document.getElementById('menu'),bg=document.getElementById('bg');
+addEventListener('scroll',()=>nav.classList.toggle('s',scrollY>40),{passive:true});
+bg.onclick=()=>{const o=menu.classList.toggle('o');bg.setAttribute('aria-expanded',o);bg.textContent=o?'CLOSE':'MENU'};
+menu.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{menu.classList.remove('o');bg.textContent='MENU'}));
+// ---- Motion ----
+if(!matchMedia('(prefers-reduced-motion:reduce)').matches&&window.gsap){
+ gsap.registerPlugin(ScrollTrigger);
+ const tl=gsap.timeline({defaults:{ease:'power3.out'}});
+ tl.from('#h1 span',{yPercent:110,opacity:0,duration:1,stagger:.08})
+   .from('.hero .tx',{y:24,opacity:0,stagger:.12,duration:.8},'-=.6')
+   .from('.col .mask',{scale:.88,opacity:0,duration:1.2,stagger:.18},'-=1')
+   .from('.an,.stamp',{opacity:0,y:12,stagger:.25,duration:.8},'-=.4');
+ document.querySelectorAll('[data-sp]').forEach(i=>gsap.to(i,{yPercent:Math.max(-8,Math.min(8,+i.dataset.sp)),ease:'none',scrollTrigger:{trigger:i.parentNode,scrub:true}}));
+ document.querySelectorAll('.rv').forEach(e=>gsap.fromTo(e,{clipPath:'inset(0 0 100% 0)'},{clipPath:'inset(0 0 0% 0)',duration:1.3,ease:'power3.inOut',scrollTrigger:{trigger:e,start:'top 85%',once:true}}));
+ document.querySelectorAll('.rv img').forEach(i=>gsap.from(i,{scale:1.25,duration:1.6,ease:'power3.out',scrollTrigger:{trigger:i,start:'top 90%',once:true}}));
+ document.querySelectorAll('section:not(.hero) .tx').forEach(e=>gsap.from(e,{y:30,opacity:0,duration:.9,ease:'power2.out',scrollTrigger:{trigger:e,start:'top 90%',once:true}}));
+}
+</script></body></html>

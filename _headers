@@ -49,3 +49,6 @@
 
 /concepts/common-table/*
   X-Robots-Tag: noindex
+
+/concepts/crumb-and-kin/*
+  X-Robots-Tag: noindex
