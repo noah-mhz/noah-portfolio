@@ -200,7 +200,7 @@ section{padding:64px 0}
 .pb h3{font-size:15px}.pr{font-size:24px}
 .cat .ph{position:absolute;top:18px;right:18px;background:#fff;border:2px solid var(--k);padding:6px;transform:rotate(3deg);transition:transform .4s;display:block;height:auto}
 .cat:hover .ph{transform:rotate(-2deg) scale(1.06)}
-.c1 .ph,.c2 .ph{width:38%}.c3 .ph,.c4 .ph{width:34%}
+.c1 .ph,.c2 .ph{width:38%}.c3 .ph,.c4 .ph,.c5 .ph{width:34%}
 .c3,.c4,.c5{min-height:320px}
 .card-f{object-fit:cover;background:#fff}
 .cf2{background:#fff;border-color:var(--o)}

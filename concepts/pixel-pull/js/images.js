@@ -17,5 +17,6 @@ const IMG={
   "rorig": "assets/images/box-e.webp",
   "runl": "assets/images/box-f.webp",
   "op": "assets/images/box-c.webp",
-  "ygo": "assets/images/box-d.webp"
+  "ygo": "assets/images/box-d.webp",
+  "sleeves": "assets/images/sleeves.webp"
 };
