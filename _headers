@@ -46,3 +46,6 @@
 
 /concepts/mochi-card-nook/*
   X-Robots-Tag: noindex
+
+/concepts/common-table/*
+  X-Robots-Tag: noindex

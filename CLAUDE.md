@@ -41,12 +41,13 @@ README.md has the file-by-file structure and the motion tiers; read it before la
   no links). No brand colours yet.
 - No metrics and no client quotes are available.
 - Concepts (`/concepts/`): homepages Noah designed and built to pitch small businesses (two card
-  shops, a rösti café). Pitched, not commissioned. Shown only anonymised (Pixel Pull, Mochi's Card
-  Nook, Little Rösti in `concepts/<slug>/`, noindex). The real names, logos, photos, posters,
+  shops, a rösti café, a restaurant). Pitched, not commissioned. Shown only anonymised (Pixel Pull, Mochi's Card
+  Nook, Little Rösti, Common Table in `concepts/<slug>/`, noindex). The real names, logos, photos, posters,
   addresses and handles must never appear on the site; originals, decks and recordings live in
   the private repo noah-mhz/portfolio-concepts. Design notes on the page come from Noah's own
   notes and code comments only. Mochi's Card Nook is hidden from the page for now (its section
-  is in git history, commit 5bbe15a); its files stay in `concepts/mochi-card-nook/`, unlinked.
+  is in git history, commit 5bbe15a); its files stay in `concepts/mochi-card-nook/`, unlinked. The restaurant's real name
+  must never appear, not even in file names or URLs.
 
 ## Design system
 

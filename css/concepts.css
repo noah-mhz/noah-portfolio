@@ -5,7 +5,7 @@
 /* Hero: the homepages side by side; each one jumps to its section. */
 .concepts-hero {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: var(--gutter);
   margin-top: clamp(4rem, 10vh, 7rem);
 }
@@ -57,12 +57,12 @@
 }
 
 @media (max-width: 1023px) {
-  .concepts-hero { grid-template-columns: repeat(2, minmax(15rem, 1fr)); overflow-x: auto; padding-bottom: 0.5rem; scroll-snap-type: x mandatory; }
+  .concepts-hero { grid-template-columns: repeat(3, minmax(15rem, 1fr)); overflow-x: auto; padding-bottom: 0.5rem; scroll-snap-type: x mandatory; }
   .concepts-hero__item { scroll-snap-align: start; }
 }
 
 @media (max-width: 767px) {
-  .concepts-hero { grid-template-columns: repeat(2, 78%); margin-right: calc(var(--gutter) * -1); padding-right: var(--gutter); }
+  .concepts-hero { grid-template-columns: repeat(3, 78%); margin-right: calc(var(--gutter) * -1); padding-right: var(--gutter); }
   .concept-map thead { display: none; }
   .concept-map tr { display: grid; gap: 0.3rem; padding: 1rem 0; border-top: 1px solid var(--border); }
   .concept-map th,
