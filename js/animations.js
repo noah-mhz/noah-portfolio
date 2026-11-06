@@ -70,6 +70,7 @@ export function initIntro({ reduceMotion, onComplete }) {
   gsap.set('.hero__rule', { scaleX: 0 });
   gsap.set('.hero__accent', { scale: 0 });
   gsap.set(scrollCue, { autoAlpha: 0 });
+  gsap.set('.hero__cta', { autoAlpha: 0, y: 14 });
   // The page grid draws itself top to bottom before the type arrives, each line led by a short mint tick.
   const gridLines = $$('.grid-lines:not(.pf__grid) span');
   const gridHeads = gridLines.map((line) => {
@@ -125,6 +126,8 @@ export function initIntro({ reduceMotion, onComplete }) {
     .to('.hero__rule', { scaleX: 1, duration: 1.8, ease: 'expo.inOut' }, 'title+=0.4')
     // 6 — accent
     .to('.hero__accent', { scale: 1, duration: 1, ease: 'expo.out' }, 'title+=1.1')
+    // 7 — the two ways forward: talk, or look at the work
+    .to('.hero__cta', { autoAlpha: 1, y: 0, duration: 1.1, ease: 'expo.out', clearProps: 'transform' }, 'title+=1.3')
     // 8 — scroll cue becomes active
     .to(scrollCue, { autoAlpha: 1, duration: 0.8, ease: 'power2.out' }, 'title+=1.6')
     .add(() => scrollCue.classList.add('is-active'), '<')

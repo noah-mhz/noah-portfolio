@@ -26,6 +26,15 @@ README.md has the file-by-file structure and the motion tiers; read it before la
 ## Facts Noah has stated (use as given)
 
 - Every site in the portfolio was designed and built by Noah alone.
+- Positioning: independent web designer & developer in Singapore who takes freelance work
+  alongside an in-house role (Software Engineer at Pomar Engineering, May 2025 – now).
+  Ganko is the only freelance project. Luumens, Voyagaer, Craftism and Evnergy are in-house
+  work for Pomar Engineering's brands — never call them clients. Labels: "Freelance" /
+  "In-house · Pomar Engineering" / "Concept".
+- Services (homepage): New website · Redesign · Custom front-end · Ongoing improvements.
+- Replies "within a day or two". The form is the only contact method for now.
+- Testimonials: none yet. The "Kind words" section in index.html stays `hidden` until Noah
+  supplies real quotes.
 - Ganko.sg (2025): the restaurant's first website, from scratch. GoDaddy Website Builder was the
   client's choice; mix of builder layouts and custom HTML sections; Chope booking embedded.
   Hard part: GoDaddy's limits (functionality, layouts, fonts). Proudest: the story from Osaka

@@ -14,7 +14,7 @@
  *   CONTACT_FROM         text    Optional. Defaults to "Noah Portfolio <onboarding@resend.dev>"
  */
 
-const TYPES = ['a new website', 'a redesign', 'something else'];
+const TYPES = ['a new website', 'a redesign', 'improvements to my site', 'something else'];
 const BUDGETS = ['under S$3k', 'S$3k–8k', 'S$8k–15k', 'S$15k+', 'not sure yet'];
 const EMAIL = /^[^\s@<>()[\]\\,;:"]{1,64}@[^\s@<>()[\]\\,;:"]{1,190}\.[a-z]{2,24}$/i;
 
