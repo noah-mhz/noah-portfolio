@@ -2209,6 +2209,7 @@ section[tabindex="-1"]:focus { outline: none; }
 
 .pf__field[data-field="company"] input { width: 9.5em; }
 .pf__field[data-field="email"] input { width: 10.5em; }
+.pf__field[data-field="mobile"] input { width: 8.5em; }
 
 .pf__field select {
   padding: 0 1.1em 0 0.1em;
@@ -2360,6 +2361,7 @@ section[tabindex="-1"]:focus { outline: none; }
   .pf__field input, .pf__field select { height: 1.6em; line-height: 1.6; }
   .pf__field input { width: 7.5em; }
   .pf__field[data-field="email"] input { width: 11em; }
+  .pf__field[data-field="mobile"] input { width: 9em; }
   .pf__send { width: 100%; justify-content: center; }
   .pf__result-title { font-size: min(var(--fs-display), 19vw); }
 }

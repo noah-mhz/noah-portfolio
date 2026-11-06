@@ -277,7 +277,14 @@ export function initContactForm() {
     const bad = [];
     if ((data.name || '').trim().length < 2) bad.push('name');
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test((data.email || '').trim())) bad.push('email');
-    if (bad.length) { showError(bad.includes('name') ? 'Please add your name.' : 'Please add a valid email.', bad); return; }
+    // Mobile is optional; if given, it needs to look like a phone number.
+    const mobile = (data.mobile || '').trim();
+    if (mobile && !/^\+?[\d\s().-]{7,20}$/.test(mobile)) bad.push('mobile');
+    if (bad.length) {
+      const say = bad.includes('name') ? 'Please add your name.' : bad.includes('email') ? 'Please add a valid email.' : 'Please check your mobile number.';
+      showError(say, bad);
+      return;
+    }
 
     status.textContent = 'Checking…';
     status.classList.remove('is-error');

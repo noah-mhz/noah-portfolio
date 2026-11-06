@@ -76,12 +76,14 @@ export async function onRequestPost({ request, env }) {
     type: clean(body.type, 40),
     budget: clean(body.budget, 40),
     email: clean(body.email, 254),
+    mobile: clean(body.mobile, 24),
     message: clean(body.message, 2000, true),
   };
 
   const problems = [];
   if (data.name.length < 2) problems.push('name');
   if (!EMAIL.test(data.email)) problems.push('email');
+  if (data.mobile && !/^\+?[\d\s().-]{7,20}$/.test(data.mobile)) problems.push('mobile');
   if (!TYPES.includes(data.type)) problems.push('type');
   if (data.budget && !BUDGETS.includes(data.budget)) problems.push('budget');
   if ((data.message.match(/https?:\/\//gi) || []).length > 3) problems.push('message');
@@ -105,6 +107,7 @@ export async function onRequestPost({ request, env }) {
     `Needs:    ${data.type}`,
     `Budget:   ${data.budget || '—'}`,
     `Email:    ${data.email}`,
+    `Mobile:   ${data.mobile || '—'}`,
     '',
     data.message || '(No extra message.)',
     '',
