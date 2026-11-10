@@ -11,6 +11,7 @@ import { initCursor, initMagnetic, initInViewVideo, initClock } from './interact
 import { initScramble } from './scramble.js';
 import { initTouchFx } from './touch.js';
 import { initTheme } from './theme.js';
+import { initLogo } from './logo.js';
 import { initContactForm } from './contact.js';
 import { initGlitch } from './glitch.js';
 import { TEXT_TARGETS } from './split.js';
@@ -138,6 +139,7 @@ function boot() {
   initInViewVideo();
   initClock();
   initTheme();
+  initLogo();
 
   if (!gsap || !ScrollTrigger) {
     document.documentElement.classList.remove('js', 'pt-enter');

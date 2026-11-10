@@ -6,6 +6,7 @@ import { initPageLeave } from './transition.js';
 import { initScramble } from './scramble.js';
 import { initTouchFx } from './touch.js';
 import { initTheme } from './theme.js';
+import { initLogo } from './logo.js';
 import { initProjectTitles } from './titles.js';
 import { initSectionIndex } from './sections.js';
 
@@ -58,6 +59,7 @@ function boot() {
 
   initClock();
   initTheme();
+  initLogo();
   initInViewVideo();
 
   // If the CDN fails, the page stays fully readable with no motion.

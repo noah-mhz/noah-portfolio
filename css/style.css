@@ -357,7 +357,8 @@ a:focus-visible .arrow--diag { transform: translate(0.2em, -0.2em); }
   animation: intro-rise 1s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 .js .intro__labels .mask:nth-child(2) [data-intro-item] { animation-delay: 0.08s; }
-.js .intro__index [data-intro-item] { animation-delay: 0.16s; }
+.js .intro__labels .mask:nth-child(3) [data-intro-item] { animation-delay: 0.14s; }
+.js .intro__index [data-intro-item] { animation-delay: 0.2s; }
 
 @keyframes intro-rise { from { translate: 0 110%; } to { translate: 0 0; } }
 
@@ -539,7 +540,8 @@ a:focus-visible .arrow--diag { transform: translate(0.2em, -0.2em); }
   mix-blend-mode: difference;
 }
 
-.nav__logo { letter-spacing: 0.24em; }
+/* The wordmark: lowercase "noah" ending on a square full stop (see "Wordmark" below). */
+.nav__logo { position: relative; z-index: 1; }
 
 /* Live Singapore time, centred in the bar on wide screens only. Mono digits keep it from shifting. */
 .nav__clock {
@@ -2049,6 +2051,7 @@ a:focus-visible .arrow--diag { transform: translate(0.2em, -0.2em); }
   }
 
   .js .intro { display: none; }
+  .logo__l, .logo__dot { animation: none !important; translate: none !important; scale: none !important; }
 
   .tl__dot {
     border-color: var(--accent);
@@ -3437,3 +3440,89 @@ html.vt-finder::view-transition-new(root) { clip-path: inset(46% 46% 46% 46%); }
 .quote { display: grid; gap: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--border); }
 .quote__text { font-size: var(--fs-lead); line-height: 1.3; letter-spacing: -0.02em; }
 .quote__who { display: flex; flex-wrap: wrap; gap: 0.25rem 1rem; }
+
+/* ==========================================================================
+   Wordmark: "noah" + a square full stop. Letters are live Inter Tight 600,
+   matching favicon.svg. The square is the brand accent:
+   mint in Darkroom, deep green in Daylight (inverse pink inside the
+   difference-blended nav, which shows as deep green on paper).
+   ========================================================================== */
+
+:root { --brand-dot: #A6FFCB; }
+html[data-theme="daylight"] { --brand-dot: #0B7A53; }
+.nav { --brand-dot: #A6FFCB; }
+html[data-theme="daylight"] .nav { --brand-dot: #E7789D; }
+
+.logo {
+  display: inline-block;
+  font-family: var(--font-sans);
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: -0.045em;
+  text-transform: none;
+  white-space: nowrap;
+  color: inherit;
+}
+
+.nav__logo.logo { font-size: 1.625rem; padding: 0.2rem 0; }
+
+.logo__word { display: inline-block; white-space: nowrap; }
+
+/* Each letter rises out of its own mask. clip-path (not overflow) keeps the baseline. */
+.logo__m { display: inline-block; clip-path: inset(-0.3em -0.2em 0 -0.2em); }
+.logo__l { display: inline-block; }
+
+/* o-a-h fold away behind the n; only the sides clip so nothing vertical is cut. */
+.logo__rest { display: inline-block; clip-path: inset(-0.3em 0 -0.3em 0); vertical-align: baseline; }
+.logo__restin { display: inline-block; }
+
+.logo__dot {
+  position: relative;
+  display: inline-block;
+  width: 0.15em;
+  height: 0.15em;
+  margin-left: 0.105em; /* 0.06em after the h's own -0.045em tracking */
+  background: var(--brand-dot);
+  font-style: normal;
+}
+
+/* The theme switch wipes the new colour up over the old one (logo.js). */
+.logo__dot > b { position: absolute; inset: 0; background: var(--brand-dot); }
+
+/* 1 — on load the letters rise in order, then the full stop settles.
+   Pure CSS so nothing waits on scripts. On the homepage it waits for the intro. */
+@keyframes logo-rise { from { translate: 0 110%; } to { translate: 0 0; } }
+@keyframes logo-settle {
+  0% { scale: 0; }
+  60% { scale: 1.35; }
+  100% { scale: 1; }
+}
+
+.js .nav .logo__l { animation: logo-rise 1.1s var(--ease-out) both; animation-delay: calc(0.3s + var(--i, 0) * 0.07s); }
+.js .nav .logo__dot { animation: logo-settle 0.7s cubic-bezier(0.34, 1.2, 0.64, 1) 0.75s both; transform-origin: 50% 100%; }
+.js .intro ~ .nav .logo:not(.is-in) .logo__l,
+.js .intro ~ .nav .logo:not(.is-in) .logo__dot { animation-play-state: paused; }
+
+/* 5 — on the loading card the full stop blinks slowly, like a text cursor. */
+.intro__logo { display: block; margin-bottom: 1.25rem; }
+.intro__logo .logo { font-size: clamp(3rem, 7vw, 6.5rem); color: var(--text); }
+.intro__logo .logo__dot { animation: logo-blink 1.1s steps(1, end) 0.4s infinite; }
+@keyframes logo-blink { 50% { opacity: 0; } }
+
+/* Footer: the small wordmark, and the big one that fills the width. */
+.footer__name.logo { font-size: 1.5rem; letter-spacing: -0.045em; text-transform: none; }
+
+.footer__mark {
+  justify-content: flex-start;
+  align-items: baseline;
+  /* "noah." is ~2.29em wide; size it to the content width. */
+  font-size: calc((100vw - var(--gutter) * 2) / 2.3);
+  line-height: 0.78;
+  letter-spacing: -0.045em;
+}
+.footer__mark .logo__dot { flex: none; }
+
+@media (max-width: 767px) {
+  .nav__logo.logo { font-size: 1.375rem; }
+  .footer__mark { font-size: calc((100vw - var(--gutter) * 2) / 2.3); }
+}

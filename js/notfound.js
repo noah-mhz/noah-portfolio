@@ -7,6 +7,7 @@
  */
 import { initCursor, initMagnetic, initClock, initHeroWeight } from './interactions.js';
 import { initTheme } from './theme.js';
+import { initLogo } from './logo.js';
 import { initContactForm } from './contact.js';
 import { initTouchFx } from './touch.js';
 import { wrapChars } from './split.js';
@@ -14,6 +15,7 @@ import { wrapChars } from './split.js';
 function boot() {
   initClock();
   initTheme();
+  initLogo();
   const title = document.querySelector('.nf-title[data-weight]');
   if (title) wrapChars(title);
 

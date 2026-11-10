@@ -50,7 +50,9 @@ export function initTheme() {
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (!gsap || reduce) { apply(to); return; }
     busy = true;
-    const done = () => { busy = false; };
+    // The wordmark's square holds the old accent through the switch, then wipes (logo.js).
+    document.dispatchEvent(new CustomEvent('theme:before', { detail: { to } }));
+    const done = () => { busy = false; document.dispatchEvent(new CustomEvent('theme:after', { detail: { to } })); };
 
     // Either way, the new theme opens through a viewfinder: a frame grows from the
     // centre, corner marks riding its edges, with the old theme still outside it.

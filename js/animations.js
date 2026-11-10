@@ -1,3 +1,4 @@
+import { releaseLogo } from './logo.js';
 import { splitAll, wrapChars, TEXT_TARGETS } from './split.js';
 import { preparePoints, pointsTimeline } from './points.js';
 import { initNavigation } from './navigation.js';
@@ -52,6 +53,7 @@ export function initIntro({ reduceMotion, onComplete }) {
 
   if (reduceMotion || !intro) {
     intro?.remove();
+    releaseLogo();
     revealTitle();
     scrollCue?.classList.add('is-active');
     onComplete?.();
@@ -102,7 +104,8 @@ export function initIntro({ reduceMotion, onComplete }) {
     .to('[data-intro-item]', { yPercent: -110, duration: 0.5, stagger: 0.04, ease: 'power3.in' }, 0.15)
     .to('.intro__bar', { autoAlpha: 0, duration: 0.3 }, 0.35)
     .to(intro, { clipPath: 'inset(0% 0% 100% 0%)', duration: 1.1, ease: 'expo.inOut' }, 0.35)
-    // 2 — navigation settles in from above, quietly
+    // 2 — navigation settles in from above, quietly; the wordmark rises letter by letter
+    .add(releaseLogo, 0.85)
     .to('[data-nav-item]', {
       yPercent: 0,
       clipPath: 'inset(0% 0% 0% 0%)',

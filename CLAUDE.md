@@ -67,6 +67,12 @@ README.md has the file-by-file structure and the motion tiers; read it before la
   the nav's daylight accent is the inverse `#E7789D`).
 - Case colours via body vars `--case / --case-day / --case-inv`; homepage project titles via
   `--brand / --brand-day` on the article.
+- Wordmark: lowercase "noah" (Inter Tight 600, -0.045em) ending on a square full stop
+  (0.15em, `--brand-dot`: mint / deep green; `#E7789D` inside the nav). Small mark "n." =
+  `favicon.svg` / `apple-touch-icon.png`. `js/logo.js`: letters rise on load (CSS; homepage
+  waits for the intro via `.is-in`), folds to "n." past 120px scroll, hover/focus reopens,
+  theme switch wipes the square (`theme:before` / `theme:after` events from theme.js).
+  The intro card's square blinks (CSS). Footer `.footer__mark` is the big "noah.".
 - Type: Inter Tight (display/body), JetBrains Mono (labels). Viewfinder corner marks (`.marks`)
   frame what the page points at. Motion is slow and deliberate (expo / power curves).
 - Every effect needs a reduced-motion path and a touch path (`gsap.matchMedia`, `MEDIA` tiers
