@@ -23,7 +23,15 @@
     /* Fusion: Sample B's type, hero and nav + the original site's case study,
        section status, progress bar and rail, recoloured to peach / teal / pink. */
     :root { --nav-h: 4.6rem; --pink-ink: #B8304F; }
-    :root[data-theme='dark'] { --pink-ink: #EA4F6E; }
+    /* Dark theme, 60 / 30 / 10: deep teal ground, peach for text and blocks, apricot as the one accent. */
+    :root[data-theme='dark'] {
+      --bg: #0E1718; --bg-2: #15292B; --ink: #F8DBC1; --muted: #A8968A; --line: rgba(248, 219, 193, .16);
+      --pink: #F2A65A; --pink-ink: #F2A65A; --on-pink: #0E1718;
+      --teal: #F2A65A; --on-teal: #0E1718;
+    }
+    :root[data-theme='dark'] .tag--on { background: var(--ink); color: var(--bg); }
+    :root[data-theme='dark'] .tag--on::before { background: var(--pink); }
+    :root[data-theme='dark'] .xp__resume b { background: var(--bg); color: var(--ink); }
     html, main { overflow-x: clip; }
     body { font-family: 'Archivo', system-ui, sans-serif; font-size: 1rem; line-height: 1.5; }
     .mono, .label { font-family: 'Geist Mono', monospace; font-size: 0.72rem; letter-spacing: 0.06em; text-transform: uppercase; }
