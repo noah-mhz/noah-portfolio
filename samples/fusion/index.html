@@ -47,7 +47,7 @@
     .logo .logo__dot { animation: logo-settle .7s cubic-bezier(.34, 1.2, .64, 1) .75s both; transform-origin: 50% 100%; }
     @media (prefers-reduced-motion: reduce) { .logo .logo__l, .logo .logo__dot { animation: none; } }
     .pnav { position: absolute; left: 50%; translate: -50% 0; display: flex; align-items: center; padding: .3rem; }
-    .pnav__links { display: flex; gap: .2rem; overflow: hidden; max-width: 34rem; transition: max-width .8s var(--ease), opacity .5s; white-space: nowrap; }
+    .pnav__links { display: flex; gap: .2rem; overflow: hidden; max-width: 46rem; transition: max-width .8s var(--ease), opacity .5s; white-space: nowrap; }
     .pnav__links a { padding: .55rem .9rem; border-radius: 99px; text-decoration: none; }
     .pnav__links a:hover, .pnav__links a.is-active { background: var(--ink); color: var(--bg); }
     .pnav__status { all: unset; cursor: pointer; display: inline-flex; align-items: center; gap: .7rem; padding: .55rem .9rem; border-radius: 99px; white-space: nowrap; overflow: hidden; max-width: 0; opacity: 0; transition: max-width .8s var(--ease), opacity .4s, padding .8s var(--ease); padding-inline: 0; }
@@ -63,7 +63,7 @@
     /* Sectioned: links fold away, the status (section + Menu) takes their place. */
     .pnav.is-sectioned .pnav__links { max-width: 0; opacity: 0; }
     .pnav.is-sectioned .pnav__status { max-width: 30rem; opacity: 1; padding-inline: .9rem; }
-    .pnav.is-sectioned.is-open .pnav__links { max-width: 34rem; opacity: 1; }
+    .pnav.is-sectioned.is-open .pnav__links { max-width: 46rem; opacity: 1; }
     .pnav.is-open .pnav__icon { rotate: 45deg; }
     .pnav.is-open .pnav__text { display: none; }
     .pnav.is-open .pnav__menu { border-left: 0; padding-left: 0; }
@@ -302,6 +302,37 @@
     .cta .pill b { background: var(--bg); color: var(--ink); }
     .foot { display: flex; justify-content: space-between; gap: 1rem; margin-top: 5rem; padding-top: 1.2rem; border-top: 1px solid color-mix(in srgb, var(--bg) 25%, transparent); }
 
+
+    /* ---------- Experience: the original timeline (line fills, years roll back, points count up) ---------- */
+    .xp { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gutter); padding: clamp(6rem, 16vh, 10rem) var(--gutter) 0; }
+    .xp__head { grid-column: 1 / 5; align-self: start; position: sticky; top: calc(var(--nav-h) + 2rem); display: grid; gap: 1.5rem; justify-items: start; }
+    .xp__resume { display: inline-flex; align-items: center; gap: .6rem; padding: .95rem 1.35rem; border-radius: 99px; background: var(--teal); color: var(--on-teal); text-decoration: none; font: 600 .95rem/1 'Archivo'; }
+    .xp__resume b { display: grid; place-items: center; width: 1.4rem; height: 1.4rem; border-radius: 50%; background: var(--pink); color: var(--on-pink); font-weight: 600; transition: rotate .5s var(--ease); }
+    .xp__resume:hover b { rotate: 45deg; }
+    .timeline__track { position: relative; grid-column: 6 / 13; padding-left: clamp(2rem, 4vw, 3.5rem); }
+    .timeline__list { list-style: none; margin: 0; padding: 0; }
+    .timeline__line { position: absolute; top: 0; bottom: 0; left: 0; width: 1px; background: var(--line); }
+    .timeline__fill { position: absolute; inset: 0; background: var(--pink); transform-origin: top; }
+    .tl { position: relative; display: grid; grid-template-columns: minmax(6rem, 10rem) 1fr; gap: 2rem; padding: clamp(2.5rem, 7vh, 4.5rem) 0; border-bottom: 1px solid var(--line); }
+    .tl__dot { position: absolute; top: calc(clamp(2.5rem, 7vh, 4.5rem) + .9rem); left: calc(-1 * clamp(2rem, 4vw, 3.5rem) - 5px); width: 11px; height: 11px; border: 1px solid var(--muted); border-radius: 50%; background: var(--bg); transition: background-color .5s var(--ease), border-color .5s var(--ease), transform .5s var(--ease); }
+    .tl.is-active .tl__dot { border-color: var(--pink); background: var(--pink); transform: scale(1.3); }
+    .tl__when { display: grid; gap: .75rem; align-content: start; }
+    .tl__year { font-weight: 800; font-size: clamp(2.6rem, 4.4vw, 4.6rem); line-height: 1; font-stretch: 75%; font-variant-numeric: tabular-nums; }
+    .tl__range { font-family: 'Geist Mono', monospace; font-size: .72rem; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+    .tl__body { display: grid; gap: .6rem; align-content: start; }
+    .tl__company { margin: 0; font-weight: 800; font-size: clamp(1.6rem, 2.4vw, 2.5rem); line-height: .95; text-transform: uppercase; font-stretch: 80%; }
+    .tl__role { margin: 0; font-family: 'Geist Mono', monospace; font-size: .72rem; letter-spacing: .06em; text-transform: uppercase; color: var(--teal); }
+    .tl__desc { margin: .5rem 0 0; max-width: 44ch; color: var(--muted); }
+    .tl__points { display: grid; gap: .5rem; max-width: 52ch; margin: .75rem 0 0; padding: 1rem 0 0; list-style: none; border-top: 1px solid var(--line); font-size: .98rem; }
+    .tl__points li { position: relative; padding-left: 1.5em; }
+    .tl__dash { position: absolute; top: .78em; left: 0; width: .85em; height: 1px; background: var(--muted); transform-origin: left; transition: width .45s var(--ease), background-color .45s var(--ease); }
+    .tl__points li > span { transition: translate .45s var(--ease); }
+    @media (hover: hover) { .tl__points li:hover .tl__dash { width: 1.15em; background: var(--pink); } .tl__points li:hover > span { translate: .3em 0; } }
+    .tl__num { font-weight: 700; color: var(--pink); font-variant-numeric: tabular-nums; }
+    .odo { display: inline-flex; } .odo__col { display: inline-block; height: 1em; overflow: hidden; }
+    .odo__strip { display: flex; flex-direction: column; position: relative; top: var(--odo-top, 0); } .odo__strip > span { display: block; height: 1em; line-height: 1; }
+    @media (max-width: 1023px) { .xp__head { grid-column: 1 / -1; position: static; margin-bottom: 3rem; } .timeline__track { grid-column: 1 / -1; } }
+    @media (max-width: 767px) { .tl { grid-template-columns: 1fr; gap: 1rem; } .tl__when { grid-auto-flow: column; justify-content: start; align-items: baseline; gap: 1rem; } }
     @media (max-width: 1023px) { .rail { display: none; } }
     @media (max-width: 900px) {
       .hero { min-height: 0; padding-top: 8rem; }
@@ -325,7 +356,7 @@
     <a class="logo glass" href="#top" aria-label="Noah — back to top" data-logo><span aria-hidden="true"><span class="logo__m"><span class="logo__l" style="--i:0">n</span></span><span class="logo__rest"><span class="logo__restin"><span class="logo__m"><span class="logo__l" style="--i:1">o</span></span><span class="logo__m"><span class="logo__l" style="--i:2">a</span></span><span class="logo__m"><span class="logo__l" style="--i:3">h</span></span></span></span><i class="logo__dot"></i></span></a>
     <nav class="pnav glass mono" aria-label="Main" data-pnav>
       <div class="pnav__links" id="pnav-links">
-        <a href="#work" data-scr data-link="work">Work</a><a href="#services" data-scr data-link="services">Services</a><a href="#concepts" data-scr data-link="concepts">Concepts</a><a href="#contact" data-scr data-link="contact">Contact</a>
+        <a href="#work" data-scr data-link="work">Work</a><a href="#services" data-scr data-link="services">Services</a><a href="#concepts" data-scr data-link="concepts">Concepts</a><a href="#experience" data-scr data-link="experience">Experience</a><a href="../../assets/docs/Zaw_Min_Htut_Resume_2026.pdf" target="_blank" rel="noopener">Résumé ↗</a><a href="#contact" data-scr data-link="contact">Contact</a>
       </div>
       <button class="pnav__status" type="button" aria-expanded="false" aria-controls="pnav-links" data-status-btn>
         <span class="pnav__text" data-status-text></span>
@@ -442,6 +473,91 @@
         <a href="https://noah-portfolio.pages.dev/concepts/#crumb-and-kin" data-tilt><div class="im"><img src="../../assets/images/concept-crumb-and-kin-poster.webp" alt="" loading="lazy"></div><span class="mono"><span>Crumb &amp; Kin</span><span>Bakery</span></span></a>
       </div>
     </section>
+
+    <section class="xp" id="experience" data-section="Experience" data-nav="experience" data-status="Experience">
+      <div class="xp__head">
+        <span class="mono muted">Experience</span>
+        <h2 class="h2s">Time<br>line</h2>
+        <a class="xp__resume" href="../../assets/docs/Zaw_Min_Htut_Resume_2026.pdf" target="_blank" rel="noopener">Download résumé (PDF) <b>↗</b></a>
+      </div>
+      <div class="timeline__track" data-timeline>
+        <span class="timeline__line" aria-hidden="true"><span class="timeline__fill" data-timeline-fill></span></span>
+        <ol class="timeline__list">
+          <li class="tl" data-tl>
+            <span class="tl__dot" aria-hidden="true"></span>
+            <div class="tl__when">
+              <span class="tl__year"><span class="mask"><span data-tl-item>2025</span></span></span>
+              <span class="tl__range label muted"><span class="mask"><span data-tl-item>May 2025 — Now</span></span></span>
+            </div>
+            <div class="tl__body">
+              <h3 class="tl__company"><span class="mask"><span data-tl-item>Pomar Engineering</span></span></h3>
+              <p class="tl__role label"><span class="mask"><span data-tl-item>Software Engineer</span></span></p>
+              <p class="tl__desc muted"><span class="mask mask--block"><span data-tl-item>Web design and development for the group&#39;s marine and energy brands, and a Unity AR application.</span></span></p>
+              <ul class="tl__points label">
+                  <li class="mask mask--block"><span data-tl-item>Luumens · Voyagaer · Craftism · Evnergy</span></li>
+                  <li class="mask mask--block"><span data-tl-item>WordPress &amp; Elementor with custom HTML / CSS / JS widgets</span></li>
+                  <li class="mask mask--block"><span data-tl-item>GSAP / ScrollTrigger motion &amp; responsive layouts</span></li>
+                  <li class="mask mask--block"><span data-tl-item>Unity AR app for marine equipment — C#, AR Foundation</span></li>
+              </ul>
+            </div>
+          </li>
+          <li class="tl" data-tl>
+            <span class="tl__dot" aria-hidden="true"></span>
+            <div class="tl__when">
+              <span class="tl__year"><span class="mask"><span data-tl-item>2022</span></span></span>
+              <span class="tl__range label muted"><span class="mask"><span data-tl-item>Aug 2022 — Apr 2025</span></span></span>
+            </div>
+            <div class="tl__body">
+              <h3 class="tl__company"><span class="mask"><span data-tl-item>Thales DIS</span></span></h3>
+              <p class="tl__role label"><span class="mask"><span data-tl-item>Software Developer</span></span></p>
+              <p class="tl__desc muted"><span class="mask mask--block"><span data-tl-item>Smart-card software, validation and release quality.</span></span></p>
+              <ul class="tl__points label">
+                  <li class="mask mask--block"><span data-tl-item>Automated card validation in Python — about 10% less manual testing</span></li>
+                  <li class="mask mask--block"><span data-tl-item>Optimised applet &amp; OS loading scripts (VB.NET, Python) — 25% faster deployment</span></li>
+                  <li class="mask mask--block"><span data-tl-item>Functional, regression &amp; stress testing</span></li>
+                  <li class="mask mask--block"><span data-tl-item>Sample cards with R&amp;D for testing &amp; certification</span></li>
+              </ul>
+            </div>
+          </li>
+          <li class="tl" data-tl>
+            <span class="tl__dot" aria-hidden="true"></span>
+            <div class="tl__when">
+              <span class="tl__year"><span class="mask"><span data-tl-item>2021</span></span></span>
+              <span class="tl__range label muted"><span class="mask"><span data-tl-item>Jul 2021 — Mar 2022</span></span></span>
+            </div>
+            <div class="tl__body">
+              <h3 class="tl__company"><span class="mask"><span data-tl-item>RunningStream Group</span></span></h3>
+              <p class="tl__role label"><span class="mask"><span data-tl-item>Full Stack Developer — Internship</span></span></p>
+              <p class="tl__desc muted"><span class="mask mask--block"><span data-tl-item>Angular-based financial web applications.</span></span></p>
+              <ul class="tl__points label">
+                  <li class="mask mask--block"><span data-tl-item>Reduced load time by 10–15%</span></li>
+                  <li class="mask mask--block"><span data-tl-item>Responsive UI / UX improvements</span></li>
+                  <li class="mask mask--block"><span data-tl-item>REST API &amp; backend integration</span></li>
+                  <li class="mask mask--block"><span data-tl-item>Node.js &amp; SQL backend logic</span></li>
+              </ul>
+            </div>
+          </li>
+          <li class="tl" data-tl>
+            <span class="tl__dot" aria-hidden="true"></span>
+            <div class="tl__when">
+              <span class="tl__year"><span class="mask"><span data-tl-item>2021</span></span></span>
+              <span class="tl__range label muted"><span class="mask"><span data-tl-item>Apr 2021 — Jul 2021</span></span></span>
+            </div>
+            <div class="tl__body">
+              <h3 class="tl__company"><span class="mask"><span data-tl-item>TP Advanced Manufacturing Centre</span></span></h3>
+              <p class="tl__role label"><span class="mask"><span data-tl-item>IoT Developer — Internship</span></span></p>
+              <p class="tl__desc muted"><span class="mask mask--block"><span data-tl-item>Real-time monitoring for SMT production machines.</span></span></p>
+              <ul class="tl__points label">
+                  <li class="mask mask--block"><span data-tl-item>IoT dashboard in ThingWorx &amp; Tableau</span></li>
+                  <li class="mask mask--block"><span data-tl-item>ML predictive analysis — 10% less machine downtime</span></li>
+                  <li class="mask mask--block"><span data-tl-item>PLC programming &amp; sensor data pipeline</span></li>
+                  <li class="mask mask--block"><span data-tl-item>PoC demonstrated to Singapore's Minister of Education</span></li>
+              </ul>
+            </div>
+          </li>
+        </ol>
+      </div>
+    </section>
   </main>
 
   <footer class="cta" id="contact" data-section="Contact" data-nav="contact" data-status="Contact">
@@ -453,7 +569,7 @@
       <p>No pressure, no complicated process. Tell me a little about your project and I'll reply within a day or two.</p>
       <a class="pill" href="#contact" data-mag>Start a project <b>→</b></a>
     </div>
-    <div class="foot mono"><span>© 2026 Noah Zaw Min Htut</span><span>Fusion sample · B + original</span></div>
+    <div class="foot mono"><span>© 2026 Noah Zaw Min Htut</span><a href="../../assets/docs/Zaw_Min_Htut_Resume_2026.pdf" target="_blank" rel="noopener" style="color:inherit">Résumé (PDF) ↗</a><span>Fusion sample · B + original</span></div>
   </footer>
   <div class="bubble" aria-hidden="true">View</div>
   <!-- Carries the headline reel down the page and docks it onto the Ganko image (desktop), as on the original. -->
@@ -471,7 +587,11 @@
 
     /* ---------- Fit the pressure lines to the width ---------- */
     const presses = $$('[data-press]');
-    presses.forEach((h) => $$('.t', h).forEach((t) => splitChars(t)));
+    presses.forEach((h) => $$('.t', h).forEach((t) => {
+      splitChars(t);
+      // Spaces collapse inside the flex line: give each one its own letter box.
+      [...t.childNodes].filter((n) => n.nodeType === 3 && /\s/.test(n.data)).forEach((n) => { const sp = document.createElement('span'); sp.className = 'ch'; sp.setAttribute('aria-hidden', 'true'); sp.innerHTML = '&nbsp;'; n.replaceWith(sp); });
+    }));
     const fit = () => presses.forEach((h) => {
       const W = h.clientWidth;
       $$('[data-fit]', h).forEach((ln) => {
@@ -896,6 +1016,59 @@
       });
     }
 
+
+    /* ---------- Experience timeline (ported from the live site) ---------- */
+    {
+      const track = $('[data-timeline]');
+      // Points: a dash per line; figures ("10%", "10–15%") picked out and counted up.
+      $$('.tl__points li', track).forEach((li) => {
+        const dash = document.createElement('i'); dash.className = 'tl__dash'; dash.setAttribute('aria-hidden', 'true'); li.prepend(dash);
+        const t = li.querySelector('[data-tl-item]');
+        t.innerHTML = t.innerHTML.replace(/(\d+)(?:–(\d+))?%/g, (m, a, b) => `<b class="tl__num" data-count="${a}"${b ? ` data-count-to="${b}"` : ''}>${m}</b>`);
+      });
+      const pointsTl = (list) => {
+        const tl = gsap.timeline({ paused: true, delay: .35 });
+        $$('li', list).forEach((li, i) => {
+          const at = i * .12;
+          tl.fromTo(li.querySelector('.tl__dash'), { scaleX: 0 }, { scaleX: 1, duration: .45, ease: 'power3.out' }, at)
+            .fromTo(li.querySelector('[data-tl-item]'), { yPercent: 110 }, { yPercent: 0, duration: .8, ease: 'expo.out' }, at + .12);
+          $$('.tl__num', li).forEach((num) => {
+            const end = +num.dataset.count, endTo = num.dataset.countTo ? +num.dataset.countTo : null, c = { v: 0 };
+            tl.fromTo(c, { v: 0 }, { v: 1, duration: 1.1, ease: 'power2.out', onUpdate: () => { const a = Math.round(end * c.v); num.textContent = endTo === null ? `${a}%` : `${a}–${Math.round(endTo * c.v)}%`; } }, at + .2);
+          });
+        });
+        return tl;
+      };
+      // Years: an odometer that rolls back from when the role ended to when it began.
+      const odometer = (entry) => {
+        const year = $('.tl__year [data-tl-item]', entry);
+        const start = parseInt(year.textContent, 10), range = $('.tl__range', entry).textContent, ys = range.match(/\d{4}/g) || [];
+        const end = /now/i.test(range) ? new Date().getFullYear() : parseInt(ys[ys.length - 1], 10);
+        if (!start || !end || end <= start) return [];
+        const seq = []; for (let y = end; y >= start; y--) seq.push(String(y));
+        const odo = document.createElement('span'); odo.className = 'odo'; odo.setAttribute('aria-hidden', 'true');
+        [...String(start)].forEach((_, col) => {
+          const digits = seq.map((y) => y[col]).filter((d, i, all) => i === 0 || d !== all[i - 1]);
+          const c = document.createElement('span'); c.className = 'odo__col';
+          const strip = document.createElement('span'); strip.className = 'odo__strip';
+          digits.forEach((d) => { const e = document.createElement('span'); e.textContent = d; strip.append(e); });
+          if (digits.length > 1) { strip.style.setProperty('--odo-top', `${-(digits.length - 1)}em`); strip.dataset.from = String((digits.length - 1) / digits.length * 100); }
+          c.append(strip); odo.append(c);
+        });
+        const sr = document.createElement('span'); sr.className = 'sr-only'; sr.textContent = String(start);
+        year.replaceChildren(odo, sr);
+        return $$('.odo__strip[data-from]', year);
+      };
+      gsap.fromTo('[data-timeline-fill]', { scaleY: 0 }, { scaleY: 1, ease: 'none', scrollTrigger: { trigger: track, start: 'top 70%', end: 'bottom 70%', scrub: true } });
+      $$('[data-tl]', track).forEach((entry) => {
+        const strips = odometer(entry), range = $('.tl__range [data-tl-item]', entry);
+        gsap.fromTo($$('[data-tl-item]', entry).filter((el) => !el.closest('.tl__points')), { yPercent: 110 }, { yPercent: 0, duration: .9, ease: 'expo.out', stagger: .05,
+          scrollTrigger: { trigger: entry, start: 'top 72%', toggleActions: 'play none none reverse', onEnter: () => scramble(range, { duration: .7 }) } });
+        ScrollTrigger.create({ trigger: entry, start: 'top 72%', animation: pointsTl($('.tl__points', entry)), toggleActions: 'play none none reverse' });
+        if (strips.length) gsap.fromTo(strips, { yPercent: (i, st) => +st.dataset.from }, { yPercent: 0, duration: 1.3, delay: .2, ease: 'power3.inOut', scrollTrigger: { trigger: entry, start: 'top 72%', toggleActions: 'play none none reverse' } });
+        ScrollTrigger.create({ trigger: entry, start: 'top+=60 70%', onEnter: () => entry.classList.add('is-active'), onLeaveBack: () => entry.classList.remove('is-active') });
+      });
+    }
     $$('.h2s').forEach((h) => gsap.from(h, { yPercent: 50, opacity: 0, duration: 1.2, ease: 'expo.out', scrollTrigger: { trigger: h, start: 'top 88%' } }));
     gsap.from('.svc__item', { y: 60, opacity: 0, duration: 1.1, stagger: .08, ease: 'expo.out', scrollTrigger: { trigger: '.svc__grid', start: 'top 85%' } });
     gsap.from('.cps__grid > a', { y: 60, opacity: 0, duration: 1.1, stagger: .08, ease: 'expo.out', scrollTrigger: { trigger: '.cps__grid', start: 'top 85%' } });
