@@ -9,7 +9,8 @@
   const bar = document.createElement('nav');
   bar.className = 'samples-bar';
   bar.setAttribute('aria-label', 'Redesign samples');
-  bar.innerHTML = [['a', 'A · Print'], ['b', 'B · Kinetic'], ['c', 'C · Gallery']]
+  const solo = root.dataset.solo !== undefined;
+  bar.innerHTML = (solo ? [] : [['a', 'A · Print'], ['b', 'B · Kinetic'], ['c', 'C · Gallery']])
     .map(([k, t]) => `<a href="../${k}/"${k === here ? ' aria-current="page"' : ''}>${t.replace(' · ', '<span class="sb-l"> · ')}</span></a>`).join('') +
     '<button type="button" data-theme-toggle>Light / Dark</button>';
   document.body.append(bar);

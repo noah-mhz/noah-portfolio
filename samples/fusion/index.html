@@ -1,0 +1,542 @@
+<!doctype html>
+<html lang="en" data-solo>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>Fusion sample — Noah Zaw Min Htut</title>
+  <script>try{var t=localStorage.getItem('sample-theme');if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+  <link rel="stylesheet" href="../shared.css">
+  <style>
+    /* Fusion: Sample B's type, hero and nav + the original site's case study,
+       section status, progress bar and rail, recoloured to peach / teal / pink. */
+    :root { --nav-h: 4.6rem; }
+    html, main { overflow-x: clip; }
+    body { font-family: 'Archivo', system-ui, sans-serif; font-size: 1rem; line-height: 1.5; }
+    .mono, .label { font-family: 'Geist Mono', monospace; font-size: 0.72rem; letter-spacing: 0.06em; text-transform: uppercase; }
+    .muted { color: var(--muted); }
+    .wrap { padding: 0 var(--gutter); }
+    .mask { display: inline-block; overflow: hidden; vertical-align: bottom; padding-bottom: .06em; margin-bottom: -.06em; }
+    .mask--block { display: block; }
+    ol, ul { list-style: none; margin: 0; padding: 0; }
+
+    /* ---------- Progress bar (original): fill + a tick per section ---------- */
+    .progress { position: fixed; z-index: 70; inset: 0 0 auto; height: 3px; }
+    .progress__fill { position: absolute; inset: 0; background: var(--pink); transform-origin: left; scale: 0 1; }
+    .progress__tick { all: unset; position: absolute; top: 0; width: 1px; height: 7px; background: var(--ink); opacity: .35; cursor: pointer; }
+    .progress__tick::before { content: ''; position: absolute; inset: -6px -8px; }
+    .progress__tick.is-passed { opacity: 1; }
+    .progress__tip { position: absolute; top: 12px; left: 50%; translate: -50% -4px; white-space: nowrap; padding: .35rem .55rem; border-radius: 99px; background: var(--ink); color: var(--bg); opacity: 0; pointer-events: none; transition: opacity .3s, translate .4s var(--ease); }
+    .progress__tick:hover .progress__tip { opacity: 1; translate: -50% 0; }
+
+    /* ---------- Header: B's pill nav that folds into the original section status ---------- */
+    .top { position: fixed; z-index: 60; inset: 0 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 1.1rem var(--gutter); pointer-events: none; }
+    .top > * { pointer-events: auto; }
+    .glass { background: color-mix(in srgb, var(--bg) 72%, transparent); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid var(--line); border-radius: 99px; }
+    .logo { padding: .55rem .85rem; margin-left: -.85rem; font-weight: 800; font-size: 1.5rem; letter-spacing: -0.04em; line-height: 1; text-decoration: none; border-color: transparent; }
+    .logo i { display: inline-block; width: .17em; height: .17em; margin-left: .06em; background: var(--pink); }
+    .pnav { position: absolute; left: 50%; translate: -50% 0; display: flex; align-items: center; padding: .3rem; }
+    .pnav__links { display: flex; gap: .2rem; overflow: hidden; max-width: 34rem; transition: max-width .8s var(--ease), opacity .5s; white-space: nowrap; }
+    .pnav__links a { padding: .55rem .9rem; border-radius: 99px; text-decoration: none; }
+    .pnav__links a:hover, .pnav__links a.is-active { background: var(--ink); color: var(--bg); }
+    .pnav__status { all: unset; cursor: pointer; display: inline-flex; align-items: center; gap: .7rem; padding: .55rem .9rem; border-radius: 99px; white-space: nowrap; overflow: hidden; max-width: 0; opacity: 0; transition: max-width .8s var(--ease), opacity .4s, padding .8s var(--ease); padding-inline: 0; }
+    .pnav__status:focus-visible { outline: 2px solid var(--teal); }
+    .pnav__text { display: inline-block; }
+    .pnav__text b { font-weight: 400; color: var(--pink); }
+    .pnav__menu { display: inline-flex; align-items: center; gap: .45rem; padding-left: .7rem; border-left: 1px solid var(--line); }
+    .pnav__text:empty + .pnav__menu { border-left: 0; padding-left: 0; }
+    .pnav__icon { display: inline-block; font-style: normal; transition: rotate .5s var(--ease); }
+    /* Sectioned: links fold away, the status (section + Menu) takes their place. */
+    .pnav.is-sectioned .pnav__links { max-width: 0; opacity: 0; }
+    .pnav.is-sectioned .pnav__status { max-width: 30rem; opacity: 1; padding-inline: .9rem; }
+    .pnav.is-sectioned.is-open .pnav__links { max-width: 34rem; opacity: 1; }
+    .pnav.is-open .pnav__icon { rotate: 45deg; }
+    .pnav.is-open .pnav__text { display: none; }
+    .pnav.is-open .pnav__menu { border-left: 0; padding-left: 0; }
+    .pill { display: inline-flex; align-items: center; gap: .6rem; padding: .95rem 1.35rem; border-radius: 99px; background: var(--ink); color: var(--bg); text-decoration: none; font: 600 .95rem/1 'Archivo'; font-stretch: 110%; white-space: nowrap; }
+    .pill b { display: grid; place-items: center; width: 1.4rem; height: 1.4rem; border-radius: 50%; background: var(--pink); color: var(--on-pink); font-weight: 600; transition: rotate .5s var(--ease); }
+    .pill:hover b { rotate: -45deg; }
+
+    /* ---------- Rail (original): a dash per section in the left margin ---------- */
+    .rail { position: fixed; z-index: 55; left: calc(var(--gutter) * .45); top: 50%; translate: -12px -50%; opacity: 0; pointer-events: none; transition: opacity .5s, translate .6s var(--ease); }
+    .rail.is-visible { opacity: 1; translate: 0 -50%; pointer-events: auto; }
+    .rail ol { display: grid; gap: .1rem; }
+    .rail a { display: flex; align-items: center; gap: .7rem; padding: .4rem 0; text-decoration: none; color: var(--muted); }
+    .rail i { display: block; width: 10px; height: 1px; background: currentColor; transition: width .5s var(--ease), background-color .3s; }
+    .rail span { opacity: 0; translate: -6px 0; transition: opacity .3s, translate .4s var(--ease); white-space: nowrap; }
+    .rail:hover span { opacity: 1; translate: 0 0; }
+    .rail a.is-current { color: var(--ink); }
+    .rail a.is-current i { width: 22px; background: var(--pink); }
+    .rail:hover::before { content: ''; position: absolute; inset: -1rem -1rem -1rem -2rem; z-index: -1; background: color-mix(in srgb, var(--bg) 85%, transparent); backdrop-filter: blur(8px); }
+
+    /* ---------- Hero (B): letters swell near the cursor ---------- */
+    .hero { min-height: 100svh; display: flex; flex-direction: column; justify-content: flex-end; padding-top: 6rem; padding-bottom: 2.2rem; }
+    .hero__intro { display: flex; justify-content: space-between; align-items: end; gap: 2rem; margin-bottom: 1.4rem; }
+    .hero__intro p { margin: 0; font-size: clamp(1.1rem, 1.6vw, 1.55rem); line-height: 1.25; max-width: 30rem; font-weight: 450; }
+    .hero__intro p span { color: var(--muted); }
+    .press { margin: 0; text-transform: uppercase; font-weight: 800; line-height: .8; letter-spacing: -.01em; white-space: nowrap; user-select: none; }
+    .press .ln { display: flex; justify-content: space-between; align-items: center; }
+    .press .ch { display: inline-block; font-variation-settings: 'wdth' 100, 'wght' 800; }
+    /* Letters share their line: the word keeps its width while letters swell and shrink. */
+    .press .t { flex: 1 1 auto; display: flex; justify-content: space-between; }
+    .press .m .t { flex: none; display: inline-block; }
+    .press .ln + .ln { margin-top: .03em; }
+    .press .reel { flex: none; height: .7em; aspect-ratio: 16 / 10; margin: 0 .08em; border-radius: .08em; overflow: hidden; background: var(--pink); position: relative; }
+    .press .reel video { width: 100%; height: 100%; object-fit: cover; }
+    .press .sq { flex: none; width: .2em; height: .2em; align-self: flex-end; margin-bottom: .05em; background: var(--pink); }
+    .hero__foot { display: flex; justify-content: space-between; align-items: center; gap: 1rem; margin-top: 2rem; }
+    .tags { display: flex; gap: .4rem; flex-wrap: wrap; }
+    .tag { padding: .5rem .8rem; border: 1px solid var(--line); border-radius: 99px; }
+    .tag--on { background: var(--teal); color: var(--on-teal); border-color: transparent; display: inline-flex; gap: .45rem; align-items: center; }
+    .tag--on::before { content: ''; width: .45rem; height: .45rem; border-radius: 50%; background: var(--pink); }
+
+    /* ---------- Statement (B) ---------- */
+    .statement { padding: clamp(7rem, 20vh, 13rem) var(--gutter); }
+    .statement .mono { display: block; margin-bottom: 2rem; color: var(--teal); }
+    .statement p { margin: 0; font-weight: 600; font-size: clamp(2rem, 4.6vw, 4.8rem); line-height: 1.02; letter-spacing: -.035em; font-stretch: 92%; max-width: 22ch; }
+    .statement .w { opacity: .14; }
+    .statement .w.k { color: var(--pink); }
+
+    /* ---------- Case study (original pinned sequence) ---------- */
+    .marks { position: absolute; inset: .9rem; pointer-events: none; color: #F8DBC1; z-index: 2;
+      background:
+        linear-gradient(currentColor, currentColor) 0 0 / 16px 1.5px, linear-gradient(currentColor, currentColor) 0 0 / 1.5px 16px,
+        linear-gradient(currentColor, currentColor) 100% 0 / 16px 1.5px, linear-gradient(currentColor, currentColor) 100% 0 / 1.5px 16px,
+        linear-gradient(currentColor, currentColor) 0 100% / 16px 1.5px, linear-gradient(currentColor, currentColor) 0 100% / 1.5px 16px,
+        linear-gradient(currentColor, currentColor) 100% 100% / 16px 1.5px, linear-gradient(currentColor, currentColor) 100% 100% / 1.5px 16px;
+      background-repeat: no-repeat; }
+    .case { position: relative; padding: clamp(5rem, 12vh, 9rem) var(--gutter); }
+    .case__frame { position: relative; display: grid; gap: 2.5rem; }
+    .case__top { position: relative; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem; padding-bottom: 1rem; color: var(--muted); }
+    .case__open { color: var(--ink); text-decoration: none; }
+    .case__open span { color: var(--pink); }
+    .engage { display: inline-flex; align-items: center; gap: .5rem; }
+    .engage::before { content: ''; width: .45rem; height: .45rem; border: 1px solid var(--pink); }
+    .case__steps { display: flex; gap: clamp(1rem, 2.5vw, 2.5rem); }
+    .case__steps li { transition: color .5s var(--ease); }
+    .case__steps li.is-active { color: var(--ink); }
+    .case__bar { position: absolute; left: 0; right: 0; bottom: 0; height: 1px; background: var(--line); }
+    .case__bar-fill { display: block; height: 100%; background: var(--pink); transform-origin: left; }
+    .case__title { margin: 0; font-size: clamp(3.5rem, 12vw, 14rem); font-weight: 800; font-stretch: 100%; line-height: .82; letter-spacing: -.02em; text-transform: uppercase; white-space: nowrap; color: var(--pink); overflow: hidden; padding: .04em 0; }
+    .case__title .ch { display: inline-block; }
+    .case__media { position: relative; aspect-ratio: 16 / 10; overflow: hidden; background: var(--bg-2); border-radius: .9rem; clip-path: inset(0% 0% 0% 0% round .9rem); }
+    .case__img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: top center; }
+    .case__media-link { position: absolute; inset: 0; z-index: 3; }
+    .case__stages { display: grid; gap: 4rem; }
+    .case__stage { display: grid; gap: 1.5rem; align-content: start; }
+    .case__stage > .label { margin: 0; color: var(--teal); }
+    .case__lead { margin: 0; font-size: clamp(1.9rem, 3.2vw, 3.3rem); font-weight: 600; line-height: 1.02; letter-spacing: -.03em; font-stretch: 92%; }
+    .case__copy { margin: 0; max-width: 42ch; color: var(--muted); font-size: 1.05rem; }
+    .case__facts, .case__stack { border-top: 1px solid var(--line); }
+    .case__facts li > span, .case__stack li > span { display: flex; justify-content: space-between; gap: 1rem; padding: .9rem 0; border-bottom: 1px solid var(--line); }
+    .case__stack li > span { font-size: 1.05rem; }
+    .case__stack .label { align-self: center; color: var(--muted); }
+    .case__link { display: inline-flex; gap: .5rem; text-decoration: none; color: var(--teal); font-size: 1.05rem; font-weight: 500; }
+    .case__next { display: none; margin: 0; }
+
+    .case.is-pinned { padding: 0; }
+    .case.is-pinned .case__frame { display: block; height: 100vh; overflow: hidden; }
+    .case.is-pinned .case__top { position: absolute; top: calc(var(--nav-h) + .5rem); left: var(--gutter); right: var(--gutter); }
+    .case.is-pinned .case__title { position: absolute; left: var(--gutter); bottom: calc(var(--gutter) * .6); z-index: 4; pointer-events: none; font-size: clamp(3.5rem, min(12vw, 24vh), 14rem); }
+    .case.is-pinned .case__media { position: absolute; top: calc(var(--nav-h) + 4.5rem); right: var(--gutter); width: min(52%, calc((100vh - var(--nav-h) - 4.5rem - var(--gutter)) * 1.6)); transform-origin: 100% 50%; }
+    .case.is-pinned .case__stages { position: absolute; top: calc(var(--nav-h) + 7rem); left: var(--gutter); width: 36%; }
+    .case.is-pinned .case__stage { position: absolute; top: 0; left: 0; width: 100%; }
+    .case.is-pinned .case__next { position: absolute; left: var(--gutter); bottom: var(--gutter); display: flex; flex-direction: column; color: var(--muted); }
+    .case.is-pinned .case__next span:last-child { color: var(--ink); }
+
+    /* ---------- More work (B's sideways reel) ---------- */
+    .work { position: relative; z-index: 1; padding-top: 5.5rem; background: var(--bg); }
+    /* As on the original: the next project rises over the pinned frame as it releases. */
+    .case.is-pinned + .work, .pin-spacer:has(> .case.is-pinned) + .pin-spacer { margin-top: -22vh !important; position: relative; z-index: 1; }
+    .work__head { display: flex; justify-content: space-between; align-items: end; padding: 0 var(--gutter) 1.5rem; }
+    .h2s { margin: 0; font-weight: 800; font-size: clamp(3rem, 9vw, 10rem); line-height: .8; text-transform: uppercase; font-stretch: 62%; }
+    .reel-wrap { overflow: hidden; }
+    .track { display: flex; gap: 2vw; padding: 0 var(--gutter); width: max-content; }
+    .card { position: relative; width: min(72vw, 72rem); flex: none; text-decoration: none; display: block; }
+    .card__img { position: relative; aspect-ratio: 16 / 10; border-radius: .9rem; overflow: hidden; background: var(--bg-2); }
+    .card__img img { width: 100%; height: 100%; object-fit: cover; scale: 1.08; transition: scale 1.2s var(--ease); }
+    .card:hover .card__img img { scale: 1.02; }
+    .card__row { display: flex; justify-content: space-between; align-items: start; gap: 1rem; padding-top: 1rem; }
+    .card h3 { margin: 0; font-weight: 800; font-size: clamp(2.4rem, 5.4vw, 6rem); line-height: .85; text-transform: uppercase; font-stretch: 75%; transition: font-stretch .6s var(--ease), color .4s; }
+    .card:hover h3 { font-stretch: 125%; color: var(--pink); }
+    .card__meta { text-align: right; display: grid; gap: .3rem; }
+    .card__meta .eng { color: var(--teal); }
+    .card--end { width: min(40vw, 30rem); display: grid; place-items: center; }
+    .card--end a { display: grid; place-items: center; width: 100%; aspect-ratio: 1; border-radius: 50%; background: var(--teal); color: var(--on-teal); text-decoration: none; font-weight: 800; font-size: clamp(1.6rem, 2.6vw, 2.6rem); text-transform: uppercase; text-align: center; line-height: .95; font-stretch: 80%; }
+    .bubble { position: fixed; z-index: 80; left: 0; top: 0; width: 6.5rem; height: 6.5rem; margin: -3.25rem 0 0 -3.25rem; border-radius: 50%; background: var(--pink); color: var(--on-pink); display: grid; place-items: center; font: 600 .78rem 'Geist Mono'; letter-spacing: .06em; text-transform: uppercase; pointer-events: none; scale: 0; }
+
+    /* ---------- Services, concepts, contact (B) ---------- */
+    .svc { padding: clamp(6rem, 16vh, 10rem) var(--gutter) 0; }
+    .svc__grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-top: 2rem; }
+    .svc__item { padding: 1.5rem; border-radius: 1rem; background: var(--bg-2); min-height: 22rem; display: flex; flex-direction: column; justify-content: space-between; transition: background-color .5s var(--ease), color .5s var(--ease), translate .6s var(--ease); }
+    .svc__item:hover { background: var(--ink); color: var(--bg); translate: 0 -.5rem; }
+    .svc__item h3 { margin: 0 0 .8rem; font-weight: 800; font-size: clamp(1.8rem, 2.6vw, 2.8rem); line-height: .9; text-transform: uppercase; font-stretch: 70%; }
+    .svc__item p { margin: 0; line-height: 1.4; opacity: .8; }
+    .svc__item .mono { color: var(--pink); }
+    .cps { padding: clamp(6rem, 16vh, 10rem) var(--gutter) 0; }
+    .cps__grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-top: 2rem; perspective: 900px; }
+    .cps__grid a { text-decoration: none; transform-style: preserve-3d; }
+    .cps__grid .im { aspect-ratio: 4 / 5; border-radius: 1rem; overflow: hidden; }
+    .cps__grid img { width: 100%; height: 100%; object-fit: cover; }
+    .cps__grid .mono { display: flex; justify-content: space-between; padding-top: .8rem; }
+    .cta { margin-top: clamp(7rem, 18vh, 12rem); background: var(--ink); color: var(--bg); border-radius: 2rem 2rem 0 0; padding: clamp(4rem, 12vh, 8rem) var(--gutter) 5rem; }
+    .cta__row { display: flex; justify-content: space-between; align-items: end; gap: 2rem; margin-top: 3rem; }
+    .cta__row p { margin: 0; max-width: 28rem; font-size: 1.2rem; line-height: 1.35; }
+    .cta .pill { background: var(--pink); color: var(--on-pink); font-size: 1.15rem; padding: 1.3rem 1.8rem; }
+    .cta .pill b { background: var(--bg); color: var(--ink); }
+    .foot { display: flex; justify-content: space-between; gap: 1rem; margin-top: 5rem; padding-top: 1.2rem; border-top: 1px solid color-mix(in srgb, var(--bg) 25%, transparent); }
+
+    @media (max-width: 1023px) { .rail { display: none; } }
+    @media (max-width: 900px) {
+      .hero { min-height: 0; padding-top: 8rem; }
+      .hero__intro, .hero__foot, .cta__row, .work__head { flex-direction: column; align-items: start; }
+      .case__steps { display: none; }
+      .card { width: 84vw; } .card--end { width: 60vw; }
+      .svc__grid, .cps__grid { grid-template-columns: 1fr 1fr; } .svc__item { min-height: 15rem; }
+      .pnav { position: static; translate: none; margin-left: auto; }
+      .pnav__links { display: none; }
+      .pnav .pnav__status { max-width: 30rem; opacity: 1; padding-inline: .9rem; }
+      .pnav.is-open .pnav__links { display: flex; position: absolute; top: calc(100% + .5rem); right: 0; flex-direction: column; padding: .4rem; max-width: none; opacity: 1; background: var(--bg); border: 1px solid var(--line); border-radius: 1.2rem; }
+      .top .pill { display: none; }
+    }
+    @media (max-width: 600px) { .svc__grid { grid-template-columns: 1fr; } .press .reel { display: none; } .pnav__text { max-width: 9rem; overflow: hidden; text-overflow: ellipsis; } }
+  </style>
+</head>
+<body>
+  <div class="progress" aria-hidden="false"><span class="progress__fill"></span></div>
+
+  <header class="top">
+    <a class="logo glass" href="#top" aria-label="Noah — top">noah<i></i></a>
+    <nav class="pnav glass mono" aria-label="Main" data-pnav>
+      <div class="pnav__links" id="pnav-links">
+        <a href="#work" data-scr data-link="work">Work</a><a href="#services" data-scr data-link="services">Services</a><a href="#concepts" data-scr data-link="concepts">Concepts</a><a href="#contact" data-scr data-link="contact">Contact</a>
+      </div>
+      <button class="pnav__status" type="button" aria-expanded="false" aria-controls="pnav-links" data-status-btn>
+        <span class="pnav__text" data-status-text></span>
+        <span class="pnav__menu">Menu <i class="pnav__icon" aria-hidden="true">+</i></span>
+      </button>
+    </nav>
+    <a class="pill" href="#contact" data-mag>Discuss a project <b>→</b></a>
+  </header>
+
+  <main id="top">
+    <section class="hero wrap">
+      <div class="hero__intro">
+        <p>Independent web designer &amp; developer in Singapore — <span>premium design, engineered properly.</span></p>
+        <span class="mono">I design &amp; build</span>
+      </div>
+      <h1 class="press" data-press aria-label="I design &amp; build distinctive websites.">
+        <span class="ln" data-fit><span class="t">Distinctive</span></span>
+        <span class="ln" data-fit><span class="reel" aria-hidden="true"><video muted loop playsinline autoplay poster="../../assets/images/ganko-scroll-poster.webp"><source src="../../assets/video/ganko-scroll.mp4" type="video/mp4"></video></span><span class="t">Websites</span><span class="sq" aria-hidden="true"></span></span>
+      </h1>
+      <div class="hero__foot">
+        <div class="tags mono"><span class="tag tag--on">Taking freelance projects</span><span class="tag">Restaurants</span><span class="tag">Lifestyle brands</span><span class="tag">Established companies</span></div>
+        <span class="mono">Singapore → Worldwide</span>
+      </div>
+    </section>
+
+    <section class="statement" data-section="About" data-nav="">
+      <span class="mono">About the work</span>
+      <p data-reveal>Every site in this portfolio was designed and built by one person — <span data-k>from first sketch to launch.</span> For restaurants, lifestyle brands and established companies.</p>
+    </section>
+
+    <!-- 01 — Ganko.sg: the original pinned sequence (stacked on tablet / phone) -->
+    <article class="case" id="work" data-section="Ganko.sg" data-nav="work" data-status="01 / 03 — Ganko.sg">
+      <div class="case__frame">
+        <div class="case__top label">
+          <a class="case__open" href="https://noah-portfolio.pages.dev/work/ganko/">01 / 03 — View case study <span>→</span></a>
+          <span class="engage">Freelance</span>
+          <ol class="case__steps"><li class="is-active">Overview</li><li>Approach</li><li>Platform</li><li>Live</li></ol>
+          <span class="case__bar" aria-hidden="true"><span class="case__bar-fill" data-case-bar></span></span>
+        </div>
+        <h3 class="case__title" data-case-title>Ganko.sg</h3>
+        <div class="case__media" data-view>
+          <a class="case__media-link" href="https://noah-portfolio.pages.dev/work/ganko/" aria-label="Read the Ganko.sg case study"></a>
+          <img class="case__img case__img--a" src="../../assets/images/ganko-home-1600.webp" alt="Ganko.sg homepage hero — Authentic Japanese Cuisine in Singapore" width="1600" height="1067">
+          <video class="case__img case__img--b" muted loop playsinline autoplay poster="../../assets/images/ganko-scroll-poster.webp" aria-label="Scrolling through the Ganko.sg homepage"><source src="../../assets/video/ganko-scroll.mp4" type="video/mp4"></video>
+          <span class="marks" aria-hidden="true"></span>
+        </div>
+        <div class="case__stages">
+          <div class="case__stage">
+            <p class="label"><span class="mask"><span data-stage-item>Overview</span></span></p>
+            <p class="case__lead"><span class="mask mask--block"><span data-stage-item>The restaurant's</span></span><span class="mask mask--block"><span data-stage-item>first website,</span></span><span class="mask mask--block"><span data-stage-item>from scratch.</span></span></p>
+            <ul class="case__facts label">
+              <li class="mask mask--block"><span data-stage-item><span class="muted">Sector</span><span>Fine dining</span></span></li>
+              <li class="mask mask--block"><span data-stage-item><span class="muted">Cuisine</span><span>Japanese</span></span></li>
+              <li class="mask mask--block"><span data-stage-item><span class="muted">Location</span><span>Singapore</span></span></li>
+            </ul>
+          </div>
+          <div class="case__stage">
+            <p class="label"><span class="mask"><span data-stage-item>Approach</span></span></p>
+            <p class="case__lead"><span class="mask mask--block"><span data-stage-item>History first,</span></span><span class="mask mask--block"><span data-stage-item>booking last.</span></span></p>
+            <p class="case__copy"><span class="mask mask--block"><span data-stage-item>For diners discovering the restaurant and booking a table: the story runs from Ganko's beginnings in Osaka to the Singapore interior, then booking is one step away.</span></span></p>
+          </div>
+          <div class="case__stage">
+            <p class="label"><span class="mask"><span data-stage-item>Platform</span></span></p>
+            <ul class="case__stack">
+              <li class="mask mask--block"><span data-stage-item><span>GoDaddy Website Builder</span><span class="label">Platform</span></span></li>
+              <li class="mask mask--block"><span data-stage-item><span>Custom HTML sections</span><span class="label">Where the builder fell short</span></span></li>
+              <li class="mask mask--block"><span data-stage-item><span>Chope booking</span><span class="label">Embedded widget</span></span></li>
+            </ul>
+          </div>
+          <div class="case__stage">
+            <p class="label"><span class="mask"><span data-stage-item>Live</span></span></p>
+            <p class="case__lead"><span class="mask mask--block"><span data-stage-item>Launched</span></span><span class="mask mask--block"><span data-stage-item>in 2025.</span></span></p>
+            <p class="mask mask--block" style="margin:0"><span data-stage-item><a class="case__link mono" href="https://ganko.sg" target="_blank" rel="noopener">ganko.sg ↗</a></span></p>
+            <p class="mask mask--block" style="margin:0"><span data-stage-item><a class="case__link" href="https://noah-portfolio.pages.dev/work/ganko/">Read the case study →</a></span></p>
+          </div>
+        </div>
+        <p class="case__next label" aria-hidden="true"><span class="mask"><span data-case-next>Next — 02 / 03</span></span><span class="mask"><span data-case-next>Luumens ↓</span></span></p>
+      </div>
+    </article>
+
+    <section class="work" data-section="More work" data-nav="work" data-status="02 / 03 — Luumens">
+      <div class="work__head"><h2 class="h2s">More<br>work</h2><span class="mono">02 — 03 · Scroll →</span></div>
+      <div class="reel-wrap">
+        <div class="track">
+          <a class="card" href="https://noah-portfolio.pages.dev/work/luumens/" data-view data-card-status="02 / 03 — Luumens">
+            <div class="card__img"><img src="../../assets/images/luumens-home-1600.webp" alt="Luumens homepage"><span class="marks" aria-hidden="true"></span></div>
+            <div class="card__row"><h3>Luumens</h3><div class="card__meta mono"><span>02 / 03 · Energy · 2026</span><span class="eng">In-house · Pomar Engineering</span></div></div>
+          </a>
+          <a class="card" href="https://noah-portfolio.pages.dev/work/voyagaer/" data-view data-card-status="03 / 03 — Voyagaer">
+            <div class="card__img"><img src="../../assets/images/voyagaer-hero-poster.webp" alt="Voyagaer homepage"><span class="marks" aria-hidden="true"></span></div>
+            <div class="card__row"><h3>Voyagaer</h3><div class="card__meta mono"><span>03 / 03 · Marine · Not yet launched</span><span class="eng">In-house · Pomar Engineering</span></div></div>
+          </a>
+          <div class="card card--end" data-card-status="Concepts"><a href="https://noah-portfolio.pages.dev/concepts/" data-mag>See the<br>concepts →</a></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="svc" id="services" data-section="Services" data-nav="services" data-status="Services">
+      <h2 class="h2s">Services</h2>
+      <div class="svc__grid">
+        <div class="svc__item"><span class="mono">01</span><div><h3>New<br>website</h3><p>From first sketch to a launched site, for businesses that need a proper online presence.</p></div></div>
+        <div class="svc__item"><span class="mono">02</span><div><h3>Redesign</h3><p>For businesses that have outgrown their site: clearer navigation, better content, consistent on every screen.</p></div></div>
+        <div class="svc__item"><span class="mono">03</span><div><h3>Custom<br>front-end</h3><p>When a template won’t do: hand-coded pages, motion and interactive components.</p></div></div>
+        <div class="svc__item"><span class="mono">04</span><div><h3>Ongoing<br>improvements</h3><p>For a site you already have: new pages, layout and content updates, performance and new features.</p></div></div>
+      </div>
+    </section>
+
+    <section class="cps" id="concepts" data-section="Concepts" data-nav="concepts" data-status="Concepts">
+      <h2 class="h2s">Concepts</h2>
+      <div class="cps__grid">
+        <a href="https://noah-portfolio.pages.dev/concepts/#pixel-pull" data-tilt><div class="im"><img src="../../assets/images/concept-pixel-pull-cover.webp" alt="" loading="lazy"></div><span class="mono"><span>Pixel Pull</span><span>Card shop</span></span></a>
+        <a href="https://noah-portfolio.pages.dev/concepts/#little-rosti" data-tilt><div class="im"><img src="../../assets/images/concept-little-rosti-poster.webp" alt="" loading="lazy"></div><span class="mono"><span>Little Rösti</span><span>Café</span></span></a>
+        <a href="https://noah-portfolio.pages.dev/concepts/#common-table" data-tilt><div class="im"><img src="../../assets/images/concept-common-table-cover.webp" alt="" loading="lazy"></div><span class="mono"><span>Common Table</span><span>Restaurant</span></span></a>
+        <a href="https://noah-portfolio.pages.dev/concepts/#crumb-and-kin" data-tilt><div class="im"><img src="../../assets/images/concept-crumb-and-kin-poster.webp" alt="" loading="lazy"></div><span class="mono"><span>Crumb &amp; Kin</span><span>Bakery</span></span></a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="cta" id="contact" data-section="Contact" data-nav="contact" data-status="Contact">
+    <h2 class="press" data-press aria-label="Discuss a project.">
+      <span class="ln" data-fit><span class="t">Discuss a</span></span>
+      <span class="ln" data-fit><span class="t">project</span><span class="sq" aria-hidden="true"></span></span>
+    </h2>
+    <div class="cta__row">
+      <p>No pressure, no complicated process. Tell me a little about your project and I'll reply within a day or two.</p>
+      <a class="pill" href="#contact" data-mag>Start a project <b>→</b></a>
+    </div>
+    <div class="foot mono"><span>© 2026 Noah Zaw Min Htut</span><span>Fusion sample · B + original</span></div>
+  </footer>
+  <div class="bubble" aria-hidden="true">View</div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js" defer></script>
+  <script src="../shared.js" defer></script>
+  <script defer>
+  addEventListener('DOMContentLoaded', () => {
+    const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)];
+    const fine = matchMedia('(pointer: fine)').matches;
+    const desktop = matchMedia('(min-width: 1024px)').matches;
+
+    /* ---------- Fit the pressure lines to the width ---------- */
+    const presses = $$('[data-press]');
+    presses.forEach((h) => $$('.t', h).forEach((t) => splitChars(t)));
+    const fit = () => presses.forEach((h) => {
+      const W = h.clientWidth;
+      $$('[data-fit]', h).forEach((ln) => {
+        ln.classList.add('m'); ln.style.fontSize = '100px';
+        const w = [...ln.children].reduce((a, c) => a + c.getBoundingClientRect().width, 0);
+        ln.style.fontSize = (100 * W / w * 0.995) + 'px'; ln.classList.remove('m');
+      });
+    });
+    fit(); document.fonts.load('800 100px Archivo').then(() => { fit(); window.ScrollTrigger?.refresh(); }); addEventListener('resize', fit);
+
+    /* ---------- Section status, progress ticks and rail (from the original) ---------- */
+    const sections = $$('[data-section]');
+    const pnav = $('[data-pnav]'), status = $('[data-status-btn]'), stText = $('[data-status-text]');
+    const progress = $('.progress'), fill = $('.progress__fill');
+    const rail = document.createElement('nav');
+    rail.className = 'rail mono'; rail.setAttribute('aria-label', 'On this page');
+    rail.innerHTML = `<ol>${sections.map((s, i) => `<li><a href="#" data-i="${i}"><i></i><span>${s.dataset.section}</span></a></li>`).join('')}</ol>`;
+    document.body.append(rail);
+    const railLinks = $$('a', rail);
+    const ticks = sections.map((s, i) => {
+      const t = document.createElement('button');
+      t.className = 'progress__tick'; t.type = 'button'; t.tabIndex = -1; t.setAttribute('aria-label', 'Jump to ' + s.dataset.section);
+      t.innerHTML = `<span class="progress__tip mono">${s.dataset.section}</span>`;
+      progress.append(t); return t;
+    });
+    const target = (i) => { const el = sections[i]; return el.parentElement.classList.contains('pin-spacer') ? el.parentElement : el; };
+    const jump = (i) => { const el = target(i); const y = el.getBoundingClientRect().top + scrollY - (el.classList.contains('pin-spacer') ? 0 : 72); window.lenis ? lenis.scrollTo(y, { duration: 1.4 }) : scrollTo({ top: y, behavior: 'smooth' }); };
+    railLinks.forEach((a, i) => a.addEventListener('click', (e) => { e.preventDefault(); jump(i); }));
+    ticks.forEach((t, i) => t.addEventListener('click', () => jump(i)));
+
+    let marks = [], current = -1, label = '';
+    const setStatus = (txt) => {
+      if (txt === label) return; label = txt;
+      const html = txt.replace(/^(\d+ \/ \d+)/, '<b>$1</b>');
+      if (!window.gsap || REDUCE || !stText.innerHTML) { stText.innerHTML = html; return; }
+      gsap.timeline().to(stText, { yPercent: -110, opacity: 0, duration: .25, ease: 'power3.in' }).add(() => { stText.innerHTML = html; }).fromTo(stText, { yPercent: 110, opacity: 0 }, { yPercent: 0, opacity: 1, duration: .45, ease: 'expo.out' });
+    };
+    window.setStatus = setStatus;
+    const place = () => {
+      const max = document.documentElement.scrollHeight - innerHeight;
+      marks = sections.map((s, i) => Math.min(1, Math.max(0, (target(i).getBoundingClientRect().top + scrollY - innerHeight * .3) / max)));
+      ticks.forEach((t, i) => t.style.left = marks[i] * 100 + '%');
+      update();
+    };
+    const update = () => {
+      const max = document.documentElement.scrollHeight - innerHeight;
+      const p = max > 0 ? scrollY / max : 0;
+      fill.style.scale = `${p} 1`;
+      ticks.forEach((t, i) => t.classList.toggle('is-passed', p >= marks[i] - .001));
+      let idx = -1; marks.forEach((m, i) => { if (p >= m - .001) idx = i; });
+      rail.classList.toggle('is-visible', idx >= 0 && p < .985);
+      pnav.classList.toggle('is-sectioned', idx >= 1);
+      if (idx !== current) {
+        current = idx;
+        railLinks.forEach((a, i) => a.classList.toggle('is-current', i === idx));
+        const s = sections[idx];
+        $$('[data-link]').forEach((a) => a.classList.toggle('is-active', !!s && a.dataset.link === s.dataset.nav));
+        if (s && s.dataset.status && !s.hasAttribute('data-own-status')) setStatus(s.dataset.status);
+        if (idx < 1) setStatus(sections[0].dataset.section);
+      }
+    };
+    const open = (v) => { pnav.classList.toggle('is-open', v); status.setAttribute('aria-expanded', v); };
+    status.addEventListener('click', () => open(!pnav.classList.contains('is-open')));
+    if (fine) { status.addEventListener('pointerenter', () => open(true)); pnav.addEventListener('pointerleave', () => open(false)); }
+    $$('.pnav__links a').forEach((a) => a.addEventListener('click', () => open(false)));
+    addEventListener('scroll', update, { passive: true });
+    addEventListener('resize', place);
+
+    if (!window.gsap) { place(); return; }
+    ScrollTrigger.addEventListener('refresh', place);
+    if (REDUCE) { place(); return; }
+
+    /* ---------- Hero ---------- */
+    const heroChars = $$('.hero .press .ch');
+    const st0 = heroChars.map(() => ({ w: 62, g: 300 }));
+    gsap.from('.hero .press .ln', { yPercent: 100, opacity: 0, duration: 1.2, stagger: .12, ease: 'expo.out', delay: .1 });
+    gsap.to(st0, { w: 100, g: 800, duration: 1.6, stagger: .03, ease: 'expo.out', delay: .25, onUpdate: () => heroChars.forEach((c, i) => c.style.fontVariationSettings = `'wdth' ${st0[i].w}, 'wght' ${st0[i].g}`) });
+    gsap.from('.hero__intro > *, .hero__foot > *, .top > *', { y: 20, opacity: 0, duration: 1, stagger: .06, ease: 'power3.out', delay: .6 });
+    if (fine) presses.forEach((h) => {
+      const chars = $$('.ch', h); let mx = 0, my = 0, on = false;
+      addEventListener('pointermove', (e) => { mx = e.clientX; my = e.clientY; on = true; });
+      const st = chars.map(() => ({ w: 100, g: 800 }));
+      gsap.ticker.add(() => {
+        if (!on) return;
+        const r = h.getBoundingClientRect(); if (r.bottom < 0 || r.top > innerHeight) return;
+        chars.forEach((c, i) => {
+          const b = c.getBoundingClientRect();
+          const k = Math.max(0, 1 - Math.hypot(mx - (b.left + b.width / 2), my - (b.top + b.height / 2)) / (r.height * .9));
+          st[i].w += (85 + 40 * k - st[i].w) * .12; st[i].g += (560 + 340 * k - st[i].g) * .12;
+          c.style.fontVariationSettings = `'wdth' ${st[i].w.toFixed(1)}, 'wght' ${st[i].g.toFixed(0)}`;
+        });
+      });
+    });
+
+    /* ---------- Statement ---------- */
+    const p = $('[data-reveal]');
+    const words = (txt, cls) => txt.split(/(\s+)/).map((w) => /\s/.test(w) || !w ? w : `<span class="w${cls}">${w}</span>`).join('');
+    p.innerHTML = [...p.childNodes].map((n) => words(n.textContent, n.nodeType === 3 ? '' : ' k')).join('');
+    gsap.to($$('.w', p), { opacity: 1, stagger: .1, ease: 'none', scrollTrigger: { trigger: p, start: 'top 80%', end: 'bottom 45%', scrub: true } });
+
+    /* ---------- Case study: the original pinned timeline ---------- */
+    const section = $('.case');
+    const stages = $$('.case__stage', section);
+    const media = $('.case__media', section), imgA = $('.case__img--a', section), imgB = $('.case__img--b', section);
+    const titleChars = splitChars($('[data-case-title]'));
+    if (!desktop) {
+      gsap.fromTo(titleChars, { yPercent: 115 }, { yPercent: 0, duration: 1.4, ease: 'power4.out', stagger: .03, scrollTrigger: { trigger: section, start: 'top 75%', once: true } });
+      gsap.fromTo(media, { clipPath: 'inset(42% 0% 0% 0% round .9rem)' }, { clipPath: 'inset(0% 0% 0% 0% round .9rem)', duration: 1.6, ease: 'expo.out', scrollTrigger: { trigger: media, start: 'top 85%', once: true } });
+      stages.forEach((stage) => gsap.fromTo($$('[data-stage-item]', stage), { yPercent: 110 }, { yPercent: 0, duration: 1.2, ease: 'expo.out', stagger: .06, scrollTrigger: { trigger: stage, start: 'top 85%', once: true } }));
+    } else {
+      section.classList.add('is-pinned');
+      const steps = $$('.case__steps li', section), bar = $('[data-case-bar]', section), wrap = $('.case__stages', section), next = $$('[data-case-next]', section);
+      const stageIn = [1.2, 2.8, 4.4, 6.0], stageOut = [2.5, 4.1, 5.7, 7.2], exitAt = 7.2, total = 9.0;
+      let cur = -1;
+      const setStep = (i) => { if (i === cur) return; cur = i; steps.forEach((s, k) => s.classList.toggle('is-active', k === i)); };
+      const mediaShift = () => wrap.offsetLeft - media.offsetLeft;
+      const stagesShift = () => (media.offsetLeft + media.offsetWidth) - (wrap.offsetLeft + wrap.offsetWidth);
+      gsap.set(stages, { autoAlpha: 0 });
+      const tl = gsap.timeline({ defaults: { ease: 'power3.inOut' }, scrollTrigger: { trigger: section, start: 'top top', end: '+=200%', pin: true, scrub: 1, anticipatePin: 1, invalidateOnRefresh: true,
+        onUpdate: (self) => { const t = self.progress * total; setStep(t < stageIn[1] ? 0 : t < stageIn[2] ? 1 : t < stageIn[3] ? 2 : 3); } } });
+      tl.fromTo(bar, { scaleX: 0 }, { scaleX: 1, duration: exitAt + 1, ease: 'none' }, 0)
+        .fromTo(titleChars, { yPercent: 115 }, { yPercent: 0, duration: .9, stagger: .04, ease: 'power4.out' }, .1)
+        .fromTo(media, { clipPath: 'inset(18% 12% 18% 12% round .9rem)', scale: 1.35 }, { clipPath: 'inset(0% 0% 0% 0% round .9rem)', duration: 1, ease: 'power2.out' }, 0)
+        .fromTo(imgA, { scale: 1.12 }, { scale: 1, duration: 1.4, ease: 'power2.out' }, 0)
+        .to(media, { scale: 1, duration: 1.1, ease: 'power2.inOut' }, 1.1)
+        .fromTo(imgB, { clipPath: 'inset(100% 0% 0% 0%)', scale: 1.2 }, { clipPath: 'inset(0% 0% 0% 0%)', scale: 1, duration: 1.3 }, stageIn[1] - .3)
+        .to(imgA, { yPercent: -10, scale: 1.08, duration: 1.3 }, stageIn[1] - .3)
+        .to(imgB, { scale: 1.08, xPercent: -3, duration: exitAt - stageIn[2], ease: 'none' }, stageIn[2])
+        .to(media, { x: mediaShift, duration: 1.2 }, stageOut[2] + .1)
+        .to(wrap, { x: stagesShift, duration: 1.2 }, stageOut[2] + .1)
+        .to(titleChars, { yPercent: -115, duration: .7, stagger: .03, ease: 'power3.in' }, exitAt)
+        .to(media, { clipPath: 'inset(0% 0% 100% 0% round .9rem)', duration: 1, ease: 'expo.inOut' }, exitAt)
+        .to('.case__top', { autoAlpha: 0, duration: .6 }, exitAt + .6)
+        .fromTo(next, { yPercent: 110 }, { yPercent: 0, duration: .7, stagger: .08, ease: 'power3.out' }, exitAt + .4)
+        .to(next, { yPercent: -110, duration: .5, stagger: .05, ease: 'power3.in' }, total - 1.1);
+      stages.forEach((stage, i) => {
+        const items = $$('[data-stage-item]', stage);
+        tl.set(stage, { autoAlpha: 1 }, stageIn[i])
+          .fromTo(items, { yPercent: 110 }, { yPercent: 0, duration: .75, stagger: .06, ease: 'power3.out' }, stageIn[i])
+          .to(items, { yPercent: -110, duration: .45, stagger: .02, ease: 'power3.in' }, stageOut[i])
+          .set(stage, { autoAlpha: 0 }, stageOut[i] + .55);
+      });
+      setStep(0);
+    }
+
+    /* ---------- More work: sideways reel; the status follows the card in view ---------- */
+    const tr = $('.track'), cards = $$('[data-card-status]');
+    const work = $('.work'); work.setAttribute('data-own-status', '');
+    const dist = () => tr.scrollWidth - innerWidth;
+    const lean = gsap.quickTo('.card', 'skewX', { duration: .5, ease: 'power3' });
+    const cardStatus = () => {
+      if (sections[current] !== work) return;
+      let best = cards[0], bd = 1e9;
+      cards.forEach((c) => { const r = c.getBoundingClientRect(); const d = Math.abs(r.left + r.width / 2 - innerWidth / 2); if (d < bd) { bd = d; best = c; } });
+      setStatus(best.dataset.cardStatus);
+    };
+    gsap.to(tr, { x: () => -dist(), ease: 'none', scrollTrigger: { trigger: work, start: 'top top', end: () => '+=' + dist(), pin: true, scrub: 1, invalidateOnRefresh: true,
+      onUpdate: (s) => { lean(gsap.utils.clamp(-3, 3, s.getVelocity() / -600)); cardStatus(); } } });
+    addEventListener('scroll', cardStatus, { passive: true });
+
+    if (fine) {
+      const b = $('.bubble');
+      const bx = gsap.quickTo(b, 'x', { duration: .45, ease: 'power3' }), by = gsap.quickTo(b, 'y', { duration: .45, ease: 'power3' });
+      addEventListener('pointermove', (e) => { bx(e.clientX); by(e.clientY); });
+      $$('[data-view]').forEach((c) => {
+        c.addEventListener('pointerenter', () => gsap.to(b, { scale: 1, duration: .5, ease: 'back.out(2)' }));
+        c.addEventListener('pointerleave', () => gsap.to(b, { scale: 0, duration: .35, ease: 'power3.in' }));
+      });
+      $$('[data-tilt]').forEach((c) => {
+        const rx = gsap.quickTo(c, 'rotationX', { duration: .6, ease: 'power3' }), ry = gsap.quickTo(c, 'rotationY', { duration: .6, ease: 'power3' });
+        c.addEventListener('pointermove', (e) => { const r = c.getBoundingClientRect(); ry(((e.clientX - r.left) / r.width - .5) * 14); rx(-((e.clientY - r.top) / r.height - .5) * 14); });
+        c.addEventListener('pointerleave', () => { rx(0); ry(0); });
+      });
+    }
+
+    $$('.h2s').forEach((h) => gsap.from(h, { yPercent: 50, opacity: 0, duration: 1.2, ease: 'expo.out', scrollTrigger: { trigger: h, start: 'top 88%' } }));
+    gsap.from('.svc__item', { y: 60, opacity: 0, duration: 1.1, stagger: .08, ease: 'expo.out', scrollTrigger: { trigger: '.svc__grid', start: 'top 85%' } });
+    gsap.from('.cps__grid > a', { y: 60, opacity: 0, duration: 1.1, stagger: .08, ease: 'expo.out', scrollTrigger: { trigger: '.cps__grid', start: 'top 85%' } });
+    gsap.from('.cta .ln', { yPercent: 100, opacity: 0, duration: 1.2, stagger: .1, ease: 'expo.out', scrollTrigger: { trigger: '.cta', start: 'top 70%' } });
+    $$('[data-mag]').forEach((el) => magnet(el, .3));
+    $$('[data-scr]').forEach((a) => a.addEventListener('pointerenter', () => scramble(a, { duration: .45 })));
+    ScrollTrigger.refresh(); place();
+  });
+  </script>
+</body>
+</html>
