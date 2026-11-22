@@ -34,8 +34,18 @@
     .top { position: fixed; z-index: 60; inset: 0 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 1.1rem var(--gutter); pointer-events: none; }
     .top > * { pointer-events: auto; }
     .glass { background: color-mix(in srgb, var(--bg) 72%, transparent); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid var(--line); border-radius: 99px; }
-    .logo { padding: .55rem .85rem; margin-left: -.85rem; font-weight: 800; font-size: 1.5rem; letter-spacing: -0.04em; line-height: 1; text-decoration: none; border-color: transparent; }
-    .logo i { display: inline-block; width: .17em; height: .17em; margin-left: .06em; background: var(--pink); }
+    /* Wordmark from the live site: letters rise on load, folds to "n." on scroll, hover reopens. */
+    .logo { padding: .55rem .85rem; margin-left: -.85rem; font-weight: 600; font-size: 1.625rem; letter-spacing: -0.045em; line-height: 1; text-decoration: none; border-color: transparent; white-space: nowrap; }
+    .logo__m { display: inline-block; clip-path: inset(-0.3em -0.2em 0 -0.2em); }
+    .logo__l { display: inline-block; }
+    .logo__rest { display: inline-block; clip-path: inset(-0.3em 0 -0.3em 0); vertical-align: baseline; }
+    .logo__restin { display: inline-block; }
+    .logo__dot { display: inline-block; width: .15em; height: .15em; margin-left: .105em; background: var(--pink); }
+    @keyframes logo-rise { from { translate: 0 110%; } to { translate: 0 0; } }
+    @keyframes logo-settle { 0% { scale: 0; } 60% { scale: 1.35; } 100% { scale: 1; } }
+    .logo .logo__l { animation: logo-rise 1.1s var(--ease) both; animation-delay: calc(.3s + var(--i, 0) * .07s); }
+    .logo .logo__dot { animation: logo-settle .7s cubic-bezier(.34, 1.2, .64, 1) .75s both; transform-origin: 50% 100%; }
+    @media (prefers-reduced-motion: reduce) { .logo .logo__l, .logo .logo__dot { animation: none; } }
     .pnav { position: absolute; left: 50%; translate: -50% 0; display: flex; align-items: center; padding: .3rem; }
     .pnav__links { display: flex; gap: .2rem; overflow: hidden; max-width: 34rem; transition: max-width .8s var(--ease), opacity .5s; white-space: nowrap; }
     .pnav__links a { padding: .55rem .9rem; border-radius: 99px; text-decoration: none; }
@@ -312,7 +322,7 @@
   <div class="progress" aria-hidden="false"><span class="progress__fill"></span></div>
 
   <header class="top">
-    <a class="logo glass" href="#top" aria-label="Noah — top">noah<i></i></a>
+    <a class="logo glass" href="#top" aria-label="Noah — back to top" data-logo><span aria-hidden="true"><span class="logo__m"><span class="logo__l" style="--i:0">n</span></span><span class="logo__rest"><span class="logo__restin"><span class="logo__m"><span class="logo__l" style="--i:1">o</span></span><span class="logo__m"><span class="logo__l" style="--i:2">a</span></span><span class="logo__m"><span class="logo__l" style="--i:3">h</span></span></span></span><i class="logo__dot"></i></span></a>
     <nav class="pnav glass mono" aria-label="Main" data-pnav>
       <div class="pnav__links" id="pnav-links">
         <a href="#work" data-scr data-link="work">Work</a><a href="#services" data-scr data-link="services">Services</a><a href="#concepts" data-scr data-link="concepts">Concepts</a><a href="#contact" data-scr data-link="contact">Contact</a>
@@ -720,12 +730,31 @@
 
     if (REDUCE) { place(); return; }
 
+    /* ---------- Wordmark fold (from the live site's logo.js) ---------- */
+    {
+      const logo = $('[data-logo]'), rest = $('.logo__rest', logo), inner = $('.logo__restin', logo);
+      let folded = false, held = false;
+      const set = (fold, instant) => {
+        const w = inner.getBoundingClientRect().width, d = instant ? 0 : fold ? .8 : .9;
+        gsap.to(rest, { width: fold ? 0 : w, duration: d, ease: 'expo.inOut', overwrite: true, onComplete: () => { if (!fold) gsap.set(rest, { clearProps: 'width' }); } });
+        gsap.to(inner, { x: fold ? -w : 0, duration: d, ease: 'expo.inOut', overwrite: true });
+      };
+      const should = () => scrollY > 120 && !held;
+      const sync = () => { const n = should(); if (n === folded) return; folded = n; set(folded); };
+      let q = 0; addEventListener('scroll', () => { if (!q) q = requestAnimationFrame(() => { q = 0; sync(); }); }, { passive: true });
+      if (should()) { folded = true; set(true, true); }
+      const hold = (v) => { held = v; sync(); };
+      if (fine) { logo.addEventListener('pointerenter', () => hold(true)); logo.addEventListener('pointerleave', () => hold(false)); }
+      logo.addEventListener('focus', () => { if (logo.matches(':focus-visible')) hold(true); });
+      logo.addEventListener('blur', () => hold(false));
+    }
+
     /* ---------- Hero ---------- */
     const heroChars = $$('.hero .press .ch');
     const st0 = heroChars.map(() => ({ w: 62, g: 300 }));
     gsap.from('.hero .press .ln', { yPercent: 100, opacity: 0, duration: 1.2, stagger: .12, ease: 'expo.out', delay: .1 });
     gsap.to(st0, { w: 100, g: 800, duration: 1.6, stagger: .03, ease: 'expo.out', delay: .25, onUpdate: () => heroChars.forEach((c, i) => c.style.fontVariationSettings = `'wdth' ${st0[i].w}, 'wght' ${st0[i].g}`) });
-    gsap.from('.hero__intro > *, .hero__foot > *, .top > *', { y: 20, opacity: 0, duration: 1, stagger: .06, ease: 'power3.out', delay: .6 });
+    gsap.from('.hero__intro > *, .hero__foot > *, .top > :not(.logo)', { y: 20, opacity: 0, duration: 1, stagger: .06, ease: 'power3.out', delay: .6 });
     if (fine) presses.forEach((h) => {
       const chars = $$('.ch', h); let mx = 0, my = 0, on = false;
       addEventListener('pointermove', (e) => { mx = e.clientX; my = e.clientY; on = true; });
