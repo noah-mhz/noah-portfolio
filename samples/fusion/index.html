@@ -18,6 +18,7 @@
     .wrap { padding: 0 var(--gutter); }
     .mask { display: inline-block; overflow: hidden; vertical-align: bottom; padding-bottom: .06em; margin-bottom: -.06em; }
     .mask--block { display: block; }
+    .mask > span { display: inline-block; } .mask--block > span { display: block; }
     ol, ul { list-style: none; margin: 0; padding: 0; }
 
     /* ---------- Progress bar (original): fill + a tick per section ---------- */
@@ -89,6 +90,10 @@
     .tag { padding: .5rem .8rem; border: 1px solid var(--line); border-radius: 99px; }
     .tag--on { background: var(--teal); color: var(--on-teal); border-color: transparent; display: inline-flex; gap: .45rem; align-items: center; }
     .tag--on::before { content: ''; width: .45rem; height: .45rem; border-radius: 50%; background: var(--pink); }
+
+    .work-label { display: flex; justify-content: space-between; padding-top: clamp(3rem, 8vh, 5rem); padding-bottom: 1rem; border-bottom: 1px solid var(--line); margin: 0 var(--gutter); padding-inline: 0; }
+    .reel-flyer { position: fixed; z-index: 5; left: 0; top: 0; width: 0; height: 0; overflow: hidden; border-radius: .9rem; background: var(--bg-2); visibility: hidden; pointer-events: none; }
+    .reel-flyer img { width: 100%; height: 100%; object-fit: cover; object-position: top center; }
 
     /* ---------- Statement (B) ---------- */
     .statement { padding: clamp(7rem, 20vh, 13rem) var(--gutter); }
@@ -199,7 +204,7 @@
       .pnav.is-open .pnav__links { display: flex; position: absolute; top: calc(100% + .5rem); right: 0; flex-direction: column; padding: .4rem; max-width: none; opacity: 1; background: var(--bg); border: 1px solid var(--line); border-radius: 1.2rem; }
       .top .pill { display: none; }
     }
-    @media (max-width: 600px) { .svc__grid { grid-template-columns: 1fr; } .press .reel { display: none; } .pnav__text { max-width: 9rem; overflow: hidden; text-overflow: ellipsis; } }
+    @media (max-width: 600px) { .svc__grid { grid-template-columns: 1fr; } .pnav__text { max-width: 9rem; overflow: hidden; text-overflow: ellipsis; } }
   </style>
 </head>
 <body>
@@ -235,13 +240,11 @@
       </div>
     </section>
 
-    <section class="statement" data-section="About" data-nav="">
-      <span class="mono">About the work</span>
-      <p data-reveal>Every site in this portfolio was designed and built by one person — <span data-k>from first sketch to launch.</span> For restaurants, lifestyle brands and established companies.</p>
-    </section>
+
+    <div class="work-label wrap mono" id="work"><span>Selected work</span><span>2025 — now</span></div>
 
     <!-- 01 — Ganko.sg: the original pinned sequence (stacked on tablet / phone) -->
-    <article class="case" id="work" data-section="Ganko.sg" data-nav="work" data-status="01 / 03 — Ganko.sg">
+    <article class="case" data-section="Ganko.sg" data-nav="work" data-status="01 / 03 — Ganko.sg">
       <div class="case__frame">
         <div class="case__top label">
           <a class="case__open" href="https://noah-portfolio.pages.dev/work/ganko/">01 / 03 — View case study <span>→</span></a>
@@ -307,6 +310,11 @@
       </div>
     </section>
 
+    <section class="statement" data-section="About" data-nav="">
+      <span class="mono">About the work</span>
+      <p data-reveal>Every site in this portfolio was designed and built by one person — <span data-k>from first sketch to launch.</span> For restaurants, lifestyle brands and established companies.</p>
+    </section>
+
     <section class="svc" id="services" data-section="Services" data-nav="services" data-status="Services">
       <h2 class="h2s">Services</h2>
       <div class="svc__grid">
@@ -340,6 +348,8 @@
     <div class="foot mono"><span>© 2026 Noah Zaw Min Htut</span><span>Fusion sample · B + original</span></div>
   </footer>
   <div class="bubble" aria-hidden="true">View</div>
+  <!-- Carries the headline reel down the page and docks it onto the Ganko image (desktop), as on the original. -->
+  <div class="reel-flyer" aria-hidden="true"><img src="../../assets/images/ganko-home-1600.webp" alt=""><span class="marks"></span></div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
@@ -405,14 +415,14 @@
       ticks.forEach((t, i) => t.classList.toggle('is-passed', p >= marks[i] - .001));
       let idx = -1; marks.forEach((m, i) => { if (p >= m - .001) idx = i; });
       rail.classList.toggle('is-visible', idx >= 0 && p < .985);
-      pnav.classList.toggle('is-sectioned', idx >= 1);
+      pnav.classList.toggle('is-sectioned', idx >= 0);
       if (idx !== current) {
         current = idx;
         railLinks.forEach((a, i) => a.classList.toggle('is-current', i === idx));
         const s = sections[idx];
         $$('[data-link]').forEach((a) => a.classList.toggle('is-active', !!s && a.dataset.link === s.dataset.nav));
         if (s && s.dataset.status && !s.hasAttribute('data-own-status')) setStatus(s.dataset.status);
-        if (idx < 1) setStatus(sections[0].dataset.section);
+        if (idx < 0) setStatus('');
       }
     };
     const open = (v) => { pnav.classList.toggle('is-open', v); status.setAttribute('aria-expanded', v); };
@@ -448,6 +458,59 @@
       });
     });
 
+    /* ---------- Hero → case: the original reel handoff ---------- */
+    const hero = $('.hero'), reel = $('.press .reel'), lines = $$('.hero .press .ln');
+    const caseEl = $('.case'), caseMedia = $('.case__media'), flyer = $('.reel-flyer');
+    if (desktop) {
+      // The hero holds briefly while the headline clears; the reel then flies, growing,
+      // into the exact spot the Ganko image takes once its sequence pins, and hands over.
+      gsap.timeline({ defaults: { ease: 'none' }, scrollTrigger: { trigger: hero, start: 'top top', end: '+=55%', pin: true, scrub: 1 } })
+        .to(lines, { yPercent: -16, autoAlpha: 0, stagger: .08, duration: .5, ease: 'power1.in' }, 0)
+        .to('.hero__intro', { y: -40, autoAlpha: 0, duration: .45 }, 0)
+        .to('.hero__foot', { autoAlpha: 0, duration: .4 }, 0)
+        .to({}, { duration: .35 });
+      const lerp = (a, b, t) => a + (b - a) * t;
+      const caseStart = () => ScrollTrigger.getAll().find((t) => t.pin === caseEl)?.start ?? Infinity;
+      const prog = { value: 0 }; let state = 'reel';
+      const show = (n) => {
+        if (n === state) return; state = n;
+        gsap.set(reel, { visibility: n === 'reel' ? 'visible' : 'hidden' });
+        gsap.set(flyer, { visibility: n === 'flying' ? 'visible' : 'hidden' });
+        gsap.set(caseMedia, { autoAlpha: n === 'flying' ? 0 : 1 });
+      };
+      const docked = () => { const r = caseMedia.getBoundingClientRect(); const off = scrollY - caseStart(); return { left: r.left, top: r.top + off, width: r.width, height: r.height }; };
+      const render = () => {
+        const t = prog.value;
+        if (scrollY >= caseStart() - 1 && t >= .999) return show('docked');
+        if (t <= .001) return show('reel');
+        show('flying');
+        const f = reel.getBoundingClientRect(), d = docked();
+        gsap.set(flyer, { x: lerp(f.left, d.left, t), y: lerp(f.top, d.top, t), width: lerp(f.width, d.width, t), height: lerp(f.height, d.height, t), borderRadius: lerp(f.height * .1, 14, t) });
+      };
+      gsap.to(prog, { value: 1, ease: 'power2.inOut', onUpdate: render, scrollTrigger: { start: 0, endTrigger: caseEl, end: 'top top', scrub: 1.4 } });
+      ScrollTrigger.create({ start: 0, endTrigger: caseEl, end: 'top top', onUpdate: render, onLeave: render, onEnterBack: render });
+      ScrollTrigger.addEventListener('refresh', render);
+    } else {
+      // Tablet / phone: the reel opens to the screen's width as the headline parts (original initReelOpen).
+      const [first, second] = lines;
+      const media = reel.querySelector('video');
+      const measure = () => {
+        let left = 0; for (let el = reel; el; el = el.offsetParent) left += el.offsetLeft;
+        const w = reel.offsetWidth, h = reel.offsetHeight, vw = document.documentElement.clientWidth;
+        const tH = matchMedia('(max-width: 767px)').matches ? vw : vw * .625;
+        return { sx: vw / w, sy: tH / h, x: vw / 2 - (left + w / 2) };
+      };
+      let m = measure();
+      gsap.set(second, { position: 'relative', zIndex: 2 });
+      const tl = gsap.timeline({ defaults: { ease: 'none' }, scrollTrigger: { trigger: hero, start: 'top top', end: 'bottom 45%', scrub: .6, invalidateOnRefresh: true, onRefreshInit: () => { m = measure(); } } });
+      tl.to(reel, { x: () => m.x, scaleX: () => m.sx, scaleY: () => m.sy, ease: 'power2.inOut', duration: 1 }, 0)
+        .to($$('.ch, .sq', second), { autoAlpha: 0, duration: .45 }, 0)
+        .to(first, { yPercent: -60, autoAlpha: 0, duration: .6 }, 0)
+        .to('.hero__intro', { y: -60, autoAlpha: 0, duration: .6 }, 0)
+        .to('.hero__foot', { autoAlpha: 0, duration: .4 }, 0);
+      tl.eventCallback('onUpdate', () => { const sx = gsap.getProperty(reel, 'scaleX'), sy = gsap.getProperty(reel, 'scaleY'), k = Math.max(sx, sy); gsap.set(media, { scaleX: k / sx, scaleY: k / sy }); });
+    }
+
     /* ---------- Statement ---------- */
     const p = $('[data-reveal]');
     const words = (txt, cls) => txt.split(/(\s+)/).map((w) => /\s/.test(w) || !w ? w : `<span class="w${cls}">${w}</span>`).join('');
@@ -476,9 +539,6 @@
         onUpdate: (self) => { const t = self.progress * total; setStep(t < stageIn[1] ? 0 : t < stageIn[2] ? 1 : t < stageIn[3] ? 2 : 3); } } });
       tl.fromTo(bar, { scaleX: 0 }, { scaleX: 1, duration: exitAt + 1, ease: 'none' }, 0)
         .fromTo(titleChars, { yPercent: 115 }, { yPercent: 0, duration: .9, stagger: .04, ease: 'power4.out' }, .1)
-        .fromTo(media, { clipPath: 'inset(18% 12% 18% 12% round .9rem)', scale: 1.35 }, { clipPath: 'inset(0% 0% 0% 0% round .9rem)', duration: 1, ease: 'power2.out' }, 0)
-        .fromTo(imgA, { scale: 1.12 }, { scale: 1, duration: 1.4, ease: 'power2.out' }, 0)
-        .to(media, { scale: 1, duration: 1.1, ease: 'power2.inOut' }, 1.1)
         .fromTo(imgB, { clipPath: 'inset(100% 0% 0% 0%)', scale: 1.2 }, { clipPath: 'inset(0% 0% 0% 0%)', scale: 1, duration: 1.3 }, stageIn[1] - .3)
         .to(imgA, { yPercent: -10, scale: 1.08, duration: 1.3 }, stageIn[1] - .3)
         .to(imgB, { scale: 1.08, xPercent: -3, duration: exitAt - stageIn[2], ease: 'none' }, stageIn[2])
