@@ -13,7 +13,7 @@
   bar.innerHTML = (solo ? [] : [['a', 'A · Print'], ['b', 'B · Kinetic'], ['c', 'C · Gallery']])
     .map(([k, t]) => `<a href="../${k}/"${k === here ? ' aria-current="page"' : ''}>${t.replace(' · ', '<span class="sb-l"> · ')}</span></a>`).join('') +
     '<button type="button" data-theme-toggle>Light / Dark</button>';
-  document.body.append(bar);
+  if (root.dataset.bar !== 'none') document.body.append(bar);
 
   const setTheme = (t) => {
     root.dataset.theme = t;
