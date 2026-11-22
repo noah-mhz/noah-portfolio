@@ -19,11 +19,10 @@
   <meta name="twitter:title" content="Noah Zaw Min Htut · Web designer &amp; developer, Singapore">
   <meta name="twitter:description" content="I design &amp; build distinctive websites. Independent web designer &amp; developer, Singapore → Worldwide.">
   <meta name="twitter:image" content="https://noah-portfolio.pages.dev/assets/images/og/home-2.jpg">
-  <meta name="theme-color" content="#F8DBC1" media="(prefers-color-scheme: light)">
-  <meta name="theme-color" content="#0E1718" media="(prefers-color-scheme: dark)">
+  <meta name="theme-color" content="#0E1718">
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="/apple-touch-icon.png">
-  <script>try{var t=localStorage.getItem('noah-theme');if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+  <script>var d=document.documentElement;d.dataset.theme='dark';try{d.dataset.theme=localStorage.getItem('noah-theme')||'dark'}catch(e){}</script>
   <link rel="preload" href="/assets/fonts/archivo.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="/css/base.css">
   <link rel="stylesheet" href="/css/contact.css">

@@ -125,7 +125,7 @@ ol, ul { list-style: none; margin: 0; padding: 0; }
 .tag--on::before { content: ''; width: .45rem; height: .45rem; border-radius: 50%; background: var(--pink); }
 
 .work-label { display: flex; justify-content: space-between; padding-top: clamp(3rem, 8vh, 5rem); padding-bottom: 1rem; border-bottom: 1px solid var(--line); margin: 0 var(--gutter); padding-inline: 0; }
-.reel-flyer { position: fixed; z-index: 5; left: 0; top: 0; width: 0; height: 0; overflow: hidden; border-radius: .9rem; background: var(--bg-2); visibility: hidden; pointer-events: none; }
+.reel-flyer { position: fixed; z-index: 5; left: 0; top: 0; width: 0; height: 0; will-change: transform; overflow: hidden; border-radius: .9rem; background: var(--bg-2); visibility: hidden; pointer-events: none; }
 .reel-flyer img { width: 100%; height: 100%; object-fit: cover; object-position: top center; }
 
 /* ---------- Statement (B) ---------- */
@@ -217,7 +217,7 @@ a:hover .arr, a:focus-visible .arr { translate: .35em 0; }
 .deck__card { position: absolute; inset: 8% 10% 4% 0; display: block; border-radius: 1rem; overflow: hidden; background: var(--bg-2); box-shadow: 0 1px 0 var(--line), 0 24px 50px -28px rgba(0,0,0,.45); text-decoration: none; transform-style: preserve-3d; will-change: transform; cursor: grab; -webkit-user-drag: none; }
 .deck__card:active { cursor: grabbing; }
 .deck__card img { width: 100%; height: 100%; object-fit: cover; object-position: top center; pointer-events: none; -webkit-user-drag: none; }
-.deck__tag { position: absolute; left: .8rem; bottom: .8rem; padding: .45rem .7rem; border-radius: 99px; background: color-mix(in srgb, #0E1718 70%, transparent); color: #F8DBC1; backdrop-filter: blur(6px); }
+.deck__tag { position: absolute; left: .8rem; bottom: .8rem; padding: .45rem .7rem; border-radius: 99px; background: rgba(14, 23, 24, .86); color: #F8DBC1; }
 .deck__ctrl { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-top: 1rem; padding-right: 10%; }
 .deck__ctrl button { all: unset; cursor: pointer; display: grid; place-items: center; width: 2.9rem; height: 2.9rem; border-radius: 50%; border: 1px solid var(--line); transition: background-color .3s, color .3s; }
 .deck__ctrl button:hover { background: var(--ink); color: var(--bg); }
@@ -376,11 +376,14 @@ a:hover .arr, a:focus-visible .arr { translate: .35em 0; }
   .case__steps { display: none; }
   .more__grid { grid-template-columns: 1fr; gap: 2rem; } .more__side { display: contents; } .more__side .h2s { order: 0; } .more__grid > div:last-child { order: 1; } .record { order: 2; } .more__index { order: 3; } .deck__card { inset: 6% 8% 4% 0; } .deck__ctrl { padding-right: 8%; }
   .svc__grid, .cps__grid { grid-template-columns: 1fr 1fr; }
-  .pnav { position: static; translate: none; margin-left: auto; }
+  .top .pill { display: none; }
+}
+/* Below 1280px the six links and the buttons no longer fit side by side: the nav becomes the Menu pill. */
+@media (max-width: 1279px) {
+  .pnav { position: static; translate: none; margin-left: auto; margin-right: .6rem; }
   .pnav__links { display: none; }
   .pnav .pnav__status, .pnav:not(.is-sectioned) .pnav__status { max-width: 30rem; opacity: 1; padding-inline: .9rem; visibility: visible; }
   .pnav.is-open .pnav__links { display: flex; position: absolute; top: calc(100% + .5rem); right: 0; flex-direction: column; padding: .4rem; max-width: none; opacity: 1; background: var(--bg); border: 1px solid var(--line); border-radius: 1.2rem; }
-  .top .pill { display: none; }
-  .pnav { margin-left: auto; }
 }
+@media (max-width: 900px) { .pnav { margin-right: 0; } }
 @media (max-width: 600px) { .svc__grid { grid-template-columns: 1fr; } .more, .svc, .cps, .xp { padding-top: 4.5rem; } .statement { padding-block: 4.5rem; } .case { padding-block: 3rem 1rem; } .cta { margin-top: 2.5rem; } .pnav__text.is-empty + .pnav__menu { font-size: inherit; gap: .45rem; } .xp__head { margin-bottom: 1.5rem; } .pnav__text { max-width: 7.5rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; } .pnav__menu { font-size: 0; gap: 0; } .pnav__menu .pnav__icon { font-size: .9rem; } .tl__points { font-family: 'Archivo', sans-serif; text-transform: none; letter-spacing: 0; font-size: 1rem; } .foot { flex-direction: column; gap: .6rem; } }

@@ -78,7 +78,7 @@ README.md has the file-by-file structure and the motion tiers; read it before la
 - Type: Archivo variable (width 62–125, weight 100–900) for everything; Geist Mono 400 for labels.
   Self-hosted in `assets/fonts/`.
 - Wordmark: lowercase "noah" + square full stop; folds to "n." on scroll (homepage). Favicon unchanged.
-- Theme: light by default; the choice is stored in localStorage `noah-theme` and applied by the inline
+- Theme: dark by default; the choice is stored in localStorage `noah-theme` and applied by the inline
   `<head>` script before paint. Switching runs the blinds transition (`js/theme.js`).
 - Motion: expo / power curves; small springs only on arrows and dots. Every effect has a touch version and
   a reduced-motion path (instant theme switch, no gallery animation, video posters).
@@ -112,6 +112,11 @@ README.md has the file-by-file structure and the motion tiers; read it before la
 - The hero headline is measured at its resting width (`fit()` includes margins); measure after fonts load.
 - Industmarine screenshots were rendered from saved pages without photos (the sandbox can't reach the live
   site). Replace `assets/images/industmarine-*.webp` with real captures when available.
+- Homepage performance: never read layout (getBoundingClientRect, scrollHeight, scrollY) after writing
+  styles in a ticker or scroll handler. Use `sy()` (Lenis scroll), cached measurements refreshed on
+  ScrollTrigger refresh, and transforms only for anything that moves every frame (the reel flyer).
+  Videos play only while on screen. No backdrop-filter on moving elements.
+- The top nav collapses into the Menu pill below 1280px; the six links don't fit beside the buttons.
 - Test scripts must not write files into the repo.
 
 ## Testing before pushing

@@ -2,8 +2,12 @@
   addEventListener('DOMContentLoaded', () => {
     const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)];
     const fine = matchMedia('(pointer: fine)').matches;
-    // Videos play only when motion is welcome; reduced motion keeps the poster.
-    if (!REDUCE) $$('video[data-autoplay]').forEach((v) => { v.autoplay = true; v.play().catch(() => {}); });
+    // Videos play only when motion is welcome (reduced motion keeps the poster), and each plays only while it's on screen, so off-screen ones don't decode while you scroll.
+    if (!REDUCE) {
+      const io = 'IntersectionObserver' in window && new IntersectionObserver((es) => es.forEach((e) => (e.isIntersecting ? e.target.play().catch(() => {}) : e.target.pause())), { rootMargin: '10% 0px' });
+      $$('video[data-autoplay]').forEach((v) => { v.removeAttribute('autoplay'); if (io) io.observe(v); else v.play().catch(() => {}); });
+    }
+    const sy = () => (window.lenis ? window.lenis.scroll : scrollY);
     const desktop = matchMedia('(min-width: 1024px)').matches;
 
 
@@ -156,17 +160,20 @@
     const narrow = matchMedia('(max-width: 430px)');
     const setStatus = (t) => { if (narrow.matches) t = t.replace(/^\d+ \/ \d+ · /, ''); if (t === label) return; label = t; twStatus.set(t); };
     window.setStatus = setStatus;
+    let maxScroll = 1;
     const place = () => {
-      const max = document.documentElement.scrollHeight - innerHeight;
+      const max = maxScroll = Math.max(1, document.documentElement.scrollHeight - innerHeight);
       marks = sections.map((s, i) => Math.min(1, Math.max(0, (target(i).getBoundingClientRect().top + scrollY - innerHeight * .3) / max)));
       ticks.forEach((t, i) => t.style.left = marks[i] * 100 + '%');
       update();
     };
+    let lastY = -1;
     const update = () => {
-      const max = document.documentElement.scrollHeight - innerHeight;
-      const p = max > 0 ? scrollY / max : 0;
+      const y = sy();
+      if (y === lastY) return; lastY = y;
+      const p = Math.min(1, Math.max(0, y / maxScroll));
       fill.style.scale = `${p} 1`;
-      topEl.classList.toggle('is-scrolled', scrollY > 8);
+      topEl.classList.toggle('is-scrolled', y > 8);
       ticks.forEach((t, i) => t.classList.toggle('is-passed', p >= marks[i] - .001));
       let idx = -1; marks.forEach((m, i) => { if (p >= m - .001) idx = i; });
       rail.classList.toggle('is-visible', idx >= 0 && p < .985);
@@ -185,7 +192,7 @@
     status.addEventListener('click', () => open(!pnav.classList.contains('is-open')));
     if (fine) { status.addEventListener('pointerenter', () => open(true)); pnav.addEventListener('pointerleave', () => open(false)); }
     $$('.pnav__links a').forEach((a) => a.addEventListener('click', () => open(false)));
-    addEventListener('scroll', update, { passive: true });
+    if (window.gsap) gsap.ticker.add(update); else addEventListener('scroll', update, { passive: true });
     addEventListener('resize', place);
     layout(true); record();
     $('[data-next]').addEventListener('click', () => flick(1));
@@ -287,7 +294,7 @@
         gsap.to(rest, { width: fold ? 0 : w, duration: d, ease: 'expo.inOut', overwrite: true, onComplete: () => { if (!fold) gsap.set(rest, { clearProps: 'width' }); } });
         gsap.to(inner, { x: fold ? -w : 0, duration: d, ease: 'expo.inOut', overwrite: true });
       };
-      const should = () => scrollY > 120 && !held;
+      const should = () => sy() > 120 && !held;
       const sync = () => { const n = should(); if (n === folded) return; folded = n; set(folded); };
       let q = 0; addEventListener('scroll', () => { if (!q) q = requestAnimationFrame(() => { q = 0; sync(); }); }, { passive: true });
       if (should()) { folded = true; set(true, true); }
@@ -309,18 +316,33 @@
       gsap.from('.hero__foot > *', { y: 20, opacity: 0, duration: .9, stagger: .05, ease: 'power3.out', delay: .4 });
     }
     if (fine) presses.forEach((h) => {
-      const chars = $$('.ch', h); let mx = 0, my = 0, on = false;
-      addEventListener('pointermove', (e) => { mx = e.clientX; my = e.clientY; on = true; });
+      // Letters near the cursor widen and thicken. Letter centres are measured once (relative to the
+      // line block) and on resize, so each frame does one read and then only writes.
+      const chars = $$('.ch', h); let mx = 0, my = 0, active = 0, centres = [];
+      const measure = () => {
+        chars.forEach((c) => (c.style.fontVariationSettings = ''));
+        const r = h.getBoundingClientRect();
+        centres = chars.map((c) => { const b = c.getBoundingClientRect(); return [b.left - r.left + b.width / 2, b.top - r.top + b.height / 2]; });
+      };
+      addEventListener('pointermove', (e) => { mx = e.clientX; my = e.clientY; active = 90; }, { passive: true });
+      addEventListener('resize', () => { centres = []; });
+      if (document.fonts) document.fonts.ready.then(() => { centres = []; });
       const st = chars.map(() => ({ w: 100, g: 800 }));
       gsap.ticker.add(() => {
-        if (!on) return;
-        const r = h.getBoundingClientRect(); if (r.bottom < 0 || r.top > innerHeight) return;
+        if (active <= 0) return;
+        const r = h.getBoundingClientRect();
+        if (r.bottom < 0 || r.top > innerHeight || gsap.getProperty(h, 'opacity') < .05) { active = 0; return; }
+        if (!centres.length) measure();
+        let moving = false;
         chars.forEach((c, i) => {
-          const b = c.getBoundingClientRect();
-          const k = Math.max(0, 1 - Math.hypot(mx - (b.left + b.width / 2), my - (b.top + b.height / 2)) / (r.height * .9));
-          st[i].w += (85 + 40 * k - st[i].w) * .12; st[i].g += (560 + 340 * k - st[i].g) * .12;
+          const k = Math.max(0, 1 - Math.hypot(mx - (r.left + centres[i][0]), my - (r.top + centres[i][1])) / (r.height * .9));
+          const tw = 85 + 40 * k, tg = 560 + 340 * k;
+          const dw = (tw - st[i].w) * .14, dg = (tg - st[i].g) * .14;
+          if (Math.abs(dw) < .05 && Math.abs(dg) < .5) return;
+          moving = true; st[i].w += dw; st[i].g += dg;
           c.style.fontVariationSettings = `'wdth' ${st[i].w.toFixed(1)}, 'wght' ${st[i].g.toFixed(0)}`;
         });
+        if (!moving) active--;
       });
     });
 
@@ -330,32 +352,42 @@
     if (desktop) {
       // The hero holds briefly while the headline clears; the reel then flies, growing,
       // into the exact spot the Ganko image takes once its sequence pins, and hands over.
-      gsap.timeline({ defaults: { ease: 'none' }, scrollTrigger: { trigger: hero, start: 'top top', end: '+=55%', pin: true, scrub: 1 } })
-        .fromTo('.hero .press', { yPercent: 0, autoAlpha: 1 }, { yPercent: -10, autoAlpha: 0, duration: .55, ease: 'power1.in', immediateRender: false }, 0)
-        .fromTo('.hero__intro', { y: 0, autoAlpha: 1 }, { y: -40, autoAlpha: 0, duration: .45, immediateRender: false }, 0)
+      gsap.timeline({ defaults: { ease: 'none' }, scrollTrigger: { trigger: hero, start: 'top top', end: '+=95%', pin: true, scrub: 1 } })
+        .fromTo('.hero .press', { yPercent: 0, autoAlpha: 1 }, { yPercent: -8, autoAlpha: 0, duration: .6, ease: 'power1.in', immediateRender: false }, .05)
+        .fromTo('.hero__intro', { y: 0, autoAlpha: 1 }, { y: -40, autoAlpha: 0, duration: .5, ease: 'power1.in', immediateRender: false }, 0)
         .fromTo('.hero__foot', { autoAlpha: 1 }, { autoAlpha: 0, duration: .4, immediateRender: false }, 0)
-        .to({}, { duration: .35 });
+        .to({}, { duration: .45 });
       const lerp = (a, b, t) => a + (b - a) * t;
       const caseStart = () => ScrollTrigger.getAll().find((t) => t.pin === caseEl)?.start ?? Infinity;
-      const prog = { value: 0 }; let state = 'reel';
+      const prog = { value: 0 }; let state = 'reel', dock = null;
       const show = (n) => {
         if (n === state) return; state = n;
         gsap.set(reel, { visibility: n === 'reel' ? 'visible' : 'hidden' });
         gsap.set(flyer, { visibility: n === 'flying' ? 'visible' : 'hidden' });
         gsap.set(caseMedia, { autoAlpha: n === 'flying' ? 0 : 1 });
       };
-      const docked = () => { const r = caseMedia.getBoundingClientRect(); const off = scrollY - caseStart(); return { left: r.left, top: r.top + off, width: r.width, height: r.height }; };
+      // Where the case image sits once its sequence pins, in viewport terms. Measured on refresh only.
+      const measureDock = () => {
+        const r = caseMedia.getBoundingClientRect(), off = scrollY - caseStart();
+        dock = { left: r.left, top: r.top + off, width: r.width, height: r.height };
+        gsap.set(flyer, { width: dock.width, height: dock.height, transformOrigin: '0 0', force3D: true });
+      };
+      // The flyer keeps the docked size and moves by transform only (no layout per frame);
+      // its corners are counter-scaled so they stay round while it grows.
       const render = () => {
         const t = prog.value;
-        if (scrollY >= caseStart() - 1 && t >= .999) return show('docked');
+        if (sy() >= caseStart() - 1 && t >= .999) return show('docked');
         if (t <= .001) return show('reel');
+        if (!dock) measureDock();
         show('flying');
-        const f = reel.getBoundingClientRect(), d = docked();
-        gsap.set(flyer, { x: lerp(f.left, d.left, t), y: lerp(f.top, d.top, t), width: lerp(f.width, d.width, t), height: lerp(f.height, d.height, t), borderRadius: lerp(f.height * .1, 14, t) });
+        const f = reel.getBoundingClientRect();
+        const w = lerp(f.width, dock.width, t), hh = lerp(f.height, dock.height, t);
+        const kx = w / dock.width, ky = hh / dock.height, rad = lerp(f.height * .1, 14, t);
+        gsap.set(flyer, { x: lerp(f.left, dock.left, t), y: lerp(f.top, dock.top, t), scaleX: kx, scaleY: ky, borderRadius: `${rad / kx}px / ${rad / ky}px` });
       };
-      gsap.to(prog, { value: 1, ease: 'power2.inOut', onUpdate: render, scrollTrigger: { start: 0, endTrigger: caseEl, end: 'top top', scrub: 1.4 } });
+      gsap.to(prog, { value: 1, ease: 'power3.inOut', onUpdate: render, scrollTrigger: { start: 0, endTrigger: caseEl, end: 'top top', scrub: 1.6 } });
       ScrollTrigger.create({ start: 0, endTrigger: caseEl, end: 'top top', onUpdate: render, onLeave: render, onEnterBack: render });
-      ScrollTrigger.addEventListener('refresh', render);
+      ScrollTrigger.addEventListener('refresh', () => { measureDock(); render(); });
     } else {
       // Tablet / phone: the reel opens to the screen's width as the headline parts (original initReelOpen).
       const [first, second] = lines;
@@ -368,7 +400,7 @@
       };
       let m = measure();
       gsap.set(second, { position: 'relative', zIndex: 2 });
-      const tl = gsap.timeline({ defaults: { ease: 'none' }, scrollTrigger: { trigger: hero, start: 'top top', end: 'bottom 45%', scrub: .6, invalidateOnRefresh: true, onRefreshInit: () => { m = measure(); } } });
+      const tl = gsap.timeline({ defaults: { ease: 'none' }, scrollTrigger: { trigger: hero, start: 'top top', end: 'bottom 20%', scrub: 1, invalidateOnRefresh: true, onRefreshInit: () => { m = measure(); } } });
       tl.to(reel, { x: () => m.x, scaleX: () => m.sx, scaleY: () => m.sy, ease: 'power2.inOut', duration: 1 }, 0)
         .to($$('.ch, .sq', second), { autoAlpha: 0, duration: .45 }, 0)
         .fromTo(first, { yPercent: 0, autoAlpha: 1 }, { yPercent: -60, autoAlpha: 0, duration: .6, immediateRender: false }, 0)

@@ -6,6 +6,8 @@
 
   if (!window.gsap) return;
   gsap.registerPlugin(ScrollTrigger);
+  // Phones: the address bar showing/hiding resizes the viewport; don't re-measure every trigger for it.
+  ScrollTrigger.config({ ignoreMobileResize: true });
   if (!reduce && window.Lenis) {
     const lenis = new Lenis({ lerp: 0.085, wheelMultiplier: 1 });
     window.lenis = lenis;
