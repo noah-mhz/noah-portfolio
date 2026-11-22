@@ -43,7 +43,10 @@
     .pnav__status { all: unset; cursor: pointer; display: inline-flex; align-items: center; gap: .7rem; padding: .55rem .9rem; border-radius: 99px; white-space: nowrap; overflow: hidden; max-width: 0; opacity: 0; transition: max-width .8s var(--ease), opacity .4s, padding .8s var(--ease); padding-inline: 0; }
     .pnav__status:focus-visible { outline: 2px solid var(--teal); }
     .pnav__text { display: inline-block; }
-    .pnav__text b { font-weight: 400; color: var(--pink); }
+    /* Typewriter caret (Motion's typewriter, rebuilt): blinks while idle, solid while typing. */
+    .tw-caret { display: inline-block; width: .5em; height: 1em; margin-left: .12em; vertical-align: -.14em; background: var(--pink); animation: tw-blink 1s steps(1) infinite; }
+    .is-typing > .tw-caret { animation: none; }
+    @keyframes tw-blink { 50% { opacity: 0; } }
     .pnav__menu { display: inline-flex; align-items: center; gap: .45rem; padding-left: .7rem; border-left: 1px solid var(--line); }
     .pnav__text:empty + .pnav__menu { border-left: 0; padding-left: 0; }
     .pnav__icon { display: inline-block; font-style: normal; transition: rotate .5s var(--ease); }
@@ -115,6 +118,7 @@
     .case__top { position: relative; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem; padding-bottom: 1rem; color: var(--muted); }
     .case__open { color: var(--ink); text-decoration: none; }
     .case__open span { color: var(--pink); }
+    .case__open [data-tw-stage] { color: var(--ink); }
     .engage { display: inline-flex; align-items: center; gap: .5rem; }
     .engage::before { content: ''; width: .45rem; height: .45rem; border: 1px solid var(--pink); }
     .case__steps { display: flex; gap: clamp(1rem, 2.5vw, 2.5rem); }
@@ -149,26 +153,33 @@
     .case.is-pinned .case__next { position: absolute; left: var(--gutter); bottom: var(--gutter); display: flex; flex-direction: column; color: var(--muted); }
     .case.is-pinned .case__next span:last-child { color: var(--ink); }
 
-    /* ---------- More work (B's sideways reel) ---------- */
-    .work { position: relative; z-index: 1; padding-top: 5.5rem; background: var(--bg); }
-    /* As on the original: the next project rises over the pinned frame as it releases. */
-    .case.is-pinned + .work, .pin-spacer:has(> .case.is-pinned) + .pin-spacer { margin-top: -22vh !important; position: relative; z-index: 1; }
-    .work__head { display: flex; justify-content: space-between; align-items: end; padding: 0 var(--gutter) 1.5rem; }
-    .h2s { margin: 0; font-weight: 800; font-size: clamp(3rem, 9vw, 10rem); line-height: .8; text-transform: uppercase; font-stretch: 62%; }
-    .reel-wrap { overflow: hidden; }
-    .track { display: flex; gap: 2vw; padding: 0 var(--gutter); width: max-content; }
-    .card { position: relative; width: min(72vw, 72rem); flex: none; text-decoration: none; display: block; }
-    .card__img { position: relative; aspect-ratio: 16 / 10; border-radius: .9rem; overflow: hidden; background: var(--bg-2); }
-    .card__img img { width: 100%; height: 100%; object-fit: cover; scale: 1.08; transition: scale 1.2s var(--ease); }
-    .card:hover .card__img img { scale: 1.02; }
-    .card__row { display: flex; justify-content: space-between; align-items: start; gap: 1rem; padding-top: 1rem; }
-    .card h3 { margin: 0; font-weight: 800; font-size: clamp(2.4rem, 5.4vw, 6rem); line-height: .85; text-transform: uppercase; font-stretch: 75%; transition: font-stretch .6s var(--ease), color .4s; }
-    .card:hover h3 { font-stretch: 125%; color: var(--pink); }
-    .card__meta { text-align: right; display: grid; gap: .3rem; }
-    .card__meta .eng { color: var(--teal); }
-    .card--end { width: min(40vw, 30rem); display: grid; place-items: center; }
-    .card--end a { display: grid; place-items: center; width: 100%; aspect-ratio: 1; border-radius: 50%; background: var(--teal); color: var(--on-teal); text-decoration: none; font-weight: 800; font-size: clamp(1.6rem, 2.6vw, 2.6rem); text-transform: uppercase; text-align: center; line-height: .95; font-stretch: 80%; }
-    .bubble { position: fixed; z-index: 80; left: 0; top: 0; width: 6.5rem; height: 6.5rem; margin: -3.25rem 0 0 -3.25rem; border-radius: 50%; background: var(--pink); color: var(--on-pink); display: grid; place-items: center; font: 600 .78rem 'Geist Mono'; letter-spacing: .06em; text-transform: uppercase; pointer-events: none; scale: 0; }
+    /* ---------- More work: a swipeable stack with an index and a record panel ---------- */
+    .more { position: relative; z-index: 1; padding: clamp(6rem, 16vh, 10rem) var(--gutter) 0; background: var(--bg); }
+    .more__grid { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: clamp(2rem, 5vw, 6rem); align-items: center; }
+    .more__side { display: grid; gap: 2.5rem; align-content: start; }
+    .more__index { border-top: 1px solid var(--line); }
+    .more__index button { all: unset; box-sizing: border-box; cursor: pointer; width: 100%; display: grid; grid-template-columns: 3.2rem 1fr auto; align-items: baseline; padding: .85rem 0; border-bottom: 1px solid var(--line); color: var(--muted); transition: color .3s, padding .6s var(--ease); }
+    .more__index button:hover { color: var(--ink); }
+    .more__index button:focus-visible { outline: 2px solid var(--teal); outline-offset: 2px; }
+    .more__index .nm { font: 700 clamp(1.3rem, 1.9vw, 1.9rem)/1 'Archivo'; text-transform: uppercase; font-stretch: 80%; letter-spacing: -.01em; }
+    .more__index .is-current { color: var(--ink); padding-left: .8rem; }
+    .more__index .is-current .nm { color: var(--pink); }
+    .record { display: grid; grid-template-columns: auto 1fr; gap: .55rem 1.5rem; margin: 0; padding: 1.2rem 1.3rem; border-radius: .9rem; background: var(--bg-2); min-height: 11.5rem; align-content: start; }
+    .record dt { color: var(--muted); }
+    .record dd { margin: 0; }
+    .record a { grid-column: 1 / -1; margin-top: .6rem; color: var(--teal); text-decoration: none; font: 500 1rem 'Archivo'; text-transform: none; letter-spacing: 0; }
+    .deck { position: relative; aspect-ratio: 16 / 11.5; perspective: 1400px; touch-action: pan-y; user-select: none; }
+    .deck__card { position: absolute; inset: 8% 10% 4% 0; display: block; border-radius: 1rem; overflow: hidden; background: var(--bg-2); box-shadow: 0 1px 0 var(--line), 0 24px 50px -28px rgba(0,0,0,.45); text-decoration: none; transform-style: preserve-3d; will-change: transform; cursor: grab; -webkit-user-drag: none; }
+    .deck__card:active { cursor: grabbing; }
+    .deck__card img { width: 100%; height: 100%; object-fit: cover; object-position: top center; pointer-events: none; -webkit-user-drag: none; }
+    .deck__tag { position: absolute; left: .8rem; bottom: .8rem; padding: .45rem .7rem; border-radius: 99px; background: color-mix(in srgb, #0E1718 70%, transparent); color: #F8DBC1; backdrop-filter: blur(6px); }
+    .deck__ctrl { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-top: 1rem; padding-right: 10%; }
+    .deck__ctrl button { all: unset; cursor: pointer; display: grid; place-items: center; width: 2.9rem; height: 2.9rem; border-radius: 50%; border: 1px solid var(--line); transition: background-color .3s, color .3s; }
+    .deck__ctrl button:hover { background: var(--ink); color: var(--bg); }
+    .deck__ctrl button:focus-visible { outline: 2px solid var(--teal); }
+    .deck__btns { display: flex; gap: .5rem; }
+    .deck__ctrl [data-count] { white-space: nowrap; }
+    @media (max-width: 600px) { .deck__ctrl .muted { display: none; } }
 
     /* ---------- Services, concepts, contact (B) ---------- */
     .svc { padding: clamp(6rem, 16vh, 10rem) var(--gutter) 0; }
@@ -196,7 +207,7 @@
       .hero { min-height: 0; padding-top: 8rem; }
       .hero__intro, .hero__foot, .cta__row, .work__head { flex-direction: column; align-items: start; }
       .case__steps { display: none; }
-      .card { width: 84vw; } .card--end { width: 60vw; }
+      .more__grid { grid-template-columns: 1fr; gap: 2rem; } .more__side { display: contents; } .more__side .h2s { order: 0; } .more__grid > div:last-child { order: 1; } .record { order: 2; } .more__index { order: 3; } .deck__card { inset: 6% 8% 4% 0; } .deck__ctrl { padding-right: 8%; }
       .svc__grid, .cps__grid { grid-template-columns: 1fr 1fr; } .svc__item { min-height: 15rem; }
       .pnav { position: static; translate: none; margin-left: auto; }
       .pnav__links { display: none; }
@@ -247,7 +258,7 @@
     <article class="case" data-section="Ganko.sg" data-nav="work" data-status="01 / 03 — Ganko.sg">
       <div class="case__frame">
         <div class="case__top label">
-          <a class="case__open" href="https://noah-portfolio.pages.dev/work/ganko/">01 / 03 — View case study <span>→</span></a>
+          <a class="case__open" href="https://noah-portfolio.pages.dev/work/ganko/" aria-label="View the Ganko.sg case study">01 / 03 — <span data-tw-stage>Overview</span> <span aria-hidden="true">→</span></a>
           <span class="engage">Freelance</span>
           <ol class="case__steps"><li class="is-active">Overview</li><li>Approach</li><li>Platform</li><li>Live</li></ol>
           <span class="case__bar" aria-hidden="true"><span class="case__bar-fill" data-case-bar></span></span>
@@ -293,19 +304,16 @@
       </div>
     </article>
 
-    <section class="work" data-section="More work" data-nav="work" data-status="02 / 03 — Luumens">
-      <div class="work__head"><h2 class="h2s">More<br>work</h2><span class="mono">02 — 03 · Scroll →</span></div>
-      <div class="reel-wrap">
-        <div class="track">
-          <a class="card" href="https://noah-portfolio.pages.dev/work/luumens/" data-view data-card-status="02 / 03 — Luumens">
-            <div class="card__img"><img src="../../assets/images/luumens-home-1600.webp" alt="Luumens homepage"><span class="marks" aria-hidden="true"></span></div>
-            <div class="card__row"><h3>Luumens</h3><div class="card__meta mono"><span>02 / 03 · Energy · 2026</span><span class="eng">In-house · Pomar Engineering</span></div></div>
-          </a>
-          <a class="card" href="https://noah-portfolio.pages.dev/work/voyagaer/" data-view data-card-status="03 / 03 — Voyagaer">
-            <div class="card__img"><img src="../../assets/images/voyagaer-hero-poster.webp" alt="Voyagaer homepage"><span class="marks" aria-hidden="true"></span></div>
-            <div class="card__row"><h3>Voyagaer</h3><div class="card__meta mono"><span>03 / 03 · Marine · Not yet launched</span><span class="eng">In-house · Pomar Engineering</span></div></div>
-          </a>
-          <div class="card card--end" data-card-status="Concepts"><a href="https://noah-portfolio.pages.dev/concepts/" data-mag>See the<br>concepts →</a></div>
+    <section class="more" data-section="More work" data-nav="work" data-status="More work">
+      <div class="more__grid">
+        <div class="more__side">
+          <h2 class="h2s">More<br>work</h2>
+          <ol class="more__index mono" data-index></ol>
+          <dl class="record mono" data-record aria-live="polite"></dl>
+        </div>
+        <div>
+          <div class="deck" data-deck aria-roledescription="carousel" aria-label="More work"></div>
+          <div class="deck__ctrl mono"><span data-count>1 / 6</span><span class="muted">Drag, swipe or use the arrows</span><span class="deck__btns"><button type="button" data-prev aria-label="Previous">←</button><button type="button" data-next aria-label="Next">→</button></span></div>
         </div>
       </div>
     </section>
@@ -374,6 +382,89 @@
     });
     fit(); document.fonts.load('800 100px Archivo').then(() => { fit(); window.ScrollTrigger?.refresh(); }); addEventListener('resize', fit);
 
+    /* ---------- Deck data + behaviour ---------- */
+    const WORK = [
+      { n: '02 / 03', name: 'Luumens', img: '../../assets/images/luumens-home-1600.webp', href: 'https://noah-portfolio.pages.dev/work/luumens/', cta: 'Read the case study →',
+        rows: [['Type', 'In-house · Pomar Engineering'], ['Sector', 'Energy'], ['Year', '2026'], ['Built with', 'WordPress, custom widgets, GSAP']] },
+      { n: '03 / 03', name: 'Voyagaer', img: '../../assets/images/voyagaer-hero-poster.webp', href: 'https://noah-portfolio.pages.dev/work/voyagaer/', cta: 'Read the case study →',
+        rows: [['Type', 'In-house · Pomar Engineering'], ['Sector', 'Marine'], ['Status', 'Not yet launched'], ['Built with', 'WordPress, custom widgets']] },
+      { n: 'Concept', name: 'Pixel Pull', img: '../../assets/images/concept-pixel-pull-cover.webp', href: 'https://noah-portfolio.pages.dev/concepts/#pixel-pull', cta: 'See the concept →', rows: [['Type', 'Pitched homepage'], ['Sector', 'Card shop']] },
+      { n: 'Concept', name: 'Little Rösti', img: '../../assets/images/concept-little-rosti-poster.webp', href: 'https://noah-portfolio.pages.dev/concepts/#little-rosti', cta: 'See the concept →', rows: [['Type', 'Pitched homepage'], ['Sector', 'Café']] },
+      { n: 'Concept', name: 'Common Table', img: '../../assets/images/concept-common-table-cover.webp', href: 'https://noah-portfolio.pages.dev/concepts/#common-table', cta: 'See the concept →', rows: [['Type', 'Pitched homepage'], ['Sector', 'Restaurant']] },
+      { n: 'Concept', name: 'Crumb & Kin', img: '../../assets/images/concept-crumb-and-kin-poster.webp', href: 'https://noah-portfolio.pages.dev/concepts/#crumb-and-kin', cta: 'See the concept →', rows: [['Type', 'Pitched homepage'], ['Sector', 'Bakery']] },
+    ];
+    const esc = (t) => t.replace(/&/g, '&amp;').replace(/</g, '&lt;');
+    const deckEl = $('[data-deck]'), indexEl = $('[data-index]'), recordEl = $('[data-record]'), countEl = $('[data-count]');
+    const deckSection = $('.more');
+    deckEl.innerHTML = WORK.map((w, i) => `<a class="deck__card" href="${w.href}" draggable="false" aria-label="${esc(w.name)}" data-i="${i}" data-view><img src="${w.img}" alt="" draggable="false"><span class="deck__tag mono">${esc(w.n)} · ${esc(w.name)}</span></a>`).join('');
+    indexEl.innerHTML = WORK.map((w, i) => `<li><button type="button" data-go="${i}"><span>${w.n === 'Concept' ? 'C' : w.n.slice(0, 2)}</span><span class="nm">${esc(w.name)}</span><span>${w.n === 'Concept' ? 'Concept' : 'Project'}</span></button></li>`).join('');
+    const deckCards = $$('.deck__card', deckEl);
+    let order = WORK.map((_, i) => i); // order[0] is on top
+    const top = () => order[0];
+    const deckStatus = () => { const w = WORK[top()]; setStatus(w.n === 'Concept' ? `Concept — ${w.name}` : `${w.n} — ${w.name}`); };
+    const pose = (d) => ({ x: d * 26, y: -d * 20, scale: 1 - d * .045, rotation: d === 0 ? 0 : (d % 2 ? 2.4 : -1.6) * Math.min(d, 3) / 1.5, autoAlpha: d > 3 ? 0 : 1, zIndex: WORK.length - d });
+    const record = () => {
+      const w = WORK[top()];
+      recordEl.innerHTML = `<dt>Project</dt><dd>${esc(w.name)}</dd>` + w.rows.map(([k, v]) => `<dt>${k}</dt><dd>${esc(v)}</dd>`).join('') + `<a href="${w.href}">${w.cta}</a>`;
+      $$('[data-go]', indexEl).forEach((b, i) => { b.classList.toggle('is-current', i === top()); b.setAttribute('aria-current', i === top() ? 'true' : 'false'); });
+      countEl.textContent = `${top() + 1} / ${WORK.length}`;
+      deckCards.forEach((c, i) => { c.tabIndex = i === top() ? 0 : -1; c.setAttribute('aria-hidden', i === top() ? 'false' : 'true'); });
+      if (sections[current] === deckSection) deckStatus();
+      if (window.gsap && !REDUCE) gsap.fromTo(recordEl.children, { y: 10, opacity: 0 }, { y: 0, opacity: 1, duration: .5, stagger: .03, ease: 'power3.out' });
+    };
+    const layout = (instant) => order.forEach((ci, d) => {
+      const c = deckCards[ci];
+      if (!window.gsap || REDUCE || instant) { if (window.gsap) gsap.set(c, { ...pose(d), x: pose(d).x, rotationX: 0, rotationY: 0 }); else { c.style.zIndex = WORK.length - d; c.style.opacity = d > 3 ? 0 : 1; c.style.transform = `translate(${d * 26}px, ${-d * 20}px) scale(${1 - d * .045})`; } return; }
+      gsap.to(c, { ...pose(d), rotationX: 0, rotationY: 0, duration: .8, ease: 'expo.out', overwrite: 'auto', zIndex: WORK.length - d });
+    });
+    // Send the top card off in a direction, then tuck it in at the back.
+    const flick = (dir = 1, vy = 0) => {
+      const c = deckCards[top()];
+      order.push(order.shift());
+      if (window.gsap && !REDUCE) {
+        gsap.timeline()
+          .to(c, { x: dir * deckEl.offsetWidth * .9, y: vy, rotation: dir * 14, duration: .45, ease: 'power3.in', overwrite: true })
+          .set(c, { zIndex: 0 })
+          .add(() => layout());
+        order.slice(0, -1).forEach((ci, d) => gsap.to(deckCards[ci], { ...pose(d), duration: .8, ease: 'expo.out', delay: .12 }));
+      } else layout(true);
+      record();
+    };
+    const back = () => { order.unshift(order.pop()); const c = deckCards[top()]; if (window.gsap && !REDUCE) gsap.fromTo(c, { x: -deckEl.offsetWidth * .9, rotation: -14, zIndex: WORK.length + 1 }, { x: 0, rotation: 0, duration: .7, ease: 'expo.out' }); layout(); record(); };
+    const goTo = (i) => { let n = 0; while (top() !== i && n++ < WORK.length) flick(1); };
+    function initDeck() {
+      // Drag / swipe the top card; tilt it under the cursor.
+      let drag = null, moved = false;
+      deckEl.addEventListener('pointerdown', (e) => {
+        const c = e.target.closest('.deck__card'); if (!c || +c.dataset.i !== top()) return;
+        drag = { c, x0: e.clientX, y0: e.clientY, t0: performance.now(), dx: 0, dy: 0 }; moved = false;
+        c.setPointerCapture(e.pointerId);
+      });
+      deckEl.addEventListener('pointermove', (e) => {
+        if (drag) {
+          drag.dx = e.clientX - drag.x0; drag.dy = e.clientY - drag.y0;
+          if (Math.abs(drag.dx) > 6) moved = true;
+          gsap.set(drag.c, { x: drag.dx, y: drag.dy * .35, rotation: drag.dx * .04, rotationX: 0, rotationY: 0 });
+          return;
+        }
+        if (!fine) return;
+        const c = deckCards[top()], r = c.getBoundingClientRect();
+        if (e.clientX < r.left || e.clientX > r.right || e.clientY < r.top || e.clientY > r.bottom) return;
+        gsap.to(c, { rotationY: ((e.clientX - r.left) / r.width - .5) * 12, rotationX: -((e.clientY - r.top) / r.height - .5) * 12, duration: .5, ease: 'power3.out' });
+      });
+      const end = () => {
+        if (!drag) return;
+        const v = drag.dx / Math.max(1, performance.now() - drag.t0);
+        if (Math.abs(drag.dx) > deckEl.offsetWidth * .22 || Math.abs(v) > .6) flick(Math.sign(drag.dx) || 1, drag.dy * .35);
+        else gsap.to(drag.c, { ...pose(0), duration: .7, ease: 'elastic.out(1, .6)' });
+        drag = null;
+      };
+      deckEl.addEventListener('pointerup', end); deckEl.addEventListener('pointercancel', end);
+      deckEl.addEventListener('pointerleave', () => { if (!drag) gsap.to(deckCards[top()], { rotationX: 0, rotationY: 0, duration: .6 }); });
+      deckEl.addEventListener('click', (e) => { if (moved) { e.preventDefault(); moved = false; } }, true);
+      // The deck deals itself in the first time it's seen.
+      gsap.from(deckCards, { y: 120, x: 0, rotation: 0, autoAlpha: 0, duration: 1.1, stagger: { each: .07, from: 'end' }, ease: 'expo.out', scrollTrigger: { trigger: deckEl, start: 'top 80%' }, onComplete: () => layout() });
+    }
     /* ---------- Section status, progress ticks and rail (from the original) ---------- */
     const sections = $$('[data-section]');
     const pnav = $('[data-pnav]'), status = $('[data-status-btn]'), stText = $('[data-status-text]');
@@ -394,13 +485,29 @@
     railLinks.forEach((a, i) => a.addEventListener('click', (e) => { e.preventDefault(); jump(i); }));
     ticks.forEach((t, i) => t.addEventListener('click', () => jump(i)));
 
-    let marks = [], current = -1, label = '';
-    const setStatus = (txt) => {
-      if (txt === label) return; label = txt;
-      const html = txt.replace(/^(\d+ \/ \d+)/, '<b>$1</b>');
-      if (!window.gsap || REDUCE || !stText.innerHTML) { stText.innerHTML = html; return; }
-      gsap.timeline().to(stText, { yPercent: -110, opacity: 0, duration: .25, ease: 'power3.in' }).add(() => { stText.innerHTML = html; }).fromTo(stText, { yPercent: 110, opacity: 0 }, { yPercent: 0, opacity: 1, duration: .45, ease: 'expo.out' });
+    /* Typewriter (after Motion's typewriter): set() erases back to where the old and new
+       text differ, then types the rest with natural, slightly uneven timing. */
+    const typewriter = (el, { speed = 42, back = 18 } = {}) => {
+      const txt = document.createTextNode(el.textContent); const caret = document.createElement('i');
+      caret.className = 'tw-caret'; caret.setAttribute('aria-hidden', 'true');
+      el.textContent = ''; el.append(txt, caret);
+      let target = txt.data, timer = 0;
+      const step = () => {
+        const cur = txt.data; let k = 0;
+        while (k < cur.length && k < target.length && cur[k] === target[k]) k++;
+        if (cur === target) { el.classList.remove('is-typing'); return; }
+        el.classList.add('is-typing');
+        if (cur.length > k) { txt.data = cur.slice(0, -1); timer = setTimeout(step, back); return; }
+        const ch = target[cur.length]; txt.data = cur + ch;
+        const pause = /[ —\/.,]/.test(ch) ? 2.2 : 1;
+        timer = setTimeout(step, speed * pause * (0.6 + Math.random() * 0.8));
+      };
+      return { set(t) { target = t; clearTimeout(timer); if (REDUCE) { txt.data = t; return; } step(); } };
     };
+    window.typewriter = typewriter;
+    const twStatus = typewriter(stText);
+    let marks = [], current = -1, label = '';
+    const setStatus = (t) => { if (t === label) return; label = t; twStatus.set(t); };
     window.setStatus = setStatus;
     const place = () => {
       const max = document.documentElement.scrollHeight - innerHeight;
@@ -423,6 +530,7 @@
         $$('[data-link]').forEach((a) => a.classList.toggle('is-active', !!s && a.dataset.link === s.dataset.nav));
         if (s && s.dataset.status && !s.hasAttribute('data-own-status')) setStatus(s.dataset.status);
         if (idx < 0) setStatus('');
+        if (s === deckSection) deckStatus();
       }
     };
     const open = (v) => { pnav.classList.toggle('is-open', v); status.setAttribute('aria-expanded', v); };
@@ -431,6 +539,11 @@
     $$('.pnav__links a').forEach((a) => a.addEventListener('click', () => open(false)));
     addEventListener('scroll', update, { passive: true });
     addEventListener('resize', place);
+    layout(true); record();
+    $('[data-next]').addEventListener('click', () => flick(1));
+    $('[data-prev]').addEventListener('click', back);
+    deckEl.addEventListener('keydown', (e) => { if (e.key === 'ArrowRight') { e.preventDefault(); flick(1); deckCards[top()].focus(); } if (e.key === 'ArrowLeft') { e.preventDefault(); back(); deckCards[top()].focus(); } });
+    $$('[data-go]', indexEl).forEach((b) => b.addEventListener('click', () => goTo(+b.dataset.go)));
 
     if (!window.gsap) { place(); return; }
     ScrollTrigger.addEventListener('refresh', place);
@@ -511,27 +624,26 @@
       tl.eventCallback('onUpdate', () => { const sx = gsap.getProperty(reel, 'scaleX'), sy = gsap.getProperty(reel, 'scaleY'), k = Math.max(sx, sy); gsap.set(media, { scaleX: k / sx, scaleY: k / sy }); });
     }
 
-    /* ---------- Statement ---------- */
-    const p = $('[data-reveal]');
-    const words = (txt, cls) => txt.split(/(\s+)/).map((w) => /\s/.test(w) || !w ? w : `<span class="w${cls}">${w}</span>`).join('');
-    p.innerHTML = [...p.childNodes].map((n) => words(n.textContent, n.nodeType === 3 ? '' : ' k')).join('');
-    gsap.to($$('.w', p), { opacity: 1, stagger: .1, ease: 'none', scrollTrigger: { trigger: p, start: 'top 80%', end: 'bottom 45%', scrub: true } });
-
     /* ---------- Case study: the original pinned timeline ---------- */
     const section = $('.case');
     const stages = $$('.case__stage', section);
     const media = $('.case__media', section), imgA = $('.case__img--a', section), imgB = $('.case__img--b', section);
     const titleChars = splitChars($('[data-case-title]'));
+    const STAGES = ['Overview', 'Approach', 'Platform', 'Live'];
+    const twStage = typewriter($('[data-tw-stage]'), { speed: 55 });
     if (!desktop) {
       gsap.fromTo(titleChars, { yPercent: 115 }, { yPercent: 0, duration: 1.4, ease: 'power4.out', stagger: .03, scrollTrigger: { trigger: section, start: 'top 75%', once: true } });
       gsap.fromTo(media, { clipPath: 'inset(42% 0% 0% 0% round .9rem)' }, { clipPath: 'inset(0% 0% 0% 0% round .9rem)', duration: 1.6, ease: 'expo.out', scrollTrigger: { trigger: media, start: 'top 85%', once: true } });
-      stages.forEach((stage) => gsap.fromTo($$('[data-stage-item]', stage), { yPercent: 110 }, { yPercent: 0, duration: 1.2, ease: 'expo.out', stagger: .06, scrollTrigger: { trigger: stage, start: 'top 85%', once: true } }));
+      stages.forEach((stage, i) => {
+        gsap.fromTo($$('[data-stage-item]', stage), { yPercent: 110 }, { yPercent: 0, duration: 1.2, ease: 'expo.out', stagger: .06, scrollTrigger: { trigger: stage, start: 'top 85%', once: true } });
+        ScrollTrigger.create({ trigger: stage, start: 'top 60%', end: 'bottom 40%', onToggle: (t) => t.isActive && twStage.set(STAGES[i]) });
+      });
     } else {
       section.classList.add('is-pinned');
       const steps = $$('.case__steps li', section), bar = $('[data-case-bar]', section), wrap = $('.case__stages', section), next = $$('[data-case-next]', section);
       const stageIn = [1.2, 2.8, 4.4, 6.0], stageOut = [2.5, 4.1, 5.7, 7.2], exitAt = 7.2, total = 9.0;
       let cur = -1;
-      const setStep = (i) => { if (i === cur) return; cur = i; steps.forEach((s, k) => s.classList.toggle('is-active', k === i)); };
+      const setStep = (i) => { if (i === cur) return; cur = i; steps.forEach((s, k) => s.classList.toggle('is-active', k === i)); twStage.set(STAGES[i]); };
       const mediaShift = () => wrap.offsetLeft - media.offsetLeft;
       const stagesShift = () => (media.offsetLeft + media.offsetWidth) - (wrap.offsetLeft + wrap.offsetWidth);
       gsap.set(stages, { autoAlpha: 0 });
@@ -559,20 +671,15 @@
       setStep(0);
     }
 
-    /* ---------- More work: sideways reel; the status follows the card in view ---------- */
-    const tr = $('.track'), cards = $$('[data-card-status]');
-    const work = $('.work'); work.setAttribute('data-own-status', '');
-    const dist = () => tr.scrollWidth - innerWidth;
-    const lean = gsap.quickTo('.card', 'skewX', { duration: .5, ease: 'power3' });
-    const cardStatus = () => {
-      if (sections[current] !== work) return;
-      let best = cards[0], bd = 1e9;
-      cards.forEach((c) => { const r = c.getBoundingClientRect(); const d = Math.abs(r.left + r.width / 2 - innerWidth / 2); if (d < bd) { bd = d; best = c; } });
-      setStatus(best.dataset.cardStatus);
-    };
-    gsap.to(tr, { x: () => -dist(), ease: 'none', scrollTrigger: { trigger: work, start: 'top top', end: () => '+=' + dist(), pin: true, scrub: 1, invalidateOnRefresh: true,
-      onUpdate: (s) => { lean(gsap.utils.clamp(-3, 3, s.getVelocity() / -600)); cardStatus(); } } });
-    addEventListener('scroll', cardStatus, { passive: true });
+    /* ---------- More work: the deck (after Motion's gallery-cards: stack + tilt) ---------- */
+    initDeck();
+
+    /* ---------- Statement: words fill with colour as you scroll (created after the pins so it lines up) ---------- */
+    const p = $('[data-reveal]');
+    const words = (txt, cls) => txt.split(/(\s+)/).map((w) => /\s/.test(w) || !w ? w : `<span class="w${cls}">${w}</span>`).join('');
+    p.innerHTML = [...p.childNodes].map((n) => words(n.textContent, n.nodeType === 3 ? '' : ' k')).join('');
+    gsap.to($$('.w', p), { opacity: 1, stagger: .1, ease: 'none', scrollTrigger: { trigger: p, start: 'top 80%', end: 'bottom 45%', scrub: true } });
+
 
     if (fine) {
       const b = $('.bubble');
