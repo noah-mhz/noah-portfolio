@@ -7,22 +7,6 @@
     const desktop = matchMedia('(min-width: 1024px)').matches;
 
 
-    /* ---------- Theme switch (with a circular reveal where the browser supports view transitions) ---------- */
-    {
-      const btn = $('[data-theme-switch]'), label = $('.theme__label', btn), root = document.documentElement;
-      const sync = () => { const dark = root.dataset.theme === 'dark'; label.textContent = dark ? 'Dark' : 'Light'; btn.setAttribute('aria-pressed', String(dark)); };
-      const apply = (t) => { root.dataset.theme = t; try { localStorage.setItem('sample-theme', t); } catch (e) {} sync(); };
-      sync();
-      btn.addEventListener('click', () => {
-        const next = root.dataset.theme === 'dark' ? 'light' : 'dark';
-        if (!document.startViewTransition || REDUCE) { apply(next); return; }
-        const r = btn.getBoundingClientRect(), x = r.left + r.width / 2, y = r.top + r.height / 2;
-        const end = Math.hypot(Math.max(x, innerWidth - x), Math.max(y, innerHeight - y));
-        const vt = document.startViewTransition(() => apply(next));
-        vt.ready.then(() => document.documentElement.animate({ clipPath: [`circle(0px at ${x}px ${y}px)`, `circle(${end}px at ${x}px ${y}px)`] }, { duration: 750, easing: 'cubic-bezier(0.16, 1, 0.3, 1)', pseudoElement: '::view-transition-new(root)' }));
-      });
-    }
-
     /* ---------- Fit the pressure lines to the width ---------- */
     const presses = $$('[data-press]');
     presses.forEach((h) => $$('.t', h).forEach((t) => {
@@ -46,10 +30,10 @@
         rows: [['Type', 'In-house · Pomar Engineering'], ['Sector', 'Energy'], ['Year', '2026'], ['Built with', 'WordPress, custom widgets, GSAP']] },
       { n: '03 / 03', name: 'Voyagaer', img: '../../assets/images/voyagaer-hero-poster.webp', href: 'https://noah-portfolio.pages.dev/work/voyagaer/', cta: 'Read the case study →',
         rows: [['Type', 'In-house · Pomar Engineering'], ['Sector', 'Marine'], ['Status', 'Not yet launched'], ['Built with', 'WordPress, custom widgets']] },
-      { n: 'Concept', name: 'Pixel Pull', img: '../../assets/images/concept-pixel-pull-cover.webp', href: 'https://noah-portfolio.pages.dev/concepts/#pixel-pull', cta: 'See the concept →', rows: [['Type', 'Pitched homepage'], ['Sector', 'Card shop']] },
-      { n: 'Concept', name: 'Little Rösti', img: '../../assets/images/concept-little-rosti-poster.webp', href: 'https://noah-portfolio.pages.dev/concepts/#little-rosti', cta: 'See the concept →', rows: [['Type', 'Pitched homepage'], ['Sector', 'Café']] },
-      { n: 'Concept', name: 'Common Table', img: '../../assets/images/concept-common-table-cover.webp', href: 'https://noah-portfolio.pages.dev/concepts/#common-table', cta: 'See the concept →', rows: [['Type', 'Pitched homepage'], ['Sector', 'Restaurant']] },
-      { n: 'Concept', name: 'Crumb & Kin', img: '../../assets/images/concept-crumb-and-kin-poster.webp', href: 'https://noah-portfolio.pages.dev/concepts/#crumb-and-kin', cta: 'See the concept →', rows: [['Type', 'Pitched homepage'], ['Sector', 'Bakery']] },
+      { n: 'Concept', name: 'Pixel Pull', img: '../../assets/images/concept-pixel-pull-cover.webp', href: 'concepts.html', cta: 'See the concept →', rows: [['Type', 'Pitched homepage'], ['Sector', 'Card shop']] },
+      { n: 'Concept', name: 'Little Rösti', img: '../../assets/images/concept-little-rosti-poster.webp', href: 'concepts.html', cta: 'See the concept →', rows: [['Type', 'Pitched homepage'], ['Sector', 'Café']] },
+      { n: 'Concept', name: 'Common Table', img: '../../assets/images/concept-common-table-cover.webp', href: 'concepts.html', cta: 'See the concept →', rows: [['Type', 'Pitched homepage'], ['Sector', 'Restaurant']] },
+      { n: 'Concept', name: 'Crumb & Kin', img: '../../assets/images/concept-crumb-and-kin-poster.webp', href: 'concepts.html', cta: 'See the concept →', rows: [['Type', 'Pitched homepage'], ['Sector', 'Bakery']] },
     ];
     const esc = (t) => t.replace(/&/g, '&amp;').replace(/</g, '&lt;');
     const deckEl = $('[data-deck]'), indexEl = $('[data-index]'), recordEl = $('[data-record]'), countEl = $('[data-count]');
