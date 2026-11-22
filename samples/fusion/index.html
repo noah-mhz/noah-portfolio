@@ -17,6 +17,7 @@
   <meta name="theme-color" content="#0E1718" media="(prefers-color-scheme: dark)">
   <link rel="icon" href="../../favicon.svg" type="image/svg+xml">
   <script>try{var t=localStorage.getItem('sample-theme');if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+  <link rel="preload" href="../fonts/archivo.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="../shared.css">
   <style>
     /* Fusion: Sample B's type, hero and nav + the original site's case study,
@@ -39,7 +40,7 @@
     .progress { position: fixed; z-index: 70; inset: 0 0 auto; height: 3px; }
     .progress__fill { position: absolute; inset: 0; background: var(--pink); transform-origin: left; scale: 0 1; }
     .progress__tick { all: unset; position: absolute; top: 0; width: 24px; height: 24px; margin-left: -12px; cursor: pointer; }
-    .progress__tick::before { content: ''; position: absolute; left: 50%; top: 0; width: 1px; height: 7px; background: var(--ink); opacity: .35; }
+    .progress__tick::before { content: ''; position: absolute; left: 50%; top: 0; width: 2px; height: 8px; translate: -1px 0; background: var(--ink); opacity: .5; }
     .progress__tick.is-passed::before { opacity: 1; }
     .progress__tip { position: absolute; top: 12px; left: 50%; translate: -50% -4px; white-space: nowrap; padding: .35rem .55rem; border-radius: 99px; background: var(--ink); color: var(--bg); opacity: 0; pointer-events: none; transition: opacity .3s, translate .4s var(--ease); }
     .progress__tick:hover .progress__tip { opacity: 1; translate: -50% 0; }
@@ -49,7 +50,7 @@
     /* A solid strip, so nothing reads through the logo and nav while scrolling; a hairline once scrolled. */
     .top.is-scrolled { box-shadow: 0 1px 0 var(--line); }
     .top > * { pointer-events: auto; }
-    .glass { background: color-mix(in srgb, var(--bg) 72%, transparent); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid var(--line); border-radius: 99px; }
+    .glass { background: color-mix(in srgb, var(--bg) 72%, transparent); border: 1px solid var(--line); border-radius: 99px; }
     /* Wordmark from the live site: letters rise on load, folds to "n." on scroll, hover reopens. */
     .logo { padding: .55rem .85rem; margin-left: -.85rem; font-weight: 600; font-size: 1.625rem; letter-spacing: -0.045em; line-height: 1; text-decoration: none; border-color: transparent; white-space: nowrap; }
     .logo__m { display: inline-block; clip-path: inset(-0.3em -0.2em 0 -0.2em); }
@@ -91,6 +92,10 @@
     .pill b { display: grid; place-items: center; width: 1.4rem; height: 1.4rem; border-radius: 50%; background: var(--pink); color: var(--on-pink); font-weight: 600; transition: rotate .5s var(--ease); }
     .pill:hover b { rotate: -45deg; }
 
+    @view-transition { navigation: auto; }
+    .hero .press .sq { view-transition-name: dot; }
+    ::view-transition-group(dot) { animation-duration: .8s; animation-timing-function: cubic-bezier(.16, 1, .3, 1); }
+
     /* ---------- Theme switch: sun-and-moon disc; the new theme opens as a circle from the button ---------- */
     .top__end { display: flex; align-items: center; gap: .6rem; }
     .theme { all: unset; box-sizing: border-box; cursor: pointer; display: inline-flex; align-items: center; gap: .55rem; height: 2.9rem; padding: 0 1rem 0 .8rem; border: 1px solid var(--line); border-radius: 99px; background: color-mix(in srgb, var(--bg) 72%, transparent); transition: background-color .4s, color .4s; }
@@ -112,11 +117,12 @@
     .rail ol { display: grid; gap: .1rem; }
     .rail a { display: flex; align-items: center; gap: .7rem; padding: .4rem 0; text-decoration: none; color: var(--muted); }
     .rail i { display: block; width: 10px; height: 1px; background: currentColor; transition: width .5s var(--ease), background-color .3s; }
-    .rail span { opacity: 0; translate: -6px 0; transition: opacity .3s, translate .4s var(--ease); white-space: nowrap; }
+    .rail a { position: relative; width: 24px; min-height: 24px; padding: .25rem 0; }
+    .rail span { position: absolute; left: 32px; opacity: 0; translate: -6px 0; transition: opacity .3s, translate .4s var(--ease); white-space: nowrap; pointer-events: none; }
     .rail:hover span { opacity: 1; translate: 0 0; }
     .rail a.is-current { color: var(--ink); }
     .rail a.is-current i { width: 22px; background: var(--pink); }
-    .rail:hover::before { content: ''; position: absolute; inset: -1rem -1.2rem -1rem -2rem; z-index: -1; border-radius: 0 1rem 1rem 0; background: var(--bg); box-shadow: 0 1px 0 var(--line), 0 18px 40px -24px rgba(0,0,0,.35); }
+    .rail:hover::before { content: ''; position: absolute; inset: -1rem -11rem -1rem -2rem; z-index: -1; border-radius: 0 1rem 1rem 0; background: var(--bg); box-shadow: 0 1px 0 var(--line), 0 18px 40px -24px rgba(0,0,0,.35); }
 
     /* ---------- Hero (B): letters swell near the cursor ---------- */
     .hero { min-height: 100svh; display: flex; flex-direction: column; justify-content: flex-end; padding-top: 6rem; padding-bottom: 2.2rem; }
@@ -150,7 +156,7 @@
     .statement { padding: clamp(7rem, 20vh, 13rem) var(--gutter); }
     .statement .mono { display: block; margin-bottom: 2rem; color: var(--teal); }
     .statement p { margin: 0; font-weight: 600; font-size: clamp(2rem, 4.6vw, 4.8rem); line-height: 1.02; letter-spacing: -.035em; font-stretch: 92%; max-width: 22ch; }
-    .statement .w { opacity: .14; }
+    .statement .w { opacity: .3; }
     .statement .w.k { color: var(--pink-ink); }
 
     /* ---------- Case study (original pinned sequence) ---------- */
@@ -165,10 +171,10 @@
     .case__frame { position: relative; display: grid; gap: 2.5rem; }
     .case__top { position: relative; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem; padding-bottom: 1rem; color: var(--muted); }
     /* Links answer the pointer: an underline draws in and the arrow nudges forward. */
-    .ulink { background: linear-gradient(currentColor, currentColor) 0 100% / 0 1px no-repeat; transition: background-size .6s var(--ease); }
-    .ulink:hover, .ulink:focus-visible { background-size: 100% 1px; }
+    .ulink { background: linear-gradient(var(--pink), var(--pink)) 0 100% / 0 2px no-repeat; padding-bottom: 2px; transition: background-size .6s var(--ease); }
+    .ulink:hover, .ulink:focus-visible, a:hover > .ulink, a:focus-visible > .ulink { background-size: 100% 2px; }
     .arr { display: inline-block; transition: translate .5s var(--ease); }
-    a:hover .arr, a:focus-visible .arr { translate: .3em 0; }
+    a:hover .arr, a:focus-visible .arr { translate: .35em 0; }
     .case__open { color: var(--ink); text-decoration: none; display: inline-flex; align-items: center; min-height: 2rem; }
     .case__open span { color: var(--pink); }
     .case__open [data-tw-stage] { color: var(--ink); }
@@ -203,7 +209,8 @@
     .case.is-pinned .case__media { position: absolute; top: calc(var(--nav-h) + 4.5rem); right: var(--gutter); width: min(52%, calc((100vh - var(--nav-h) - 4.5rem - var(--gutter)) * 1.6)); transform-origin: 100% 50%; }
     .case.is-pinned .case__stages { position: absolute; top: calc(var(--nav-h) + 7rem); left: var(--gutter); width: 36%; }
     .case.is-pinned .case__stage { position: absolute; top: 0; left: 0; width: 100%; }
-    .case.is-pinned .case__next { position: absolute; left: var(--gutter); bottom: var(--gutter); display: flex; flex-direction: column; color: var(--muted); }
+    .case.is-pinned .case__next { display: none !important; }
+    .case.is-pinned .case__next-unused { position: absolute; left: var(--gutter); bottom: var(--gutter); display: flex; flex-direction: column; color: var(--muted); }
     .case.is-pinned .case__next span:last-child { color: var(--ink); }
 
     /* ---------- More work: a swipeable stack with an index and a record panel ---------- */
@@ -218,6 +225,8 @@
     .more__index button:hover { color: var(--ink); }
     .more__index button:hover::after, .more__index button:focus-visible::after { scale: 1 1; }
     .more__index button:hover > span:first-child { translate: .5rem 0; }
+    .more__index .nm { transition: translate .5s var(--ease), color .3s; }
+    .more__index button:hover .nm { translate: .5rem 0; }
     .more__index button:hover .nm { color: var(--pink-ink); }
     .more__index button:focus-visible { outline: 2px solid var(--teal); outline-offset: 2px; }
     .more__index .nm { font: 700 clamp(1.3rem, 1.9vw, 1.9rem)/1 'Archivo'; text-transform: uppercase; font-stretch: 80%; letter-spacing: -.01em; }
@@ -398,7 +407,7 @@
       .top .pill { display: none; }
       .pnav { margin-left: auto; }
     }
-    @media (max-width: 600px) { .svc__grid { grid-template-columns: 1fr; } .more, .svc, .cps, .xp { padding-top: 4.5rem; } .statement { padding-block: 4.5rem; } .case { padding-block: 3rem 1rem; } .cta { margin-top: 5rem; } .xp__head { margin-bottom: 1.5rem; } .pnav__text { max-width: 9rem; overflow: hidden; text-overflow: ellipsis; } }
+    @media (max-width: 600px) { .svc__grid { grid-template-columns: 1fr; } .more, .svc, .cps, .xp { padding-top: 4.5rem; } .statement { padding-block: 4.5rem; } .case { padding-block: 3rem 1rem; } .cta { margin-top: 2.5rem; } .pnav__text.is-empty + .pnav__menu { font-size: inherit; gap: .45rem; } .xp__head { margin-bottom: 1.5rem; } .pnav__text { max-width: 7.5rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; } .pnav__menu { font-size: 0; gap: 0; } .pnav__menu .pnav__icon { font-size: .9rem; } .tl__points { font-family: 'Archivo', sans-serif; text-transform: none; letter-spacing: 0; font-size: 1rem; } .foot { flex-direction: column; gap: .6rem; } }
   </style>
 </head>
 <body>

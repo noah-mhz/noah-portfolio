@@ -34,7 +34,7 @@
       const W = h.clientWidth;
       $$('[data-fit]', h).forEach((ln) => {
         ln.classList.add('m'); ln.style.fontSize = '100px';
-        const w = [...ln.children].reduce((a, c) => a + c.getBoundingClientRect().width, 0);
+        const w = [...ln.children].reduce((a, c) => { const cs = getComputedStyle(c); return a + c.getBoundingClientRect().width + parseFloat(cs.marginLeft) + parseFloat(cs.marginRight); }, 0);
         ln.style.fontSize = (100 * W / w * 0.995) + 'px'; ln.classList.remove('m');
       });
     });
@@ -55,7 +55,7 @@
     const deckEl = $('[data-deck]'), indexEl = $('[data-index]'), recordEl = $('[data-record]'), countEl = $('[data-count]');
     const deckSection = $('.more');
     deckEl.innerHTML = WORK.map((w, i) => `<a class="deck__card" href="${w.href}" draggable="false" data-i="${i}" data-view><img src="${w.img}" alt="" draggable="false"><span class="deck__tag mono">${esc(w.n)} · ${esc(w.name)}</span></a>`).join('');
-    indexEl.innerHTML = WORK.map((w, i) => `<li><button type="button" data-go="${i}"><span>${w.n === 'Concept' ? 'C' : w.n.slice(0, 2)}</span><span class="nm">${esc(w.name)}</span><span>${w.n === 'Concept' ? 'Concept' : 'Project'}</span></button></li>`).join('');
+    indexEl.innerHTML = WORK.map((w, i) => `<li><button type="button" data-go="${i}"><span>${w.n === 'Concept' ? 'C' + (i - 1) : w.n.slice(0, 2)}</span><span class="nm">${esc(w.name)}</span><span>${w.n === 'Concept' ? 'Concept' : 'Project'}</span></button></li>`).join('');
     const deckCards = $$('.deck__card', deckEl);
     let order = WORK.map((_, i) => i); // order[0] is on top
     const top = () => order[0];
@@ -167,7 +167,8 @@
     window.typewriter = typewriter;
     const twStatus = typewriter(stText);
     let marks = [], current = -1, label = '';
-    const setStatus = (t) => { if (t === label) return; label = t; twStatus.set(t); };
+    const narrow = matchMedia('(max-width: 430px)');
+    const setStatus = (t) => { if (narrow.matches) t = t.replace(/^\d+ \/ \d+ · /, ''); if (t === label) return; label = t; twStatus.set(t); };
     window.setStatus = setStatus;
     const place = () => {
       const max = document.documentElement.scrollHeight - innerHeight;
@@ -312,11 +313,15 @@
 
     /* ---------- Hero ---------- */
     const heroChars = $$('.hero .press .ch');
-    const st0 = heroChars.map(() => ({ w: 62, g: 300 }));
-    gsap.from('.hero .press .ln', { yPercent: 100, opacity: 0, duration: 1.2, stagger: .12, ease: 'expo.out', delay: .1 });
-    gsap.to(st0, { w: 100, g: 800, duration: 1.6, stagger: .03, ease: 'expo.out', delay: .25, onUpdate: () => heroChars.forEach((c, i) => c.style.fontVariationSettings = `'wdth' ${st0[i].w}, 'wght' ${st0[i].g}`) });
-    gsap.from('.hero__intro > *', { y: 20, duration: 1, stagger: .06, ease: 'power3.out', delay: .2 });
-    gsap.from('.hero__foot > *, .top > :not(.logo)', { y: 20, opacity: 0, duration: 1, stagger: .06, ease: 'power3.out', delay: .6 });
+    let seen = false;
+    try { seen = sessionStorage.getItem('fusion-intro') === '1'; sessionStorage.setItem('fusion-intro', '1'); } catch (e) {}
+    if (!seen) {
+      const st0 = heroChars.map(() => ({ w: 62, g: 300 }));
+      gsap.from('.hero .press .ln', { yPercent: 100, opacity: 0, duration: 1, stagger: .1, ease: 'expo.out', delay: .05 });
+      gsap.to(st0, { w: 100, g: 800, duration: 1.1, stagger: .02, ease: 'expo.out', delay: .15, onUpdate: () => heroChars.forEach((c, i) => c.style.fontVariationSettings = `'wdth' ${st0[i].w}, 'wght' ${st0[i].g}`), onComplete: () => heroChars.forEach((c) => c.style.fontVariationSettings = '') });
+      gsap.from('.hero__intro > *', { y: 20, duration: .9, stagger: .06, ease: 'power3.out', delay: .1 });
+      gsap.from('.hero__foot > *', { y: 20, opacity: 0, duration: .9, stagger: .05, ease: 'power3.out', delay: .4 });
+    }
     if (fine) presses.forEach((h) => {
       const chars = $$('.ch', h); let mx = 0, my = 0, on = false;
       addEventListener('pointermove', (e) => { mx = e.clientX; my = e.clientY; on = true; });
@@ -403,31 +408,28 @@
     } else {
       section.classList.add('is-pinned');
       const steps = $$('.case__steps li', section), bar = $('[data-case-bar]', section), wrap = $('.case__stages', section), next = $$('[data-case-next]', section);
-      const stageIn = [1.2, 2.8, 4.4, 6.0], stageOut = [2.5, 4.1, 5.7, 7.2], exitAt = 7.2, total = 9.0;
+      const stageIn = [.5, 2.1, 3.7, 5.3], stageOut = [1.8, 3.4, 5.0, 99], exitAt = 6.5, total = 7.0;
       let cur = -1;
       const setStep = (i) => { if (i === cur) return; cur = i; steps.forEach((s, k) => s.classList.toggle('is-active', k === i)); twStage.set(STAGES[i]); };
       const mediaShift = () => wrap.offsetLeft - media.offsetLeft;
       const stagesShift = () => (media.offsetLeft + media.offsetWidth) - (wrap.offsetLeft + wrap.offsetWidth);
       gsap.set(stages, { autoAlpha: 0 });
-      const tl = gsap.timeline({ defaults: { ease: 'power3.inOut' }, scrollTrigger: { trigger: section, start: 'top top', end: '+=200%', pin: true, scrub: 1, anticipatePin: 1, invalidateOnRefresh: true,
+      const tl = gsap.timeline({ defaults: { ease: 'power3.inOut' }, scrollTrigger: { trigger: section, start: 'top top', end: '+=160%', pin: true, scrub: 1, anticipatePin: 1, invalidateOnRefresh: true,
         onUpdate: (self) => { const t = self.progress * total; setStep(t < stageIn[1] ? 0 : t < stageIn[2] ? 1 : t < stageIn[3] ? 2 : 3); } } });
-      tl.fromTo(bar, { scaleX: 0 }, { scaleX: 1, duration: exitAt + 1, ease: 'none' }, 0)
+      tl.fromTo(bar, { scaleX: 0 }, { scaleX: 1, duration: total, ease: 'none' }, 0)
         .fromTo(titleChars, { yPercent: 115 }, { yPercent: 0, duration: .9, stagger: .04, ease: 'power4.out' }, .1)
         .fromTo(imgB, { clipPath: 'inset(100% 0% 0% 0%)', scale: 1.2 }, { clipPath: 'inset(0% 0% 0% 0%)', scale: 1, duration: 1.3 }, stageIn[1] - .3)
         .to(imgA, { yPercent: -10, scale: 1.08, duration: 1.3 }, stageIn[1] - .3)
         .to(imgB, { scale: 1.08, xPercent: -3, duration: exitAt - stageIn[2], ease: 'none' }, stageIn[2])
         .to(media, { x: mediaShift, duration: 1.2 }, stageOut[2] + .1)
         .to(wrap, { x: stagesShift, duration: 1.2 }, stageOut[2] + .1)
-        .to(titleChars, { yPercent: -115, duration: .7, stagger: .03, ease: 'power3.in' }, exitAt)
-        .to(media, { clipPath: 'inset(0% 0% 100% 0% round .9rem)', duration: 1, ease: 'expo.inOut' }, exitAt)
-        .to('.case__top', { autoAlpha: 0, duration: .6 }, exitAt + .6)
-        .fromTo(next, { yPercent: 110 }, { yPercent: 0, duration: .7, stagger: .08, ease: 'power3.out' }, exitAt + .4)
-        .to(next, { yPercent: -110, duration: .5, stagger: .05, ease: 'power3.in' }, total - 1.1);
+        // The last step stays: the frame then scrolls away whole, so no empty screen follows.
+        .to({}, { duration: .1 }, total - .1);
       stages.forEach((stage, i) => {
         const items = $$('[data-stage-item]', stage);
         tl.set(stage, { autoAlpha: 1 }, stageIn[i] + (i ? .25 : 0))
-          .fromTo(items, { yPercent: 110 }, { yPercent: 0, duration: .75, stagger: .06, ease: 'power3.out' }, stageIn[i] + (i ? .3 : 0))
-          .to(items, { yPercent: -110, duration: .3, stagger: .015, ease: 'power3.in' }, stageOut[i])
+          .fromTo(items, { yPercent: 110 }, { yPercent: 0, duration: .75, stagger: .06, ease: 'power3.out' }, stageIn[i] + (i ? .3 : 0));
+        if (i < stages.length - 1) tl.to(items, { yPercent: -110, duration: .3, stagger: .015, ease: 'power3.in' }, stageOut[i])
           .set(stage, { autoAlpha: 0 }, stageOut[i] + .45);
       });
       setStep(0);
@@ -440,7 +442,8 @@
     const p = $('[data-reveal]');
     const words = (txt, cls) => txt.split(/(\s+)/).map((w) => /\s/.test(w) || !w ? w : `<span class="w${cls}">${w}</span>`).join('');
     p.innerHTML = [...p.childNodes].map((n) => words(n.textContent, n.nodeType === 3 ? '' : ' k')).join('');
-    gsap.to($$('.w', p), { opacity: 1, stagger: .1, ease: 'none', scrollTrigger: { trigger: p, start: 'top 80%', end: 'bottom 45%', scrub: true } });
+    if (matchMedia('(max-width: 767px)').matches) gsap.to($$('.w', p), { opacity: 1, stagger: .04, duration: .6, ease: 'power2.out', scrollTrigger: { trigger: p, start: 'top 75%' } });
+    else gsap.to($$('.w', p), { opacity: 1, stagger: .1, ease: 'none', scrollTrigger: { trigger: p, start: 'top 80%', end: 'bottom 45%', scrub: true } });
 
 
     if (fine) {
