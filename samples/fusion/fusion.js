@@ -26,10 +26,12 @@
 
     /* ---------- Deck data + behaviour ---------- */
     const WORK = [
-      { n: '02 / 03', name: 'Luumens', img: '../../assets/images/luumens-home-1600.webp', href: 'https://noah-portfolio.pages.dev/work/luumens/', cta: 'Read the case study →',
+      { n: '02 / 04', name: 'Luumens', img: '../../assets/images/luumens-home-1600.webp', href: 'https://noah-portfolio.pages.dev/work/luumens/', cta: 'Read the case study →',
         rows: [['Type', 'In-house · Pomar Engineering'], ['Sector', 'Energy'], ['Year', '2026'], ['Built with', 'WordPress, custom widgets, GSAP']] },
-      { n: '03 / 03', name: 'Voyagaer', img: '../../assets/images/voyagaer-hero-poster.webp', href: 'https://noah-portfolio.pages.dev/work/voyagaer/', cta: 'Read the case study →',
+      { n: '03 / 04', name: 'Voyagaer', img: '../../assets/images/voyagaer-hero-poster.webp', href: 'https://noah-portfolio.pages.dev/work/voyagaer/', cta: 'Read the case study →',
         rows: [['Type', 'In-house · Pomar Engineering'], ['Sector', 'Marine'], ['Status', 'Not yet launched'], ['Built with', 'WordPress, custom widgets']] },
+      { n: '04 / 04', name: 'Industmarine', img: '../../assets/images/industmarine-hero.webp', href: 'work-industmarine.html', cta: 'Read the case study →',
+        rows: [['Type', 'In-house · Pomar Engineering'], ['Sector', 'Marine, offshore & industrial'], ['Year', '2026'], ['Built with', 'WordPress, custom widgets, GSAP']] },
       { n: 'Concept', name: 'Pixel Pull', img: '../../assets/images/concept-pixel-pull-cover.webp', href: 'concepts.html', cta: 'See the concept →', rows: [['Type', 'Pitched homepage'], ['Sector', 'Card shop']] },
       { n: 'Concept', name: 'Little Rösti', img: '../../assets/images/concept-little-rosti-poster.webp', href: 'concepts.html', cta: 'See the concept →', rows: [['Type', 'Pitched homepage'], ['Sector', 'Café']] },
       { n: 'Concept', name: 'Common Table', img: '../../assets/images/concept-common-table-cover.webp', href: 'concepts.html', cta: 'See the concept →', rows: [['Type', 'Pitched homepage'], ['Sector', 'Restaurant']] },
@@ -39,7 +41,7 @@
     const deckEl = $('[data-deck]'), indexEl = $('[data-index]'), recordEl = $('[data-record]'), countEl = $('[data-count]');
     const deckSection = $('.more');
     deckEl.innerHTML = WORK.map((w, i) => `<a class="deck__card" href="${w.href}" draggable="false" data-i="${i}" data-view><img src="${w.img}" alt="" draggable="false"><span class="deck__tag mono">${esc(w.n)} · ${esc(w.name)}</span></a>`).join('');
-    indexEl.innerHTML = WORK.map((w, i) => `<li><button type="button" data-go="${i}"><span>${w.n === 'Concept' ? 'C' + (i - 1) : w.n.slice(0, 2)}</span><span class="nm">${esc(w.name)}</span><span>${w.n === 'Concept' ? 'Concept' : 'Project'}</span></button></li>`).join('');
+    indexEl.innerHTML = WORK.map((w, i) => `<li><button type="button" data-go="${i}"><span>${w.n === 'Concept' ? 'C' + (i - WORK.filter((x) => x.n !== 'Concept').length + 1) : w.n.slice(0, 2)}</span><span class="nm">${esc(w.name)}</span><span>${w.n === 'Concept' ? 'Concept' : 'Project'}</span></button></li>`).join('');
     const deckCards = $$('.deck__card', deckEl);
     let order = WORK.map((_, i) => i); // order[0] is on top
     const top = () => order[0];
