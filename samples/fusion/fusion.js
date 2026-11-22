@@ -244,7 +244,7 @@
           run(1, .5); tl.to(comp, { y: '-6cqw', duration: .5, ease: 'back.out(2)' }, .5);
           run(2, 1.0); tl.to(comp, { rotation: 6, duration: .5, ease: 'back.out(2)' }, 1.0);
           run(3, 1.5); tl.to(comp, { scale: 1.12, duration: .5, ease: 'back.out(2)' }, 1.5);
-          run(4, 2.0); tl.to(comp, { backgroundColor: '#EA4F6E', duration: .4 }, 2.0).to(sel, { opacity: 0, duration: .3 }, 2.2);
+          run(4, 2.0); tl.to(comp, { backgroundColor: '#F2A65A', duration: .4 }, 2.0).to(sel, { opacity: 0, duration: .3 }, 2.2);
           tl.add(() => {}, 2.6);
           tl.eventCallback('onReverseComplete', () => ln.forEach((l) => l.classList.remove('is-run')));
           return tl;
