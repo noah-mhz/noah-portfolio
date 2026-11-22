@@ -54,4 +54,5 @@ a { color: inherit; }
 .samples-bar { white-space: nowrap; }
 @media (max-width: 600px) { .samples-bar .sb-l { display: none; } }
 .samples-bar [aria-current='page'] { background: #eee; color: #111; }
-.samples-bar button { border: 1px solid #444; }
+.samples-bar button { border: 1px solid #444; transition: background-color .3s, color .3s; }
+.samples-bar button:hover, .samples-bar a:hover:not([aria-current]) { background: #eee; color: #111; }

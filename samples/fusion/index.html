@@ -5,12 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="robots" content="noindex">
   <title>Fusion sample — Noah Zaw Min Htut</title>
+  <link rel="icon" href="../../favicon.svg" type="image/svg+xml">
   <script>try{var t=localStorage.getItem('sample-theme');if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
   <link rel="stylesheet" href="../shared.css">
   <style>
     /* Fusion: Sample B's type, hero and nav + the original site's case study,
        section status, progress bar and rail, recoloured to peach / teal / pink. */
-    :root { --nav-h: 4.6rem; }
+    :root { --nav-h: 4.6rem; --pink-ink: #B8304F; }
+    :root[data-theme='dark'] { --pink-ink: #EA4F6E; }
     html, main { overflow-x: clip; }
     body { font-family: 'Archivo', system-ui, sans-serif; font-size: 1rem; line-height: 1.5; }
     .mono, .label { font-family: 'Geist Mono', monospace; font-size: 0.72rem; letter-spacing: 0.06em; text-transform: uppercase; }
@@ -21,17 +23,21 @@
     .mask > span { display: inline-block; } .mask--block > span { display: block; }
     ol, ul { list-style: none; margin: 0; padding: 0; }
 
+    .skip { position: fixed; z-index: 100; left: var(--gutter); top: .6rem; padding: .7rem 1rem; border-radius: 99px; background: var(--ink); color: var(--bg); text-decoration: none; translate: 0 -200%; transition: translate .4s var(--ease); }
+    .skip:focus { translate: 0 0; }
     /* ---------- Progress bar (original): fill + a tick per section ---------- */
     .progress { position: fixed; z-index: 70; inset: 0 0 auto; height: 3px; }
     .progress__fill { position: absolute; inset: 0; background: var(--pink); transform-origin: left; scale: 0 1; }
-    .progress__tick { all: unset; position: absolute; top: 0; width: 1px; height: 7px; background: var(--ink); opacity: .35; cursor: pointer; }
-    .progress__tick::before { content: ''; position: absolute; inset: -6px -8px; }
-    .progress__tick.is-passed { opacity: 1; }
+    .progress__tick { all: unset; position: absolute; top: 0; width: 24px; height: 24px; margin-left: -12px; cursor: pointer; }
+    .progress__tick::before { content: ''; position: absolute; left: 50%; top: 0; width: 1px; height: 7px; background: var(--ink); opacity: .35; }
+    .progress__tick.is-passed::before { opacity: 1; }
     .progress__tip { position: absolute; top: 12px; left: 50%; translate: -50% -4px; white-space: nowrap; padding: .35rem .55rem; border-radius: 99px; background: var(--ink); color: var(--bg); opacity: 0; pointer-events: none; transition: opacity .3s, translate .4s var(--ease); }
     .progress__tick:hover .progress__tip { opacity: 1; translate: -50% 0; }
 
     /* ---------- Header: B's pill nav that folds into the original section status ---------- */
-    .top { position: fixed; z-index: 60; inset: 0 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 1.1rem var(--gutter); pointer-events: none; }
+    .top { position: fixed; z-index: 60; inset: 0 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 1.1rem var(--gutter); pointer-events: none; background: var(--bg); transition: background-color .6s var(--ease), box-shadow .4s; }
+    /* A solid strip, so nothing reads through the logo and nav while scrolling; a hairline once scrolled. */
+    .top.is-scrolled { box-shadow: 0 1px 0 var(--line); }
     .top > * { pointer-events: auto; }
     .glass { background: color-mix(in srgb, var(--bg) 72%, transparent); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid var(--line); border-radius: 99px; }
     /* Wordmark from the live site: letters rise on load, folds to "n." on scroll, hover reopens. */
@@ -49,6 +55,7 @@
     .pnav { position: absolute; left: 50%; translate: -50% 0; display: flex; align-items: center; padding: .3rem; }
     .pnav__links { display: flex; gap: .2rem; overflow: hidden; max-width: 46rem; transition: max-width .8s var(--ease), opacity .5s; white-space: nowrap; }
     .pnav__links a { padding: .55rem .9rem; border-radius: 99px; text-decoration: none; }
+    .pnav__links a:focus-visible { outline: 2px solid var(--teal); outline-offset: -3px; }
     .pnav__links a:hover, .pnav__links a.is-active { background: var(--ink); color: var(--bg); }
     .pnav__status { all: unset; cursor: pointer; display: inline-flex; align-items: center; gap: .7rem; padding: .55rem .9rem; border-radius: 99px; white-space: nowrap; overflow: hidden; max-width: 0; opacity: 0; transition: max-width .8s var(--ease), opacity .4s, padding .8s var(--ease); padding-inline: 0; }
     .pnav__status:focus-visible { outline: 2px solid var(--teal); }
@@ -57,12 +64,15 @@
     .tw-caret { display: inline-block; width: .5em; height: 1em; margin-left: .12em; vertical-align: -.14em; background: var(--pink); animation: tw-blink 1s steps(1) infinite; }
     .is-typing > .tw-caret { animation: none; }
     @keyframes tw-blink { 50% { opacity: 0; } }
+    @media (prefers-reduced-motion: reduce) { .tw-caret { animation: none; } }
     .pnav__menu { display: inline-flex; align-items: center; gap: .45rem; padding-left: .7rem; border-left: 1px solid var(--line); }
     .pnav__text:empty + .pnav__menu { border-left: 0; padding-left: 0; }
     .pnav__icon { display: inline-block; font-style: normal; transition: rotate .5s var(--ease); }
     /* Sectioned: links fold away, the status (section + Menu) takes their place. */
     .pnav.is-sectioned .pnav__links { max-width: 0; opacity: 0; }
+    .pnav:not(.is-sectioned) .pnav__status { visibility: hidden; }
     .pnav.is-sectioned .pnav__status { max-width: 30rem; opacity: 1; padding-inline: .9rem; }
+    .pnav__status:focus-visible { outline: 2px solid var(--teal); outline-offset: 2px; }
     .pnav.is-sectioned.is-open .pnav__links { max-width: 46rem; opacity: 1; }
     .pnav.is-open .pnav__icon { rotate: 45deg; }
     .pnav.is-open .pnav__text { display: none; }
@@ -113,7 +123,7 @@
     .statement .mono { display: block; margin-bottom: 2rem; color: var(--teal); }
     .statement p { margin: 0; font-weight: 600; font-size: clamp(2rem, 4.6vw, 4.8rem); line-height: 1.02; letter-spacing: -.035em; font-stretch: 92%; max-width: 22ch; }
     .statement .w { opacity: .14; }
-    .statement .w.k { color: var(--pink); }
+    .statement .w.k { color: var(--pink-ink); }
 
     /* ---------- Case study (original pinned sequence) ---------- */
     .marks { position: absolute; inset: .9rem; pointer-events: none; color: #F8DBC1; z-index: 2;
@@ -126,7 +136,12 @@
     .case { position: relative; padding: clamp(5rem, 12vh, 9rem) var(--gutter); }
     .case__frame { position: relative; display: grid; gap: 2.5rem; }
     .case__top { position: relative; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem; padding-bottom: 1rem; color: var(--muted); }
-    .case__open { color: var(--ink); text-decoration: none; }
+    /* Links answer the pointer: an underline draws in and the arrow nudges forward. */
+    .ulink { background: linear-gradient(currentColor, currentColor) 0 100% / 0 1px no-repeat; transition: background-size .6s var(--ease); }
+    .ulink:hover, .ulink:focus-visible { background-size: 100% 1px; }
+    .arr { display: inline-block; transition: translate .5s var(--ease); }
+    a:hover .arr, a:focus-visible .arr { translate: .3em 0; }
+    .case__open { color: var(--ink); text-decoration: none; display: inline-flex; align-items: center; min-height: 2rem; }
     .case__open span { color: var(--pink); }
     .case__open [data-tw-stage] { color: var(--ink); }
     .engage { display: inline-flex; align-items: center; gap: .5rem; }
@@ -136,7 +151,7 @@
     .case__steps li.is-active { color: var(--ink); }
     .case__bar { position: absolute; left: 0; right: 0; bottom: 0; height: 1px; background: var(--line); }
     .case__bar-fill { display: block; height: 100%; background: var(--pink); transform-origin: left; }
-    .case__title { margin: 0; font-size: clamp(3.5rem, 12vw, 14rem); font-weight: 800; font-stretch: 100%; line-height: .82; letter-spacing: -.02em; text-transform: uppercase; white-space: nowrap; color: var(--pink); overflow: hidden; padding: .04em 0; }
+    .case__title { margin: 0; font-size: clamp(3.5rem, 12vw, 14rem); font-weight: 800; font-stretch: 100%; line-height: .82; letter-spacing: -.02em; text-transform: uppercase; white-space: nowrap; color: var(--pink-ink); overflow: hidden; padding: .04em 0; }
     .case__title .ch { display: inline-block; }
     .case__media { position: relative; aspect-ratio: 16 / 10; overflow: hidden; background: var(--bg-2); border-radius: .9rem; clip-path: inset(0% 0% 0% 0% round .9rem); }
     .case__img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: top center; }
@@ -150,7 +165,7 @@
     .case__facts li > span, .case__stack li > span { display: flex; justify-content: space-between; gap: 1rem; padding: .9rem 0; border-bottom: 1px solid var(--line); }
     .case__stack li > span { font-size: 1.05rem; }
     .case__stack .label { align-self: center; color: var(--muted); }
-    .case__link { display: inline-flex; gap: .5rem; text-decoration: none; color: var(--teal); font-size: 1.05rem; font-weight: 500; }
+    .case__link { display: inline-flex; align-items: center; min-height: 2rem; gap: .5rem; text-decoration: none; color: var(--teal); font-size: 1.05rem; font-weight: 500; }
     .case__next { display: none; margin: 0; }
 
     .case.is-pinned { padding: 0; }
@@ -169,15 +184,22 @@
     .more__side { display: grid; gap: 2.5rem; align-content: start; }
     .more__index { border-top: 1px solid var(--line); }
     .more__index button { all: unset; box-sizing: border-box; cursor: pointer; width: 100%; display: grid; grid-template-columns: 3.2rem 1fr auto; align-items: baseline; padding: .85rem 0; border-bottom: 1px solid var(--line); color: var(--muted); transition: color .3s, padding .6s var(--ease); }
+    .more__index button { position: relative; }
+    .more__index button::after { content: ''; position: absolute; left: 0; right: 0; bottom: -1px; height: 1px; background: var(--pink); scale: 0 1; transform-origin: left; transition: scale .6s var(--ease); }
+    .more__index button > span:first-child { transition: translate .5s var(--ease); }
     .more__index button:hover { color: var(--ink); }
+    .more__index button:hover::after, .more__index button:focus-visible::after { scale: 1 1; }
+    .more__index button:hover > span:first-child { translate: .5rem 0; }
+    .more__index button:hover .nm { color: var(--pink-ink); }
     .more__index button:focus-visible { outline: 2px solid var(--teal); outline-offset: 2px; }
     .more__index .nm { font: 700 clamp(1.3rem, 1.9vw, 1.9rem)/1 'Archivo'; text-transform: uppercase; font-stretch: 80%; letter-spacing: -.01em; }
     .more__index .is-current { color: var(--ink); padding-left: .8rem; }
-    .more__index .is-current .nm { color: var(--pink); }
+    .more__index .is-current .nm { color: var(--pink-ink); }
     .record { display: grid; grid-template-columns: auto 1fr; gap: .55rem 1.5rem; margin: 0; padding: 1.2rem 1.3rem; border-radius: .9rem; background: var(--bg-2); min-height: 11.5rem; align-content: start; }
     .record dt { color: var(--muted); }
     .record dd { margin: 0; }
-    .record a { grid-column: 1 / -1; margin-top: .6rem; color: var(--teal); text-decoration: none; font: 500 1rem 'Archivo'; text-transform: none; letter-spacing: 0; }
+    .record__cta { grid-column: 1 / -1; }
+    .record a { display: inline-flex; align-items: center; min-height: 2.75rem; margin-top: .6rem; color: var(--teal); text-decoration: none; font: 500 1rem 'Archivo'; text-transform: none; letter-spacing: 0; }
     .deck { position: relative; aspect-ratio: 16 / 11.5; perspective: 1400px; touch-action: pan-y; user-select: none; }
     .deck__card { position: absolute; inset: 8% 10% 4% 0; display: block; border-radius: 1rem; overflow: hidden; background: var(--bg-2); box-shadow: 0 1px 0 var(--line), 0 24px 50px -28px rgba(0,0,0,.45); text-decoration: none; transform-style: preserve-3d; will-change: transform; cursor: grab; -webkit-user-drag: none; }
     .deck__card:active { cursor: grabbing; }
@@ -274,8 +296,8 @@
     /* 3A / 3B: code panes */
     .code { position: absolute; left: 5%; top: 8%; width: 52%; margin: 0; padding: 3cqw; border-radius: 1.6cqw; background: #0E1718; color: #F8DBC1; font: 2.1cqw/1.75 'Geist Mono', monospace; white-space: pre; overflow: hidden; }
     .code .ln { display: block; padding: 0 1cqw; margin: 0 -1cqw; border-radius: .6cqw; transition: background-color .3s, color .3s; }
-    .code .ln.is-run { background: rgba(234,79,110,.25); }
-    .code .k { color: #5FB3BA; } .code .s { color: #EA4F6E; } .code .v { color: #F2C27B; }
+    .code .ln.is-run { background: rgba(248,219,193,.14); }
+    .code .k { color: #5FB3BA; } .code .s { color: #F59AAD; } .code .v { color: #F2C27B; }
     .comp { position: absolute; right: 7%; top: 22%; width: 28%; aspect-ratio: 3 / 4; border-radius: 2cqw; background: #fff; box-shadow: 0 2cqw 4cqw -2cqw rgba(0,0,0,.35); overflow: hidden; display: flex; flex-direction: column; }
     .comp img { width: 100%; height: 62%; object-fit: cover; }
     .comp b { display: block; margin: 1.6cqw 1.6cqw .6cqw; height: 1.8cqw; width: 70%; background: #1B1411; border-radius: .6cqw; opacity: .8; }
@@ -288,7 +310,8 @@
     .ver__tag { position: absolute; z-index: 5; right: 2cqw; top: 2cqw; padding: .5cqw 1.2cqw; border-radius: 99px; background: #1B1411; color: #F8DBC1; font: 1.6cqw 'Geist Mono'; }
 
 
-    .svc__item .mono { color: var(--pink); }
+    .svc__item > .mono { color: var(--teal); }
+    .svc__item.is-on > .mono { color: var(--pink); }
     .cps { padding: clamp(6rem, 16vh, 10rem) var(--gutter) 0; }
     .cps__grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-top: 2rem; perspective: 900px; }
     .cps__grid a { text-decoration: none; transform-style: preserve-3d; }
@@ -328,7 +351,7 @@
     .tl__dash { position: absolute; top: .78em; left: 0; width: .85em; height: 1px; background: var(--muted); transform-origin: left; transition: width .45s var(--ease), background-color .45s var(--ease); }
     .tl__points li > span { transition: translate .45s var(--ease); }
     @media (hover: hover) { .tl__points li:hover .tl__dash { width: 1.15em; background: var(--pink); } .tl__points li:hover > span { translate: .3em 0; } }
-    .tl__num { font-weight: 700; color: var(--pink); font-variant-numeric: tabular-nums; }
+    .tl__num { font-weight: 700; color: var(--pink-ink); font-variant-numeric: tabular-nums; }
     .odo { display: inline-flex; } .odo__col { display: inline-block; height: 1em; overflow: hidden; }
     .odo__strip { display: flex; flex-direction: column; position: relative; top: var(--odo-top, 0); } .odo__strip > span { display: block; height: 1em; line-height: 1; }
     @media (max-width: 1023px) { .xp__head { grid-column: 1 / -1; position: static; margin-bottom: 3rem; } .timeline__track { grid-column: 1 / -1; } }
@@ -342,7 +365,7 @@
       .svc__grid, .cps__grid { grid-template-columns: 1fr 1fr; }
       .pnav { position: static; translate: none; margin-left: auto; }
       .pnav__links { display: none; }
-      .pnav .pnav__status { max-width: 30rem; opacity: 1; padding-inline: .9rem; }
+      .pnav .pnav__status, .pnav:not(.is-sectioned) .pnav__status { max-width: 30rem; opacity: 1; padding-inline: .9rem; visibility: visible; }
       .pnav.is-open .pnav__links { display: flex; position: absolute; top: calc(100% + .5rem); right: 0; flex-direction: column; padding: .4rem; max-width: none; opacity: 1; background: var(--bg); border: 1px solid var(--line); border-radius: 1.2rem; }
       .top .pill { display: none; }
     }
@@ -350,6 +373,7 @@
   </style>
 </head>
 <body>
+  <a class="skip mono" href="#work">Skip to content</a>
   <div class="progress" aria-hidden="false"><span class="progress__fill"></span></div>
 
   <header class="top">
@@ -374,7 +398,7 @@
       </div>
       <h1 class="press" data-press aria-label="I design &amp; build distinctive websites.">
         <span class="ln" data-fit><span class="t">Distinctive</span></span>
-        <span class="ln" data-fit><span class="reel" aria-hidden="true"><video muted loop playsinline autoplay poster="../../assets/images/ganko-scroll-poster.webp"><source src="../../assets/video/ganko-scroll.mp4" type="video/mp4"></video></span><span class="t">Websites</span><span class="sq" aria-hidden="true"></span></span>
+        <span class="ln" data-fit><span class="reel" aria-hidden="true"><video muted loop playsinline data-autoplay poster="../../assets/images/ganko-scroll-poster.webp"><source src="../../assets/video/ganko-scroll.mp4" type="video/mp4"></video></span><span class="t">Websites</span><span class="sq" aria-hidden="true"></span></span>
       </h1>
       <div class="hero__foot">
         <div class="tags mono"><span class="tag tag--on">Taking freelance projects</span><span class="tag">Restaurants</span><span class="tag">Lifestyle brands</span><span class="tag">Established companies</span></div>
@@ -389,7 +413,7 @@
     <article class="case" data-section="Ganko.sg" data-nav="work" data-status="01 / 03 — Ganko.sg">
       <div class="case__frame">
         <div class="case__top label">
-          <a class="case__open" href="https://noah-portfolio.pages.dev/work/ganko/" aria-label="View the Ganko.sg case study">01 / 03 — <span data-tw-stage>Overview</span> <span aria-hidden="true">→</span></a>
+          <a class="case__open" href="https://noah-portfolio.pages.dev/work/ganko/"><span class="ulink">01 / 03 — <span data-tw-stage>Overview</span></span>&nbsp;<span class="arr" aria-hidden="true">→</span></a>
           <span class="engage">Freelance</span>
           <ol class="case__steps"><li class="is-active">Overview</li><li>Approach</li><li>Platform</li><li>Live</li></ol>
           <span class="case__bar" aria-hidden="true"><span class="case__bar-fill" data-case-bar></span></span>
@@ -398,7 +422,7 @@
         <div class="case__media" data-view>
           <a class="case__media-link" href="https://noah-portfolio.pages.dev/work/ganko/" aria-label="Read the Ganko.sg case study"></a>
           <img class="case__img case__img--a" src="../../assets/images/ganko-home-1600.webp" alt="Ganko.sg homepage hero — Authentic Japanese Cuisine in Singapore" width="1600" height="1067">
-          <video class="case__img case__img--b" muted loop playsinline autoplay poster="../../assets/images/ganko-scroll-poster.webp" aria-label="Scrolling through the Ganko.sg homepage"><source src="../../assets/video/ganko-scroll.mp4" type="video/mp4"></video>
+          <video class="case__img case__img--b" muted loop playsinline data-autoplay poster="../../assets/images/ganko-scroll-poster.webp" aria-label="Scrolling through the Ganko.sg homepage"><source src="../../assets/video/ganko-scroll.mp4" type="video/mp4"></video>
           <span class="marks" aria-hidden="true"></span>
         </div>
         <div class="case__stages">
@@ -427,8 +451,8 @@
           <div class="case__stage">
             <p class="label"><span class="mask"><span data-stage-item>Live</span></span></p>
             <p class="case__lead"><span class="mask mask--block"><span data-stage-item>Launched</span></span><span class="mask mask--block"><span data-stage-item>in 2025.</span></span></p>
-            <p class="mask mask--block" style="margin:0"><span data-stage-item><a class="case__link mono" href="https://ganko.sg" target="_blank" rel="noopener">ganko.sg ↗</a></span></p>
-            <p class="mask mask--block" style="margin:0"><span data-stage-item><a class="case__link" href="https://noah-portfolio.pages.dev/work/ganko/">Read the case study →</a></span></p>
+            <p class="mask mask--block" style="margin:0"><span data-stage-item><a class="case__link mono" href="https://ganko.sg" target="_blank" rel="noopener"><span class="ulink">ganko.sg</span> <span class="arr" aria-hidden="true">↗</span></a></span></p>
+            <p class="mask mask--block" style="margin:0"><span data-stage-item><a class="case__link" href="https://noah-portfolio.pages.dev/work/ganko/"><span class="ulink">Read the case study</span> <span class="arr" aria-hidden="true">→</span></a></span></p>
           </div>
         </div>
         <p class="case__next label" aria-hidden="true"><span class="mask"><span data-case-next>Next — 02 / 03</span></span><span class="mask"><span data-case-next>Luumens ↓</span></span></p>
@@ -467,10 +491,10 @@
     <section class="cps" id="concepts" data-section="Concepts" data-nav="concepts" data-status="Concepts">
       <h2 class="h2s">Concepts</h2>
       <div class="cps__grid">
-        <a href="https://noah-portfolio.pages.dev/concepts/#pixel-pull" data-tilt><div class="im"><img src="../../assets/images/concept-pixel-pull-cover.webp" alt="" loading="lazy"></div><span class="mono"><span>Pixel Pull</span><span>Card shop</span></span></a>
-        <a href="https://noah-portfolio.pages.dev/concepts/#little-rosti" data-tilt><div class="im"><img src="../../assets/images/concept-little-rosti-poster.webp" alt="" loading="lazy"></div><span class="mono"><span>Little Rösti</span><span>Café</span></span></a>
-        <a href="https://noah-portfolio.pages.dev/concepts/#common-table" data-tilt><div class="im"><img src="../../assets/images/concept-common-table-cover.webp" alt="" loading="lazy"></div><span class="mono"><span>Common Table</span><span>Restaurant</span></span></a>
-        <a href="https://noah-portfolio.pages.dev/concepts/#crumb-and-kin" data-tilt><div class="im"><img src="../../assets/images/concept-crumb-and-kin-poster.webp" alt="" loading="lazy"></div><span class="mono"><span>Crumb &amp; Kin</span><span>Bakery</span></span></a>
+        <a href="https://noah-portfolio.pages.dev/concepts/#pixel-pull" data-tilt><div class="im"><img src="../../assets/images/concept-pixel-pull-cover.webp" width="1440" height="900" alt="" loading="lazy"></div><span class="mono"><span>Pixel Pull</span><span>Card shop</span></span></a>
+        <a href="https://noah-portfolio.pages.dev/concepts/#little-rosti" data-tilt><div class="im"><img src="../../assets/images/concept-little-rosti-poster.webp" width="1440" height="900" alt="" loading="lazy"></div><span class="mono"><span>Little Rösti</span><span>Café</span></span></a>
+        <a href="https://noah-portfolio.pages.dev/concepts/#common-table" data-tilt><div class="im"><img src="../../assets/images/concept-common-table-cover.webp" width="1440" height="900" alt="" loading="lazy"></div><span class="mono"><span>Common Table</span><span>Restaurant</span></span></a>
+        <a href="https://noah-portfolio.pages.dev/concepts/#crumb-and-kin" data-tilt><div class="im"><img src="../../assets/images/concept-crumb-and-kin-poster.webp" width="1440" height="900" alt="" loading="lazy"></div><span class="mono"><span>Crumb &amp; Kin</span><span>Bakery</span></span></a>
       </div>
     </section>
 
@@ -569,11 +593,11 @@
       <p>No pressure, no complicated process. Tell me a little about your project and I'll reply within a day or two.</p>
       <a class="pill" href="#contact" data-mag>Start a project <b>→</b></a>
     </div>
-    <div class="foot mono"><span>© 2026 Noah Zaw Min Htut</span><a href="../../assets/docs/Zaw_Min_Htut_Resume_2026.pdf" target="_blank" rel="noopener" style="color:inherit">Résumé (PDF) ↗</a><span>Fusion sample · B + original</span></div>
+    <div class="foot mono"><span>© 2026 Noah Zaw Min Htut</span><a href="../../assets/docs/Zaw_Min_Htut_Resume_2026.pdf" target="_blank" rel="noopener" style="color:inherit;display:inline-flex;align-items:center;min-height:1.75rem">Résumé (PDF) ↗</a><span>Fusion sample · B + original</span></div>
   </footer>
   <div class="bubble" aria-hidden="true">View</div>
   <!-- Carries the headline reel down the page and docks it onto the Ganko image (desktop), as on the original. -->
-  <div class="reel-flyer" aria-hidden="true"><img src="../../assets/images/ganko-home-1600.webp" alt=""><span class="marks"></span></div>
+  <div class="reel-flyer" aria-hidden="true"><img src="../../assets/images/ganko-home-1600.webp" width="1600" height="1066" alt=""><span class="marks"></span></div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
@@ -583,12 +607,14 @@
   addEventListener('DOMContentLoaded', () => {
     const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)];
     const fine = matchMedia('(pointer: fine)').matches;
+    // Videos play only when motion is welcome; reduced motion keeps the poster.
+    if (!REDUCE) $$('video[data-autoplay]').forEach((v) => { v.autoplay = true; v.play().catch(() => {}); });
     const desktop = matchMedia('(min-width: 1024px)').matches;
 
     /* ---------- Fit the pressure lines to the width ---------- */
     const presses = $$('[data-press]');
     presses.forEach((h) => $$('.t', h).forEach((t) => {
-      splitChars(t);
+      splitChars(t); t.removeAttribute('aria-label');
       // Spaces collapse inside the flex line: give each one its own letter box.
       [...t.childNodes].filter((n) => n.nodeType === 3 && /\s/.test(n.data)).forEach((n) => { const sp = document.createElement('span'); sp.className = 'ch'; sp.setAttribute('aria-hidden', 'true'); sp.innerHTML = '&nbsp;'; n.replaceWith(sp); });
     }));
@@ -616,16 +642,16 @@
     const esc = (t) => t.replace(/&/g, '&amp;').replace(/</g, '&lt;');
     const deckEl = $('[data-deck]'), indexEl = $('[data-index]'), recordEl = $('[data-record]'), countEl = $('[data-count]');
     const deckSection = $('.more');
-    deckEl.innerHTML = WORK.map((w, i) => `<a class="deck__card" href="${w.href}" draggable="false" aria-label="${esc(w.name)}" data-i="${i}" data-view><img src="${w.img}" alt="" draggable="false"><span class="deck__tag mono">${esc(w.n)} · ${esc(w.name)}</span></a>`).join('');
+    deckEl.innerHTML = WORK.map((w, i) => `<a class="deck__card" href="${w.href}" draggable="false" data-i="${i}" data-view><img src="${w.img}" alt="" draggable="false"><span class="deck__tag mono">${esc(w.n)} · ${esc(w.name)}</span></a>`).join('');
     indexEl.innerHTML = WORK.map((w, i) => `<li><button type="button" data-go="${i}"><span>${w.n === 'Concept' ? 'C' : w.n.slice(0, 2)}</span><span class="nm">${esc(w.name)}</span><span>${w.n === 'Concept' ? 'Concept' : 'Project'}</span></button></li>`).join('');
     const deckCards = $$('.deck__card', deckEl);
     let order = WORK.map((_, i) => i); // order[0] is on top
     const top = () => order[0];
     const deckStatus = () => { const w = WORK[top()]; setStatus(w.n === 'Concept' ? `Concept — ${w.name}` : `${w.n} — ${w.name}`); };
-    const pose = (d) => ({ x: d * 26, y: -d * 20, scale: 1 - d * .045, rotation: d === 0 ? 0 : (d % 2 ? 2.4 : -1.6) * Math.min(d, 3) / 1.5, autoAlpha: d > 3 ? 0 : 1, zIndex: WORK.length - d });
+    const pose = (d0) => { const d = Math.min(d0, 3); return { x: d * 26, y: -d * 20, scale: 1 - d * .045, rotation: d === 0 ? 0 : (d % 2 ? 2.4 : -1.6) * d / 1.5, autoAlpha: 1, zIndex: WORK.length - d0 }; };
     const record = () => {
       const w = WORK[top()];
-      recordEl.innerHTML = `<dt>Project</dt><dd>${esc(w.name)}</dd>` + w.rows.map(([k, v]) => `<dt>${k}</dt><dd>${esc(v)}</dd>`).join('') + `<a href="${w.href}">${w.cta}</a>`;
+      recordEl.innerHTML = `<dt>Project</dt><dd>${esc(w.name)}</dd>` + w.rows.map(([k, v]) => `<dt>${k}</dt><dd>${esc(v)}</dd>`).join('') + `<dt class="sr-only">Link</dt><dd class="record__cta"><a href="${w.href}"><span class="ulink">${w.cta.replace(' →', '')}</span> <span class="arr" aria-hidden="true">→</span></a></dd>`;
       $$('[data-go]', indexEl).forEach((b, i) => { b.classList.toggle('is-current', i === top()); b.setAttribute('aria-current', i === top() ? 'true' : 'false'); });
       countEl.textContent = `${top() + 1} / ${WORK.length}`;
       deckCards.forEach((c, i) => { c.tabIndex = i === top() ? 0 : -1; c.setAttribute('aria-hidden', i === top() ? 'false' : 'true'); });
@@ -688,7 +714,7 @@
     /* ---------- Section status, progress ticks and rail (from the original) ---------- */
     const sections = $$('[data-section]');
     const pnav = $('[data-pnav]'), status = $('[data-status-btn]'), stText = $('[data-status-text]');
-    const progress = $('.progress'), fill = $('.progress__fill');
+    const progress = $('.progress'), fill = $('.progress__fill'), topEl = $('.top');
     const rail = document.createElement('nav');
     rail.className = 'rail mono'; rail.setAttribute('aria-label', 'On this page');
     rail.innerHTML = `<ol>${sections.map((s, i) => `<li><a href="#" data-i="${i}"><i></i><span>${s.dataset.section}</span></a></li>`).join('')}</ol>`;
@@ -739,6 +765,7 @@
       const max = document.documentElement.scrollHeight - innerHeight;
       const p = max > 0 ? scrollY / max : 0;
       fill.style.scale = `${p} 1`;
+      topEl.classList.toggle('is-scrolled', scrollY > 8);
       ticks.forEach((t, i) => t.classList.toggle('is-passed', p >= marks[i] - .001));
       let idx = -1; marks.forEach((m, i) => { if (p >= m - .001) idx = i; });
       rail.classList.toggle('is-visible', idx >= 0 && p < .985);
@@ -748,7 +775,7 @@
         railLinks.forEach((a, i) => a.classList.toggle('is-current', i === idx));
         const s = sections[idx];
         $$('[data-link]').forEach((a) => a.classList.toggle('is-active', !!s && a.dataset.link === s.dataset.nav));
-        if (s && s.dataset.status && !s.hasAttribute('data-own-status')) setStatus(s.dataset.status);
+        if (s && !s.hasAttribute('data-own-status')) setStatus(s.dataset.status || s.dataset.section);
         if (idx < 0) setStatus('');
         if (s === deckSection) deckStatus();
       }
