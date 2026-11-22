@@ -1,7 +1,7 @@
 # CLAUDE.md — Noah's portfolio
 
 Personal portfolio of Noah (Zaw Min Htut), web designer & developer, Singapore.
-Live: https://noah-portfolio.pages.dev · Repo: github.com/noah-mhz/noah-portfolio (branch `main`).
+Live: https://noah-portfolio.pages.dev · Repo: github.com/noah-mhz/noah-portfolio (branch `main`; previous design on `v1`).
 README.md has the file-by-file structure and the motion tiers; read it before larger changes.
 
 ## How Noah works
@@ -21,14 +21,14 @@ README.md has the file-by-file structure and the motion tiers; read it before la
 - Never publish contact details: no email or phone anywhere on the site, and nothing from the
   lecturer reference (name, phone, email).
 - Never invent facts, metrics, client quotes or outcomes. Use only what Noah has stated.
-- No gradients, glows or particles. No section numbering (project counters like `01 / 05` stay).
+- No glows or particles; gradients only where tasteful. No section numbering (project counters like `01 / 04` stay).
 
 ## Facts Noah has stated (use as given)
 
 - Every site in the portfolio was designed and built by Noah alone.
 - Positioning: independent web designer & developer in Singapore who takes freelance work
   alongside an in-house role (Software Engineer at Pomar Engineering, May 2025 – now).
-  Ganko is the only freelance project. Luumens, Voyagaer, Craftism and Evnergy are in-house
+  Ganko is the only freelance project. Luumens, Voyagaer, Industmarine, Craftism and Evnergy are in-house
   work for Pomar Engineering's brands — never call them clients. Labels: "Freelance" /
   "In-house · Pomar Engineering" / "Concept".
 - Services (homepage): New website · Redesign · Custom front-end · Ongoing improvements.
@@ -46,6 +46,9 @@ README.md has the file-by-file structure and the motion tiers; read it before la
 - Voyagaer: WordPress + Elementor, custom widgets. Live site not launched yet (no outbound
   link). Hard part: content/photos arriving in pieces and planning the flow. Proudest: product
   pages with all specs in tabs. Next time: settle flow and narrative before design.
+- Industmarine (industmarine.com, live, © 2026): WordPress + Elementor, custom HTML widgets, GSAP. Eight
+  pages laid out like an engineering drawing sheet. Hard part: responsiveness. Proudest: the
+  engineering-sheet grid. Next time: a lighter build (fewer page-level overrides, a shared widget library).
 - Craftism and Evnergy: real projects, sites and case studies not live yet ("In progress" list,
   no links). No brand colours yet.
 - No metrics and no client quotes are available.
@@ -58,50 +61,58 @@ README.md has the file-by-file structure and the motion tiers; read it before la
   is in git history, commit 5bbe15a); its files stay in `concepts/mochi-card-nook/`, unlinked. The restaurant's real name
   must never appear, not even in file names or URLs.
 
-## Design system
+## Versions
 
-- Darkroom (default): bg `#0A0A0A`, text `#F2F2F0`, accent mint `#A6FFCB`.
-- Daylight: paper `#F2F2F0`, ink `#0A0A0A`, accent deep green `#0B7A53`.
-- Use tokens (`--bg`, `--text`, `--muted`, `--accent`, `--fg-rgb`, `--border`…), never literal
-  colours, except inside the difference-blended nav and over photos/video (fixed light colours;
-  the nav's daylight accent is the inverse `#E7789D`).
-- Case colours via body vars `--case / --case-day / --case-inv`; homepage project titles via
-  `--brand / --brand-day` on the article.
-- Wordmark: lowercase "noah" (Inter Tight 600, -0.045em) ending on a square full stop
-  (0.15em, `--brand-dot`: mint / deep green; `#E7789D` inside the nav). Small mark "n." =
-  `favicon.svg` / `apple-touch-icon.png`. `js/logo.js`: letters rise on load (CSS; homepage
-  waits for the intro via `.is-in`), folds to "n." past 120px scroll, hover/focus reopens,
-  theme switch wipes the square (`theme:before` / `theme:after` events from theme.js).
-  The intro card's square blinks (CSS). Footer `.footer__mark` is the big "noah.".
-- Type: Inter Tight (display/body), JetBrains Mono (labels). Viewfinder corner marks (`.marks`)
-  frame what the page points at. Motion is slow and deliberate (expo / power curves).
-- Every effect needs a reduced-motion path and a touch path (`gsap.matchMedia`, `MEDIA` tiers
-  in animations.js, `TOUCH_MOTION` in touch.js).
+- **v2 (live)**: the current design (peach / deep teal / apricot). Built on branch `redesign`, launched 2026-11-23.
+- **v1**: the previous site (Darkroom / Daylight, mint accent) is kept on branch `v1`. To revert the live
+  site, reset `main` to `v1` (or redeploy that commit from Cloudflare Pages → Deployments). Never delete `v1`.
+
+## Design system (v2)
+
+- Palette, 60 / 30 / 10. Light: peach `#F8DBC1` ground, deep teal `#0E1718` ink and bands, apricot
+  `#F2A65A` for buttons and fills; burnt apricot `#944810` for accent text and thin marks (apricot is too
+  faint on peach). Dark: deep teal ground, peach ink, apricot accent; panels `#15292B`. No pink anywhere.
+- Use the tokens in `css/base.css` (`--bg`, `--bg-2`, `--ink`, `--muted`, `--line`, `--pink` = apricot
+  fill, `--pink-ink` / `--mark` = accent text and marks, `--teal` = small labels, `--on-pink`), never literal
+  colours, except inside illustrations (service scenes) and the blinds (`theme.js` GROUND).
+- Type: Archivo variable (width 62–125, weight 100–900) for everything; Geist Mono 400 for labels.
+  Self-hosted in `assets/fonts/`.
+- Wordmark: lowercase "noah" + square full stop; folds to "n." on scroll (homepage). Favicon unchanged.
+- Theme: light by default; the choice is stored in localStorage `noah-theme` and applied by the inline
+  `<head>` script before paint. Switching runs the blinds transition (`js/theme.js`).
+- Motion: expo / power curves; small springs only on arrows and dots. Every effect has a touch version and
+  a reduced-motion path (instant theme switch, no gallery animation, video posters).
 
 ## Stack and conventions
 
-- Static HTML/CSS/JS, no build step. GSAP 3.12.5 + ScrollTrigger (cdnjs), Lenis 1.1.13 (jsdelivr).
-- Entry points: `js/main.js` (home), `js/project.js` (case studies + colophon),
-  `js/notfound.js` (404, absolute paths because it is served at any depth).
-- Every page has the inline `<head>` boot script that applies a saved Daylight theme before paint.
+- Static HTML/CSS/JS, no build step, no modules. GSAP 3.12.5 + ScrollTrigger (cdnjs), Lenis 1.1.13 (jsdelivr).
+- All paths are absolute (`/css/…`, `/assets/…`), so every page works at any depth (404 included).
+- CSS: `css/base.css` (fonts, tokens, resets), `css/home.css` (homepage), `css/site.css` (inner pages),
+  `css/contact.css` (project form).
+- JS: `js/base.js` (homepage Lenis + helpers), `js/home.js` (homepage), `js/theme.js` (theme + blinds),
+  `js/gallery.js` (gallery engine: coverflow, fan, stack, helix, grid, staircase, list + detail view),
+  `js/case.js` (case-study galleries; each page lists its screens in `<script type="application/json" id="screens">`),
+  `js/concepts.js`, `js/colophon.js`, `js/contact.js` (project form).
+- Pages: `/`, `/work/{ganko,luumens,voyagaer,industmarine}/`, `/concepts/` (+ the concept homepages,
+  self-contained), `/colophon/`, `/404.html`. Case studies run 01 / 04 Ganko → Luumens → Voyagaer →
+  Industmarine; the homepage deck (`WORK` in `js/home.js`) and the "Next project" footers follow that order.
+- Contact: any `[data-pf-open]` link opens the form, which `js/contact.js` builds on the page. It posts to
+  `functions/api/contact.js` (Turnstile + Resend). Field names must match the function.
 - Images are WebP. `_headers` sets caching (CSS/JS always revalidate) and security headers.
 - Every repo file deploys. `functions/_middleware.js` returns the 404 page for working files
   (CLAUDE.md, READMEs, .gitignore); `_routes.json` limits which paths run functions. Add any new
   function route (e.g. `/api/*`) and any new private file to both.
-- Contact: `functions/api/contact.js` (Turnstile + Resend). The form is in each page's markup;
-  `js/contact.js` + `js/formfx.js` (custom dropdowns, placeholders, error shake).
 - Search: titles name "Noah Zaw Min Htut"; Person/WebSite JSON-LD on the homepage; canonical
   URLs on every page; update `sitemap.xml` lastmod when pages change.
 
 ## Pitfalls already hit (don't repeat)
 
-- The Ganko pin length, its stage timings (`initCaseStudy`) and `.project.is-overlapping`
-  margin are linked; change them together and compare scrolling down vs up.
-- Pages can be restored from the back/forward cache mid-transition; `transition.js` resets
-  this on `pageshow`. Anything that pauses Lenis must be undone there too.
-- Inside the nav (`mix-blend-mode: difference`) use fixed light colours.
+- The Ganko pin (`stageIn` / `stageOut` / `total` and `end: '+=160%'` in `js/home.js`) keeps its last stage
+  on screen; don't add an exit or the section ends on an empty screen.
+- The hero headline is measured at its resting width (`fit()` includes margins); measure after fonts load.
+- Industmarine screenshots were rendered from saved pages without photos (the sandbox can't reach the live
+  site). Replace `assets/images/industmarine-*.webp` with real captures when available.
 - Test scripts must not write files into the repo.
-- Unsplash downloads are blocked from the sandbox; external images are hotlinked.
 
 ## Testing before pushing
 

@@ -3,339 +3,235 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Colophon — How this site was made · Noah Zaw Min Htut, Web Designer</title>
-  <meta name="description" content="How noah-portfolio was made: the type, colour, grid, motion rules and stack behind the site.">
+  <title>Colophon · Noah Zaw Min Htut</title>
+  <meta name="description" content="How this site was made: type, colour, the moving parts, and the stack behind them.">
   <link rel="canonical" href="https://noah-portfolio.pages.dev/colophon/">
-  <meta property="og:url" content="https://noah-portfolio.pages.dev/colophon/">
-  <meta name="author" content="Noah Zaw Min Htut">
-  <meta name="theme-color" content="#0A0A0A">
-  <meta property="og:title" content="Colophon — Noah">
+  <meta property="og:title" content="Colophon · Noah Zaw Min Htut">
   <meta property="og:description" content="How this site was made.">
-  <meta property="og:type" content="article">
   <meta property="og:image" content="https://noah-portfolio.pages.dev/assets/images/og/colophon.jpg">
-  <meta property="og:image:width" content="1200">
-  <meta property="og:image:height" content="630">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Colophon — Noah">
-  <meta name="twitter:description" content="How this site was made.">
-  <meta name="twitter:image" content="https://noah-portfolio.pages.dev/assets/images/og/colophon.jpg">
-    <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <meta name="theme-color" content="#F8DBC1" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0E1718" media="(prefers-color-scheme: dark)">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <script>try{var t=localStorage.getItem('noah-theme');if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+  <link rel="stylesheet" href="/css/base.css">
+  <link rel="stylesheet" href="/css/contact.css">
+  <link rel="stylesheet" href="/css/site.css">
+  <style>
+    /* Type */
+    .spec { display: grid; grid-template-columns: minmax(0, 8fr) minmax(0, 4fr); gap: clamp(1.5rem, 3vw, 3rem); margin-top: 2rem; }
+    .spec__big { margin: 0; padding: clamp(1.5rem, 3vw, 2.5rem); border-radius: 1.2rem; background: var(--bg-2); overflow: hidden; container-type: inline-size; }
+    .spec__word { display: block; font-size: 12cqw; line-height: .9; text-transform: uppercase; letter-spacing: -.02em; white-space: nowrap; font-variation-settings: 'wdth' var(--w, 100), 'wght' var(--g, 800); }
+    .spec__word .ch { display: inline-block; font-variation-settings: inherit; }
+    .spec__ctrl { display: grid; gap: 1.2rem; margin-top: 1.5rem; }
+    .spec__ctrl label { display: grid; grid-template-columns: 5rem minmax(0, 1fr) 3rem; align-items: center; gap: 1rem; }
+    .spec__ctrl output { text-align: right; }
+    .spec input[type=range] { width: 100%; accent-color: var(--mark); }
+    .spec__side { display: grid; gap: 1rem; align-content: start; }
+    .spec__card { padding: 1.4rem; border-radius: 1.2rem; border: 1px solid var(--line); }
+    .spec__card p { margin: .8rem 0 0; color: var(--muted); }
+    .spec__mono { margin: 0; font: 400 clamp(1.4rem, 2.4vw, 2rem)/1.2 'Geist Mono', monospace; }
+    .spec__card .mono { color: var(--teal); }
 
-  <style>html{background:#0A0A0A}</style>
-  <script>try{if(localStorage.getItem("theme")==="daylight"){var d=document.documentElement;d.setAttribute("data-theme","daylight");d.style.background="#F2F2F0";}}catch(e){}</script>
-  <link rel="preload" href="../assets/fonts/inter-tight-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="preload" href="../assets/fonts/jetbrains-mono-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="../css/style.css">
-  <link rel="stylesheet" href="../css/project.css">
+    /* Colour */
+    .pal { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(1rem, 2vw, 1.5rem); margin-top: 2rem; }
+    .pal__card { --g: #F8DBC1; --s: #0E1718; --a: #F2A65A; border-radius: 1.2rem; overflow: hidden; background: var(--g); color: var(--s); box-shadow: inset 0 0 0 1px var(--line); }
+    .pal__card--dark { --g: #0E1718; --s: #F8DBC1; }
+    .pal__top { display: flex; justify-content: space-between; align-items: baseline; padding: 1.3rem 1.4rem 0; }
+    .pal__h { margin: 0; padding: 1.2rem 1.4rem 1.4rem; font-weight: 800; font-size: clamp(2rem, 4.2vw, 3.6rem); line-height: .9; text-transform: uppercase; font-variation-settings: 'wdth' 70; }
+    .pal__h em { font-style: normal; color: var(--ae, var(--a)); }
+    .pal__card:not(.pal__card--dark) { --ae: #944810; }
+    .pal__bar { display: flex; height: 3.2rem; }
+    .pal__bar span { display: flex; align-items: end; padding: .5rem .6rem; font: 400 .68rem 'Geist Mono', monospace; }
+    .pal__list { margin: 0; padding: .4rem 1.4rem 1.2rem; list-style: none; display: grid; }
+    .pal__list li { display: grid; grid-template-columns: 1.4rem minmax(0, 1fr) auto; align-items: center; gap: .8rem; padding: .7rem 0; border-bottom: 1px solid color-mix(in srgb, var(--s) 16%, transparent); font: 400 .72rem 'Geist Mono', monospace; letter-spacing: .06em; text-transform: uppercase; }
+    .pal__list li:last-child { border-bottom: 0; }
+    .pal__list i { width: 1.4rem; height: 1.4rem; border-radius: 50%; box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--s) 25%, transparent); }
+    .pal__foot { display: flex; flex-wrap: wrap; align-items: center; gap: 1rem 2rem; margin-top: 1.5rem; }
+    .pal__foot p { flex: 1 1 26rem; margin: 0; color: var(--muted); max-width: 46rem; }
+    .swap { all: unset; cursor: pointer; display: inline-flex; align-items: center; gap: .7rem; padding: .95rem 1.35rem; border-radius: 99px; background: var(--pink); color: var(--on-pink); font: 600 .95rem/1 'Archivo'; }
+    .swap b { display: grid; place-items: center; width: 1.4rem; height: 1.4rem; border-radius: 50%; background: var(--ink); color: var(--bg); transition: rotate .5s var(--ease); }
+    .swap:hover b { rotate: 180deg; }
+    .swap:focus-visible { outline: 2px solid var(--teal); outline-offset: 3px; }
 
-  <script>document.documentElement.classList.add('js');
-    // Arriving from the homepage transition: paint its image on the first frame.
-    try { var pt = sessionStorage.getItem('pt:image'); if (pt !== null && !matchMedia('(prefers-reduced-motion: reduce)').matches) { document.documentElement.classList.add('pt-enter'); if (pt) document.documentElement.style.setProperty('--pt-src', 'url("' + pt.replace(/"/g, '') + '")'); } } catch (e) {}
-  </script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
-  <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js" defer></script>
-  <script type="module" src="../js/project.js"></script>
+    /* Moving parts */
+    .parts { margin: 2rem 0 0; padding: 0; list-style: none; border-top: 1px solid var(--line); }
+    .parts li { display: grid; grid-template-columns: 4rem minmax(0, 4fr) minmax(0, 6fr) auto; gap: 1.5rem; align-items: baseline; padding: 1.4rem 0; border-bottom: 1px solid var(--line); }
+    .parts .n { color: var(--teal); }
+    .parts h3 { margin: 0; font-size: clamp(1.3rem, 2vw, 1.8rem); line-height: 1.05; font-weight: 700; }
+    .parts p { margin: 0; color: var(--muted); }
+    .parts a { color: var(--ink); text-decoration: none; white-space: nowrap; }
+
+    /* 404 */
+    .err { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: clamp(1.5rem, 3vw, 3rem); align-items: end; margin-top: 2rem; }
+    .err__fig { margin: 0; padding: clamp(1.5rem, 3vw, 2.5rem); border-radius: 1.2rem; background: var(--bg-2); color: inherit; text-decoration: none; display: block; }
+    .err__fig b { display: flex; align-items: flex-end; font-weight: 800; font-size: clamp(5rem, 15vw, 14rem); line-height: .8; letter-spacing: -.03em; }
+    .err__fig b i { width: .2em; height: .2em; margin: 0 0 .05em .05em; background: var(--mark); transition: translate .6s var(--ease); }
+    .err__fig:hover b i { translate: .25em 0; }
+    .err__fig span { display: block; margin-top: 1.5rem; }
+    .err p { margin: 0 0 1rem; color: var(--muted); }
+
+    /* Stack */
+    .stack { margin: 2rem 0 0; padding: 0; list-style: none; border-top: 1px solid var(--line); }
+    .stack li { display: flex; justify-content: space-between; gap: 1rem; padding: 1.1rem 0; border-bottom: 1px solid var(--line); font-size: clamp(1.1rem, 1.6vw, 1.4rem); }
+    .stack li .mono { color: var(--muted); align-self: center; text-align: right; }
+
+
+    @media (max-width: 900px) {
+      .spec, .err { grid-template-columns: minmax(0, 1fr); }
+      .pal { grid-template-columns: minmax(0, 1fr); }
+      .parts li { grid-template-columns: 2.5rem minmax(0, 1fr); }
+      .parts li p, .parts li a { grid-column: 2; }
+    }
+  </style>
 </head>
-<body class="study-page colophon-page">
-  <a class="skip-link" href="#main">Skip to content</a>
-
-  <div class="grid-lines" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
-  <div class="progress" aria-hidden="true"><span class="progress__bar"></span></div>
-
-  <div class="cursor" aria-hidden="true">
-    <span class="cursor__circle"></span>
-    <span class="cursor__label"></span>
-  </div>
-
-  <header class="nav">
-    <a class="nav__logo logo" href="../" aria-label="Noah — home" data-logo><span class="logo__word" aria-hidden="true"><span class="logo__m"><span class="logo__l" style="--i:0">n</span></span><span class="logo__rest"><span class="logo__restin"><span class="logo__m"><span class="logo__l" style="--i:1">o</span></span><span class="logo__m"><span class="logo__l" style="--i:2">a</span></span><span class="logo__m"><span class="logo__l" style="--i:3">h</span></span></span></span><i class="logo__dot"><b></b></i></span></a>
-    <span class="nav__clock" data-clock aria-hidden="true">— SGT</span>
-    <nav class="nav__right" aria-label="Primary" data-nav>
-      <ul class="nav__list" id="nav-list">
-        <li><a class="nav__link" href="../#work" data-nav-link="work">Work</a></li>
-        <li><a class="nav__link" href="../concepts/" data-nav-link="concepts">Concepts</a></li>
-        <li><a class="nav__link" href="../#about" data-nav-link="about">About</a></li>
-        <li><a class="nav__link nav__link--file" href="../assets/docs/Zaw_Min_Htut_Resume_2026.pdf" target="_blank" rel="noopener">Résumé <span class="arrow arrow--diag" aria-hidden="true">↗</span></a></li>
-      </ul>
-      <button class="nav__status" type="button" aria-expanded="false" aria-controls="nav-list" data-nav-status>
-        <span class="nav__status-text" data-nav-status-text></span>
-        <span class="nav__status-menu"><span class="nav__status-word">Menu</span><i class="nav__status-icon" aria-hidden="true">+</i></span>
-      </button>
-      <button class="theme-toggle theme-toggle--nav" type="button" data-theme-toggle aria-pressed="false" aria-label="Darkroom mode — switch to daylight"><span class="theme-toggle__dot" aria-hidden="true"></span><span class="theme-toggle__label">Darkroom</span></button>
-      <a class="nav__link nav__cta" href="../#start" data-pf-open aria-haspopup="dialog" aria-controls="project-form">Start a project</a>
-    </nav>
+<body>
+  <a class="skip mono" href="#main">Skip to content</a>
+  <header class="top">
+    <a class="logo" href="/">noah<i></i></a>
+    <a class="back mono" href="/"><span aria-hidden="true">←</span><span class="lbl">Home</span><span class="sr-only">Back to the homepage</span></a>
+    <div class="top__end">
+      <button class="theme mono" type="button" data-theme-switch aria-pressed="false"><span class="theme__icon" aria-hidden="true"><i></i></span><span class="sr-only">Dark mode, currently </span><span class="theme__label">Light</span></button>
+      <a class="pill" href="/#contact" data-pf-open aria-haspopup="dialog" aria-controls="project-form">Discuss a project <b aria-hidden="true">→</b></a>
+    </div>
   </header>
 
   <main id="main">
-
-    <!-- Hero -->
-    <section class="study-hero colophon-hero" id="top" data-nav-label="">
-      <div class="study-hero__top label muted">
-        <a class="study-back link-line" href="../"><span class="arrow arrow--back" aria-hidden="true">←</span> Home</a>
-        <span class="hide-sm">Colophon</span>
-        <span><span class="status-dot" aria-hidden="true"></span>Singapore</span>
-      </div>
-      <div class="study-hero__title">
-        <h1 class="study-hero__name" data-split="chars" data-hero-title>Colophon</h1>
-        <p class="study-hero__sub" data-hero-sub>How this site was made.</p>
-      </div>
-      <dl class="study-meta label">
-        <div data-hero-meta><dt>Design</dt><dd>Noah</dd></div>
-        <div data-hero-meta><dt>Build</dt><dd>By hand, no framework</dd></div>
-        <div data-hero-meta><dt>Hosting</dt><dd>Cloudflare Pages</dd></div>
-        <div data-hero-meta><dt>Year</dt><dd>2026</dd></div>
+    <section class="head">
+      <p class="mono">Colophon · This site · 2026</p>
+      <h1 aria-label="Colophon">Colophon<i aria-hidden="true"></i></h1>
+      <p class="head__lede">How this site was made: one stretchable typeface, a three-colour palette that flips between light and dark, and a handful of moving parts built by hand.</p>
+      <dl class="facts mono">
+        <dt>Design</dt><dd>Noah</dd>
+        <dt>Build</dt><dd>By hand, no framework</dd>
+        <dt>Hosting</dt><dd>Cloudflare Pages</dd>
+        <dt>Year</dt><dd>2026</dd>
       </dl>
-      <figure class="study-hero__media" data-hero-media>
-        <div class="frame">
-          <div class="frame__bar" aria-hidden="true"><i><b></b><b></b><b></b></i><span class="frame__url label">noah-portfolio.pages.dev</span><i></i></div>
-          <video data-inview-video muted loop playsinline preload="auto" poster="../assets/images/site-card-poster.webp" width="1280" height="800"
-            aria-label="This site's homepage: the headline, then the Ganko reel opening into the first case study">
-            <source src="../assets/video/site-card.mp4" type="video/mp4">
-          </video>
-          <span class="marks" aria-hidden="true"></span>
-        </div>
-      </figure>
     </section>
 
     <!-- Type -->
-    <section class="study-section study-section--stack" data-nav-section="work" data-nav-label="Type" aria-labelledby="type-title">
-      <div class="study-section__head"><div class="section-label" data-reveal="fade"><span>Type</span></div></div>
-      <div class="study-section__body">
-        <h2 class="study-lead" id="type-title" data-split="lines" data-reveal="text"><span class="line">Two typefaces,</span><span class="line">two jobs.</span></h2>
-        <p class="study-copy muted" data-reveal="fade">Inter Tight carries the voice — huge and tight for headlines, quiet for reading. JetBrains Mono handles the data: labels, coordinates, dates and the clock. Both are self-hosted, and only the weights the site uses are loaded.</p>
+    <section class="sec" aria-labelledby="type-title">
+      <div class="sec__head"><h2 id="type-title">One family,<br>stretched</h2><span class="mono">Type</span></div>
+      <div class="note rv"><p>Archivo does almost everything. It's a variable font with a width axis, so the same letters run condensed for section titles, wide for the hero and plain for reading. Geist Mono handles the small print: labels, dates and counters.</p></div>
+      <div class="spec">
+        <div>
+          <p class="spec__big rv"><span class="spec__word" data-spec aria-label="Pressure">Pressure</span></p>
+          <div class="spec__ctrl mono">
+            <label>Width <input type="range" min="62" max="125" step="1" value="100" data-axis="w"> <output data-out="w">100</output></label>
+            <label>Weight <input type="range" min="100" max="900" step="10" value="800" data-axis="g"> <output data-out="g">800</output></label>
+          </div>
+        </div>
+        <div class="spec__side">
+          <div class="spec__card rv">
+            <span class="mono">Archivo · Variable</span>
+            <p>Width 62–125 · Weight 100–900. On the homepage, the headline letters near the cursor grow wider and heavier.</p>
+          </div>
+          <div class="spec__card rv">
+            <p class="spec__mono"><span data-clock>--:--</span> SGT<br>1.3521° N</p>
+            <p><span class="mono">Geist Mono · 400</span><br>Labels, dates and counters.</p>
+          </div>
+        </div>
       </div>
-      <div class="colo-type">
-        <figure class="colo-specimen" data-reveal="fade">
-          <p class="colo-specimen__big" aria-label="Aa">Aa</p>
-          <figcaption class="label muted"><span>Inter Tight</span><span>Variable · 100–900</span></figcaption>
-        </figure>
-        <figure class="colo-specimen colo-specimen--mono" data-reveal="fade">
-          <p class="colo-specimen__mono">1.3521° N<br>103.8198° E<br><span data-clock>— SGT</span></p>
-          <figcaption class="label muted"><span>JetBrains Mono</span><span>400 · 500</span></figcaption>
-        </figure>
-      </div>
-      <ul class="colo-weights" aria-label="Inter Tight weights" data-reveal="fade">
-        <li style="font-weight:200">Design</li>
-        <li style="font-weight:400">Design</li>
-        <li style="font-weight:600">Design</li>
-        <li style="font-weight:800">Design</li>
-      </ul>
     </section>
 
     <!-- Colour -->
-    <section class="study-section study-section--stack" data-nav-section="work" data-nav-label="Colour" aria-labelledby="colour-title">
-      <div class="study-section__head"><div class="section-label" data-reveal="fade"><span>Colour</span></div></div>
-      <div class="study-section__body">
-        <h2 class="study-lead" id="colour-title" data-split="lines" data-reveal="text"><span class="line">Near-black, off-white,</span><span class="line">one <em class="accent">mint.</em></span></h2>
-        <ul class="study-palette" aria-label="Site palette">
-          <li style="--swatch:#0A0A0A;--ink:#F2F2F0;box-shadow:inset 0 0 0 1px rgba(var(--fg-rgb),.16)" data-swatch><span class="label">Ink</span><span class="label">#0A0A0A</span></li>
-          <li style="--swatch:#F2F2F0;--ink:#0A0A0A;box-shadow:inset 0 0 0 1px rgba(var(--fg-rgb),.12)" data-swatch><span class="label">Paper</span><span class="label">#F2F2F0</span></li>
-          <li style="--swatch:#858585;--ink:#0A0A0A" data-swatch><span class="label">Muted</span><span class="label">#858585</span></li>
-          <li style="--swatch:#A6FFCB;--ink:#0A0A0A" data-swatch><span class="label">Mint</span><span class="label">#A6FFCB</span></li>
-        </ul>
-        <div class="colo-daylight" data-reveal="fade">
-          <span class="label muted">Daylight</span>
-          <button class="theme-toggle colo-daylight__toggle" type="button" data-theme-toggle aria-pressed="false" aria-label="Darkroom mode — switch to daylight"><span class="theme-toggle__dot" aria-hidden="true"></span><span class="theme-toggle__label">Darkroom</span></button>
-        </div>
-        <ul class="study-palette colo-daylight__palette" aria-label="Daylight palette">
-          <li style="--swatch:#F2F2F0;--ink:#0A0A0A;box-shadow:inset 0 0 0 1px rgba(var(--fg-rgb),.12)" data-swatch><span class="label">Paper</span><span class="label">#F2F2F0</span></li>
-          <li style="--swatch:#0A0A0A;--ink:#F2F2F0;box-shadow:inset 0 0 0 1px rgba(var(--fg-rgb),.12)" data-swatch><span class="label">Ink</span><span class="label">#0A0A0A</span></li>
-          <li style="--swatch:#6B6B67;--ink:#F2F2F0" data-swatch><span class="label">Muted</span><span class="label">#6B6B67</span></li>
-          <li style="--swatch:#0B7A53;--ink:#F2F2F0" data-swatch><span class="label">Deep green</span><span class="label">#0B7A53</span></li>
-        </ul>
-        <p class="study-copy muted" data-reveal="fade">Mint is the only colour, and it's used sparingly: links, the form, progress lines and one word per section. On each case study it steps aside for the client's own colour. Switch to Daylight and the same system develops onto paper: ink for text, and mint deepens to a green that reads on white.</p>
-        <ul class="colo-tints" aria-label="Case study colours" data-reveal="fade">
-          <li><a href="../work/ganko/" style="--tint:#F0453B"><span class="colo-tints__dot" aria-hidden="true"></span>Ganko.sg</a></li>
-          <li><a href="../work/luumens/" style="--tint:#E33F4D"><span class="colo-tints__dot" aria-hidden="true"></span>Luumens</a></li>
-          <li><a href="../work/voyagaer/" style="--tint:#48BDA9"><span class="colo-tints__dot" aria-hidden="true"></span>Voyagaer</a></li>
-        </ul>
-      </div>
-    </section>
-
-    <!-- Grid + viewfinder -->
-    <section class="study-section study-section--stack" data-nav-section="work" data-nav-label="Grid" aria-labelledby="grid-title">
-      <div class="study-section__head"><div class="section-label" data-reveal="fade"><span>Grid &amp; viewfinder</span></div></div>
-      <div class="study-section__body">
-        <h2 class="study-lead" id="grid-title" data-split="lines" data-reveal="text"><span class="line">Four columns and</span><span class="line">a viewfinder.</span></h2>
-        <p class="study-copy muted" data-reveal="fade">The four-column grid is never hidden — it draws itself in when the site opens and brightens at the contact. Corner marks borrowed from a camera viewfinder frame whatever you're looking at: project images, buttons, and the cursor itself.</p>
-      </div>
-      <a class="colo-frame" href="../#work" data-cursor="Work" data-reveal="fade">
-        <span class="colo-frame__label label">Point at it</span>
-        <span class="marks" aria-hidden="true"></span>
-      </a>
-    </section>
-
-    <!-- Error states: the homepage glitches into the 404 -->
-    <section class="study-section study-section--stack" data-nav-section="work" data-nav-label="404" aria-labelledby="error-title">
-      <div class="study-section__head"><div class="section-label" data-reveal="fade"><span>Error states</span></div></div>
-      <div class="study-section__body">
-        <h2 class="study-lead" id="error-title" data-split="lines" data-reveal="text"><span class="line">Even the 404</span><span class="line">is <em class="accent">designed.</em></span></h2>
-        <p class="study-copy muted" data-reveal="fade">Broken links happen. Instead of a dead end, a missing page lands in the same world: the viewfinder hunts for a subject it can't find, and every way back is one click away.</p>
-      </div>
-      <figure class="colo-glitch" data-glitch>
-        <div class="frame">
-          <div class="frame__bar" aria-hidden="true"><i><b></b><b></b><b></b></i><span class="frame__url label" data-glitch-url>noah-portfolio.pages.dev/this-page-does-not-exist</span><i></i></div>
-          <div class="colo-glitch__view" data-glitch-view>
-            <img class="colo-glitch__a" src="../assets/images/site-card-poster.webp" alt="" width="1280" height="800" loading="lazy" decoding="async" data-glitch-a>
-            <img class="colo-glitch__b" src="../assets/images/site-404.webp" alt="The 404 page: Out of frame, with the viewfinder searching for a subject" width="1280" height="800" loading="lazy" decoding="async" data-glitch-b>
-            <iframe class="colo-glitch__live" data-glitch-live data-src="../404.html#/this-page-does-not-exist" title="The live 404 page" tabindex="-1" aria-hidden="true" loading="lazy"></iframe>
+    <section class="sec" aria-labelledby="colour-title">
+      <div class="sec__head"><h2 id="colour-title">Peach, deep teal,<br>one apricot</h2><span class="mono">Colour</span></div>
+      <div class="note rv"><p>Both themes share three colours on a 60 / 30 / 10 split. Dark is light turned inside out: the ground and the ink swap places, and apricot stays the accent.</p></div>
+      <div class="pal">
+        <article class="pal__card rv" aria-label="Light palette">
+          <div class="pal__top mono"><span>Light</span><span>60 / 30 / 10</span></div>
+          <p class="pal__h">Websites that earn <em>trust</em>.</p>
+          <div class="pal__bar" aria-hidden="true">
+            <span style="flex:6;background:#F8DBC1;color:#0E1718;box-shadow:inset 0 1px 0 rgba(14,23,24,.16)">60</span>
+            <span style="flex:3;background:#0E1718;color:#F8DBC1">30</span>
+            <span style="flex:1;background:#F2A65A;color:#0E1718">10</span>
           </div>
-          <span class="marks" aria-hidden="true"></span>
-        </div>
-        <figcaption class="label muted">
-          <button class="colo-glitch__replay link-line" type="button" data-glitch-replay>Break it again <span aria-hidden="true">↺</span></button>
-          <a class="link-line" href="../this-page-does-not-exist/">Visit the 404 <span class="arrow arrow--diag" aria-hidden="true">↗</span></a>
-        </figcaption>
-      </figure>
+          <ul class="pal__list">
+            <li><i style="background:#F8DBC1"></i><span>Peach · ground</span><span>#F8DBC1</span></li>
+            <li><i style="background:#0E1718"></i><span>Deep teal · ink, bands</span><span>#0E1718</span></li>
+            <li><i style="background:#F2A65A"></i><span>Apricot · buttons</span><span>#F2A65A</span></li>
+            <li><i style="background:#944810"></i><span>Burnt apricot · text</span><span>#944810</span></li>
+          </ul>
+        </article>
+        <article class="pal__card pal__card--dark rv" aria-label="Dark palette">
+          <div class="pal__top mono"><span>Dark</span><span>60 / 30 / 10</span></div>
+          <p class="pal__h">Websites that earn <em>trust</em>.</p>
+          <div class="pal__bar" aria-hidden="true">
+            <span style="flex:6;background:#0E1718;color:#F8DBC1;box-shadow:inset 0 1px 0 rgba(248,219,193,.16)">60</span>
+            <span style="flex:3;background:#F8DBC1;color:#0E1718">30</span>
+            <span style="flex:1;background:#F2A65A;color:#0E1718">10</span>
+          </div>
+          <ul class="pal__list">
+            <li><i style="background:#0E1718"></i><span>Deep teal · ground</span><span>#0E1718</span></li>
+            <li><i style="background:#F8DBC1"></i><span>Peach · ink, blocks</span><span>#F8DBC1</span></li>
+            <li><i style="background:#F2A65A"></i><span>Apricot · accent</span><span>#F2A65A</span></li>
+            <li><i style="background:#15292B"></i><span>Teal panel · surfaces</span><span>#15292B</span></li>
+          </ul>
+        </article>
+      </div>
+      <div class="pal__foot">
+        <p class="rv">Apricot is too faint on peach for small text, so in the light theme links, labels and thin lines use burnt apricot instead. Switching theme draws blinds in the next theme's ground, swaps the colours behind them, then lifts them.</p>
+        <button class="swap" type="button" data-theme-switch aria-pressed="false"><span class="sr-only">Dark mode, currently </span><span>Switch to <span data-next>dark</span></span> <b aria-hidden="true">↻</b></button>
+      </div>
     </section>
 
-    <!-- Motion -->
-    <section class="study-section" data-nav-section="work" data-nav-label="Motion" aria-labelledby="motion-title">
-      <div class="study-section__head"><div class="section-label" data-reveal="fade"><span>Motion</span></div></div>
-      <div class="study-section__body">
-        <h2 class="study-lead" id="motion-title" data-split="lines" data-reveal="text"><span class="line">Slow, deliberate,</span><span class="line">never in the way.</span></h2>
-        <ul class="study-principles">
-          <li data-reveal="fade"><span class="label muted">Easing</span><p>Expo and power-four curves for entrances and wipes. Nothing bounces.</p></li>
-          <li data-reveal="fade"><span class="label muted">Timing</span><p>About 0.9 seconds for everyday reveals; up to 2 seconds for the opening moments.</p></li>
-          <li data-reveal="fade"><span class="label muted">Three versions</span><p>Every effect has a desktop version, a touch version and a still one for reduced motion.</p></li>
-          <li data-reveal="fade"><span class="label muted">Cheap to run</span><p>Only transform, opacity and clip-path move. Videos load late and play only while on screen.</p></li>
-        </ul>
+    <!-- Moving parts -->
+    <section class="sec" aria-labelledby="parts-title">
+      <div class="sec__head"><h2 id="parts-title">The moving<br>parts</h2><span class="mono">Motion</span></div>
+      <ol class="parts">
+        <li class="rv"><span class="n mono">01</span><h3>The logo fold</h3><p>noah. folds down to n. once you scroll, and opens again at the top.</p><a class="mono" href="/">See it ↗</a></li>
+        <li class="rv"><span class="n mono">02</span><h3>Text pressure</h3><p>In the hero headline, the letters nearest the cursor grow wider and heavier.</p><a class="mono" href="/">See it ↗</a></li>
+        <li class="rv"><span class="n mono">03</span><h3>The reel handoff</h3><p>The small Ganko film inside the headline grows into the first case study as you scroll.</p><a class="mono" href="/#work">See it ↗</a></li>
+        <li class="rv"><span class="n mono">04</span><h3>A pinned case study</h3><p>Ganko.sg holds still while its four stages play through: Overview, Approach, Platform, Live.</p><a class="mono" href="/#work">See it ↗</a></li>
+        <li class="rv"><span class="n mono">05</span><h3>The card deck</h3><p>More work sits in a stack you can flick through, with an index and a record beside it.</p><a class="mono" href="/#work">See it ↗</a></li>
+        <li class="rv"><span class="n mono">06</span><h3>Services that act it out</h3><p>Each service card does its job on hover: a wireframe becomes a site, an old page redesigns itself, code compiles, versions stack up.</p><a class="mono" href="/#services">See it ↗</a></li>
+        <li class="rv"><span class="n mono">07</span><h3>The timeline</h3><p>Years roll like an odometer as each role comes into view.</p><a class="mono" href="/#experience">See it ↗</a></li>
+        <li class="rv"><span class="n mono">08</span><h3>Galleries</h3><p>Case study screens switch between coverflow, fan, stack, helix and grid; concepts between a lookbook and an archive.</p><a class="mono" href="/work/ganko/">See it ↗</a></li>
+        <li class="rv"><span class="n mono">09</span><h3>Blinds</h3><p>The theme switch closes the page behind slats and opens it in the other colours.</p><a class="mono" href="#colour-title">See it ↑</a></li>
+      </ol>
+      <div class="cols">
+        <div class="rv"><span class="mono">Easing</span><h3>Expo and power curves</h3><p>For entrances, wipes and the blinds. A small spring is kept for arrows and dots.</p></div>
+        <div class="rv"><span class="mono">Two versions</span><h3>Pointer and touch</h3><p>Hover effects play on scroll on phones, and the reel handoff becomes a simpler open.</p></div>
+        <div class="rv"><span class="mono">Reduced motion</span><h3>Respected</h3><p>The theme switches instantly, galleries move without animation and videos show a still.</p></div>
+      </div>
+    </section>
+
+    <!-- 404 -->
+    <section class="sec" aria-labelledby="err-title">
+      <div class="sec__head"><h2 id="err-title">Even the 404<br>is designed</h2><span class="mono">Error states</span></div>
+      <div class="err">
+        <a class="err__fig rv" href="/this-page-does-not-exist/"><b>404<i aria-hidden="true"></i></b><span class="mono">Visit the 404 ↗</span></a>
+        <div class="rv"><p>Broken links happen. A missing page keeps the same type and the same square, says what went wrong in one line, and offers one way home.</p></div>
       </div>
     </section>
 
     <!-- Stack -->
-    <section class="study-section" data-nav-section="work" data-nav-label="Stack" aria-labelledby="stack-title">
-      <div class="study-section__head"><div class="section-label" data-reveal="fade"><span>Stack</span></div></div>
-      <div class="study-section__body">
-        <h2 class="study-lead" id="stack-title" data-split="lines" data-reveal="text"><span class="line">No framework,</span><span class="line">no build step.</span></h2>
-        <ul class="study-stack">
-          <li data-reveal="fade"><span>HTML, CSS &amp; JavaScript modules</span><span class="label muted">Written by hand</span></li>
-          <li data-reveal="fade"><span>GSAP &amp; ScrollTrigger</span><span class="label muted">Motion</span></li>
-          <li data-reveal="fade"><span>Lenis</span><span class="label muted">Smooth scroll</span></li>
-          <li data-reveal="fade"><span>Cloudflare Pages</span><span class="label muted">Hosting &amp; the contact function</span></li>
-          <li data-reveal="fade"><span>Resend &amp; Turnstile</span><span class="label muted">Email delivery &amp; spam check</span></li>
-        </ul>
-      </div>
-    </section>
-
-    <!-- End -->
-    <section class="study-end" data-nav-section="contact" data-nav-label="Contact" aria-label="Get in touch">
-      <p class="study-outcome" data-reveal="fade"><span class="label accent">Built</span><span>By hand, in Singapore, 2026.</span></p>
-      <div class="study-cta">
-        <p class="study-cta__line">Want something made like this?</p>
-        <a class="cta" href="../#start" data-pf-open aria-haspopup="dialog" aria-controls="project-form">
-          <span class="cta__fill" aria-hidden="true"></span>
-          <span class="marks" aria-hidden="true"></span>
-          <span class="cta__label">Start a project <span class="arrow" aria-hidden="true">→</span></span>
-        </a>
-      </div>
-      <nav class="study-next" aria-label="More">
-        <a class="study-next__back link-line label" href="../"><span class="arrow arrow--back" aria-hidden="true">←</span> Home</a>
-        <a class="study-next__project" href="../#work" data-magnetic="0.2">
-          <span class="label muted">See the work</span>
-          <span class="study-next__name" data-magnetic-inner>Selected work <span class="arrow" aria-hidden="true">→</span></span>
-        </a>
-      </nav>
+    <section class="sec" aria-labelledby="stack-title">
+      <div class="sec__head"><h2 id="stack-title">No framework,<br>no build step</h2><span class="mono">Stack</span></div>
+      <ul class="stack">
+        <li class="rv"><span>HTML, CSS &amp; JavaScript</span><span class="mono">Written by hand</span></li>
+        <li class="rv"><span>GSAP &amp; ScrollTrigger</span><span class="mono">Motion</span></li>
+        <li class="rv"><span>Lenis</span><span class="mono">Smooth scroll</span></li>
+        <li class="rv"><span>Archivo &amp; Geist Mono</span><span class="mono">Self-hosted type</span></li>
+        <li class="rv"><span>Cloudflare Pages</span><span class="mono">Hosting &amp; the contact function</span></li>
+        <li class="rv"><span>Resend &amp; Turnstile</span><span class="mono">Email delivery &amp; spam check</span></li>
+      </ul>
     </section>
   </main>
 
-  <footer class="footer" data-nav-section="contact" data-nav-label="Contact">
-    <div class="footer__grid">
-      <div class="footer__brand">
-        <p class="footer__name logo" aria-label="Noah">noah<i class="logo__dot"><b></b></i></p>
-        <p class="muted">Creative Developer<br>Web Designer</p>
-      </div>
-      <nav class="footer__nav" aria-label="Footer">
-        <ul class="footer__links">
-          <li><a class="link-line" href="../#work">Work</a></li>
-          <li><a class="link-line" href="../#about">About</a></li>
-          <li><a class="link-line" href="../#contact">Contact</a></li>
-        </ul>
-      </nav>
-      <a class="footer__back label" href="#top" data-magnetic><span data-magnetic-inner>Back to top ↑</span></a>
-    </div>
-    <p class="footer__mark" aria-hidden="true"><span>n</span><span>o</span><span>a</span><span>h</span><span class="logo__dot"><b></b></span></p>
-    <div class="footer__bottom label muted">
-      <span>© 2026 Noah</span>
-      <span>1.3521° N — 103.8198° E</span>
-      <a class="link-line" href="./">Designed &amp; built by hand — colophon</a>
-    </div>
+  <footer class="next">
+    <span class="mono">Built by hand, in Singapore, 2026</span><br>
+    <a class="big" href="/#work">See the work<i aria-hidden="true"></i></a>
+    <div class="foot mono"><span>© 2026 Noah Zaw Min Htut</span><span>Singapore → Worldwide</span><a href="/">Back to the homepage</a></div>
   </footer>
-  <!-- Project enquiry : opens from "Start a project". Sends through /api/contact (Cloudflare Pages Function). -->
-  <div class="pf" id="project-form" role="dialog" aria-modal="true" aria-labelledby="pf-title" hidden>
-    <span class="pf__wipe" aria-hidden="true"></span>
-    <div class="pf__panel">
-      <div class="grid-lines pf__grid" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
-      <header class="pf__top label">
-        <span class="pf__item"><span class="status-dot" aria-hidden="true"></span>New project</span>
-        <button class="pf__close" type="button" data-pf-close aria-label="Close the form"><span class="pf__item">Close <span aria-hidden="true">✕</span></span></button>
-      </header>
 
-      <form class="pf__form" novalidate>
-        <h2 class="pf__title" id="pf-title"><span class="pf__mask"><span class="pf__item">Tell me about it.</span></span></h2>
-
-        <p class="pf__sentence">
-          <span class="pf__mask"><span class="pf__item">Hi Noah, I'm</span></span>
-          <label class="pf__field" data-field="name"><span class="sr-only">Your name</span><input name="name" type="text" autocomplete="name" placeholder="your name" maxlength="80" required><span class="pf__rule" aria-hidden="true"></span></label>
-          <span class="pf__mask"><span class="pf__item">from</span></span>
-          <span class="pf__nb"><label class="pf__field" data-field="company"><span class="sr-only">Company (optional)</span><input name="company" type="text" autocomplete="organization" placeholder="company (optional)" maxlength="100"><span class="pf__rule" aria-hidden="true"></span></label><span class="pf__mask"><span class="pf__item">.</span></span></span>
-          <span class="pf__mask"><span class="pf__item">I need</span></span>
-          <label class="pf__field pf__field--select" data-field="type"><span class="sr-only">What you need</span>
-            <select name="type" required>
-              <option value="a new website">a new website</option>
-              <option value="a redesign">a redesign</option>
-              <option value="improvements to my site">improvements to my site</option>
-              <option value="something else">something else</option>
-            </select><span class="pf__rule" aria-hidden="true"></span></label>
-          <span class="pf__mask"><span class="pf__item">and my budget is</span></span>
-          <span class="pf__nb"><label class="pf__field pf__field--select" data-field="budget"><span class="sr-only">Budget</span>
-            <select name="budget">
-              <option value="not sure yet">not sure yet</option>
-              <option value="under S$3k">under S$3k</option>
-              <option value="S$3k–8k">S$3k–8k</option>
-              <option value="S$8k–15k">S$8k–15k</option>
-              <option value="S$15k+">S$15k+</option>
-            </select><span class="pf__rule" aria-hidden="true"></span></label><span class="pf__mask"><span class="pf__item">.</span></span></span>
-          <span class="pf__mask"><span class="pf__item">Reach me at</span></span>
-          <label class="pf__field" data-field="email"><span class="sr-only">Your email</span><input name="email" type="email" autocomplete="email" placeholder="you@email.com" maxlength="254" required><span class="pf__rule" aria-hidden="true"></span></label>
-          <span class="pf__mask"><span class="pf__item">or</span></span>
-          <span class="pf__nb"><label class="pf__field" data-field="mobile"><span class="sr-only">Mobile (optional)</span><input name="mobile" type="tel" inputmode="tel" autocomplete="tel" placeholder="mobile (optional)" maxlength="24"><span class="pf__rule" aria-hidden="true"></span></label><span class="pf__mask"><span class="pf__item">.</span></span></span>
-        </p>
-
-        <label class="pf__message" data-field="message">
-          <span class="label muted pf__item">Anything else? (optional)</span>
-          <textarea name="message" rows="3" maxlength="2000" placeholder="A link, a deadline, an idea…"></textarea>
-          <span class="pf__rule" aria-hidden="true"></span>
-        </label>
-
-        <!-- Honeypot: hidden from people, filled by bots. -->
-        <label class="pf__hp" aria-hidden="true">Website<input name="website" type="text" tabindex="-1" autocomplete="off"></label>
-
-        <div class="pf__foot">
-          <div class="pf__captcha" data-pf-captcha></div>
-          <button class="pf__send" type="submit">
-            <span class="pf__send-fill" aria-hidden="true"></span>
-            <span class="marks" aria-hidden="true"></span>
-            <span class="pf__send-label">Send <span class="arrow" aria-hidden="true">→</span></span>
-            <span class="pf__send-progress" aria-hidden="true"></span>
-          </button>
-        </div>
-        <p class="pf__status label" role="status" aria-live="polite"></p>
-      </form>
-
-      <!-- Result: the form fades out and this rises in its place (sent or not sent). -->
-      <div class="pf__result" hidden data-state="sent" role="status" aria-live="polite">
-        <p class="label muted pf__result-item" data-pf-r="label">Message sent</p>
-        <p class="pf__result-title"><span class="pf__mask"><span class="pf__result-item" data-pf-r="t1">Thanks —</span></span><span class="pf__mask"><span class="pf__result-item pf__result-accent" data-pf-r="t2">talk soon.</span></span></p>
-        <p class="pf__result-note muted pf__result-item"><span data-pf-r="note">I usually reply within a day or two.</span></p>
-        <div class="pf__actions pf__result-item">
-          <button class="pf__action link-line label" type="button" data-pf-retry hidden>Try again</button>
-          <button class="pf__action link-line label" type="button" data-pf-close>Back to the site</button>
-        </div>
-      </div>
-    </div>
-  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js" defer></script>
+  <script src="/js/theme.js" defer></script>
+  <script src="/js/contact.js" defer></script>
+  <script src="/js/colophon.js" defer></script>
 </body>
 </html>

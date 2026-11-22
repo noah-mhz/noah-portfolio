@@ -3,26 +3,31 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Noah Zaw Min Htut — Web Designer &amp; Developer, Singapore</title>
-  <meta name="description" content="Noah Zaw Min Htut is an independent web designer and developer in Singapore, taking freelance website design, redesign and custom front-end projects for restaurants, lifestyle brands and established companies.">
+  <title>Noah Zaw Min Htut · Web designer &amp; developer, Singapore</title>
+  <meta name="description" content="Independent web designer &amp; developer in Singapore: new websites, redesigns and custom front-end for restaurants, lifestyle brands and companies.">
   <link rel="canonical" href="https://noah-portfolio.pages.dev/">
-  <meta name="author" content="Noah Zaw Min Htut">
-  <meta property="og:url" content="https://noah-portfolio.pages.dev/">
-  <meta property="og:site_name" content="Noah Zaw Min Htut">
-  <meta name="theme-color" content="#0A0A0A">
-  <meta property="og:title" content="Noah Zaw Min Htut — Web Designer &amp; Developer">
-  <meta property="og:description" content="I design &amp; build distinctive websites. Independent web designer &amp; developer, Singapore → Worldwide.">
   <meta property="og:type" content="website">
+  <meta property="og:title" content="Noah Zaw Min Htut · Web designer &amp; developer, Singapore">
+  <meta property="og:description" content="I design &amp; build distinctive websites. Independent web designer &amp; developer, Singapore → Worldwide.">
   <meta property="og:image" content="https://noah-portfolio.pages.dev/assets/images/og/home-2.jpg">
+  <meta property="og:url" content="https://noah-portfolio.pages.dev/">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="author" content="Noah Zaw Min Htut">
+  <meta property="og:site_name" content="Noah Zaw Min Htut">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Noah Zaw Min Htut — Web Designer &amp; Developer">
+  <meta name="twitter:title" content="Noah Zaw Min Htut · Web designer &amp; developer, Singapore">
   <meta name="twitter:description" content="I design &amp; build distinctive websites. Independent web designer &amp; developer, Singapore → Worldwide.">
   <meta name="twitter:image" content="https://noah-portfolio.pages.dev/assets/images/og/home-2.jpg">
+  <meta name="theme-color" content="#F8DBC1" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0E1718" media="(prefers-color-scheme: dark)">
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="/apple-touch-icon.png">
-  <link rel="preconnect" href="https://images.unsplash.com">
+  <script>try{var t=localStorage.getItem('noah-theme');if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+  <link rel="preload" href="/assets/fonts/archivo.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/css/base.css">
+  <link rel="stylesheet" href="/css/contact.css">
+  <link rel="stylesheet" href="/css/home.css">
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -72,471 +77,141 @@
     ]
   }
   </script>
-  <!-- Paint the page dark from the first frame, before any stylesheet arrives. -->
-  <style>html{background:#0A0A0A}</style>
-  <script>try{if(localStorage.getItem("theme")==="daylight"){var d=document.documentElement;d.setAttribute("data-theme","daylight");d.style.background="#F2F2F0";}}catch(e){}</script>
-  <link rel="preload" as="image" href="assets/images/ganko-scroll-poster.webp" fetchpriority="high">
-  <link rel="preload" href="assets/fonts/inter-tight-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="preload" href="assets/fonts/jetbrains-mono-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="css/style.css">
-
-  <script>document.documentElement.classList.add('js');</script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
-  <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js" defer></script>
-  <script type="module" src="js/main.js"></script>
 </head>
 <body>
-  <a class="skip-link" href="#main">Skip to content</a>
+  <a class="skip mono" href="#work">Skip to content</a>
+  <div class="progress" aria-hidden="false"><span class="progress__fill"></span></div>
 
-  <div class="intro" aria-hidden="true">
-    <div class="intro__labels label">
-      <span class="mask intro__logo"><span class="logo" data-intro-item>noah<i class="logo__dot"><b></b></i></span></span>
-      <span class="mask"><span data-intro-item>Zaw Min Htut — Portfolio</span></span>
-      <span class="mask"><span class="muted" data-intro-item>Singapore → Worldwide</span></span>
-    </div>
-    <span class="intro__index label"><span class="mask"><span data-intro-item>Selected work 2025 — Now</span></span></span>
-    <span class="intro__bar"><span></span></span>
-  </div>
-
-  <!-- Carries the headline reel down the page and docks it onto the Ganko case image (desktop). -->
-  <div class="reel-flyer" aria-hidden="true">
-    <img src="assets/images/ganko-home-1600.webp" alt="" width="1600" height="1067" decoding="async">
-    <span class="marks"></span>
-  </div>
-
-  <div class="grid-lines" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
-  <div class="progress" aria-hidden="true"><span class="progress__bar"></span></div>
-
-  <div class="cursor" aria-hidden="true">
-    <span class="cursor__circle"></span>
-    <span class="cursor__label"></span>
-  </div>
-
-  <!-- Service hover previews: crops of real work, one per service row. -->
-  <div class="cap-preview" aria-hidden="true">
-    <img src="assets/images/cap-web-design.webp" alt="" width="720" height="900" decoding="async">
-    <img src="assets/images/cap-ui-ux.webp" alt="" width="720" height="900" decoding="async">
-    <img src="assets/images/cap-front-end.webp" alt="" width="720" height="900" decoding="async">
-    <img src="assets/images/cap-interaction.webp" alt="" width="720" height="900" decoding="async">
-    <span class="marks"></span>
-  </div>
-
-  <header class="nav">
-    <a class="nav__logo logo" href="#top" aria-label="Noah — back to top" data-logo><span class="logo__word" aria-hidden="true"><span class="logo__m"><span class="logo__l" style="--i:0">n</span></span><span class="logo__rest"><span class="logo__restin"><span class="logo__m"><span class="logo__l" style="--i:1">o</span></span><span class="logo__m"><span class="logo__l" style="--i:2">a</span></span><span class="logo__m"><span class="logo__l" style="--i:3">h</span></span></span></span><i class="logo__dot"><b></b></i></span></a>
-    <span class="nav__clock" data-nav-item data-clock aria-hidden="true">— SGT</span>
-    <nav class="nav__right" aria-label="Primary" data-nav>
-      <ul class="nav__list" id="nav-list">
-        <li data-nav-item><a class="nav__link" href="#work" data-nav-link="work">Work</a></li>
-        <li data-nav-item><a class="nav__link" href="concepts/" data-nav-link="concepts">Concepts</a></li>
-        <li data-nav-item><a class="nav__link" href="#about" data-nav-link="about">About</a></li>
-        <li data-nav-item><a class="nav__link nav__link--file" href="assets/docs/Zaw_Min_Htut_Resume_2026.pdf" target="_blank" rel="noopener">Résumé <span class="arrow arrow--diag" aria-hidden="true">↗</span></a></li>
-      </ul>
-      <button class="nav__status" type="button" aria-expanded="false" aria-controls="nav-list" data-nav-status>
-        <span class="nav__status-text" data-nav-status-text></span>
-        <span class="nav__status-menu"><span class="nav__status-word">Menu</span><i class="nav__status-icon" aria-hidden="true">+</i></span>
+  <header class="top">
+    <a class="logo glass" href="#top" aria-label="Noah, back to top" data-logo><span aria-hidden="true"><span class="logo__m"><span class="logo__l" style="--i:0">n</span></span><span class="logo__rest"><span class="logo__restin"><span class="logo__m"><span class="logo__l" style="--i:1">o</span></span><span class="logo__m"><span class="logo__l" style="--i:2">a</span></span><span class="logo__m"><span class="logo__l" style="--i:3">h</span></span></span></span><i class="logo__dot"></i></span></a>
+    <nav class="pnav glass mono" aria-label="Main" data-pnav>
+      <div class="pnav__links" id="pnav-links">
+        <a href="#work" data-scr data-link="work">Work</a><a href="#services" data-scr data-link="services">Services</a><a href="#concepts" data-scr data-link="concepts">Concepts</a><a href="#experience" data-scr data-link="experience">Experience</a><a href="/assets/docs/Zaw_Min_Htut_Resume_2026.pdf" target="_blank" rel="noopener">Résumé ↗</a><a href="#contact" data-scr data-link="contact">Contact</a>
+      </div>
+      <button class="pnav__status" type="button" aria-expanded="false" aria-controls="pnav-links" data-status-btn>
+        <span class="pnav__text" data-status-text></span>
+        <span class="pnav__menu">Menu <i class="pnav__icon" aria-hidden="true">+</i></span>
       </button>
-      <button class="theme-toggle theme-toggle--nav" type="button" data-theme-toggle data-nav-item aria-pressed="false" aria-label="Darkroom mode — switch to daylight"><span class="theme-toggle__dot" aria-hidden="true"></span><span class="theme-toggle__label">Darkroom</span></button>
-      <a class="nav__link nav__cta" data-nav-item href="#contact" data-pf-open aria-haspopup="dialog" aria-controls="project-form">Start a project</a>
     </nav>
+    <div class="top__end">
+      <button class="theme glass mono" type="button" data-theme-switch aria-pressed="false"><span class="theme__icon" aria-hidden="true"><i></i></span><span class="sr-only">Dark mode, currently </span><span class="theme__label">Light</span></button>
+      <a class="pill" href="#contact" data-pf-open aria-haspopup="dialog" aria-controls="project-form" data-mag>Discuss a project <b>→</b></a>
+    </div>
   </header>
 
-  <main id="main">
-
-    <!-- 01 — Opening -->
-    <section class="hero" id="top" data-nav-label="">
-      <div class="hero__meta label">
-        <span class="mask"><span data-hero-meta>Portfolio ©2026</span></span>
-        <span class="mask hide-sm"><span data-hero-meta data-scramble="intro">1.3521° N — 103.8198° E</span></span>
+  <main id="top">
+    <section class="hero wrap">
+      <div class="hero__intro">
+        <p>Independent web designer &amp; developer in Singapore. <span>Premium design, engineered properly.</span></p>
+        <span class="mono">I design &amp; build</span>
       </div>
-
-      <div class="hero__center">
-        <p class="hero__hello label"><span class="mask"><span data-hero-meta>Hello, I'm Noah.</span></span></p>
-        <h1 class="hero__title" data-split="lines" data-weight aria-label="I design &amp; build distinctive websites.">
-          <span class="line">I design &amp; build</span>
-          <span class="line"><span class="hero__reel" aria-hidden="true">
-              <video data-inview-video muted loop playsinline preload="none" poster="assets/images/ganko-scroll-poster.webp" width="1600" height="1000" aria-hidden="true">
-                <source src="assets/video/ganko-scroll.mp4" type="video/mp4">
-              </video>
-              <span class="marks" aria-hidden="true"></span>
-            </span>distinctive</span>
-          <span class="line">websites<span class="hero__accent" aria-hidden="true"></span></span>
-        </h1>
-      </div>
-
+      <h1 class="press" data-press aria-label="I design &amp; build distinctive websites.">
+        <span class="ln" data-fit><span class="t">Distinctive</span></span>
+        <span class="ln" data-fit><span class="reel" aria-hidden="true"><video muted loop playsinline data-autoplay poster="/assets/images/ganko-scroll-poster.webp"><source src="/assets/video/ganko-scroll.mp4" type="video/mp4"></video></span><span class="t">Websites</span><span class="sq" aria-hidden="true"></span></span>
+      </h1>
       <div class="hero__foot">
-        <span class="hero__rule" aria-hidden="true"></span>
-        <div class="hero__role">
-          <span class="mask"><span data-hero-meta>Independent web designer &amp; developer in Singapore — premium design, engineered properly.</span></span>
-          <span class="mask"><span class="muted" data-hero-meta>For restaurants, lifestyle brands and established companies · Singapore → Worldwide</span></span>
-        </div>
-        <div class="hero__cta">
-          <a class="cta cta--sm" href="#contact" data-pf-open aria-haspopup="dialog" aria-controls="project-form">
-            <span class="cta__fill" aria-hidden="true"></span>
-            <span class="marks" aria-hidden="true"></span>
-            <span class="cta__label">Discuss a project <span class="arrow" aria-hidden="true">→</span></span>
-          </a>
-          <a class="hero__work link-line label" href="#work"><span class="hide-sm">Explore </span>selected work <span class="arrow" aria-hidden="true">↓</span></a>
-        </div>
-        <div class="scroll-cue label" aria-hidden="true">
-          <span class="scroll-cue__track"></span>
-          <span>Scroll</span>
-        </div>
-      </div>
-    </section>
-
-    <!-- 03 — Selected work -->
-    <section class="work" id="work" aria-labelledby="work-title">
-      <div class="work__head" data-nav-section="work" data-nav-label="Selected work" data-rail="skip">
-        <h2 class="section-label" id="work-title" data-reveal="fade"><span>Selected work</span><span class="hide-sm">2025 — Now</span></h2>
-      </div>
-
-      <div class="work__list">
-
-        <!-- 01 — Ganko.sg: pinned sequence (stacked on tablet / mobile) -->
-        <article class="case" style="--brand:#F0453B; --brand-day:#D90C18;" id="case-study" aria-labelledby="case-title" data-nav-section="work" data-nav-label="01 / 05" data-rail-label="Ganko.sg">
-          <div class="case__frame">
-            <div class="case__top label">
-              <a class="case__open link-line" href="work/ganko/">01 / 05 — View case study <span class="arrow" aria-hidden="true">→</span></a>
-              <span class="engage label">Freelance</span>
-              <ol class="case__steps">
-                <li class="is-active">Overview</li>
-                <li>Approach</li>
-                <li>Platform</li>
-                <li>Live</li>
-              </ol>
-              <span class="case__bar" aria-hidden="true"><span class="case__bar-fill" data-case-bar></span></span>
-            </div>
-
-            <h3 class="case__title" id="case-title" data-split="chars">Ganko.sg</h3>
-
-            <div class="case__media">
-              <a class="case__media-link" href="work/ganko/" data-cursor="View" aria-label="Read the Ganko.sg case study"></a>
-              <img class="case__img case__img--a"
-                src="assets/images/ganko-home-1600.webp"
-                srcset="assets/images/ganko-home-900.webp 900w, assets/images/ganko-home-1600.webp 1600w"
-                sizes="(max-width: 1023px) 100vw, 55vw"
-                alt="Ganko.sg homepage hero — Authentic Japanese Cuisine in Singapore" width="1600" height="1067" fetchpriority="high" decoding="async">
-              <!-- Plays only while in view; reduced-motion users see the poster. -->
-              <video class="case__img case__img--b" data-inview-video muted loop playsinline preload="none"
-                poster="assets/images/ganko-scroll-poster.webp" width="1600" height="1000"
-                aria-label="Scrolling through the Ganko.sg homepage">
-                <source src="assets/video/ganko-scroll.mp4" type="video/mp4">
-              </video>
-              <span class="marks" aria-hidden="true"></span>
-            </div>
-
-            <div class="case__stages">
-              <div class="case__stage">
-                <p class="label muted"><span class="mask"><span data-stage-item>Overview</span></span></p>
-                <p class="case__lead">
-                  <span class="mask mask--block"><span data-stage-item>The restaurant's</span></span>
-                  <span class="mask mask--block"><span data-stage-item>first website,</span></span>
-                  <span class="mask mask--block"><span data-stage-item>from scratch.</span></span>
-                </p>
-                <ul class="case__facts label">
-                  <li class="mask mask--block"><span data-stage-item><span class="muted">Sector</span><span>Fine dining</span></span></li>
-                  <li class="mask mask--block"><span data-stage-item><span class="muted">Cuisine</span><span>Japanese</span></span></li>
-                  <li class="mask mask--block"><span data-stage-item><span class="muted">Location</span><span>Singapore</span></span></li>
-                </ul>
-              </div>
-
-              <div class="case__stage">
-                <p class="label muted"><span class="mask"><span data-stage-item>Approach</span></span></p>
-                <p class="case__lead">
-                  <span class="mask mask--block"><span data-stage-item>History first,</span></span>
-                  <span class="mask mask--block"><span data-stage-item>booking last.</span></span>
-                </p>
-                <p class="case__copy muted"><span class="mask mask--block"><span data-stage-item>For diners discovering the restaurant and booking a table: the story runs from Ganko's beginnings in Osaka to the Singapore interior, then booking is one step away.</span></span></p>
-              </div>
-
-              <div class="case__stage">
-                <p class="label muted"><span class="mask"><span data-stage-item>Platform</span></span></p>
-                <ul class="case__stack">
-                  <li class="mask mask--block"><span data-stage-item><span>GoDaddy Website Builder</span><span class="label muted">Platform</span></span></li>
-                  <li class="mask mask--block"><span data-stage-item><span>Custom HTML sections</span><span class="label muted">Where the builder fell short</span></span></li>
-                  <li class="mask mask--block"><span data-stage-item><span>Chope booking</span><span class="label muted">Embedded widget</span></span></li>
-                </ul>
-              </div>
-
-              <div class="case__stage">
-                <p class="label muted"><span class="mask"><span data-stage-item>Live</span></span></p>
-                <p class="case__lead">
-                  <span class="mask mask--block"><span data-stage-item>Launched</span></span>
-                  <span class="mask mask--block"><span data-stage-item>in 2025.</span></span>
-                </p>
-                <p class="mask mask--block"><span data-stage-item><a class="project__link link-line label" href="https://ganko.sg" target="_blank" rel="noopener" aria-label="Visit ganko.sg (opens in a new tab)">ganko.sg <span class="arrow arrow--diag" aria-hidden="true">↗</span></a></span></p>
-                <p class="mask mask--block"><span data-stage-item><a class="case__study-link link-line" href="work/ganko/">Read the case study <span class="arrow" aria-hidden="true">→</span></a></span></p>
-              </div>
-            </div>
-
-            <p class="case__next label" aria-hidden="true">
-              <span class="mask"><span data-case-next>Next — 02 / 05</span></span>
-              <span class="mask"><span data-case-next>Luumens ↓</span></span>
-            </p>
-          </div>
-        </article>
-
-        <article class="project project--alt" style="--brand:#E33F4D; --brand-day:#C4202E;" data-project aria-labelledby="project-2-title" data-nav-section="work" data-nav-label="02 / 05" data-rail-label="Luumens">
-          <header class="project__head">
-            <span class="project__num label"><span class="mask"><span data-project-num>02 / 05</span></span></span>
-            <h3 class="project__title" id="project-2-title" data-split="chars" data-reveal="text">Luumens</h3>
-            <span class="engage label" data-reveal="fade">In-house · Pomar Engineering</span>
-          </header>
-          <a class="project__media" href="work/luumens/" data-cursor="View" tabindex="-1" aria-hidden="true">
-            <div class="project__clip">
-              <div class="project__inner">
-                <img class="project__img"
-                  src="assets/images/luumens-card-poster.webp"
-                  alt="The Luumens homepage: Generate your own power, over solar panels"
-                  width="1280" height="800" loading="lazy" decoding="async">
-                <!-- Homepage recording: plays on hover (desktop) or when centred (touch). -->
-                <video class="project__video" data-card-video muted loop playsinline preload="none" aria-hidden="true" tabindex="-1">
-                  <source src="assets/video/luumens-card.mp4" type="video/mp4">
-                </video>
-              </div>
-              <span class="marks" aria-hidden="true"></span>
-            </div>
-          </a>
-          <div class="project__meta label">
-            <dl class="project__facts">
-              <div><dt>Sector</dt><dd>Alternative Energy</dd></div>
-              <div><dt>Scope</dt><dd>Clean energy solutions provider</dd></div>
-              <div><dt>Platform</dt><dd>WordPress</dd></div>
-              <div><dt>Build</dt><dd>Elementor · Custom HTML / CSS · GSAP</dd></div>
-            </dl>
-            <div class="project__links">
-              <a class="project__link link-line" href="work/luumens/">View case study <span class="arrow" aria-hidden="true">→</span></a>
-              <a class="project__link link-line muted" href="https://luumens.com" target="_blank" rel="noopener" aria-label="Luumens — visit luumens.com (opens in a new tab)">luumens.com <span class="arrow arrow--diag" aria-hidden="true">↗</span></a>
-            </div>
-          </div>
-        </article>
-        <article class="project project--pair" style="--brand:#48BDA9; --brand-day:#17705F;" data-project aria-labelledby="project-3-title" data-nav-section="work" data-nav-label="03 / 05" data-rail-label="Voyagaer">
-          <header class="project__head">
-            <span class="project__num label"><span class="mask"><span data-project-num>03 / 05</span></span></span>
-            <h3 class="project__title" id="project-3-title" data-split="chars" data-reveal="text">Voyagaer</h3>
-            <span class="engage label" data-reveal="fade">In-house · Pomar Engineering</span>
-          </header>
-          <div class="project__pair">
-          <a class="project__media" href="work/voyagaer/" data-cursor="View" tabindex="-1" aria-hidden="true">
-            <div class="project__clip">
-              <div class="project__inner">
-                <img class="project__img"
-                  src="assets/images/voyagaer-card-poster.webp"
-                  alt="The Voyagaer homepage: engineering systems for environments where reliability matters most"
-                  width="1280" height="710" loading="lazy" decoding="async">
-                <!-- Homepage recording: plays on hover (desktop) or when centred (touch). -->
-                <video class="project__video" data-card-video muted loop playsinline preload="none" aria-hidden="true" tabindex="-1">
-                  <source src="assets/video/voyagaer-card.mp4" type="video/mp4">
-                </video>
-              </div>
-              <span class="marks" aria-hidden="true"></span>
-            </div>
-          </a>
-          <!-- A second screen beside the homepage: the product page. -->
-          <a class="project__second" href="work/voyagaer/" data-cursor="View" tabindex="-1" aria-hidden="true">
-            <span class="project__second-clip">
-              <img src="assets/images/voyagaer-product.webp" alt="" width="1400" height="1510" loading="lazy" decoding="async">
-              <span class="marks"></span>
-            </span>
-            <span class="project__second-cap label muted">Product page — hydrophore system</span>
-          </a>
-          </div>
-          <div class="project__meta label">
-            <dl class="project__facts">
-              <div><dt>Sector</dt><dd>Marine Engineering</dd></div>
-              <div><dt>Scope</dt><dd>Systems where reliability matters most</dd></div>
-              <div><dt>Platform</dt><dd>WordPress</dd></div>
-              <div><dt>Build</dt><dd>Custom HTML / CSS widgets</dd></div>
-            </dl>
-            <div class="project__links">
-              <a class="project__link link-line" href="work/voyagaer/">View case study <span class="arrow" aria-hidden="true">→</span></a>
-              <span class="project__link muted">Site — coming soon</span>
-            </div>
-          </div>
-        </article>
-        <!-- Frame zero: the site itself. -->
-        <article class="project project--alt project--self" style="--brand:#A6FFCB; --brand-day:#0B7A53;" data-project aria-labelledby="project-6-title" data-nav-section="work" data-nav-label="00 / 05" data-rail-label="This site">
-          <header class="project__head">
-            <span class="project__num label"><span class="mask"><span data-project-num>00 / 05</span></span></span>
-            <h3 class="project__title" id="project-6-title" data-split="chars" data-reveal="text">This site</h3>
-          </header>
-          <a class="project__media" href="colophon/" data-cursor="View" tabindex="-1" aria-hidden="true">
-            <div class="project__clip">
-              <div class="project__inner">
-                <img class="project__img"
-                  src="assets/images/site-card-poster.webp"
-                  alt="This portfolio's homepage: I design &amp; build digital experiences"
-                  width="1280" height="800" loading="lazy" decoding="async">
-                <!-- Homepage recording: plays on hover (desktop) or when centred (touch). -->
-                <video class="project__video" data-card-video muted loop playsinline preload="none" aria-hidden="true" tabindex="-1">
-                  <source src="assets/video/site-card.mp4" type="video/mp4">
-                </video>
-              </div>
-              <span class="project__rec label" aria-hidden="true">REC</span>
-              <span class="marks" aria-hidden="true"></span>
-            </div>
-          </a>
-          <div class="project__meta label">
-            <dl class="project__facts">
-              <div><dt>Sector</dt><dd>Personal portfolio</dd></div>
-              <div><dt>Scope</dt><dd>Design, motion &amp; build</dd></div>
-              <div><dt>Platform</dt><dd>Hand-coded</dd></div>
-              <div><dt>Build</dt><dd>GSAP · Lenis · Cloudflare</dd></div>
-            </dl>
-            <div class="project__links">
-              <a class="project__link link-line accent" href="colophon/">Read the colophon <span class="arrow" aria-hidden="true">→</span></a>
-            </div>
-          </div>
-        </article>
-        <!-- In progress: real projects whose sites and case studies aren't out yet. -->
-        <section class="wip" data-nav-section="work" data-nav-label="In progress" aria-labelledby="wip-title">
-          <div class="section-label" data-reveal="fade"><span id="wip-title">In progress</span><span class="hide-sm">In-house · Pomar Engineering · Case study &amp; site coming soon</span></div>
-          <ul class="wip__list">
-            <li class="wip__item" data-reveal="fade">
-              <span class="wip__num label">04 / 05</span>
-              <span class="wip__name">Craftism</span>
-              <span class="wip__sector label muted">Marine interior design · Ship &amp; vessel interiors</span>
-              <span class="wip__build label muted">WordPress · Custom HTML / CSS widgets</span>
-            </li>
-            <li class="wip__item" data-reveal="fade">
-              <span class="wip__num label">05 / 05</span>
-              <span class="wip__name">Evnergy</span>
-              <span class="wip__sector label muted">Vessel electrification · Cells to battery management systems</span>
-              <span class="wip__build label muted">WordPress · Custom HTML / CSS widgets</span>
-            </li>
-          </ul>
-        </section>
-
-        <!-- Concepts: homepages pitched to businesses, anonymised, on their own page. -->
-        <section class="wip wip--concepts" data-nav-section="work" data-nav-label="Concepts" aria-labelledby="concepts-title">
-          <div class="section-label" data-reveal="fade"><span id="concepts-title">Concepts</span><span class="hide-sm">Pitched, not commissioned</span></div>
-          <ul class="cstrip">
-            <li data-reveal="fade">
-              <a class="cstrip__item" href="concepts/#pixel-pull" data-cursor="View">
-                <span class="cstrip__frame"><img src="assets/images/concept-pixel-pull-cover.webp" alt="Pixel Pull homepage: a black hero with Your next big pull starts here" width="1440" height="900" loading="lazy" decoding="async"><span class="marks" aria-hidden="true"></span></span>
-                <span class="cstrip__meta label"><span class="accent">01</span><span>Pixel Pull</span><span class="muted">Card shop</span></span>
-              </a>
-            </li>
-            <li data-reveal="fade">
-              <a class="cstrip__item" href="concepts/#rosti" data-cursor="View">
-                <span class="cstrip__frame"><img src="assets/images/concept-little-rosti-poster.webp" alt="Little Rösti homepage: a warm brown hero with Good things come in crispy layers" width="1440" height="900" loading="lazy" decoding="async"><span class="marks" aria-hidden="true"></span></span>
-                <span class="cstrip__meta label"><span class="accent">02</span><span>Little Rösti</span><span class="muted">Rösti café</span></span>
-              </a>
-            </li>
-            <li data-reveal="fade">
-              <a class="cstrip__item" href="concepts/#common-table" data-cursor="View">
-                <span class="cstrip__frame"><img src="assets/images/concept-common-table-cover.webp" alt="Common Table homepage: an ivory hero with Make room for good things" width="1440" height="900" loading="lazy" decoding="async"><span class="marks" aria-hidden="true"></span></span>
-                <span class="cstrip__meta label"><span class="accent">03</span><span>Common Table</span><span class="muted">Restaurant</span></span>
-              </a>
-            </li>
-            <li data-reveal="fade">
-              <a class="cstrip__item" href="concepts/#crumb-and-kin" data-cursor="View">
-                <span class="cstrip__frame"><img src="assets/images/concept-crumb-and-kin-poster.webp" alt="Crumb &amp; Kin homepage: terracotta type beside a strawberry tart" width="1440" height="900" loading="lazy" decoding="async"><span class="marks" aria-hidden="true"></span></span>
-                <span class="cstrip__meta label"><span class="accent">04</span><span>Crumb &amp; Kin</span><span class="muted">Bakery</span></span>
-              </a>
-            </li>
-          </ul>
-          <a class="cstrip__all link-line label accent" href="concepts/" data-reveal="fade">See all concepts <span class="arrow" aria-hidden="true">→</span></a>
-        </section>
+        <div class="tags mono"><span class="tag tag--on">Taking freelance projects</span><span class="tag">Restaurants</span><span class="tag">Lifestyle brands</span><span class="tag">Established companies</span></div>
+        <span class="mono">Singapore → Worldwide</span>
       </div>
     </section>
 
 
-    <!-- 06 — Services: what someone can hire me for -->
-    <section class="caps" id="services" aria-labelledby="caps-title" data-nav-section="work" data-nav-label="Services" data-rail-label="Services">
-      <div class="caps__head">
-        <div class="section-label" data-reveal="fade"><span>Services</span></div>
-        <h2 class="caps__title" id="caps-title" data-split data-reveal="text">How I can help</h2>
-        <p class="caps__intro muted" data-reveal="fade">One person from the first sketch to the production deploy, accountable for how it looks, how it moves and how it performs.</p>
-      </div>
-      <ul class="caps__list" data-caps>
-        <li class="cap" data-cap>
-          <a class="cap__link" href="#contact" data-pf-open aria-haspopup="dialog" aria-controls="project-form">
-            <span class="cap__num" aria-hidden="true"></span>
-            <span class="cap__main">
-              <span class="cap__title"><span class="cap__title-inner">New website</span></span>
-              <span class="cap__desc">From first sketch to a launched site, for businesses that need a proper online presence.</span>
-            </span>
-            <span class="cap__meta label">Brand presentation · Custom layouts · Responsive design · UX · Deployment</span>
-            <span class="cap__arrow" aria-hidden="true">→</span>
-            <span class="cap__line" aria-hidden="true"></span>
-          </a>
-        </li>
-        <li class="cap" data-cap>
-          <a class="cap__link" href="#contact" data-pf-open aria-haspopup="dialog" aria-controls="project-form">
-            <span class="cap__num" aria-hidden="true"></span>
-            <span class="cap__main">
-              <span class="cap__title"><span class="cap__title-inner">Redesign</span></span>
-              <span class="cap__desc">For businesses that have outgrown their site: clearer navigation, better content, consistent on every screen.</span>
-            </span>
-            <span class="cap__meta label">Modernised design · Navigation &amp; UX · Content presentation · Responsive optimisation</span>
-            <span class="cap__arrow" aria-hidden="true">→</span>
-            <span class="cap__line" aria-hidden="true"></span>
-          </a>
-        </li>
-        <li class="cap" data-cap>
-          <a class="cap__link" href="#contact" data-pf-open aria-haspopup="dialog" aria-controls="project-form">
-            <span class="cap__num" aria-hidden="true"></span>
-            <span class="cap__main">
-              <span class="cap__title"><span class="cap__title-inner">Custom front-end</span></span>
-              <span class="cap__desc">When a template won’t do: hand-coded pages, motion and interactive components.</span>
-            </span>
-            <span class="cap__meta label">HTML · CSS · JavaScript · GSAP animation · Interactive components</span>
-            <span class="cap__arrow" aria-hidden="true">→</span>
-            <span class="cap__line" aria-hidden="true"></span>
-          </a>
-        </li>
-        <li class="cap" data-cap>
-          <a class="cap__link" href="#contact" data-pf-open aria-haspopup="dialog" aria-controls="project-form">
-            <span class="cap__num" aria-hidden="true"></span>
-            <span class="cap__main">
-              <span class="cap__title"><span class="cap__title-inner">Ongoing improvements</span></span>
-              <span class="cap__desc">For a site you already have: new pages, layout and content updates, performance and new features.</span>
-            </span>
-            <span class="cap__meta label">New pages · Content &amp; layout · Performance · New functionality · Maintenance</span>
-            <span class="cap__arrow" aria-hidden="true">→</span>
-            <span class="cap__line" aria-hidden="true"></span>
-          </a>
-        </li>
-      </ul>
-      <p class="caps__also label" data-reveal="fade"><span class="muted">Also</span> WordPress &amp; Elementor · React · Unity &amp; AR · A software-engineering background</p>
-    </section>
+    <div class="work-label wrap mono" id="work"><span>Selected work</span><span>2025 to now</span></div>
 
-    <!-- 07 — About -->
-    <section class="about" id="about" aria-labelledby="about-title" data-nav-section="about" data-nav-label="About">
-      <div class="section-label" data-reveal="fade"><span>About</span></div>
-      <h2 class="about__statement" id="about-title" data-split="lines">
-        <span class="line" data-reveal="text">I like building things</span>
-        <span class="line" data-reveal="text">that shouldn't feel</span>
-        <span class="line" data-reveal="text">like <em class="accent">templates.</em></span>
-      </h2>
-      <figure class="about__media">
-        <div class="about__media-inner" data-parallax="8">
-          <img src="assets/images/about-desk.webp"
-            alt="A desk with a curved monitor, headphones and a keyboard in blue and violet light" width="1000" height="1250" loading="lazy" decoding="async">
+    <!-- 01 — Ganko.sg: the original pinned sequence (stacked on tablet / phone) -->
+    <article class="case" data-section="Ganko.sg" data-nav="work" data-status="01 / 04 · Ganko.sg">
+      <div class="case__frame">
+        <div class="case__top label">
+          <a class="case__open" href="/work/ganko/"><span class="ulink">01 / 04 · <span data-tw-stage>Overview</span></span>&nbsp;<span class="arr" aria-hidden="true">→</span></a>
+          <span class="engage">Freelance</span>
+          <ol class="case__steps"><li class="is-active">Overview</li><li>Approach</li><li>Platform</li><li>Live</li></ol>
+          <span class="case__bar" aria-hidden="true"><span class="case__bar-fill" data-case-bar></span></span>
         </div>
-        <figcaption class="label muted">Singapore</figcaption>
-      </figure>
-      <div class="about__body">
-        <p class="about__lead" data-reveal="fade">I'm Noah (Zaw Min Htut), an independent web designer and developer in Singapore.</p>
-        <p class="about__craft" data-reveal="fade">I handle the whole job — layout, motion and the code that ships — so what you approve is what goes live.</p>
-        <p class="muted" data-reveal="fade">In-house, I design and build the websites for Pomar Engineering's marine and energy brands; on my own, I take freelance projects like Ganko. Before that I spent close to three years at Thales DIS as a software developer, automating card validation and testing releases, after internships in full-stack web and industrial IoT. That engineering background is why the details matter to me: sites that hold up on every screen and stay easy for your team to update.</p>
-        <dl class="about__facts label" data-reveal="fade">
-          <div><dt>Based</dt><dd>Singapore</dd></div>
-          <div><dt>Working</dt><dd>Globally</dd></div>
-          <div><dt>Experience</dt><dd>Pomar Engineering<br>Thales DIS<br>RunningStream Group<br>TP Advanced Manufacturing Centre</dd></div>
-        </dl>
-        <a class="about__resume link-line label" href="assets/docs/Zaw_Min_Htut_Resume_2026.pdf" target="_blank" rel="noopener" data-reveal="fade">Download résumé (PDF) <span class="arrow arrow--diag" aria-hidden="true">↗</span></a>
+        <h2 class="case__title" data-case-title>Ganko.sg</h2>
+        <div class="case__media" data-view>
+          <a class="case__media-link" href="/work/ganko/" aria-label="Read the Ganko.sg case study"></a>
+          <img class="case__img case__img--a" src="/assets/images/ganko-home-1600.webp" alt="Ganko.sg homepage hero: Authentic Japanese Cuisine in Singapore" width="1600" height="1067">
+          <video class="case__img case__img--b" muted loop playsinline data-autoplay poster="/assets/images/ganko-scroll-poster.webp" aria-label="Scrolling through the Ganko.sg homepage"><source src="/assets/video/ganko-scroll.mp4" type="video/mp4"></video>
+          <span class="marks" aria-hidden="true"></span>
+        </div>
+        <div class="case__stages">
+          <div class="case__stage">
+            <p class="label"><span class="mask"><span data-stage-item>Overview</span></span></p>
+            <p class="case__lead"><span class="mask mask--block"><span data-stage-item>The restaurant's</span></span><span class="mask mask--block"><span data-stage-item>first website,</span></span><span class="mask mask--block"><span data-stage-item>from scratch.</span></span></p>
+            <ul class="case__facts label">
+              <li class="mask mask--block"><span data-stage-item><span class="muted">Sector</span><span>Fine dining</span></span></li>
+              <li class="mask mask--block"><span data-stage-item><span class="muted">Cuisine</span><span>Japanese</span></span></li>
+              <li class="mask mask--block"><span data-stage-item><span class="muted">Location</span><span>Singapore</span></span></li>
+            </ul>
+          </div>
+          <div class="case__stage">
+            <p class="label"><span class="mask"><span data-stage-item>Approach</span></span></p>
+            <p class="case__lead"><span class="mask mask--block"><span data-stage-item>History first,</span></span><span class="mask mask--block"><span data-stage-item>booking last.</span></span></p>
+            <p class="case__copy"><span class="mask mask--block"><span data-stage-item>For diners discovering the restaurant and booking a table: the story runs from Ganko's beginnings in Osaka to the Singapore interior, then booking is one step away.</span></span></p>
+          </div>
+          <div class="case__stage">
+            <p class="label"><span class="mask"><span data-stage-item>Platform</span></span></p>
+            <ul class="case__stack">
+              <li class="mask mask--block"><span data-stage-item><span>GoDaddy Website Builder</span><span class="label">Platform</span></span></li>
+              <li class="mask mask--block"><span data-stage-item><span>Custom HTML sections</span><span class="label">Where the builder fell short</span></span></li>
+              <li class="mask mask--block"><span data-stage-item><span>Chope booking</span><span class="label">Embedded widget</span></span></li>
+            </ul>
+          </div>
+          <div class="case__stage">
+            <p class="label"><span class="mask"><span data-stage-item>Live</span></span></p>
+            <p class="case__lead"><span class="mask mask--block"><span data-stage-item>Launched</span></span><span class="mask mask--block"><span data-stage-item>in 2025.</span></span></p>
+            <p class="mask mask--block" style="margin:0"><span data-stage-item><a class="case__link mono" href="https://ganko.sg" target="_blank" rel="noopener"><span class="ulink">ganko.sg</span> <span class="arr" aria-hidden="true">↗</span></a></span></p>
+            <p class="mask mask--block" style="margin:0"><span data-stage-item><a class="case__link" href="/work/ganko/"><span class="ulink">Read the case study</span> <span class="arr" aria-hidden="true">→</span></a></span></p>
+          </div>
+        </div>
+        <p class="case__next label" aria-hidden="true"><span class="mask"><span data-case-next>Next · 02 / 04</span></span><span class="mask"><span data-case-next>Luumens ↓</span></span></p>
+      </div>
+    </article>
+
+    <section class="more" data-section="More work" data-nav="work" data-status="More work">
+      <div class="more__grid">
+        <div class="more__side">
+          <h2 class="h2s">More<br>work</h2>
+          <ol class="more__index mono" data-index></ol>
+          <dl class="record mono" data-record aria-live="polite"></dl>
+        </div>
+        <div>
+          <div class="deck" data-deck aria-roledescription="carousel" aria-label="More work"></div>
+          <div class="deck__ctrl mono"><span data-count>1 / 6</span><span class="muted">Drag, swipe or use the arrows</span><span class="deck__btns"><button type="button" data-prev aria-label="Previous">←</button><button type="button" data-next aria-label="Next">→</button></span></div>
+        </div>
       </div>
     </section>
 
-    <!-- 08 — Timeline -->
-    <section class="timeline" aria-labelledby="timeline-title" data-nav-section="about" data-nav-label="Experience">
-      <div class="timeline__head">
-        <div class="section-label" data-reveal="fade"><span>Experience</span></div>
-        <h2 class="timeline__title" id="timeline-title" data-split data-reveal="text">Timeline</h2>
-        <a class="timeline__resume link-line label" href="assets/docs/Zaw_Min_Htut_Resume_2026.pdf" target="_blank" rel="noopener" data-reveal="fade">Download résumé (PDF) <span class="arrow arrow--diag" aria-hidden="true">↗</span></a>
+    <section class="statement" data-section="About" data-nav="">
+      <span class="mono">About the work</span>
+      <p data-reveal>Every site in this portfolio was designed and built by one person, <span data-k>from first sketch to launch.</span> For restaurants, lifestyle brands and established companies.</p>
+    </section>
+
+    <section class="svc" id="services" data-section="Services" data-nav="services" data-status="Services">
+      <h2 class="h2s">Services</h2>
+      <div class="svc__grid">
+        <div class="svc__item" data-scene="wire"><span class="mono">01</span><div data-stage></div><div><h3>New<br>website</h3><p>From first sketch to a launched site, for businesses that need a proper online presence.</p></div></div>
+        <div class="svc__item" data-scene="loop"><span class="mono">02</span><div data-stage></div><div><h3>Redesign</h3><p>For businesses that have outgrown their site: clearer navigation, better content, consistent on every screen.</p></div></div>
+        <div class="svc__item" data-scene="code"><span class="mono">03</span><div data-stage></div><div><h3>Custom<br>front-end</h3><p>When a template won’t do: hand-coded pages, motion and interactive components.</p></div></div>
+        <div class="svc__item" data-scene="versions"><span class="mono">04</span><div data-stage></div><div><h3>Ongoing<br>improvements</h3><p>For a site you already have: new pages, layout and content updates, performance and new features.</p></div></div>
+      </div>
+    </section>
+
+    <section class="cps" id="concepts" data-section="Concepts" data-nav="concepts" data-status="Concepts">
+      <h2 class="h2s">Concepts</h2>
+      <div class="cps__grid">
+        <a href="/concepts/" data-tilt><div class="im"><img src="/assets/images/concept-pixel-pull-cover.webp" width="1440" height="900" alt="" loading="lazy"></div><span class="mono"><span>Pixel Pull</span><span>Card shop</span></span></a>
+        <a href="/concepts/" data-tilt><div class="im"><img src="/assets/images/concept-little-rosti-poster.webp" width="1440" height="900" alt="" loading="lazy"></div><span class="mono"><span>Little Rösti</span><span>Café</span></span></a>
+        <a href="/concepts/" data-tilt><div class="im"><img src="/assets/images/concept-common-table-cover.webp" width="1440" height="900" alt="" loading="lazy"></div><span class="mono"><span>Common Table</span><span>Restaurant</span></span></a>
+        <a href="/concepts/" data-tilt><div class="im"><img src="/assets/images/concept-crumb-and-kin-poster.webp" width="1440" height="900" alt="" loading="lazy"></div><span class="mono"><span>Crumb &amp; Kin</span><span>Bakery</span></span></a>
+      </div>
+    </section>
+
+    <section class="xp" id="experience" data-section="Experience" data-nav="experience" data-status="Experience">
+      <div class="xp__head">
+        <span class="mono muted">Experience</span>
+        <h2 class="h2s">Time<br>line</h2>
+        <a class="xp__resume" href="/assets/docs/Zaw_Min_Htut_Resume_2026.pdf" target="_blank" rel="noopener">Download résumé (PDF) <b>↗</b></a>
       </div>
       <div class="timeline__track" data-timeline>
         <span class="timeline__line" aria-hidden="true"><span class="timeline__fill" data-timeline-fill></span></span>
@@ -545,17 +220,17 @@
             <span class="tl__dot" aria-hidden="true"></span>
             <div class="tl__when">
               <span class="tl__year"><span class="mask"><span data-tl-item>2025</span></span></span>
-              <span class="tl__range label muted"><span class="mask"><span data-tl-item>May 2025 — Now</span></span></span>
+              <span class="tl__range label muted"><span class="mask"><span data-tl-item>May 2025 to now</span></span></span>
             </div>
             <div class="tl__body">
               <h3 class="tl__company"><span class="mask"><span data-tl-item>Pomar Engineering</span></span></h3>
               <p class="tl__role label"><span class="mask"><span data-tl-item>Software Engineer</span></span></p>
               <p class="tl__desc muted"><span class="mask mask--block"><span data-tl-item>Web design and development for the group&#39;s marine and energy brands, and a Unity AR application.</span></span></p>
               <ul class="tl__points label">
-                  <li class="mask mask--block"><span data-tl-item>Luumens · Voyagaer · Craftism · Evnergy</span></li>
+                  <li class="mask mask--block"><span data-tl-item>Luumens · Voyagaer · Industmarine · Craftism · Evnergy</span></li>
                   <li class="mask mask--block"><span data-tl-item>WordPress &amp; Elementor with custom HTML / CSS / JS widgets</span></li>
                   <li class="mask mask--block"><span data-tl-item>GSAP / ScrollTrigger motion &amp; responsive layouts</span></li>
-                  <li class="mask mask--block"><span data-tl-item>Unity AR app for marine equipment — C#, AR Foundation</span></li>
+                  <li class="mask mask--block"><span data-tl-item>Unity AR app for marine equipment: C#, AR Foundation</span></li>
               </ul>
             </div>
           </li>
@@ -563,15 +238,15 @@
             <span class="tl__dot" aria-hidden="true"></span>
             <div class="tl__when">
               <span class="tl__year"><span class="mask"><span data-tl-item>2022</span></span></span>
-              <span class="tl__range label muted"><span class="mask"><span data-tl-item>Aug 2022 — Apr 2025</span></span></span>
+              <span class="tl__range label muted"><span class="mask"><span data-tl-item>Aug 2022 to Apr 2025</span></span></span>
             </div>
             <div class="tl__body">
               <h3 class="tl__company"><span class="mask"><span data-tl-item>Thales DIS</span></span></h3>
               <p class="tl__role label"><span class="mask"><span data-tl-item>Software Developer</span></span></p>
               <p class="tl__desc muted"><span class="mask mask--block"><span data-tl-item>Smart-card software, validation and release quality.</span></span></p>
               <ul class="tl__points label">
-                  <li class="mask mask--block"><span data-tl-item>Automated card validation in Python — about 10% less manual testing</span></li>
-                  <li class="mask mask--block"><span data-tl-item>Optimised applet &amp; OS loading scripts (VB.NET, Python) — 25% faster deployment</span></li>
+                  <li class="mask mask--block"><span data-tl-item>Automated card validation in Python: about 10% less manual testing</span></li>
+                  <li class="mask mask--block"><span data-tl-item>Optimised applet &amp; OS loading scripts (VB.NET, Python): 25% faster deployment</span></li>
                   <li class="mask mask--block"><span data-tl-item>Functional, regression &amp; stress testing</span></li>
                   <li class="mask mask--block"><span data-tl-item>Sample cards with R&amp;D for testing &amp; certification</span></li>
               </ul>
@@ -581,11 +256,11 @@
             <span class="tl__dot" aria-hidden="true"></span>
             <div class="tl__when">
               <span class="tl__year"><span class="mask"><span data-tl-item>2021</span></span></span>
-              <span class="tl__range label muted"><span class="mask"><span data-tl-item>Jul 2021 — Mar 2022</span></span></span>
+              <span class="tl__range label muted"><span class="mask"><span data-tl-item>Jul 2021 to Mar 2022</span></span></span>
             </div>
             <div class="tl__body">
               <h3 class="tl__company"><span class="mask"><span data-tl-item>RunningStream Group</span></span></h3>
-              <p class="tl__role label"><span class="mask"><span data-tl-item>Full Stack Developer — Internship</span></span></p>
+              <p class="tl__role label"><span class="mask"><span data-tl-item>Full Stack Developer, internship</span></span></p>
               <p class="tl__desc muted"><span class="mask mask--block"><span data-tl-item>Angular-based financial web applications.</span></span></p>
               <ul class="tl__points label">
                   <li class="mask mask--block"><span data-tl-item>Reduced load time by 10–15%</span></li>
@@ -599,15 +274,15 @@
             <span class="tl__dot" aria-hidden="true"></span>
             <div class="tl__when">
               <span class="tl__year"><span class="mask"><span data-tl-item>2021</span></span></span>
-              <span class="tl__range label muted"><span class="mask"><span data-tl-item>Apr 2021 — Jul 2021</span></span></span>
+              <span class="tl__range label muted"><span class="mask"><span data-tl-item>Apr 2021 to Jul 2021</span></span></span>
             </div>
             <div class="tl__body">
               <h3 class="tl__company"><span class="mask"><span data-tl-item>TP Advanced Manufacturing Centre</span></span></h3>
-              <p class="tl__role label"><span class="mask"><span data-tl-item>IoT Developer — Internship</span></span></p>
+              <p class="tl__role label"><span class="mask"><span data-tl-item>IoT Developer, internship</span></span></p>
               <p class="tl__desc muted"><span class="mask mask--block"><span data-tl-item>Real-time monitoring for SMT production machines.</span></span></p>
               <ul class="tl__points label">
                   <li class="mask mask--block"><span data-tl-item>IoT dashboard in ThingWorx &amp; Tableau</span></li>
-                  <li class="mask mask--block"><span data-tl-item>ML predictive analysis — 10% less machine downtime</span></li>
+                  <li class="mask mask--block"><span data-tl-item>ML predictive analysis: 10% less machine downtime</span></li>
                   <li class="mask mask--block"><span data-tl-item>PLC programming &amp; sensor data pipeline</span></li>
                   <li class="mask mask--block"><span data-tl-item>PoC demonstrated to Singapore's Minister of Education</span></li>
               </ul>
@@ -616,154 +291,29 @@
         </ol>
       </div>
     </section>
-
-    <!-- Process: how a project runs, kept small above Contact. -->
-    <section class="process" aria-labelledby="process-title" data-nav-section="contact" data-nav-label="Process">
-      <div class="section-label" data-reveal="fade"><span id="process-title">How a project runs</span></div>
-      <ol class="process__list label">
-        <li class="process__step" data-reveal="fade"><span class="process__name">Discover</span><span class="process__note">Goals, audience and requirements.</span></li>
-        <li class="process__step" data-reveal="fade"><span class="process__name">Design</span><span class="process__note">Set the direction, then refine the experience.</span></li>
-        <li class="process__step" data-reveal="fade"><span class="process__name">Build</span><span class="process__note">Developed, tested and optimised on every device.</span></li>
-        <li class="process__step" data-reveal="fade"><span class="process__name">Launch</span><span class="process__note">Deployed and handed over, ready to update.</span></li>
-      </ol>
-    </section>
-
-    <!-- Kind words: switched off until there are real quotes. To turn it on, remove
-         the `hidden` and `data-rail` attributes and replace each quote, name and role with a client's own
-         words (with their permission). Never fill this with invented quotes. -->
-    <section class="quotes" id="kind-words" aria-labelledby="quotes-title" data-nav-section="about" data-nav-label="Kind words" data-rail="skip" hidden>
-      <div class="section-label" data-reveal="fade"><span id="quotes-title">Kind words</span></div>
-      <ul class="quotes__list">
-        <li class="quote" data-reveal="fade">
-          <blockquote class="quote__text"><p>CLIENT QUOTE</p></blockquote>
-          <p class="quote__who label"><span>NAME</span><span class="muted">ROLE, COMPANY</span></p>
-        </li>
-      </ul>
-    </section>
-
-    <!-- 09 — Contact -->
-    <section class="contact" id="contact" aria-labelledby="contact-title" data-nav-section="contact" data-nav-label="Contact">
-      <div class="contact__inner">
-        <div class="section-label" data-reveal="fade"><span>Contact</span></div>
-        <h2 class="contact__title" id="contact-title" data-split="lines" data-weight aria-label="Let's make something interesting.">
-          <span class="line" data-reveal="text">Let's make</span>
-          <span class="line" data-reveal="text">something</span>
-          <span class="line" data-reveal="text"><em class="accent">interesting.</em></span>
-        </h2>
-        <div class="contact__row" data-reveal="fade">
-          <a class="cta" href="#contact" data-magnetic="0.4" data-pf-open aria-haspopup="dialog" aria-controls="project-form">
-            <span class="cta__fill" aria-hidden="true"></span>
-            <span class="marks" aria-hidden="true"></span>
-            <span class="cta__label" data-magnetic-inner>Start a project <span class="arrow" aria-hidden="true">→</span></span>
-          </a>
-          <div class="contact__alt">
-            <p class="contact__note muted">No pressure, no complicated process. Tell me a little about your project and I'll reply within a day or two.</p>
-          </div>
-        </div>
-        <dl class="contact__meta label" data-reveal="fade">
-          <div><dt>Local time</dt><dd data-clock>— SGT</dd></div>
-          <div><dt>Based</dt><dd>Singapore</dd></div>
-        </dl>
-      </div>
-    </section>
   </main>
 
-  <footer class="footer" data-nav-section="contact" data-nav-label="Contact">
-    <div class="footer__grid">
-      <div class="footer__brand">
-        <p class="footer__name logo" aria-label="Noah">noah<i class="logo__dot"><b></b></i></p>
-        <p class="muted">Creative Developer<br>Web Designer</p>
-      </div>
-      <nav class="footer__nav" aria-label="Footer">
-        <ul class="footer__links">
-          <li><a class="link-line" href="#work">Work</a></li>
-          <li><a class="link-line" href="#about">About</a></li>
-          <li><a class="link-line" href="#contact">Contact</a></li>
-        </ul>
-      </nav>
-      <a class="footer__back label" href="#top" data-magnetic><span data-magnetic-inner>Back to top ↑</span></a>
+  <footer class="cta" id="contact" data-section="Contact" data-nav="contact" data-status="Contact">
+    <h2 class="press" data-press aria-label="Discuss a project.">
+      <span class="ln" data-fit><span class="t">Discuss a</span></span>
+      <span class="ln" data-fit><span class="t">project</span><span class="sq" aria-hidden="true"></span></span>
+    </h2>
+    <div class="cta__row">
+      <p>No pressure, no complicated process. Tell me a little about your project and I'll reply within a day or two.</p>
+      <a class="pill" href="#contact" data-pf-open aria-haspopup="dialog" aria-controls="project-form" data-mag>Start a project <b>→</b></a>
     </div>
-    <p class="footer__mark" aria-hidden="true"><span>n</span><span>o</span><span>a</span><span>h</span><span class="logo__dot"><b></b></span></p>
-    <div class="footer__bottom label muted">
-      <span>© 2026 Noah</span>
-      <span>1.3521° N — 103.8198° E</span>
-      <a class="link-line" href="colophon/">Designed &amp; built by hand — colophon</a>
-    </div>
+    <div class="foot mono"><span>© 2026 Noah Zaw Min Htut</span><span>Singapore → Worldwide</span><a href="/colophon/" style="color:inherit;display:inline-flex;align-items:center;min-height:1.75rem">Colophon</a><a href="/assets/docs/Zaw_Min_Htut_Resume_2026.pdf" target="_blank" rel="noopener" style="color:inherit;display:inline-flex;align-items:center;min-height:1.75rem">Résumé (PDF) ↗</a></div>
   </footer>
+  <div class="bubble" aria-hidden="true">View</div>
+  <!-- Carries the headline reel down the page and docks it onto the Ganko image (desktop), as on the original. -->
+  <div class="reel-flyer" aria-hidden="true"><img src="/assets/images/ganko-home-1600.webp" width="1600" height="1066" alt=""><span class="marks"></span></div>
 
-  <!-- Project enquiry: opens from "Start a project". Sends through /api/contact (Cloudflare Pages Function). -->
-  <div class="pf" id="project-form" role="dialog" aria-modal="true" aria-labelledby="pf-title" hidden>
-    <span class="pf__wipe" aria-hidden="true"></span>
-    <div class="pf__panel">
-      <div class="grid-lines pf__grid" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
-      <header class="pf__top label">
-        <span class="pf__item"><span class="status-dot" aria-hidden="true"></span>New project</span>
-        <button class="pf__close" type="button" data-pf-close aria-label="Close the form"><span class="pf__item">Close <span aria-hidden="true">✕</span></span></button>
-      </header>
-
-      <form class="pf__form" novalidate>
-        <h2 class="pf__title" id="pf-title"><span class="pf__mask"><span class="pf__item">Tell me about it.</span></span></h2>
-
-        <p class="pf__sentence">
-          <span class="pf__mask"><span class="pf__item">Hi Noah, I'm</span></span>
-          <label class="pf__field" data-field="name"><span class="sr-only">Your name</span><input name="name" type="text" autocomplete="name" placeholder="your name" maxlength="80" required><span class="pf__rule" aria-hidden="true"></span></label>
-          <span class="pf__mask"><span class="pf__item">from</span></span>
-          <span class="pf__nb"><label class="pf__field" data-field="company"><span class="sr-only">Company (optional)</span><input name="company" type="text" autocomplete="organization" placeholder="company (optional)" maxlength="100"><span class="pf__rule" aria-hidden="true"></span></label><span class="pf__mask"><span class="pf__item">.</span></span></span>
-          <span class="pf__mask"><span class="pf__item">I need</span></span>
-          <label class="pf__field pf__field--select" data-field="type"><span class="sr-only">What you need</span>
-            <select name="type" required>
-              <option value="a new website">a new website</option>
-              <option value="a redesign">a redesign</option>
-              <option value="improvements to my site">improvements to my site</option>
-              <option value="something else">something else</option>
-            </select><span class="pf__rule" aria-hidden="true"></span></label>
-          <span class="pf__mask"><span class="pf__item">and my budget is</span></span>
-          <span class="pf__nb"><label class="pf__field pf__field--select" data-field="budget"><span class="sr-only">Budget</span>
-            <select name="budget">
-              <option value="not sure yet">not sure yet</option>
-              <option value="under S$3k">under S$3k</option>
-              <option value="S$3k–8k">S$3k–8k</option>
-              <option value="S$8k–15k">S$8k–15k</option>
-              <option value="S$15k+">S$15k+</option>
-            </select><span class="pf__rule" aria-hidden="true"></span></label><span class="pf__mask"><span class="pf__item">.</span></span></span>
-          <span class="pf__mask"><span class="pf__item">Reach me at</span></span>
-          <label class="pf__field" data-field="email"><span class="sr-only">Your email</span><input name="email" type="email" autocomplete="email" placeholder="you@email.com" maxlength="254" required><span class="pf__rule" aria-hidden="true"></span></label>
-          <span class="pf__mask"><span class="pf__item">or</span></span>
-          <span class="pf__nb"><label class="pf__field" data-field="mobile"><span class="sr-only">Mobile (optional)</span><input name="mobile" type="tel" inputmode="tel" autocomplete="tel" placeholder="mobile (optional)" maxlength="24"><span class="pf__rule" aria-hidden="true"></span></label><span class="pf__mask"><span class="pf__item">.</span></span></span>
-        </p>
-
-        <label class="pf__message" data-field="message">
-          <span class="label muted pf__item">Anything else? (optional)</span>
-          <textarea name="message" rows="3" maxlength="2000" placeholder="A link, a deadline, an idea…"></textarea>
-          <span class="pf__rule" aria-hidden="true"></span>
-        </label>
-
-        <!-- Honeypot: hidden from people, filled by bots. -->
-        <label class="pf__hp" aria-hidden="true">Website<input name="website" type="text" tabindex="-1" autocomplete="off"></label>
-
-        <div class="pf__foot">
-          <div class="pf__captcha" data-pf-captcha></div>
-          <button class="pf__send" type="submit">
-            <span class="pf__send-fill" aria-hidden="true"></span>
-            <span class="marks" aria-hidden="true"></span>
-            <span class="pf__send-label">Send <span class="arrow" aria-hidden="true">→</span></span>
-            <span class="pf__send-progress" aria-hidden="true"></span>
-          </button>
-        </div>
-        <p class="pf__status label" role="status" aria-live="polite"></p>
-      </form>
-
-      <!-- Result: the form fades out and this rises in its place (sent or not sent). -->
-      <div class="pf__result" hidden data-state="sent" role="status" aria-live="polite">
-        <p class="label muted pf__result-item" data-pf-r="label">Message sent</p>
-        <p class="pf__result-title"><span class="pf__mask"><span class="pf__result-item" data-pf-r="t1">Thanks —</span></span><span class="pf__mask"><span class="pf__result-item pf__result-accent" data-pf-r="t2">talk soon.</span></span></p>
-        <p class="pf__result-note muted pf__result-item"><span data-pf-r="note">I usually reply within a day or two.</span></p>
-        <div class="pf__actions pf__result-item">
-          <button class="pf__action link-line label" type="button" data-pf-retry hidden>Try again</button>
-          <button class="pf__action link-line label" type="button" data-pf-close>Back to the site</button>
-        </div>
-      </div>
-    </div>
-  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js" defer></script>
+  <script src="/js/base.js" defer></script>
+  <script src="/js/theme.js" defer></script>
+  <script src="/js/contact.js" defer></script>
+  <script src="/js/home.js" defer></script>
 </body>
 </html>

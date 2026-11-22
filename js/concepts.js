@@ -4,7 +4,7 @@ addEventListener('DOMContentLoaded', () => {
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
   if (!reduce && window.Lenis) { const l = new Lenis({ lerp: .09 }); window.lenis = l; const raf = (t) => { l.raf(t); requestAnimationFrame(raf); }; requestAnimationFrame(raf); }
 
-  const IMG = '../../assets/images/', C = '../../concepts/';
+  const IMG = '/assets/images/', C = '/concepts/';
   const LIVE = 'https://noah-portfolio.pages.dev/concepts/';
   const items = [
     { src: IMG + 'concept-pixel-pull-cover.webp', title: 'Pixel Pull', sub: '01 · Card shop',

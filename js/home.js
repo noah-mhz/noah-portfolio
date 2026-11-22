@@ -1,4 +1,4 @@
-/* Fusion sample: page script (moved out of the HTML). */
+/* Homepage: hero, Ganko case sequence, work deck, services scenes, timeline and the rest of the homepage motion. */
   addEventListener('DOMContentLoaded', () => {
     const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)];
     const fine = matchMedia('(pointer: fine)').matches;
@@ -26,16 +26,16 @@
 
     /* ---------- Deck data + behaviour ---------- */
     const WORK = [
-      { n: '02 / 04', name: 'Luumens', img: '../../assets/images/luumens-home-1600.webp', href: 'https://noah-portfolio.pages.dev/work/luumens/', cta: 'Read the case study →',
+      { n: '02 / 04', name: 'Luumens', img: '/assets/images/luumens-home-1600.webp', href: '/work/luumens/', cta: 'Read the case study →',
         rows: [['Type', 'In-house · Pomar Engineering'], ['Sector', 'Energy'], ['Year', '2026'], ['Built with', 'WordPress, custom widgets, GSAP']] },
-      { n: '03 / 04', name: 'Voyagaer', img: '../../assets/images/voyagaer-hero-poster.webp', href: 'https://noah-portfolio.pages.dev/work/voyagaer/', cta: 'Read the case study →',
+      { n: '03 / 04', name: 'Voyagaer', img: '/assets/images/voyagaer-hero-poster.webp', href: '/work/voyagaer/', cta: 'Read the case study →',
         rows: [['Type', 'In-house · Pomar Engineering'], ['Sector', 'Marine'], ['Status', 'Not yet launched'], ['Built with', 'WordPress, custom widgets']] },
-      { n: '04 / 04', name: 'Industmarine', img: '../../assets/images/industmarine-hero.webp', href: 'work-industmarine.html', cta: 'Read the case study →',
+      { n: '04 / 04', name: 'Industmarine', img: '/assets/images/industmarine-hero.webp', href: '/work/industmarine/', cta: 'Read the case study →',
         rows: [['Type', 'In-house · Pomar Engineering'], ['Sector', 'Marine, offshore & industrial'], ['Year', '2026'], ['Built with', 'WordPress, custom widgets, GSAP']] },
-      { n: 'Concept', name: 'Pixel Pull', img: '../../assets/images/concept-pixel-pull-cover.webp', href: 'concepts.html', cta: 'See the concept →', rows: [['Type', 'Pitched homepage'], ['Sector', 'Card shop']] },
-      { n: 'Concept', name: 'Little Rösti', img: '../../assets/images/concept-little-rosti-poster.webp', href: 'concepts.html', cta: 'See the concept →', rows: [['Type', 'Pitched homepage'], ['Sector', 'Café']] },
-      { n: 'Concept', name: 'Common Table', img: '../../assets/images/concept-common-table-cover.webp', href: 'concepts.html', cta: 'See the concept →', rows: [['Type', 'Pitched homepage'], ['Sector', 'Restaurant']] },
-      { n: 'Concept', name: 'Crumb & Kin', img: '../../assets/images/concept-crumb-and-kin-poster.webp', href: 'concepts.html', cta: 'See the concept →', rows: [['Type', 'Pitched homepage'], ['Sector', 'Bakery']] },
+      { n: 'Concept', name: 'Pixel Pull', img: '/assets/images/concept-pixel-pull-cover.webp', href: '/concepts/', cta: 'See the concept →', rows: [['Type', 'Pitched homepage'], ['Sector', 'Card shop']] },
+      { n: 'Concept', name: 'Little Rösti', img: '/assets/images/concept-little-rosti-poster.webp', href: '/concepts/', cta: 'See the concept →', rows: [['Type', 'Pitched homepage'], ['Sector', 'Café']] },
+      { n: 'Concept', name: 'Common Table', img: '/assets/images/concept-common-table-cover.webp', href: '/concepts/', cta: 'See the concept →', rows: [['Type', 'Pitched homepage'], ['Sector', 'Restaurant']] },
+      { n: 'Concept', name: 'Crumb & Kin', img: '/assets/images/concept-crumb-and-kin-poster.webp', href: '/concepts/', cta: 'See the concept →', rows: [['Type', 'Pitched homepage'], ['Sector', 'Bakery']] },
     ];
     const esc = (t) => t.replace(/&/g, '&amp;').replace(/</g, '&lt;');
     const deckEl = $('[data-deck]'), indexEl = $('[data-index]'), recordEl = $('[data-record]'), countEl = $('[data-count]');
@@ -196,7 +196,7 @@
     if (!window.gsap) { place(); return; }
     ScrollTrigger.addEventListener('refresh', place);
     /* ---------- Services: each card acts out its service (picked options) ---------- */
-    const IMG = '../../assets/images/';
+    const IMG = '/assets/images/';
     const page = (v) => {
       const c = {
         wire: { logo: '', nav: '<span class="ph"></span><span class="ph"></span><span class="ph"></span>', h: '<span class="ph"></span><span class="ph"></span>', txt: '<span class="ph"></span><span class="ph"></span>', btn: '', img: '' },

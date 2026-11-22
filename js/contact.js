@@ -1,343 +1,250 @@
 /*
- * Project form. "Start a project" no longer jumps to the mail app: a mint
- * wipe grows out of the button to fill the screen, the dark panel follows it
- * in, and the sentence form writes itself in line by line. Submissions go to
- * /api/contact (a Cloudflare Pages Function) after a Turnstile check.
- * Without JavaScript the button stays a plain mailto link.
+ * Project form. Any [data-pf-open] link ("Discuss a project", "Start a project") opens it.
+ * The form is built here so every page shares one copy. It opens behind apricot blinds
+ * (the same slats as the theme switch), reads as one sentence, and posts to /api/contact,
+ * a Cloudflare Pages Function that checks Turnstile and sends the enquiry through Resend.
+ * Without JavaScript the links go to the homepage's contact section.
  */
-import { getLenis } from './scroll.js';
-import { initFormFx, flagInvalid } from './formfx.js';
+(() => {
+  const $ = (s, r = document) => r.querySelector(s);
+  const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const TURNSTILE_SRC = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit';
 
-const $ = (selector, root = document) => root.querySelector(selector);
-const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
+  const MARKUP = `
+  <div class="pf" id="project-form" role="dialog" aria-modal="true" aria-labelledby="pf-title" hidden>
+    <div class="pf__panel">
+      <header class="pf__top mono">
+        <span class="pf__in">New project</span>
+        <button class="pf__close mono" type="button" data-pf-close><span class="pf__in">Close <span aria-hidden="true">✕</span></span><span class="sr-only"> the form</span></button>
+      </header>
+      <form class="pf__form" novalidate>
+        <h2 class="pf__title" id="pf-title"><span class="pf__in">Tell me about it<i aria-hidden="true"></i></span></h2>
+        <p class="pf__sentence">
+          <span class="pf__in">Hi Noah, I'm</span>
+          <label class="pf__field" data-field="name"><span class="sr-only">Your name</span><input name="name" type="text" autocomplete="name" placeholder="your name" maxlength="80" required></label>
+          <span class="pf__in">from</span>
+          <span class="pf__nb"><label class="pf__field" data-field="company"><span class="sr-only">Company (optional)</span><input name="company" type="text" autocomplete="organization" placeholder="company (optional)" maxlength="100"></label><span class="pf__in">.</span></span>
+          <span class="pf__in">I need</span>
+          <label class="pf__field pf__field--select" data-field="type"><span class="sr-only">What you need</span>
+            <select name="type" required>
+              <option value="a new website">a new website</option>
+              <option value="a redesign">a redesign</option>
+              <option value="improvements to my site">improvements to my site</option>
+              <option value="something else">something else</option>
+            </select></label>
+          <span class="pf__in">and my budget is</span>
+          <span class="pf__nb"><label class="pf__field pf__field--select" data-field="budget"><span class="sr-only">Budget</span>
+            <select name="budget">
+              <option value="not sure yet">not sure yet</option>
+              <option value="under S$3k">under S$3k</option>
+              <option value="S$3k–8k">S$3k–8k</option>
+              <option value="S$8k–15k">S$8k–15k</option>
+              <option value="S$15k+">S$15k+</option>
+            </select></label><span class="pf__in">.</span></span>
+          <span class="pf__in">Reach me at</span>
+          <label class="pf__field" data-field="email"><span class="sr-only">Your email</span><input name="email" type="email" autocomplete="email" placeholder="you@email.com" maxlength="254" required></label>
+          <span class="pf__in">or</span>
+          <span class="pf__nb"><label class="pf__field" data-field="mobile"><span class="sr-only">Mobile (optional)</span><input name="mobile" type="tel" inputmode="tel" autocomplete="tel" placeholder="mobile (optional)" maxlength="24"></label><span class="pf__in">.</span></span>
+        </p>
+        <label class="pf__message pf__in" data-field="message">
+          <span class="mono">Anything else? (optional)</span>
+          <textarea name="message" rows="3" maxlength="2000" placeholder="A link, a deadline, an idea…"></textarea>
+        </label>
+        <label class="pf__hp" aria-hidden="true">Website<input name="website" type="text" tabindex="-1" autocomplete="off"></label>
+        <div class="pf__foot pf__in">
+          <div class="pf__captcha" data-pf-captcha></div>
+          <button class="pf__send" type="submit">Send <b aria-hidden="true">→</b></button>
+        </div>
+        <p class="pf__status mono" role="status" aria-live="polite"></p>
+      </form>
+      <div class="pf__result" hidden role="status" aria-live="polite">
+        <p class="mono" data-pf-r="label">Message sent</p>
+        <p class="pf__result-title"><span data-pf-r="t1">Thanks,</span> <em data-pf-r="t2">talk soon.</em></p>
+        <p class="pf__result-note" data-pf-r="note">I usually reply within a day or two.</p>
+        <div class="pf__actions">
+          <button class="pf__action mono" type="button" data-pf-retry hidden>Try again</button>
+          <button class="pf__action mono" type="button" data-pf-close>Back to the site</button>
+        </div>
+      </div>
+    </div>
+  </div>`;
 
-const TURNSTILE_SRC = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit';
-
-let turnstileReady;
-function loadTurnstile() {
-  if (window.turnstile) return Promise.resolve(window.turnstile);
-  turnstileReady = turnstileReady || new Promise((resolve, reject) => {
-    const script = document.createElement('script');
-    script.src = TURNSTILE_SRC;
-    script.async = true;
-    script.onload = () => resolve(window.turnstile);
-    script.onerror = reject;
-    document.head.appendChild(script);
-  });
-  return turnstileReady;
-}
-
-export function initContactForm() {
-  const root = $('#project-form');
-  const triggers = $$('[data-pf-open]');
-  if (!root || !triggers.length) return;
-  initFormFx(root);
-
-  const { gsap } = window;
-  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const wipe = $('.pf__wipe', root);
-  const panel = $('.pf__panel', root);
-  const form = $('.pf__form', root);
-  const result = $('.pf__result', root);
-  const retry = $('[data-pf-retry]', root);
-  const status = $('.pf__status', root);
-  const send = $('.pf__send', root);
-  const captcha = $('[data-pf-captcha]', root);
-
-  let opener = null;
-  let open = false;
-  let widgetId = null;
-  let token = '';
-  let captchaState = 'idle'; // idle | loading | ready | unconfigured | blocked | error
-  let captchaError = '';
-  let setupPromise = null;
-
-  /* ---------- Turnstile ---------- */
-
-  const setupCaptcha = () => {
-    if (captchaState === 'ready' || captchaState === 'loading') return setupPromise;
-    if (widgetId !== null && window.turnstile) {
-      // Widget exists but errored: reset it instead of rendering a second one.
-      captchaState = 'ready'; captchaError = ''; token = '';
-      window.turnstile.reset(widgetId);
-      setupPromise = Promise.resolve();
-      return setupPromise;
-    }
-    captchaState = 'loading';
-    setupPromise = (async () => {
-      let config;
-      try {
-        config = await fetch('/api/contact', { headers: { accept: 'application/json' } }).then((r) => r.json());
-      } catch {
-        captchaState = 'unconfigured';
-        return;
-      }
-      if (!config.siteKey || config.configured === false) { captchaState = 'unconfigured'; return; }
-      try {
-        const turnstile = await loadTurnstile();
-        widgetId = turnstile.render(captcha, {
-          sitekey: config.siteKey,
-          theme: 'dark',
-          appearance: 'interaction-only',
-          callback: (t) => { token = t; captchaError = ''; },
-          'expired-callback': () => { token = ''; },
-          'error-callback': (code) => { token = ''; captchaError = String(code || 'unknown'); captchaState = 'error'; return true; },
-        });
-        if (captchaState === 'loading') captchaState = 'ready';
-      } catch {
-        captchaState = 'blocked';
-      }
-    })();
-    return setupPromise;
-  };
-
-  // Turnstile runs in the background; wait for its token rather than failing at once.
-  const waitForToken = async (ms) => {
-    const end = Date.now() + ms;
-    while (Date.now() < end) {
-      if (!token && window.turnstile && widgetId !== null) token = window.turnstile.getResponse(widgetId) || '';
-      if (token || captchaState === 'error') return token;
-      await new Promise((resolve) => { setTimeout(resolve, 200); });
-    }
-    return token;
-  };
-
-  /* ---------- Open / close choreography ---------- */
-
-  const items = () => $$('.pf__top .pf__item, .pf__title .pf__item, .pf__sentence .pf__item', root);
-  const rules = () => $$('.pf__rule', root);
-  const fields = () => $$('.pf__field input, .pf__field .pf__pick', root);
-  const formParts = () => $$('.pf__title, .pf__sentence, .pf__message, .pf__foot, .pf__status', form);
-
-  const insetFrom = (el) => {
-    const r = el.getBoundingClientRect();
-    const vw = window.innerWidth;
-    const vh = window.innerHeight;
-    return `inset(${r.top}px ${vw - r.right}px ${vh - r.bottom}px ${r.left}px)`;
-  };
-
-  const openForm = (event) => {
-    if (open) return;
-    event?.preventDefault();
-    opener = event?.currentTarget || document.activeElement;
-    open = true;
-
-    root.hidden = false;
-    form.hidden = false;
-    result.hidden = true;
-    if (gsap) gsap.set(formParts(), { clearProps: 'opacity,visibility,transform' });
-    status.textContent = '';
-    status.classList.remove('is-error');
-    document.documentElement.style.overflow = 'hidden';
-    getLenis()?.stop();
-    setupCaptcha();
-
-    const focusFirst = () => $('input[name="name"]', root)?.focus({ preventScroll: true });
-
-    if (reduce || !gsap) {
-      if (gsap) gsap.fromTo(root, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.3, onComplete: focusFirst });
-      else focusFirst();
-      return;
-    }
-
-    gsap.killTweensOf([wipe, panel, ...items(), ...rules(), ...fields()]);
-    const from = opener && opener.getBoundingClientRect ? insetFrom(opener) : 'inset(50% 50% 50% 50%)';
-
-    gsap.timeline({ defaults: { ease: 'expo.inOut' }, onComplete: focusFirst })
-      .set(root, { autoAlpha: 1 })
-      .fromTo(wipe, { clipPath: from }, { clipPath: 'inset(0px 0px 0px 0px)', duration: 0.9 }, 0)
-      .fromTo(panel, { clipPath: 'inset(100% 0% 0% 0%)' }, { clipPath: 'inset(0% 0% 0% 0%)', duration: 0.9 }, 0.45)
-      .fromTo(items(), { yPercent: 110 }, { yPercent: 0, duration: 1.1, stagger: 0.035, ease: 'expo.out' }, 0.95)
-      .fromTo(rules(), { scaleX: 0 }, { scaleX: 1, duration: 1.1, stagger: 0.06, ease: 'expo.out' }, 1.1)
-      .fromTo(fields(), { autoAlpha: 0, y: 10 }, { autoAlpha: 1, y: 0, duration: 0.8, stagger: 0.06, ease: 'expo.out' }, 1.15)
-      .fromTo('.pf__message .pf__item, .pf__message textarea, .pf__foot', { autoAlpha: 0, y: 16 }, { autoAlpha: 1, y: 0, duration: 0.9, stagger: 0.08, ease: 'expo.out' }, 1.35);
-  };
-
-  const closeForm = () => {
-    if (!open) return;
-    open = false;
-    const finish = () => {
-      root.hidden = true;
-      document.documentElement.style.overflow = '';
-      getLenis()?.start();
-      opener?.focus?.({ preventScroll: true });
-    };
-
-    if (reduce || !gsap) {
-      if (gsap) gsap.to(root, { autoAlpha: 0, duration: 0.25, onComplete: finish });
-      else finish();
-      return;
-    }
-
-    const to = opener && opener.getBoundingClientRect ? insetFrom(opener) : 'inset(50% 50% 50% 50%)';
-    gsap.timeline({ defaults: { ease: 'expo.inOut' }, onComplete: finish })
-      .to(panel, { clipPath: 'inset(0% 0% 100% 0%)', duration: 0.75 }, 0)
-      .to(wipe, { clipPath: to, duration: 0.8 }, 0.35)
-      .set(root, { autoAlpha: 0 });
-  };
-
-  triggers.forEach((trigger) => trigger.addEventListener('click', openForm));
-
-  // Arriving from a case study's "Start a project" (…/#start): wait for the
-  // intro to finish, bring Contact into view, then open the form from its button.
-  if (window.location.hash === '#start') {
-    history.replaceState(null, '', window.location.pathname + window.location.search);
-    const cta = $('.contact [data-pf-open]') || triggers[0];
-    const whenReady = () => {
-      if (document.querySelector('.intro')) { setTimeout(whenReady, 150); return; }
-      document.getElementById('contact')?.scrollIntoView({ block: 'center' });
-      setTimeout(() => openForm({ currentTarget: cta, preventDefault() {} }), 500);
-    };
-    whenReady();
-  }
-  $$('[data-pf-close]', root).forEach((button) => button.addEventListener('click', closeForm));
-
-  // Escape closes; Tab stays inside the dialog.
-  document.addEventListener('keydown', (event) => {
-    if (!open) return;
-    if (event.key === 'Escape') { event.preventDefault(); closeForm(); return; }
-    if (event.key !== 'Tab') return;
-    const focusables = $$('button, input:not([tabindex="-1"]), select, textarea, a[href], iframe', root)
-      .filter((el) => !el.closest('[hidden]') && el.offsetParent !== null);
-    if (!focusables.length) return;
-    const first = focusables[0];
-    const last = focusables[focusables.length - 1];
-    if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
-    else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
-  });
-
-  /* ---------- Submit ---------- */
-
-  const showError = (message, bad = []) => {
-    status.textContent = message;
-    status.classList.add('is-error');
-    $$('[data-field]', root).forEach((field) => field.classList.toggle('is-invalid', bad.includes(field.dataset.field)));
-    flagInvalid($$('[data-field].is-invalid', root));
-    const firstBad = bad.length && $(`[data-field="${bad[0]}"] input, [data-field="${bad[0]}"] .pf__pick, [data-field="${bad[0]}"] textarea`, root);
-    firstBad?.focus();
-  };
-
-  /* ---------- Result: the form fades out, the outcome rises in its place ---------- */
-
-  const COPY = {
-    sent: { label: 'Message sent', t1: 'Thanks —', t2: 'talk soon.', note: 'I usually reply within a day or two.' },
-    failed: { label: 'Not sent', t1: 'Something', t2: 'went wrong.', note: '' },
-  };
-
-  const showResult = (state, note = '') => {
-    const copy = COPY[state];
-    $$('[data-pf-r]', result).forEach((el) => { el.textContent = el.dataset.pfR === 'note' ? (note || copy.note) : copy[el.dataset.pfR]; });
-    result.dataset.state = state;
-    retry.hidden = state !== 'failed';
-
-    const reveal = () => {
-      form.hidden = true;
-      if (state === 'sent') {
-        form.reset(); // clear only once the form is out of sight
-        form.dispatchEvent(new Event('pf:reset'));
-      }
-      result.hidden = false;
-      (state === 'failed' ? retry : $('[data-pf-close]', result))?.focus({ preventScroll: true });
-      if (reduce || !gsap) return;
-      // Opacity only (not visibility), so the focused button keeps focus while it animates in.
-      gsap.fromTo($$('.pf__result-item', result), { yPercent: 110, opacity: 0, visibility: 'visible' },
-        { yPercent: 0, opacity: 1, duration: 1.2, stagger: 0.08, ease: 'expo.out' });
-    };
-
-    if (reduce || !gsap) { reveal(); return; }
-    gsap.to(formParts(), {
-      y: -28, autoAlpha: 0, duration: 0.55, stagger: 0.05, ease: 'power2.in', onComplete: reveal,
+  let turnstileReady;
+  const loadTurnstile = () => {
+    if (window.turnstile) return Promise.resolve(window.turnstile);
+    turnstileReady = turnstileReady || new Promise((resolve, reject) => {
+      const s = document.createElement('script');
+      s.src = TURNSTILE_SRC; s.async = true;
+      s.onload = () => resolve(window.turnstile); s.onerror = reject;
+      document.head.append(s);
     });
+    return turnstileReady;
   };
 
-  // Back to the filled-in form after a failed send.
-  retry.addEventListener('click', () => {
-    status.textContent = '';
-    status.classList.remove('is-error');
-    const back = () => {
-      result.hidden = true;
-      form.hidden = false;
-      $('input[name="name"]', root)?.focus({ preventScroll: true });
-      if (reduce || !gsap) { gsap?.set(formParts(), { clearProps: 'opacity,visibility,transform' }); return; }
-      gsap.fromTo(formParts(), { y: 24, opacity: 0, visibility: 'visible' }, { y: 0, opacity: 1, duration: 0.9, stagger: 0.06, ease: 'expo.out' });
+  addEventListener('DOMContentLoaded', () => {
+    const triggers = $$('[data-pf-open]');
+    if (!triggers.length) return;
+    document.body.insertAdjacentHTML('beforeend', MARKUP);
+    const root = $('#project-form'), panel = $('.pf__panel', root), form = $('.pf__form', root);
+    const result = $('.pf__result', root), status = $('.pf__status', root), send = $('.pf__send', root);
+    const captcha = $('[data-pf-captcha]', root), retry = $('[data-pf-retry]', root);
+    const g = window.gsap;
+
+    let opener = null, isOpen = false, busy = false;
+    let widgetId = null, token = '', captchaState = 'idle', setupPromise = null;
+
+    /* ---------- Turnstile ---------- */
+    const setupCaptcha = () => {
+      if (captchaState === 'ready' || captchaState === 'loading') return setupPromise;
+      if (widgetId !== null && window.turnstile) { window.turnstile.reset(widgetId); token = ''; captchaState = 'ready'; return Promise.resolve(); }
+      captchaState = 'loading';
+      setupPromise = (async () => {
+        let config;
+        try { config = await fetch('/api/contact', { headers: { accept: 'application/json' } }).then((r) => r.json()); }
+        catch (e) { captchaState = 'unconfigured'; return; }
+        if (!config.siteKey || config.configured === false) { captchaState = 'unconfigured'; return; }
+        try {
+          const ts = await loadTurnstile();
+          const dark = document.documentElement.dataset.theme === 'dark';
+          widgetId = ts.render(captcha, {
+            sitekey: config.siteKey, theme: dark ? 'dark' : 'light', size: 'flexible', appearance: 'interaction-only',
+            callback: (t) => { token = t; },
+            'expired-callback': () => { token = ''; },
+            'error-callback': () => { token = ''; captchaState = 'error'; return true; },
+          });
+          if (captchaState === 'loading') captchaState = 'ready';
+        } catch (e) { captchaState = 'blocked'; }
+      })();
+      return setupPromise;
     };
-    if (reduce || !gsap) { back(); return; }
-    gsap.to($$('.pf__result-item', result), { yPercent: -40, autoAlpha: 0, duration: 0.45, stagger: 0.04, ease: 'power2.in', onComplete: back });
-  });
+    const waitForToken = (ms) => new Promise((resolve) => {
+      const start = Date.now();
+      const tick = () => {
+        if (!token && window.turnstile && widgetId !== null) token = window.turnstile.getResponse(widgetId) || '';
+        if (token || captchaState === 'error' || Date.now() - start > ms) return resolve(token);
+        setTimeout(tick, 150);
+      };
+      tick();
+    });
 
-  form.addEventListener('input', (event) => {
-    event.target.closest('[data-field]')?.classList.remove('is-invalid');
-    if (status.classList.contains('is-error')) { status.textContent = ''; status.classList.remove('is-error'); }
-  });
-
-  form.addEventListener('submit', async (event) => {
-    event.preventDefault();
-    const data = Object.fromEntries(new FormData(form).entries());
-
-    const bad = [];
-    if ((data.name || '').trim().length < 2) bad.push('name');
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test((data.email || '').trim())) bad.push('email');
-    // Mobile is optional; if given, it needs to look like a phone number.
-    const mobile = (data.mobile || '').trim();
-    if (mobile && !/^\+?[\d\s().-]{7,20}$/.test(mobile)) bad.push('mobile');
-    if (bad.length) {
-      const say = bad.includes('name') ? 'Please add your name.' : bad.includes('email') ? 'Please add a valid email.' : 'Please check your mobile number.';
-      showError(say, bad);
-      return;
-    }
-
-    status.textContent = 'Checking…';
-    status.classList.remove('is-error');
-    send.classList.add('is-sending');
-    if (captchaState !== 'ready' && captchaState !== 'error') await setupCaptcha();
-    if (captchaState === 'ready' && !token) await waitForToken(10000);
-    send.classList.remove('is-sending');
-
-    if (!token) {
-      if (captchaState === 'ready') {
-        // Turnstile wants an interaction: keep the form and point at it.
-        showError('Please complete the verification above, then press Send again.');
-        return;
-      }
-      const why = {
-        unconfigured: 'The form isn\'t set up yet.',
-        blocked: 'The verification couldn\'t load — an ad blocker may be stopping it.',
-        error: `The verification failed (error ${captchaError}).`,
-      }[captchaState] || 'The verification couldn\'t finish.';
-      status.textContent = '';
-      showResult('failed', why);
-      if (captchaState === 'error') setupCaptcha(); // reset quietly so "Try again" can pass
-      return;
-    }
-
-    status.textContent = 'Sending…';
-    status.classList.remove('is-error');
-    send.classList.add('is-sending');
-
-    try {
-      const response = await fetch('/api/contact', {
-        method: 'POST',
-        headers: { 'content-type': 'application/json', accept: 'application/json' },
-        body: JSON.stringify({ ...data, token }),
+    /* ---------- Open / close behind blinds ---------- */
+    const slats = (fill) => {
+      const size = innerWidth < 600 ? 48 : 64, count = Math.ceil(innerHeight / size) + 1;
+      const wrap = document.createElement('div');
+      wrap.setAttribute('aria-hidden', 'true');
+      wrap.style.cssText = 'position:fixed;inset:0;z-index:9998;pointer-events:none;display:flex;flex-direction:column';
+      const list = Array.from({ length: count }, () => {
+        const s = document.createElement('i');
+        s.style.cssText = `display:block;flex:none;height:${size + 1}px;background:${fill};transform:scaleY(0);transform-origin:50% 0`;
+        wrap.append(s); return s;
       });
-      const outcome = await response.json().catch(() => ({}));
-      if (window.turnstile && widgetId !== null && !(response.ok && outcome.ok)) { window.turnstile.reset(widgetId); token = ''; }
-      if (response.status === 422 && outcome.fields) {
-        // A field needs fixing: stay on the form and mark it.
-        showError(outcome.error || 'Please check the highlighted fields.', outcome.fields);
-        return;
+      document.body.append(wrap);
+      return { wrap, list };
+    };
+    const curtain = (swap, done) => {
+      if (reduce || !g) { swap(); done && done(); return; }
+      const fill = getComputedStyle(document.documentElement).getPropertyValue('--pink').trim() || '#F2A65A';
+      const { wrap, list } = slats(fill);
+      g.timeline({ onComplete: () => { wrap.remove(); done && done(); } })
+        .to(list, { scaleY: 1, duration: .38, ease: 'power3.in', stagger: { each: .016 } })
+        .add(swap)
+        .set(list, { transformOrigin: '50% 100%' })
+        .to(list, { scaleY: 0, duration: .5, ease: 'power3.out', stagger: { each: .016 } }, '+=.05');
+    };
+    const intro = () => {
+      if (reduce || !g) return;
+      g.fromTo($$('.pf__in', root), { y: 28, opacity: 0 }, { y: 0, opacity: 1, duration: .8, stagger: .025, ease: 'expo.out', delay: .35, clearProps: 'transform,opacity' });
+    };
+
+    const lock = (on) => {
+      document.documentElement.classList.toggle('pf-open', on);
+      if (window.lenis) on ? window.lenis.stop() : window.lenis.start();
+    };
+    const showForm = () => {
+      result.hidden = true; form.hidden = false; status.textContent = ''; status.classList.remove('is-error');
+      $$('.is-invalid', root).forEach((f) => f.classList.remove('is-invalid'));
+    };
+    const open = (e) => {
+      if (e) e.preventDefault();
+      if (isOpen || busy) return;
+      busy = true; opener = document.activeElement; setupCaptcha();
+      curtain(() => {
+        root.hidden = false; panel.scrollTop = 0; lock(true); isOpen = true;
+        showForm();
+        intro();
+      }, () => { busy = false; $('input[name="name"]', root).focus({ preventScroll: true }); });
+    };
+    const close = () => {
+      if (!isOpen || busy) return;
+      busy = true;
+      curtain(() => { root.hidden = true; lock(false); isOpen = false; }, () => {
+        busy = false;
+        if (opener && opener.focus) opener.focus({ preventScroll: true });
+      });
+    };
+
+    triggers.forEach((t) => t.addEventListener('click', open));
+    $$('[data-pf-close]', root).forEach((b) => b.addEventListener('click', close));
+    root.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') { e.preventDefault(); close(); }
+      if (e.key !== 'Tab') return;
+      const f = $$('button:not([hidden]), input:not([tabindex="-1"]), select, textarea, a[href]', root).filter((el) => el.offsetParent !== null);
+      if (!f.length) return;
+      if (e.shiftKey && document.activeElement === f[0]) { e.preventDefault(); f[f.length - 1].focus(); }
+      else if (!e.shiftKey && document.activeElement === f[f.length - 1]) { e.preventDefault(); f[0].focus(); }
+    });
+    if (location.hash === '#start') { history.replaceState(null, '', location.pathname + location.search); addEventListener('load', () => open(), { once: true }); }
+
+    /* ---------- Validation and sending ---------- */
+    const EMAIL = /^[^\s@<>()[\]\\,;:"]{1,64}@[^\s@<>()[\]\\,;:"]{1,190}\.[a-z]{2,24}$/i;
+    const flag = (names) => {
+      names.forEach((n) => { const f = $(`[data-field="${n}"]`, root); if (f) f.classList.add('is-invalid'); });
+      const first = $(`[data-field="${names[0]}"] input, [data-field="${names[0]}"] select, [data-field="${names[0]}"] textarea`, root);
+      if (first) first.focus();
+    };
+    form.addEventListener('input', (e) => { const f = e.target.closest('[data-field]'); if (f) f.classList.remove('is-invalid'); });
+    const fail = (msg) => { status.textContent = msg; status.classList.add('is-error'); };
+    const showResult = (ok, msg) => {
+      const set = (k, v) => { $(`[data-pf-r="${k}"]`, root).textContent = v; };
+      if (ok) { set('label', 'Message sent'); set('t1', 'Thanks,'); set('t2', 'talk soon.'); set('note', 'I usually reply within a day or two.'); retry.hidden = true; }
+      else { set('label', 'Not sent'); set('t1', 'Sorry,'); set('t2', 'that didn’t go through.'); set('note', msg || 'Please try again in a moment.'); retry.hidden = false; }
+      form.hidden = true; result.hidden = false;
+      if (!reduce && g) g.from(result.children, { y: 24, opacity: 0, duration: .8, stagger: .06, ease: 'expo.out', clearProps: 'transform,opacity' });
+      (ok ? $('[data-pf-close]', result) : retry).focus();
+    };
+    retry.addEventListener('click', () => { showForm(); setupCaptcha(); intro(); });
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if (root.classList.contains('is-sending')) return;
+      const data = Object.fromEntries(new FormData(form).entries());
+      const bad = [];
+      if ((data.name || '').trim().length < 2) bad.push('name');
+      if (!EMAIL.test((data.email || '').trim())) bad.push('email');
+      if (data.mobile && !/^\+?[\d\s().-]{7,20}$/.test(data.mobile.trim())) bad.push('mobile');
+      if (bad.length) { fail('Please check the highlighted fields.'); flag(bad); return; }
+
+      root.classList.add('is-sending'); send.disabled = true;
+      status.classList.remove('is-error'); status.textContent = 'Checking…';
+      await setupCaptcha();
+      if (captchaState === 'unconfigured') { root.classList.remove('is-sending'); send.disabled = false; status.textContent = ''; showResult(false, 'The form isn’t set up yet. Please try again later.'); return; }
+      if (captchaState === 'blocked') { root.classList.remove('is-sending'); send.disabled = false; fail('The spam check couldn’t load. Turn off any blocker for this site and try again.'); return; }
+      if (!token) await waitForToken(10000);
+      if (!token) { root.classList.remove('is-sending'); send.disabled = false; fail('Please complete the verification above, then send again.'); if (captchaState === 'error') { captchaState = 'idle'; setupCaptcha(); } return; }
+
+      status.textContent = 'Sending…';
+      try {
+        const res = await fetch('/api/contact', { method: 'POST', headers: { 'content-type': 'application/json', accept: 'application/json' }, body: JSON.stringify({ ...data, token }) });
+        const out = await res.json().catch(() => ({}));
+        if (window.turnstile && widgetId !== null && !(res.ok && out.ok)) { window.turnstile.reset(widgetId); token = ''; }
+        if (res.status === 422 && out.fields) { status.textContent = ''; fail(out.error || 'Please check the highlighted fields.'); flag(out.fields); }
+        else if (res.ok && out.ok) { status.textContent = ''; form.reset(); token = ''; captchaState = 'idle'; showResult(true); }
+        else { status.textContent = ''; showResult(false, out.error); }
+      } catch (err) {
+        status.textContent = ''; showResult(false, 'Check your connection and try again.');
       }
-      status.textContent = '';
-      if (!response.ok || !outcome.ok) {
-        showResult('failed', `${(outcome.error || 'The message couldn\'t be sent right now.').replace(/\s*Please email me directly\.?/i, '')}`);
-        return;
-      }
-      showResult('sent');
-    } catch {
-      status.textContent = '';
-      showResult('failed', 'The message couldn\'t be sent — your connection may have dropped.');
-    } finally {
-      send.classList.remove('is-sending');
-    }
+      root.classList.remove('is-sending'); send.disabled = false;
+    });
   });
-}
+})();

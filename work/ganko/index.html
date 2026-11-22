@@ -2,397 +2,103 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <script>try{if(localStorage.getItem("theme")==="daylight"){var d=document.documentElement;d.setAttribute("data-theme","daylight");d.style.background="#F2F2F0";}}catch(e){}</script>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Ganko.sg — Case Study · Noah Zaw Min Htut, Web Designer</title>
-  <meta name="description" content="Website design and build for Ganko Sushi Singapore, the Singapore flagship of a Japanese sushi institution founded in Osaka in 1963.">
+  <title>Ganko.sg case study · Noah Zaw Min Htut</title>
+  <meta name="description" content="Ganko.sg: the restaurant's first website, designed from scratch and built in GoDaddy Website Builder with custom HTML sections and an embedded Chope booking widget.">
   <link rel="canonical" href="https://noah-portfolio.pages.dev/work/ganko/">
-  <meta property="og:url" content="https://noah-portfolio.pages.dev/work/ganko/">
-  <meta name="author" content="Noah Zaw Min Htut">
-  <meta name="theme-color" content="#0A0A0A">
-  <meta property="og:title" content="Ganko.sg — Case Study — Noah">
-  <meta property="og:description" content="Website design and build for Ganko Sushi Singapore.">
-  <meta property="og:type" content="article">
+  <meta property="og:title" content="Ganko.sg case study · Noah Zaw Min Htut">
+  <meta property="og:description" content="The restaurant's first website, from scratch.">
   <meta property="og:image" content="https://noah-portfolio.pages.dev/assets/images/og/ganko.jpg">
-  <meta property="og:image:width" content="1200">
-  <meta property="og:image:height" content="630">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Ganko.sg — Case Study — Noah">
-  <meta name="twitter:description" content="Website design and build for Ganko Sushi Singapore.">
-  <meta name="twitter:image" content="https://noah-portfolio.pages.dev/assets/images/og/ganko.jpg">
+  <meta name="theme-color" content="#F8DBC1" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0E1718" media="(prefers-color-scheme: dark)">
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="/apple-touch-icon.png">
-  <link rel="preload" href="../../assets/fonts/inter-tight-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="preload" href="../../assets/fonts/jetbrains-mono-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="../../css/style.css">
-  <link rel="stylesheet" href="../../css/project.css">
-
-  <script>document.documentElement.classList.add('js');
-    // Arriving from the homepage transition: paint its image on the first frame.
-    try { var pt = sessionStorage.getItem('pt:image'); if (pt !== null && !matchMedia('(prefers-reduced-motion: reduce)').matches) { document.documentElement.classList.add('pt-enter'); if (pt) document.documentElement.style.setProperty('--pt-src', 'url("' + pt.replace(/"/g, '') + '")'); } } catch (e) {}
-  </script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
-  <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js" defer></script>
-  <script type="module" src="../../js/project.js"></script>
-  <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "CreativeWork",
-  "name": "Ganko.sg — case study",
-  "url": "https://noah-portfolio.pages.dev/work/ganko/",
-  "description": "Website design and build for Ganko Sushi Singapore (freelance).",
-  "about": {
-    "@type": "Organization",
-    "name": "Ganko Sushi Singapore"
-  },
-  "image": "https://noah-portfolio.pages.dev/assets/images/og/ganko.jpg",
-  "creator": {
-    "@type": "Person",
-    "name": "Zaw Min Htut",
-    "alternateName": "Noah",
-    "url": "https://noah-portfolio.pages.dev/"
-  },
-  "dateCreated": "2025"
-}
-  </script>
+  <script>try{var t=localStorage.getItem('noah-theme');if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+  <link rel="stylesheet" href="/css/base.css">
+  <link rel="stylesheet" href="/css/contact.css">
+  <link rel="stylesheet" href="/css/site.css">
 </head>
-<body class="study-page" style="--case: #F0453B; --case-day: #D90C18; --case-inv: #19E6D8;">  <!-- Case tint: the client's colour replaces mint on this page. -->
-  <a class="skip-link" href="#main">Skip to content</a>
-
-  <div class="grid-lines" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
-  <div class="progress" aria-hidden="true"><span class="progress__bar"></span></div>
-
-  <div class="cursor" aria-hidden="true">
-    <span class="cursor__circle"></span>
-    <span class="cursor__label"></span>
-  </div>
-
-  <header class="nav">
-    <a class="nav__logo logo" href="../../" aria-label="Noah — home" data-logo><span class="logo__word" aria-hidden="true"><span class="logo__m"><span class="logo__l" style="--i:0">n</span></span><span class="logo__rest"><span class="logo__restin"><span class="logo__m"><span class="logo__l" style="--i:1">o</span></span><span class="logo__m"><span class="logo__l" style="--i:2">a</span></span><span class="logo__m"><span class="logo__l" style="--i:3">h</span></span></span></span><i class="logo__dot"><b></b></i></span></a>
-    <span class="nav__clock" data-clock aria-hidden="true">— SGT</span>
-    <nav class="nav__right" aria-label="Primary" data-nav>
-      <ul class="nav__list" id="nav-list">
-        <li><a class="nav__link" href="../../#work" data-nav-link="work">Work</a></li>
-        <li><a class="nav__link" href="../../concepts/" data-nav-link="concepts">Concepts</a></li>
-        <li><a class="nav__link" href="../../#about" data-nav-link="about">About</a></li>
-        <li><a class="nav__link nav__link--file" href="../../assets/docs/Zaw_Min_Htut_Resume_2026.pdf" target="_blank" rel="noopener">Résumé <span class="arrow arrow--diag" aria-hidden="true">↗</span></a></li>
-      </ul>
-      <button class="nav__status" type="button" aria-expanded="false" aria-controls="nav-list" data-nav-status>
-        <span class="nav__status-text" data-nav-status-text></span>
-        <span class="nav__status-menu"><span class="nav__status-word">Menu</span><i class="nav__status-icon" aria-hidden="true">+</i></span>
-      </button>
-      <button class="theme-toggle theme-toggle--nav" type="button" data-theme-toggle aria-pressed="false" aria-label="Darkroom mode — switch to daylight"><span class="theme-toggle__dot" aria-hidden="true"></span><span class="theme-toggle__label">Darkroom</span></button>
-      <a class="nav__link nav__cta" href="../../#start" data-pf-open aria-haspopup="dialog" aria-controls="project-form">Start a project</a>
-    </nav>
+<body>
+  <a class="skip mono" href="#main">Skip to content</a>
+  <header class="top">
+    <a class="logo" href="/">noah<i></i></a>
+    <a class="back mono" href="/#work"><span aria-hidden="true">←</span><span class="lbl">All work</span><span class="sr-only">Back to all work</span></a>
+    <div class="top__end">
+      <button class="theme mono" type="button" data-theme-switch aria-pressed="false"><span class="theme__icon" aria-hidden="true"><i></i></span><span class="sr-only">Dark mode, currently </span><span class="theme__label">Light</span></button>
+      <a class="pill" href="/#contact" data-pf-open aria-haspopup="dialog" aria-controls="project-form">Discuss a project <b aria-hidden="true">→</b></a>
+    </div>
   </header>
 
   <main id="main">
-
-    <!-- Hero -->
-    <section class="study-hero" id="top" data-nav-label="">
-      <div class="study-hero__top label muted">
-        <a class="study-back link-line" href="../../#work"><span class="arrow arrow--back" aria-hidden="true">←</span> All work</a>
-        <span class="hide-sm">Case study — Website</span>
-        <span><span class="status-dot" aria-hidden="true"></span>Singapore</span>
-      </div>
-
-      <div class="study-hero__title">
-        <h1 class="study-hero__name" data-split="chars" data-hero-title>Ganko.sg</h1>
-        <p class="study-hero__sub" data-hero-sub>Ganko Sushi Singapore</p>
-        <p class="study-hero__jp" lang="ja" aria-hidden="true">がんこ寿司</p>
-      </div>
-
-      <dl class="study-meta label">
-        <div data-hero-meta><dt>Client</dt><dd>Ganko Sushi Singapore · Freelance</dd></div>
-        <div data-hero-meta><dt>Role</dt><dd>Web design &amp; development</dd></div>
-        <div data-hero-meta><dt>Platform</dt><dd>GoDaddy Website Builder</dd></div>
-        <div data-hero-meta><dt>Live site</dt><dd><a class="link-line accent" href="https://ganko.sg" target="_blank" rel="noopener">ganko.sg <span class="arrow arrow--diag" aria-hidden="true">↗</span></a></dd></div>
+    <section class="head">
+      <p class="mono">Case study · Freelance · Restaurant · 2025</p>
+      <h1 aria-label="Ganko.sg">Ganko.sg<i aria-hidden="true"></i></h1>
+      <p class="head__lede">The restaurant's first website. Ganko Sushi began in 1963 as a small eatery in Osaka. Its Singapore restaurant had no website before this one, so I designed it from scratch.</p>
+      <dl class="facts mono">
+        <dt>Client</dt><dd>Ganko Sushi Singapore · Freelance</dd>
+        <dt>Role</dt><dd>Web design &amp; development</dd>
+        <dt>Platform</dt><dd>GoDaddy Website Builder</dd>
+        <dt>Live site</dt><dd><a href="https://ganko.sg" target="_blank" rel="noopener"><span class="ulink">ganko.sg</span> <span class="arr" aria-hidden="true">↗</span></a></dd>
       </dl>
+    </section>
 
-      <figure class="study-hero__media" data-hero-media>
-        <div class="frame">
-          <div class="frame__bar" aria-hidden="true"><i><b></b><b></b><b></b></i><span class="frame__url label">ganko.sg</span><i></i></div>
-          <video data-inview-video muted loop playsinline preload="auto" poster="../../assets/images/ganko-scroll-poster.webp" width="1600" height="1000"
-            aria-label="Scrolling through the Ganko.sg homepage: the hero, the restaurant's legacy, the experience and the dish gallery">
-            <source src="../../assets/video/ganko-scroll.mp4" type="video/mp4">
-          </video>
-          <span class="marks" aria-hidden="true"></span>
+    <!-- Showcase + backstage: one gallery, five arrangements, an index and a detail view -->
+    <section class="sec" aria-labelledby="screens-title">
+      <div class="sec__head">
+        <h2 id="screens-title">The<br>screens</h2>
+        <div class="seg mono" role="group" aria-label="Arrange the screens" data-seg>
+          <button type="button" data-arr="coverflow" aria-pressed="true">Coverflow</button>
+          <button type="button" data-arr="fan" aria-pressed="false">Fan</button>
+          <button type="button" data-arr="stack" aria-pressed="false">Stack</button>
+          <button type="button" data-arr="helix" aria-pressed="false">Helix</button>
+          <button type="button" data-arr="grid" aria-pressed="false">Grid</button>
         </div>
-      </figure>
-    </section>
-
-    <!-- Brief -->
-    <section class="study-section" data-nav-section="work" data-nav-label="Brief" aria-labelledby="brief-title">
-      <div class="study-section__head">
-        <div class="section-label" data-reveal="fade"><span>Brief</span></div>
       </div>
-      <div class="study-section__body">
-        <h2 class="study-lead" id="brief-title" data-split="lines" data-reveal="text">
-          <span class="line">The restaurant's</span>
-          <span class="line"><em class="accent">first website.</em></span>
-        </h2>
-        <p class="study-copy muted" data-reveal="fade">Ganko Sushi began in 1963 as a small eatery in Osaka. Its Singapore restaurant had no website before this one, so I designed it from scratch. It's for diners: people discovering the restaurant, and people booking a table.</p>
-        <dl class="study-own">
-          <div data-reveal="fade"><dt class="label muted">Design</dt><dd>The page flow, layouts and visual design, from scratch. The client set the goal and the information that mattered; everything else was mine.</dd></div>
-          <div data-reveal="fade"><dt class="label muted">Development</dt><dd>Built in GoDaddy Website Builder, mixing its layouts with custom HTML sections, and the Chope booking widget embedded in the page.</dd></div>
-          <div data-reveal="fade"><dt class="label muted">Delivery</dt><dd>Eight pages, responsive on desktop and mobile, solo and working directly with the client. Launched in 2025.</dd></div>
-          <div data-reveal="fade"><dt class="label muted">The hard part</dt><dd>GoDaddy's builder is very limited in functionality, layouts and fonts (more below).</dd></div>
-          <div data-reveal="fade"><dt class="label muted">Proudest of</dt><dd>The story the site tells, from the restaurant's history in Osaka to the interior design of the Singapore restaurant.</dd></div>
-          <div data-reveal="fade"><dt class="label muted">Next time</dt><dd>I'd recommend a different website builder to the client, even though GoDaddy was the one they knew.</dd></div>
-        </dl>
-      </div>
-    </section>
-
-    <!-- Decisions -->
-    <section class="study-chapter" data-chapter data-nav-section="work" data-nav-label="Decisions" aria-labelledby="decisions-title">
-      <div class="study-chapter__head">
-        <div class="section-label" data-reveal="fade"><span>Three decisions</span></div>
-        <h2 class="study-lead" id="decisions-title" data-split="lines" data-reveal="text">
-          <span class="line">History first,</span>
-          <span class="line">booking last.</span>
-        </h2>
-      </div>
-      <div class="study-chapter__grid">
-        <ol class="study-chapter__steps">
-          <li class="study-step" data-step>
-            <span class="label accent">Heritage first</span>
-            <h3 class="study-step__title">The story starts in Osaka.</h3>
-            <p class="study-step__text muted">The About pages set archival photographs of the founding team beside today's Singapore kitchen, on a washi-paper background.</p>
-            <figure class="study-step__media" data-reveal="media" data-from="bottom">
-              <div class="frame frame--stage"><div class="frame__bar" aria-hidden="true"><i><b></b><b></b><b></b></i><span class="frame__url label">ganko.sg/tradition</span><i></i></div>
-                <div class="frame__view"><img src="../../assets/images/ganko-tradition.webp" alt="Tradition page: a black-and-white photo of the founding team in Osaka beside the Singapore kitchen team today" width="1400" height="2143" loading="lazy" decoding="async"></div><span class="marks" aria-hidden="true"></span></div>
-            </figure>
-          </li>
-          <li class="study-step" data-step>
-            <span class="label accent">Photography leads</span>
-            <h3 class="study-step__title">The food and the room do the talking.</h3>
-            <p class="study-step__text muted">Copy stays short. Dishes, interiors and the chefs at work carry each page, set in an asymmetric gallery of varied crops and heights.</p>
-            <figure class="study-step__media" data-reveal="media" data-from="bottom">
-              <div class="frame frame--stage"><div class="frame__bar" aria-hidden="true"><i><b></b><b></b><b></b></i><span class="frame__url label">ganko.sg/hospitality</span><i></i></div>
-                <div class="frame__view"><img src="../../assets/images/ganko-interiors.webp" alt="Hospitality page: an asymmetric gallery of the restaurant's timber and stone interiors" width="1400" height="1421" loading="lazy" decoding="async"></div><span class="marks" aria-hidden="true"></span></div>
-            </figure>
-          </li>
-          <li class="study-step" data-step>
-            <span class="label accent">Booking on-site</span>
-            <h3 class="study-step__title">Book a table without leaving.</h3>
-            <p class="study-step__text muted">The Chope booking widget is embedded in the Reservation page, beside the address and opening hours, so guests never leave ganko.sg to book.</p>
-            <figure class="study-step__media" data-reveal="media" data-from="bottom">
-              <div class="frame frame--stage"><div class="frame__bar" aria-hidden="true"><i><b></b><b></b><b></b></i><span class="frame__url label">ganko.sg/reservation</span><i></i></div>
-                <div class="frame__view"><img src="../../assets/images/ganko-reservation.webp" alt="Reservation page with the embedded Chope booking widget: party size, date and time" width="1400" height="1349" loading="lazy" decoding="async"></div><span class="marks" aria-hidden="true"></span></div>
-            </figure>
-          </li>
-        </ol>
-        <div class="study-chapter__stage" data-stage aria-hidden="true">
-          <div class="frame frame--stage">
-            <div class="frame__bar"><i><b></b><b></b><b></b></i><span class="frame__url label" data-stage-url>ganko.sg/tradition</span><i></i></div>
-            <div class="frame__view">
-              <img src="../../assets/images/ganko-tradition.webp" alt="" data-stage-img data-url="ganko.sg/tradition" width="1400" height="2143" loading="lazy" decoding="async">
-              <img src="../../assets/images/ganko-interiors.webp" alt="" data-stage-img data-url="ganko.sg/hospitality" width="1400" height="1421" loading="lazy" decoding="async">
-              <img src="../../assets/images/ganko-reservation.webp" alt="" data-stage-img data-url="ganko.sg/reservation" width="1400" height="1349" loading="lazy" decoding="async">
-            </div>
-            <span class="marks"></span>
-          </div>
+      <div class="gal">
+        <div>
+          <ol class="idx mono" data-idx></ol>
+          <div class="caption" aria-live="polite" data-caption></div>
+        </div>
+        <div>
+          <div data-stage aria-label="Ganko.sg screens"></div>
+          <div class="g-hint mono"><span data-count>1 / 9</span><span>Drag, swipe or use the arrow keys · click the front screen to open it</span></div>
         </div>
       </div>
     </section>
 
-    <!-- Structure: two journeys -->
-    <section class="study-journeys" data-nav-section="work" data-nav-label="Journeys" aria-labelledby="journeys-title">
-      <div class="study-journeys__head">
-        <div class="section-label" data-reveal="fade"><span>Site structure</span></div>
-        <h2 class="study-lead" id="journeys-title" data-split="lines" data-reveal="text"><span class="line">Eight pages,</span><span class="line">two journeys.</span></h2>
-        <p class="study-copy muted" data-reveal="fade">Guests either want to get to know the restaurant or book a table, so the navigation splits along those lines.</p>
-      </div>
-      <div class="study-journeys__rows">
-        <div class="journey">
-          <span class="journey__name label accent" data-reveal="fade">Discover</span>
-          <ol class="journey__steps">
-            <li data-reveal="fade"><span>Home</span></li>
-            <li data-reveal="fade"><span>Tradition</span><span class="label muted">About</span></li>
-            <li data-reveal="fade"><span>Hospitality</span><span class="label muted">About</span></li>
-            <li data-reveal="fade"><span>Menu</span></li>
-          </ol>
-        </div>
-        <div class="journey">
-          <span class="journey__name label accent" data-reveal="fade">Plan a visit</span>
-          <ol class="journey__steps">
-            <li data-reveal="fade"><span>Home</span><span class="label muted">Book now</span></li>
-            <li data-reveal="fade"><span>Reservation</span><span class="label muted">Chope, embedded</span></li>
-            <li data-reveal="fade"><span>Contact</span><span class="label muted">Hours · map</span></li>
-          </ol>
-        </div>
-        <p class="journey__aside label muted" data-reveal="fade">Also under More: FAQ · Careers</p>
+    <section class="sec" aria-labelledby="decisions-title">
+      <div class="sec__head"><h2 id="decisions-title">Three<br>decisions</h2><span class="mono muted">History first, booking last.</span></div>
+      <div class="cols">
+        <div><span class="mono">01 · Heritage first</span><h3>The story starts in Osaka.</h3><p>The About pages set archival photographs of the founding team beside today's Singapore kitchen, on a washi-paper background.</p></div>
+        <div><span class="mono">02 · Photography leads</span><h3>The food and the room do the talking.</h3><p>Copy stays short. Dishes, interiors and the chefs at work carry each page, set in an asymmetric gallery of varied crops and heights.</p></div>
+        <div><span class="mono">03 · Booking on-site</span><h3>Book a table without leaving.</h3><p>The Chope booking widget is embedded in the Reservation page, beside the address and opening hours, so guests never leave ganko.sg to book.</p></div>
       </div>
     </section>
 
-    <!-- System -->
-    <section class="study-section study-section--stack" data-nav-section="work" data-nav-label="System" aria-labelledby="system-title">
-      <div class="study-section__head">
-        <div class="section-label" data-reveal="fade"><span>Design system</span></div>
-      </div>
-      <div class="study-section__body">
-        <h2 class="study-lead" id="system-title" data-split="lines" data-reveal="text">
-          <span class="line">Paper tones and</span>
-          <span class="line">one red mark.</span>
-        </h2>
-        <p class="study-copy muted" data-reveal="fade">League Spartan for headings and Poppins for text, on charcoal and rice-paper tones with a single red for actions.</p>
-        <ul class="study-palette" aria-label="Site colour palette">
-          <li style="--swatch:#262323;--ink:#F2F2F0" data-swatch><span class="label">Charcoal</span><span class="label">#262323</span></li>
-          <li style="--swatch:#FDF7E7;--ink:#262323" data-swatch><span class="label">Rice paper</span><span class="label">#FDF7E7</span></li>
-          <li style="--swatch:#F0EAD8;--ink:#262323" data-swatch><span class="label">Washi</span><span class="label">#F0EAD8</span></li>
-          <li style="--swatch:#D90C18;--ink:#FDF7E7" data-swatch><span class="label">Ganko red</span><span class="label">#D90C18</span></li>
-        </ul>
-      </div>
-      <div class="study-ui">
-        <figure class="study-ui__tile study-ui__tile--bleed" data-reveal="fade"><img src="../../assets/images/ganko-ui-nav.webp" alt="Charcoal navigation bar with the red caricature logo" width="1600" height="162" loading="lazy" decoding="async"></figure>
-        <figure class="study-ui__tile study-ui__tile--half" style="--tile:#FDF7E7" data-reveal="fade"><img src="../../assets/images/ganko-ui-contact.webp" alt="Contact card on washi texture: address, phone, email and opening hours beside a photo of the restaurant front" width="1200" height="595" style="max-width:34rem" loading="lazy" decoding="async"></figure>
-        <figure class="study-ui__tile study-ui__tile--half" style="--tile:#FDF7E7" data-reveal="fade"><img src="../../assets/images/ganko-ui-faq.webp" alt="FAQ accordion on washi texture with floral line illustrations" width="1000" height="683" style="max-width:28rem" loading="lazy" decoding="async"></figure>
-      </div>
+    <section class="sec" aria-labelledby="hard-title">
+      <div class="sec__head"><h2 id="hard-title">The hard<br>part</h2><span class="mono muted">Working around the builder.</span></div>
+      <div class="note"><p>GoDaddy's builder was the client's choice: their team already knew it, so they can keep the site up to date themselves. But it's very limited in functionality, layouts and fonts. The layouts I first built from its blocks didn't hold up, so I rebuilt those sections by hand as custom HTML and kept the builder's own layouts only where they worked.</p></div>
     </section>
 
-    <!-- The hard part -->
-    <section class="study-details" data-nav-section="work" data-nav-label="Platform" aria-labelledby="platform-title">
-      <div class="study-details__head">
-        <div class="section-label" data-reveal="fade"><span>The hard part — the platform</span></div>
-        <h2 class="study-lead" id="platform-title" data-split="lines" data-reveal="text"><span class="line">Working around</span><span class="line">the builder.</span></h2>
-        <p class="study-copy muted" data-reveal="fade">GoDaddy's builder was the client's choice — their team already knew it, so they can keep the site up to date themselves. But it's very limited in functionality, layouts and fonts. The layouts I first built from its blocks didn't hold up, so I rebuilt those sections by hand as custom HTML and kept the builder's own layouts only where they worked.</p>
-      </div>
-      <div class="study-details__grid">
-        <figure data-reveal="media" data-from="bottom">
-          <div class="frame frame--crop"><div class="frame__bar" aria-hidden="true"><i><b></b><b></b><b></b></i><span class="frame__url label">ganko.sg/hospitality</span><i></i></div>
-            <div class="frame__view"><img src="../../assets/images/ganko-hospitality.webp" alt="Hospitality page: interiors set in an asymmetric gallery on rice-paper background" width="1400" height="2852" loading="lazy" decoding="async"></div><span class="marks" aria-hidden="true"></span></div>
-          <figcaption class="label muted"><span>Asymmetric gallery</span><span>Varied crops and heights</span></figcaption>
-        </figure>
-        <figure data-reveal="media" data-from="bottom">
-          <div class="frame frame--crop"><div class="frame__bar" aria-hidden="true"><i><b></b><b></b><b></b></i><span class="frame__url label">ganko.sg</span><i></i></div>
-            <div class="frame__view"><img src="../../assets/images/ganko-dishes.webp" alt="A six-dish grid of signature dishes on a dark background" width="1600" height="736" loading="lazy" decoding="async"></div><span class="marks" aria-hidden="true"></span></div>
-          <figcaption class="label muted"><span>Signature dishes</span><span>Six-up grid, dark ground</span></figcaption>
-        </figure>
-      </div>
-    </section>
-
-    <!-- Live + next -->
-    <section class="study-end" data-nav-section="work" data-nav-label="Live" aria-labelledby="live-title">
-      <p class="study-outcome" data-reveal="fade"><span class="label accent">Outcome</span><span>Launched in 2025: the restaurant's first website. Eight pages with the menu, the story from Osaka and booking through an embedded Chope widget, on a builder the restaurant's team can update themselves.</span></p>
-      <div class="section-label" data-reveal="fade"><span>Visit the live site</span></div>
-      <h2 class="study-end__link" id="live-title">
-        <a href="https://ganko.sg" target="_blank" rel="noopener" data-cursor="Open"><span data-split="chars" data-reveal="text">ganko.sg</span> <span class="arrow arrow--diag accent" aria-hidden="true">↗</span></a>
-      </h2>
-      <div class="study-cta">
-        <p class="study-cta__line">Have a project like this in mind?</p>
-        <a class="cta" href="../../#start" data-pf-open aria-haspopup="dialog" aria-controls="project-form">
-          <span class="cta__fill" aria-hidden="true"></span>
-          <span class="marks" aria-hidden="true"></span>
-          <span class="cta__label">Start a project <span class="arrow" aria-hidden="true">→</span></span>
-        </a>
-      </div>
-      <nav class="study-next" aria-label="More work">
-        <a class="study-next__back link-line label" href="../../#work"><span class="arrow arrow--back" aria-hidden="true">←</span> All work</a>
-        <a class="study-next__project" href="../luumens/" data-magnetic="0.2">
-          <span class="study-next__peek" aria-hidden="true"><img src="../../assets/images/luumens-card-poster.webp" alt="" width="900" height="560" loading="lazy" decoding="async"><span class="marks"></span></span>
-          <span class="label muted">Next project</span>
-          <span class="study-next__name" data-magnetic-inner>Luumens <span class="arrow" aria-hidden="true">→</span></span>
-        </a>
-      </nav>
+    <section class="sec" aria-labelledby="outcome-title">
+      <div class="sec__head"><h2 id="outcome-title">Outcome</h2><span class="mono muted">Launched in 2025</span></div>
+      <div class="note"><p>The restaurant's first website. Eight pages with the menu, the story from Osaka and booking through an embedded Chope widget, on a builder the restaurant's team can update themselves.</p></div>
     </section>
   </main>
 
-  <footer class="footer" data-nav-section="contact" data-nav-label="Contact">
-    <div class="footer__grid">
-      <div class="footer__brand">
-        <p class="footer__name logo" aria-label="Noah">noah<i class="logo__dot"><b></b></i></p>
-        <p class="muted">Creative Developer<br>Web Designer</p>
-      </div>
-      <nav class="footer__nav" aria-label="Footer">
-        <ul class="footer__links">
-          <li><a class="link-line" href="../../#work">Work</a></li>
-          <li><a class="link-line" href="../../#about">About</a></li>
-          <li><a class="link-line" href="../../#contact">Contact</a></li>
-        </ul>
-      </nav>
-      <a class="footer__back label" href="#top" data-magnetic><span data-magnetic-inner>Back to top ↑</span></a>
-    </div>
-    <p class="footer__mark" aria-hidden="true"><span>n</span><span>o</span><span>a</span><span>h</span><span class="logo__dot"><b></b></span></p>
-    <div class="footer__bottom label muted">
-      <span>© 2026 Noah</span>
-      <span>1.3521° N — 103.8198° E</span>
-      <a class="link-line" href="../../colophon/">Designed &amp; built by hand — colophon</a>
-    </div>
+  <footer class="next">
+    <span class="mono">Next project · 02 / 04</span><br>
+    <a class="big" href="/work/luumens/">Luumens<i aria-hidden="true"></i></a>
+    <div class="foot mono"><span>© 2026 Noah Zaw Min Htut</span><span>Singapore → Worldwide</span><a href="/colophon/">Colophon</a><a href="/">Back to the homepage</a></div>
   </footer>
-  <!-- Project enquiry (tinted with this case study's accent): opens from "Start a project". Sends through /api/contact (Cloudflare Pages Function). -->
-  <div class="pf" id="project-form" role="dialog" aria-modal="true" aria-labelledby="pf-title" hidden>
-    <span class="pf__wipe" aria-hidden="true"></span>
-    <div class="pf__panel">
-      <div class="grid-lines pf__grid" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
-      <header class="pf__top label">
-        <span class="pf__item"><span class="status-dot" aria-hidden="true"></span>New project</span>
-        <button class="pf__close" type="button" data-pf-close aria-label="Close the form"><span class="pf__item">Close <span aria-hidden="true">✕</span></span></button>
-      </header>
 
-      <form class="pf__form" novalidate>
-        <h2 class="pf__title" id="pf-title"><span class="pf__mask"><span class="pf__item">Tell me about it.</span></span></h2>
-
-        <p class="pf__sentence">
-          <span class="pf__mask"><span class="pf__item">Hi Noah, I'm</span></span>
-          <label class="pf__field" data-field="name"><span class="sr-only">Your name</span><input name="name" type="text" autocomplete="name" placeholder="your name" maxlength="80" required><span class="pf__rule" aria-hidden="true"></span></label>
-          <span class="pf__mask"><span class="pf__item">from</span></span>
-          <span class="pf__nb"><label class="pf__field" data-field="company"><span class="sr-only">Company (optional)</span><input name="company" type="text" autocomplete="organization" placeholder="company (optional)" maxlength="100"><span class="pf__rule" aria-hidden="true"></span></label><span class="pf__mask"><span class="pf__item">.</span></span></span>
-          <span class="pf__mask"><span class="pf__item">I need</span></span>
-          <label class="pf__field pf__field--select" data-field="type"><span class="sr-only">What you need</span>
-            <select name="type" required>
-              <option value="a new website">a new website</option>
-              <option value="a redesign">a redesign</option>
-              <option value="improvements to my site">improvements to my site</option>
-              <option value="something else">something else</option>
-            </select><span class="pf__rule" aria-hidden="true"></span></label>
-          <span class="pf__mask"><span class="pf__item">and my budget is</span></span>
-          <span class="pf__nb"><label class="pf__field pf__field--select" data-field="budget"><span class="sr-only">Budget</span>
-            <select name="budget">
-              <option value="not sure yet">not sure yet</option>
-              <option value="under S$3k">under S$3k</option>
-              <option value="S$3k–8k">S$3k–8k</option>
-              <option value="S$8k–15k">S$8k–15k</option>
-              <option value="S$15k+">S$15k+</option>
-            </select><span class="pf__rule" aria-hidden="true"></span></label><span class="pf__mask"><span class="pf__item">.</span></span></span>
-          <span class="pf__mask"><span class="pf__item">Reach me at</span></span>
-          <label class="pf__field" data-field="email"><span class="sr-only">Your email</span><input name="email" type="email" autocomplete="email" placeholder="you@email.com" maxlength="254" required><span class="pf__rule" aria-hidden="true"></span></label>
-          <span class="pf__mask"><span class="pf__item">or</span></span>
-          <span class="pf__nb"><label class="pf__field" data-field="mobile"><span class="sr-only">Mobile (optional)</span><input name="mobile" type="tel" inputmode="tel" autocomplete="tel" placeholder="mobile (optional)" maxlength="24"><span class="pf__rule" aria-hidden="true"></span></label><span class="pf__mask"><span class="pf__item">.</span></span></span>
-        </p>
-
-        <label class="pf__message" data-field="message">
-          <span class="label muted pf__item">Anything else? (optional)</span>
-          <textarea name="message" rows="3" maxlength="2000" placeholder="A link, a deadline, an idea…"></textarea>
-          <span class="pf__rule" aria-hidden="true"></span>
-        </label>
-
-        <!-- Honeypot: hidden from people, filled by bots. -->
-        <label class="pf__hp" aria-hidden="true">Website<input name="website" type="text" tabindex="-1" autocomplete="off"></label>
-
-        <div class="pf__foot">
-          <div class="pf__captcha" data-pf-captcha></div>
-          <button class="pf__send" type="submit">
-            <span class="pf__send-fill" aria-hidden="true"></span>
-            <span class="marks" aria-hidden="true"></span>
-            <span class="pf__send-label">Send <span class="arrow" aria-hidden="true">→</span></span>
-            <span class="pf__send-progress" aria-hidden="true"></span>
-          </button>
-        </div>
-        <p class="pf__status label" role="status" aria-live="polite"></p>
-      </form>
-
-      <!-- Result: the form fades out and this rises in its place (sent or not sent). -->
-      <div class="pf__result" hidden data-state="sent" role="status" aria-live="polite">
-        <p class="label muted pf__result-item" data-pf-r="label">Message sent</p>
-        <p class="pf__result-title"><span class="pf__mask"><span class="pf__result-item" data-pf-r="t1">Thanks —</span></span><span class="pf__mask"><span class="pf__result-item pf__result-accent" data-pf-r="t2">talk soon.</span></span></p>
-        <p class="pf__result-note muted pf__result-item"><span data-pf-r="note">I usually reply within a day or two.</span></p>
-        <div class="pf__actions pf__result-item">
-          <button class="pf__action link-line label" type="button" data-pf-retry hidden>Try again</button>
-          <button class="pf__action link-line label" type="button" data-pf-close>Back to the site</button>
-        </div>
-      </div>
-    </div>
-  </div>
+  <script type="application/json" id="screens">{"base": "/assets/images/", "screens": [["ganko-home-1600.webp", "Homepage", "Home", "Discover the restaurant, or go straight to booking: the two journeys start here."], ["ganko-tradition.webp", "Tradition", "Heritage first", "Archival photographs of the founding team beside today’s Singapore kitchen, on a washi-paper background."], ["ganko-hospitality.webp", "Hospitality", "Photography leads", "Dishes, interiors and the chefs at work in an asymmetric gallery of varied crops and heights."], ["ganko-reservation.webp", "Reservation", "Booking on-site", "The Chope booking widget, embedded beside the address and opening hours."], ["ganko-dishes.webp", "Signature dishes", "Six-up grid, dark ground", "The food does the talking; copy stays short."], ["ganko-interiors.webp", "Interiors", "The Singapore room", "The interior design of the Singapore restaurant, the end of the story that starts in Osaka."], ["ganko-ui-nav.webp", "Navigation", "Two journeys", "Discover (Home, Tradition, Hospitality, Menu) or plan a visit (Reservation, Contact)."], ["ganko-ui-faq.webp", "FAQ", "Under More", "FAQ and Careers sit under More, out of the two main journeys."], ["ganko-ui-contact.webp", "Contact", "Hours · map", "Opening hours and the map, one step from booking."]], "rows": [["Built in", "GoDaddy + custom HTML"]], "href": "https://ganko.sg", "cta": "Visit ganko.sg"}</script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js" defer></script>
+  <script src="/js/theme.js" defer></script>
+  <script src="/js/contact.js" defer></script>
+  <script src="/js/gallery.js" defer></script>
+  <script src="/js/case.js" defer></script>
 </body>
 </html>

@@ -1,15 +1,6 @@
-/* Fusion inner pages (case study, concepts): header, theme, galleries, detail view.
-   Builds on ../shared.css. Dark theme: 60 deep teal / 30 peach / 10 apricot. */
-:root {
-  --nav-h: 4.6rem;
-  --ink: #0E1718; --muted: #4F5D5C; --line: rgba(14, 23, 24, .16); --bg-2: #F2CDAE;
-  --pink: #F2A65A; --pink-ink: #944810; --mark: #944810; --on-pink: #0E1718;
-  --teal: #944810; --on-teal: #F8DBC1;
-}
-:root[data-theme='dark'] {
-  --bg: #0E1718; --bg-2: #15292B; --ink: #F8DBC1; --muted: #A8968A; --line: rgba(248, 219, 193, .16);
-  --pink: #F2A65A; --pink-ink: #F2A65A; --mark: #F2A65A; --on-pink: #0E1718; --teal: #F2A65A; --on-teal: #0E1718;
-}
+/* Inner pages (case studies, concepts, colophon): header, theme button, galleries, detail view.
+   Builds on css/base.css. */
+:root { --nav-h: 4.6rem; }
 html, main { overflow-x: clip; }
 html.g-locked { overflow: hidden; }
 body { font-family: 'Archivo', system-ui, sans-serif; line-height: 1.5; }

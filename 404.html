@@ -3,268 +3,50 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Out of frame — Noah</title>
-  <meta name="robots" content="noindex">
-  <meta name="theme-color" content="#0A0A0A">
+  <title>Page not found · Noah Zaw Min Htut</title>
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
-  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
-  <style>html{background:#0A0A0A}</style>
-  <script>try{if(localStorage.getItem("theme")==="daylight"){var d=document.documentElement;d.setAttribute("data-theme","daylight");d.style.background="#F2F2F0";}}catch(e){}</script>
-  <!-- Absolute paths: Cloudflare Pages serves this page for any missing URL, at any depth. -->
-  <link rel="preload" href="/assets/fonts/inter-tight-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="preload" href="/assets/fonts/jetbrains-mono-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="/css/style.css">
-  <script>document.documentElement.classList.add('js');</script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
-  <script type="module" src="/js/notfound.js"></script>
+  <script>try{var t=localStorage.getItem('noah-theme');if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+  <link rel="stylesheet" href="/css/base.css">
   <style>
-    .nf-page { min-height: 100vh; min-height: 100svh; display: grid; grid-template-rows: 1fr auto; overflow: hidden; }
-    .nf-page > main { display: grid; padding-top: var(--nav-h); }
-
-    .nf-foot {
-      position: relative;
-      z-index: 2;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 1rem;
-      padding: 1.6rem var(--gutter);
-    }
-
-    .nf-main {
-      position: relative;
-      z-index: 2;
-      display: grid;
-      grid-template-columns: repeat(12, 1fr);
-      column-gap: var(--gutter);
-      align-content: center;
-      padding: 0 var(--gutter);
-    }
-    .nf-text { grid-column: 1 / 8; }
-    .nf-title {
-      margin: 1.5rem 0 2rem;
-      font-size: var(--fs-hero);
-      font-weight: 500;
-      line-height: 0.88;
-      letter-spacing: -0.05em;
-      text-transform: uppercase;
-    }
-    .nf-title em { font-style: normal; }
-    .nf-copy { max-width: 40ch; font-size: var(--fs-body); line-height: 1.6; color: var(--muted); }
-
-    .nf-links { display: flex; flex-wrap: wrap; gap: 1rem 2.25rem; margin-top: clamp(2rem, 6vh, 3.5rem); }
-    .nf-links a { color: var(--text); font-size: var(--fs-lead); letter-spacing: -0.02em; }
-    .nf-links a.accent { color: var(--accent); }
-    .nf-cases { display: flex; flex-wrap: wrap; gap: 0.5rem 1.5rem; margin-top: 1.5rem; }
-    .nf-cases a { color: var(--muted); }
-    .nf-cases a:hover { color: var(--text); }
-
-    /* The viewfinder hunts for a subject it can't find. */
-    .nf-stage { position: absolute; inset: 0; z-index: 1; pointer-events: none; }
-    .nf-finder {
-      position: absolute;
-      top: 50%;
-      left: 72%;
-      width: clamp(10rem, 22vw, 20rem);
-      aspect-ratio: 4 / 3;
-      translate: -50% -50%;
-      animation: nf-hunt 9s var(--ease-in-out) infinite;
-    }
-    .nf-finder .marks { inset: 0; opacity: 1; transform: none; --mark: 18px; --mark-color: rgba(var(--fg-rgb), 0.85); }
-    .nf-cross { position: absolute; top: 50%; left: 50%; width: 18px; height: 18px; translate: -50% -50%; }
-    .nf-cross::before, .nf-cross::after { content: ''; position: absolute; background: var(--accent); }
-    .nf-cross::before { top: 50%; left: 0; right: 0; height: 1px; }
-    .nf-cross::after { left: 50%; top: 0; bottom: 0; width: 1px; }
-    .nf-readout {
-      position: absolute;
-      left: 0;
-      top: calc(100% + 0.9rem);
-      display: flex;
-      gap: 1rem;
-      white-space: nowrap;
-      color: var(--muted);
-    }
-    .nf-readout b { font-weight: 400; color: var(--accent); }
-
-    @keyframes nf-hunt {
-      0%   { transform: translate(0, 0) scale(1); }
-      14%  { transform: translate(-18vw, -14vh) scale(0.8); }
-      26%  { transform: translate(-18vw, -14vh) scale(0.84); }
-      40%  { transform: translate(8vw, 12vh) scale(1.15); }
-      52%  { transform: translate(8vw, 12vh) scale(1.08); }
-      66%  { transform: translate(-6vw, 18vh) scale(0.9); }
-      78%  { transform: translate(-6vw, 18vh) scale(0.95); }
-      100% { transform: translate(0, 0) scale(1); }
-    }
-
-    @media (max-width: 1023px) {
-      .nf-text { grid-column: 1 / -1; }
-      .nf-finder { left: 70%; top: 26%; opacity: 0.55; }
-    }
-    @media (max-width: 767px) {
-      .nf-foot span:nth-child(3) { display: none; }
-      .nf-finder { left: 66%; top: 20%; }
-      .nf-readout { display: none; }
-    }
-    @media (prefers-reduced-motion: reduce) {
-      .nf-finder { animation: none; }
+    /* 404: the same type and square, one way home. Absolute paths: served at any depth. */
+    body { font-family: 'Archivo', system-ui, sans-serif; min-height: 100svh; display: grid; grid-template-rows: auto 1fr auto; }
+    .mono { font-family: 'Geist Mono', monospace; font-size: .72rem; letter-spacing: .06em; text-transform: uppercase; }
+    header, footer { display: flex; justify-content: space-between; align-items: center; padding: 1.4rem var(--gutter); }
+    .logo { font-weight: 600; font-size: 1.625rem; letter-spacing: -.045em; text-decoration: none; }
+    .skip { position: fixed; left: var(--gutter); top: .6rem; padding: .7rem 1rem; border-radius: 99px; background: var(--ink); color: var(--bg); text-decoration: none; translate: 0 -200%; transition: translate .4s var(--ease); }
+    .skip:focus { translate: 0 0; }
+    .logo { padding: .45rem .8rem; margin-left: -.8rem; border-radius: 99px; transition: background-color .3s; }
+    .logo:hover { background: var(--bg-2); }
+    .logo:hover i { scale: 1.6; }
+    .logo:focus-visible { outline: 2px solid var(--teal); outline-offset: 2px; }
+    .logo i { transition: scale .5s cubic-bezier(.34,1.56,.64,1); transform-origin: 50% 100%; display: inline-block; width: .15em; height: .15em; margin-left: .105em; background: var(--mark); }
+    main { display: grid; align-content: center; gap: 2rem; padding: 0 var(--gutter); }
+    h1 { margin: 0; font-weight: 800; font-size: clamp(6rem, 30vw, 28rem); line-height: .8; letter-spacing: -.02em; display: flex; align-items: flex-end; }
+    @view-transition { navigation: auto; }
+    h1 i { view-transition-name: dot; width: .2em; height: .2em; margin: 0 0 .05em .05em; background: var(--mark); flex: none; }
+    p { margin: 0; max-width: 30rem; font-size: clamp(1.2rem, 2vw, 1.6rem); line-height: 1.25; }
+    .home { justify-self: start; display: inline-flex; align-items: center; gap: .6rem; padding: 1.1rem 1.5rem; border-radius: 99px; background: var(--ink); color: var(--bg); text-decoration: none; font-weight: 600; }
+    .home b { display: grid; place-items: center; width: 1.4rem; height: 1.4rem; border-radius: 50%; background: var(--pink); color: var(--on-pink); transition: rotate .5s var(--ease); }
+    .home { position: relative; overflow: hidden; isolation: isolate; transition: color .4s; }
+    .home::before { content: ''; position: absolute; inset: 0; z-index: -1; background: var(--pink); translate: 0 101%; transition: translate .6s var(--ease); }
+    .home:hover, .home:focus-visible { color: var(--on-pink); }
+    .home:hover::before, .home:focus-visible::before { translate: 0 0; }
+    .home:hover b, .home:focus-visible b { rotate: -45deg; background: var(--ink); color: var(--bg); }
+    .home:focus-visible { outline: 2px solid var(--teal); outline-offset: 3px; }
+    @media (prefers-reduced-motion: no-preference) {
+      h1, p, .home { animation: rise 1s var(--ease) both; } p { animation-delay: .1s; } .home { animation-delay: .2s; }
+      @keyframes rise { from { opacity: 0; translate: 0 30px; } }
     }
   </style>
 </head>
-<body class="nf-page">
-  <div class="grid-lines" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
-
-  <div class="cursor" aria-hidden="true">
-    <span class="cursor__circle"></span>
-    <span class="cursor__label"></span>
-  </div>
-
-  <header class="nav">
-    <a class="nav__logo logo" href="/" aria-label="Noah — home" data-logo><span class="logo__word" aria-hidden="true"><span class="logo__m"><span class="logo__l" style="--i:0">n</span></span><span class="logo__rest"><span class="logo__restin"><span class="logo__m"><span class="logo__l" style="--i:1">o</span></span><span class="logo__m"><span class="logo__l" style="--i:2">a</span></span><span class="logo__m"><span class="logo__l" style="--i:3">h</span></span></span></span><i class="logo__dot"><b></b></i></span></a>
-    <span class="nav__clock" data-clock aria-hidden="true">— SGT</span>
-    <nav class="nav__right" aria-label="Primary" data-nav>
-      <ul class="nav__list" id="nav-list">
-        <li><a class="nav__link" href="/#work" data-nav-link="work">Work</a></li>
-        <li><a class="nav__link" href="/concepts/" data-nav-link="concepts">Concepts</a></li>
-        <li><a class="nav__link" href="/#about" data-nav-link="about">About</a></li>
-        <li><a class="nav__link nav__link--file" href="/assets/docs/Zaw_Min_Htut_Resume_2026.pdf" target="_blank" rel="noopener">Résumé <span class="arrow arrow--diag" aria-hidden="true">↗</span></a></li>
-      </ul>
-      <button class="theme-toggle theme-toggle--nav" type="button" data-theme-toggle aria-pressed="false" aria-label="Darkroom mode — switch to daylight"><span class="theme-toggle__dot" aria-hidden="true"></span><span class="theme-toggle__label">Darkroom</span></button>
-      <a class="nav__link nav__cta" href="/#contact" data-pf-open aria-haspopup="dialog" aria-controls="project-form">Start a project</a>
-    </nav>
-  </header>
-
-  <div class="nf-stage" aria-hidden="true">
-    <div class="nf-finder">
-      <span class="marks"></span>
-      <span class="nf-cross"></span>
-      <span class="nf-readout label"><b data-nf-status>Searching</b><span data-nf-coords>X 0.000 · Y 0.000</span></span>
-    </div>
-  </div>
-
+<body>
+  <a class="skip mono" href="#main">Skip to content</a>
+  <header><a class="logo" href="/">noah<i></i></a><span class="mono">Singapore → Worldwide</span></header>
   <main id="main">
-   <section class="nf-main">
-    <div class="nf-text">
-      <p class="label muted">Error 404 — <span data-nf-path>/</span></p>
-      <h1 class="nf-title" data-weight aria-label="Out of frame.">Out of<br><em class="accent">frame.</em></h1>
-      <p class="nf-copy">The page you're after isn't in shot. It may have moved, or the link may be mistyped.</p>
-      <nav class="nf-links" aria-label="Where to next">
-        <a class="link-line" href="/">Back home <span class="arrow" aria-hidden="true">→</span></a>
-        <a class="link-line" href="/#work">Selected work</a>
-        <a class="link-line accent" href="/#contact" data-pf-open aria-haspopup="dialog" aria-controls="project-form">Start a project</a>
-      </nav>
-      <p class="nf-cases label">
-        <span class="muted">Case studies —</span>
-        <a class="link-line" href="/work/ganko/">Ganko.sg</a>
-        <a class="link-line" href="/work/luumens/">Luumens</a>
-        <a class="link-line" href="/work/voyagaer/">Voyagaer</a>
-      </p>
-    </div>
-   </section>
+    <h1 aria-label="404">404<i aria-hidden="true"></i></h1>
+    <p>This page isn't here. It may have moved, or the link was mistyped.</p>
+    <a class="home" href="/">Back to the homepage <b aria-hidden="true">→</b></a>
   </main>
-
-  <footer class="nf-foot label muted">
-    <span>© 2026 Noah</span>
-    <span data-nf-clock>— SGT</span>
-    <span>1.3521° N — 103.8198° E</span>
-  </footer>
-
-  <script>
-    (function () {
-      // Show the missing path (trimmed), the Singapore time, and a readout that keeps hunting.
-      // Previewed inside the colophon, the frame passes the 'missing' path in the hash.
-      var path = decodeURIComponent((location.hash.indexOf('#/') === 0 ? location.hash.slice(1) : location.pathname) || '/');
-      var el = document.querySelector('[data-nf-path]');
-      if (el) el.textContent = path.length > 42 ? path.slice(0, 40) + '…' : path;
-
-      var clock = document.querySelector('[data-nf-clock]');
-      var fmt = new Intl.DateTimeFormat('en-GB', { timeZone: 'Asia/Singapore', hour: '2-digit', minute: '2-digit', second: '2-digit', hourCycle: 'h23' });
-      (function tick() { if (clock) clock.textContent = fmt.format(new Date()) + ' SGT'; setTimeout(tick, 1000 - (Date.now() % 1000) + 5); })();
-
-      if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-      var status = document.querySelector('[data-nf-status]');
-      var coords = document.querySelector('[data-nf-coords]');
-      var states = ['Searching', 'No subject', 'Re-framing', 'Searching'];
-      var i = 0;
-      setInterval(function () { i = (i + 1) % states.length; if (status) status.textContent = states[i]; }, 2250);
-      setInterval(function () {
-        if (coords) coords.textContent = 'X ' + Math.random().toFixed(3) + ' · Y ' + Math.random().toFixed(3);
-      }, 180);
-    })();
-  </script>
-  <div class="pf" id="project-form" role="dialog" aria-modal="true" aria-labelledby="pf-title" hidden>
-    <span class="pf__wipe" aria-hidden="true"></span>
-    <div class="pf__panel">
-      <div class="grid-lines pf__grid" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
-      <header class="pf__top label">
-        <span class="pf__item"><span class="status-dot" aria-hidden="true"></span>New project</span>
-        <button class="pf__close" type="button" data-pf-close aria-label="Close the form"><span class="pf__item">Close <span aria-hidden="true">✕</span></span></button>
-      </header>
-
-      <form class="pf__form" novalidate>
-        <h2 class="pf__title" id="pf-title"><span class="pf__mask"><span class="pf__item">Tell me about it.</span></span></h2>
-
-        <p class="pf__sentence">
-          <span class="pf__mask"><span class="pf__item">Hi Noah, I'm</span></span>
-          <label class="pf__field" data-field="name"><span class="sr-only">Your name</span><input name="name" type="text" autocomplete="name" placeholder="your name" maxlength="80" required><span class="pf__rule" aria-hidden="true"></span></label>
-          <span class="pf__mask"><span class="pf__item">from</span></span>
-          <span class="pf__nb"><label class="pf__field" data-field="company"><span class="sr-only">Company (optional)</span><input name="company" type="text" autocomplete="organization" placeholder="company (optional)" maxlength="100"><span class="pf__rule" aria-hidden="true"></span></label><span class="pf__mask"><span class="pf__item">.</span></span></span>
-          <span class="pf__mask"><span class="pf__item">I need</span></span>
-          <label class="pf__field pf__field--select" data-field="type"><span class="sr-only">What you need</span>
-            <select name="type" required>
-              <option value="a new website">a new website</option>
-              <option value="a redesign">a redesign</option>
-              <option value="improvements to my site">improvements to my site</option>
-              <option value="something else">something else</option>
-            </select><span class="pf__rule" aria-hidden="true"></span></label>
-          <span class="pf__mask"><span class="pf__item">and my budget is</span></span>
-          <span class="pf__nb"><label class="pf__field pf__field--select" data-field="budget"><span class="sr-only">Budget</span>
-            <select name="budget">
-              <option value="not sure yet">not sure yet</option>
-              <option value="under S$3k">under S$3k</option>
-              <option value="S$3k–8k">S$3k–8k</option>
-              <option value="S$8k–15k">S$8k–15k</option>
-              <option value="S$15k+">S$15k+</option>
-            </select><span class="pf__rule" aria-hidden="true"></span></label><span class="pf__mask"><span class="pf__item">.</span></span></span>
-          <span class="pf__mask"><span class="pf__item">Reach me at</span></span>
-          <label class="pf__field" data-field="email"><span class="sr-only">Your email</span><input name="email" type="email" autocomplete="email" placeholder="you@email.com" maxlength="254" required><span class="pf__rule" aria-hidden="true"></span></label>
-          <span class="pf__mask"><span class="pf__item">or</span></span>
-          <span class="pf__nb"><label class="pf__field" data-field="mobile"><span class="sr-only">Mobile (optional)</span><input name="mobile" type="tel" inputmode="tel" autocomplete="tel" placeholder="mobile (optional)" maxlength="24"><span class="pf__rule" aria-hidden="true"></span></label><span class="pf__mask"><span class="pf__item">.</span></span></span>
-        </p>
-
-        <label class="pf__message" data-field="message">
-          <span class="label muted pf__item">Anything else? (optional)</span>
-          <textarea name="message" rows="3" maxlength="2000" placeholder="A link, a deadline, an idea…"></textarea>
-          <span class="pf__rule" aria-hidden="true"></span>
-        </label>
-
-        <!-- Honeypot: hidden from people, filled by bots. -->
-        <label class="pf__hp" aria-hidden="true">Website<input name="website" type="text" tabindex="-1" autocomplete="off"></label>
-
-        <div class="pf__foot">
-          <div class="pf__captcha" data-pf-captcha></div>
-          <button class="pf__send" type="submit">
-            <span class="pf__send-fill" aria-hidden="true"></span>
-            <span class="marks" aria-hidden="true"></span>
-            <span class="pf__send-label">Send <span class="arrow" aria-hidden="true">→</span></span>
-            <span class="pf__send-progress" aria-hidden="true"></span>
-          </button>
-        </div>
-        <p class="pf__status label" role="status" aria-live="polite"></p>
-      </form>
-
-      <!-- Result: the form fades out and this rises in its place (sent or not sent). -->
-      <div class="pf__result" hidden data-state="sent" role="status" aria-live="polite">
-        <p class="label muted pf__result-item" data-pf-r="label">Message sent</p>
-        <p class="pf__result-title"><span class="pf__mask"><span class="pf__result-item" data-pf-r="t1">Thanks —</span></span><span class="pf__mask"><span class="pf__result-item pf__result-accent" data-pf-r="t2">talk soon.</span></span></p>
-        <p class="pf__result-note muted pf__result-item"><span data-pf-r="note">I usually reply within a day or two.</span></p>
-        <div class="pf__actions pf__result-item">
-          <button class="pf__action link-line label" type="button" data-pf-retry hidden>Try again</button>
-          <button class="pf__action link-line label" type="button" data-pf-close>Back to the site</button>
-        </div>
-      </div>
-    </div>
-  </div>
+  <footer class="mono"><span>© 2026 Noah Zaw Min Htut</span><span>Page not found</span></footer>
 </body>
 </html>

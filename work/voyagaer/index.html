@@ -3,470 +3,109 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Voyagaer — Case Study · Noah Zaw Min Htut, Web Designer</title>
+  <title>Voyagaer case study · Noah Zaw Min Htut</title>
   <meta name="description" content="Website design and build for Voyagaer, an engineering brand for marine and industrial water, wastewater and fuel systems.">
   <link rel="canonical" href="https://noah-portfolio.pages.dev/work/voyagaer/">
-  <meta property="og:url" content="https://noah-portfolio.pages.dev/work/voyagaer/">
-  <meta name="author" content="Noah Zaw Min Htut">
-  <meta name="theme-color" content="#0A0A0A">
-  <meta property="og:title" content="Voyagaer — Case Study — Noah">
+  <meta property="og:title" content="Voyagaer case study · Noah Zaw Min Htut">
   <meta property="og:description" content="Website design and build for Voyagaer, marine and industrial auxiliary equipment.">
-  <meta property="og:type" content="article">
   <meta property="og:image" content="https://noah-portfolio.pages.dev/assets/images/og/voyagaer.jpg">
-  <meta property="og:image:width" content="1200">
-  <meta property="og:image:height" content="630">
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Voyagaer — Case Study — Noah">
-  <meta name="twitter:description" content="Website design and build for Voyagaer, marine and industrial auxiliary equipment.">
-  <meta name="twitter:image" content="https://noah-portfolio.pages.dev/assets/images/og/voyagaer.jpg">
+  <meta property="og:url" content="https://noah-portfolio.pages.dev/work/voyagaer/">
+    <meta name="twitter:card" content="summary_large_image">
+  <meta name="theme-color" content="#F8DBC1" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0E1718" media="(prefers-color-scheme: dark)">
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="/apple-touch-icon.png">
-
-  <style>html{background:#0A0A0A}</style>
-  <script>try{if(localStorage.getItem("theme")==="daylight"){var d=document.documentElement;d.setAttribute("data-theme","daylight");d.style.background="#F2F2F0";}}catch(e){}</script>
-  <link rel="preload" href="../../assets/fonts/inter-tight-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="preload" href="../../assets/fonts/jetbrains-mono-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="../../css/style.css">
-  <link rel="stylesheet" href="../../css/project.css">
-
-  <script>document.documentElement.classList.add('js');
-    // Arriving from the homepage transition: paint its image on the first frame.
-    try { var pt = sessionStorage.getItem('pt:image'); if (pt !== null && !matchMedia('(prefers-reduced-motion: reduce)').matches) { document.documentElement.classList.add('pt-enter'); if (pt) document.documentElement.style.setProperty('--pt-src', 'url("' + pt.replace(/"/g, '') + '")'); } } catch (e) {}
-  </script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
-  <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js" defer></script>
-  <script type="module" src="../../js/project.js"></script>
-  <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "CreativeWork",
-  "name": "Voyagaer — case study",
-  "url": "https://noah-portfolio.pages.dev/work/voyagaer/",
-  "description": "Website design and build for Voyagaer, built in-house at Pomar Engineering.",
-  "about": {
-    "@type": "Organization",
-    "name": "Voyagaer"
-  },
-  "image": "https://noah-portfolio.pages.dev/assets/images/og/voyagaer.jpg",
-  "creator": {
-    "@type": "Person",
-    "name": "Zaw Min Htut",
-    "alternateName": "Noah",
-    "url": "https://noah-portfolio.pages.dev/"
-  }
-}
-  </script>
+  <script>try{var t=localStorage.getItem('noah-theme');if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+  <link rel="stylesheet" href="/css/base.css">
+  <link rel="stylesheet" href="/css/contact.css">
+  <link rel="stylesheet" href="/css/site.css">
 </head>
-<body class="study-page" style="--case: #48BDA9; --case-day: #17705F; --case-inv: #DB8291;">  <!-- Case tint: the client's colour replaces mint on this page. -->
-  <a class="skip-link" href="#main">Skip to content</a>
-
-  <div class="grid-lines" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
-  <div class="progress" aria-hidden="true"><span class="progress__bar"></span></div>
-
-  <div class="cursor" aria-hidden="true">
-    <span class="cursor__circle"></span>
-    <span class="cursor__label"></span>
-  </div>
-
-  <header class="nav">
-    <a class="nav__logo logo" href="../../" aria-label="Noah — home" data-logo><span class="logo__word" aria-hidden="true"><span class="logo__m"><span class="logo__l" style="--i:0">n</span></span><span class="logo__rest"><span class="logo__restin"><span class="logo__m"><span class="logo__l" style="--i:1">o</span></span><span class="logo__m"><span class="logo__l" style="--i:2">a</span></span><span class="logo__m"><span class="logo__l" style="--i:3">h</span></span></span></span><i class="logo__dot"><b></b></i></span></a>
-    <span class="nav__clock" data-clock aria-hidden="true">— SGT</span>
-    <nav class="nav__right" aria-label="Primary" data-nav>
-      <ul class="nav__list" id="nav-list">
-        <li><a class="nav__link" href="../../#work" data-nav-link="work">Work</a></li>
-        <li><a class="nav__link" href="../../concepts/" data-nav-link="concepts">Concepts</a></li>
-        <li><a class="nav__link" href="../../#about" data-nav-link="about">About</a></li>
-        <li><a class="nav__link nav__link--file" href="../../assets/docs/Zaw_Min_Htut_Resume_2026.pdf" target="_blank" rel="noopener">Résumé <span class="arrow arrow--diag" aria-hidden="true">↗</span></a></li>
-      </ul>
-      <button class="nav__status" type="button" aria-expanded="false" aria-controls="nav-list" data-nav-status>
-        <span class="nav__status-text" data-nav-status-text></span>
-        <span class="nav__status-menu"><span class="nav__status-word">Menu</span><i class="nav__status-icon" aria-hidden="true">+</i></span>
-      </button>
-      <button class="theme-toggle theme-toggle--nav" type="button" data-theme-toggle aria-pressed="false" aria-label="Darkroom mode — switch to daylight"><span class="theme-toggle__dot" aria-hidden="true"></span><span class="theme-toggle__label">Darkroom</span></button>
-      <a class="nav__link nav__cta" href="../../#start" data-pf-open aria-haspopup="dialog" aria-controls="project-form">Start a project</a>
-    </nav>
+<body>
+  <a class="skip mono" href="#main">Skip to content</a>
+  <header class="top">
+    <a class="logo" href="/">noah<i></i></a>
+    <a class="back mono" href="/#work"><span aria-hidden="true">←</span><span class="lbl">All work</span><span class="sr-only">Back to all work</span></a>
+    <div class="top__end">
+      <button class="theme mono" type="button" data-theme-switch aria-pressed="false"><span class="theme__icon" aria-hidden="true"><i></i></span><span class="sr-only">Dark mode, currently </span><span class="theme__label">Light</span></button>
+      <a class="pill" href="/#contact" data-pf-open aria-haspopup="dialog" aria-controls="project-form">Discuss a project <b aria-hidden="true">→</b></a>
+    </div>
   </header>
 
   <main id="main">
-
-    <!-- Hero -->
-    <section class="study-hero" id="top" data-nav-label="">
-      <div class="study-hero__top label muted">
-        <a class="study-back link-line" href="../../#work"><span class="arrow arrow--back" aria-hidden="true">←</span> All work</a>
-        <span class="hide-sm">Case study — Website</span>
-        <span><span class="status-dot" aria-hidden="true"></span>Singapore</span>
-      </div>
-
-      <div class="study-hero__title">
-        <h1 class="study-hero__name" data-split="chars" data-hero-title>Voyagaer</h1>
-        <p class="study-hero__sub" data-hero-sub>Auxiliary equipment</p>
-        <p class="study-hero__jp study-hero__jp--mono" aria-hidden="true">Reliability matters most</p>
-      </div>
-
-      <dl class="study-meta label">
-        <div data-hero-meta><dt>Built for</dt><dd>Voyagaer · In-house, Pomar Engineering</dd></div>
-        <div data-hero-meta><dt>Role</dt><dd>Web design &amp; build</dd></div>
-        <div data-hero-meta><dt>Platform</dt><dd>WordPress · Elementor</dd></div>
-        <div data-hero-meta><dt>Live site</dt><dd class="muted">Coming soon</dd></div>
+    <section class="head">
+      <p class="mono">Case study · In-house · Pomar Engineering · Marine · Not yet launched</p>
+      <h1 aria-label="Voyagaer">Voyagaer<i aria-hidden="true"></i></h1>
+      <p class="head__lede">Voyagaer engineers water, wastewater and fuel systems for marine and industrial applications, and supports them across their whole lifecycle. The site is for its customers, new and existing: somewhere to find the right system, read its full specifications and get in touch about it.</p>
+      <dl class="facts mono">
+        <dt>Built for</dt><dd>Voyagaer · In-house, Pomar Engineering</dd>
+        <dt>Role</dt><dd>Web design &amp; build</dd>
+        <dt>Platform</dt><dd>WordPress + Elementor, custom widgets, GSAP</dd>
+        <dt>Live site</dt><dd>Coming soon</dd>
       </dl>
+    </section>
 
-      <figure class="study-hero__media" data-hero-media>
-        <div class="frame">
-          <div class="frame__bar" aria-hidden="true"><i><b></b><b></b><b></b></i><span class="frame__url label">voyagaer.com</span><i></i></div>
-          <video data-inview-video muted loop playsinline preload="auto"
-            poster="../../assets/images/voyagaer-hero-poster.webp" width="1424" height="790"
-            aria-label="The Voyagaer homepage hero: a rotating render of a marine system under the line, engineering systems for environments where reliability matters most">
-            <source src="../../assets/video/voyagaer-hero.webm" type="video/webm">
-            <source src="../../assets/video/voyagaer-hero.mp4" type="video/mp4">
-          </video>
-          <span class="marks" aria-hidden="true"></span>
+    <section class="sec" aria-labelledby="screens-title">
+      <div class="sec__head">
+        <h2 id="screens-title">The<br>screens</h2>
+        <div class="seg mono" role="group" aria-label="Arrange the screens" data-seg>
+          <button type="button" data-arr="coverflow" aria-pressed="true">Coverflow</button>
+          <button type="button" data-arr="fan" aria-pressed="false">Fan</button>
+          <button type="button" data-arr="stack" aria-pressed="false">Stack</button>
+          <button type="button" data-arr="helix" aria-pressed="false">Helix</button>
+          <button type="button" data-arr="grid" aria-pressed="false">Grid</button>
         </div>
-      </figure>
-    </section>
-
-    <!-- Context -->
-    <section class="study-section" data-nav-section="work" data-nav-label="Context" aria-labelledby="context-title">
-      <div class="study-section__head">
-        <div class="section-label" data-reveal="fade"><span>Context</span></div>
       </div>
-      <div class="study-section__body">
-        <h2 class="study-lead" id="context-title" data-split="lines" data-reveal="text">
-          <span class="line">A product site for</span>
-          <span class="line"><em class="accent">marine engineering.</em></span>
-        </h2>
-        <p class="study-copy muted" data-reveal="fade">Voyagaer engineers water, wastewater and fuel systems for marine and industrial applications — sewage treatment plants, oily water separators, freshwater makers, hydrophore systems and more — and supports them across their whole lifecycle. The site is for Voyagaer's customers, new and existing: somewhere to find the right system, read its full specifications and get in touch about it.</p>
-        <dl class="study-facts">
-          <div data-reveal="fade"><dt class="label muted">Product catalog</dt><dd>9</dd><dd class="label muted">Water · waste · fuel</dd></div>
-          <div data-reveal="fade"><dt class="label muted">Industries</dt><dd>6</dd><dd class="label muted">Marine to civil</dd></div>
-          <div data-reveal="fade"><dt class="label muted">Lifecycle services</dt><dd>6</dd><dd class="label muted">Install to retrofit</dd></div>
-        </dl>
-        <dl class="study-brief">
-          <div data-reveal="fade"><dt class="label muted">My role</dt><dd>Built in-house as the web designer and developer at Pomar Engineering, the group behind Voyagaer. Design system and build — a shared design-token system for type, colour and spacing, every section a custom HTML/CSS/JavaScript widget in WordPress (Elementor), and GSAP/ScrollTrigger motion.</dd></div>
-          <div data-reveal="fade"><dt class="label muted">The hard part</dt><dd>Content and flow. Information and photos arrived in pieces, so I was planning how the site should tell its story — and how customers should move from the company to a product to an enquiry — before I had everything in hand. I tried several flows and layouts before settling on a minimal, professional one.</dd></div>
-          <div data-reveal="fade"><dt class="label muted">In the build</dt><dd>Many independently built widgets share each page, so every widget's JavaScript is scoped to its own section and they all draw on the same design tokens.</dd></div>
-          <div data-reveal="fade"><dt class="label muted">Next time</dt><dd>I'd settle the flow and the narrative of the site first, and only then start on the design.</dd></div>
-        </dl>
-      </div>
-    </section>
-
-    <!-- Showcase: homepage -->
-    <section class="study-showcase" data-nav-section="work" data-nav-label="Homepage" aria-label="Homepage">
-      <div class="study-showcase__caption label muted">
-        <span>Homepage — full scroll</span>
-        <span class="hide-sm">Hero · Products · Services · Sustainability · Site map</span>
-      </div>
-      <div class="frame" data-reveal="media">
-        <div class="frame__bar" aria-hidden="true"><i><b></b><b></b><b></b></i><span class="frame__url label">voyagaer.com</span><i></i></div>
-        <video data-inview-video muted loop playsinline preload="none"
-          poster="../../assets/images/voyagaer-scroll-poster.webp" width="1424" height="790"
-          aria-label="Scrolling through the Voyagaer homepage">
-          <source src="../../assets/video/voyagaer-scroll.webm" type="video/webm">
-            <source src="../../assets/video/voyagaer-scroll.mp4" type="video/mp4">
-        </video>
-        <span class="marks" aria-hidden="true"></span>
-      </div>
-    </section>
-
-    <!-- Approach -->
-    <section class="study-section" data-nav-section="work" data-nav-label="Approach" aria-labelledby="approach-title">
-      <div class="study-section__head">
-        <div class="section-label" data-reveal="fade"><span>Approach</span></div>
-      </div>
-      <div class="study-section__body">
-        <h2 class="study-lead" id="approach-title" data-split="lines" data-reveal="text">
-          <span class="line">Minimal, so the</span>
-          <span class="line">products lead.</span>
-        </h2>
-        <p class="study-copy muted" data-reveal="fade">After trying a few directions, I stripped the design back. It borrows the restraint of a premium automotive brand — thin lowercase headings, generous space, one deep sea teal — and pairs it with the depth engineers expect: line drawings instead of renders, full specification sheets and clear routes to an enquiry. Motion is slow and deliberate: clip-path wipes on entry, scroll-triggered cards and quiet parallax.</p>
-        <ul class="study-principles">
-          <li data-reveal="fade"><span class="label muted">Drawings, not renders</span><p>Every product is shown as a technical line drawing, so the range reads consistently side by side.</p></li>
-          <li data-reveal="fade"><span class="label muted">Depth on demand</span><p>Product pages open simply, then go as deep as needed: process, compliance and the full tech sheet.</p></li>
-          <li data-reveal="fade"><span class="label muted">Slow, deliberate motion</span><p>GSAP clip-path wipes and paced scroll reveals, with fast, gimmicky hover effects removed.</p></li>
-        </ul>
-      </div>
-    </section>
-
-    <!-- Product carousel -->
-    <section class="study-wide" data-nav-section="work" data-nav-label="Products" aria-label="Product carousel">
-      <figure data-reveal="media" data-from="left">
-        <div class="study-media"><img src="../../assets/images/voyagaer-carousel.webp" alt="Homepage product carousel: sewage treatment plant, oily water separator, reverse osmosis freshwater maker and hydrophore system as line drawings" width="1600" height="661" loading="lazy" decoding="async"><span class="marks" aria-hidden="true"></span></div>
-        <figcaption class="label muted"><span>Homepage — product carousel</span><span>Line drawings</span></figcaption>
-      </figure>
-    </section>
-
-    <!-- Catalog -->
-    <section class="study-split" data-nav-section="work" data-nav-label="Catalog" aria-labelledby="catalog-title">
-      <figure data-reveal="media" data-from="bottom">
-        <div class="frame"><div class="frame__bar" aria-hidden="true"><i><b></b><b></b><b></b></i><span class="frame__url label">voyagaer.com/product-catalog</span><i></i></div>
-          <img src="../../assets/images/voyagaer-catalog.webp" alt="Product catalog with search, category, application and system type filters above a grid of product cards" width="1400" height="1478" loading="lazy" decoding="async"><span class="marks" aria-hidden="true"></span></div>
-      </figure>
-      <div class="study-split__text">
-        <div class="section-label" data-reveal="fade"><span>Product catalog</span></div>
-        <h2 class="study-lead" id="catalog-title" data-split="lines" data-reveal="text"><span class="line">Nine systems,</span><span class="line">one catalog.</span></h2>
-        <p class="study-copy muted" data-reveal="fade">The full range in one place: search, filter by category, application or system type, and see each product's status at a glance before going deeper.</p>
-      </div>
-    </section>
-
-    <!-- Product page -->
-    <section class="study-section" data-nav-section="work" data-nav-label="Product pages" aria-labelledby="product-title">
-      <div class="study-section__head">
-        <div class="section-label" data-reveal="fade"><span>Product pages</span></div>
-      </div>
-      <div class="study-section__body">
-        <h2 class="study-lead" id="product-title" data-split="lines" data-reveal="text">
-          <span class="line">Every spec,</span>
-          <span class="line"><em class="accent">one page.</em></span>
-        </h2>
-        <p class="study-copy muted" data-reveal="fade">The product pages are the part I'm proudest of. Each one holds all of a system's specs and functions: it opens on deep teal with its own drawing and a one-line promise — for the hydrophore system, constant pressurised freshwater wherever it's needed — then tabs through process and features, compliance and technical specifications, each tab with a layout suited to what it holds.</p>
-      </div>
-    </section>
-
-    <section class="study-wide" data-nav-section="work" data-nav-label="Product pages" aria-label="Hydrophore system product page">
-      <figure data-reveal="media" data-from="left">
-        <div class="frame"><div class="frame__bar" aria-hidden="true"><i><b></b><b></b><b></b></i><span class="frame__url label">voyagaer.com/hydrophore-system</span><i></i></div>
-          <img src="../../assets/images/voyagaer-product.webp" alt="Hydrophore System product page: dark teal hero with the line drawing, a tagline and three key specifications" width="1400" height="1510" loading="lazy" decoding="async"><span class="marks" aria-hidden="true"></span></div>
-        <figcaption class="label muted"><span>Product — Hydrophore system</span><span>Overview · Process &amp; features · Compliance · Tech specs</span></figcaption>
-      </figure>
-    </section>
-
-    <!-- Scroll-through pages -->
-    <section class="study-pages" data-nav-section="work" data-nav-label="Specs &amp; services" aria-label="Tech specs and lifecycle services pages">
-      <figure>
-        <div class="frame frame--scroll" data-scroll-through>
-          <div class="frame__bar" aria-hidden="true"><i><b></b><b></b><b></b></i><span class="frame__url label">voyagaer.com/hydrophore-system</span><i></i></div>
-          <div class="frame__view"><img src="../../assets/images/voyagaer-specs.webp" alt="Hydrophore system tech specs: side navigation, general-arrangement drawing and ruled specification rows" width="1400" height="2105" loading="lazy" decoding="async"></div>
-          <span class="marks" aria-hidden="true"></span>
+      <div class="gal">
+        <div>
+          <ol class="idx mono" data-idx></ol>
+          <div class="caption" aria-live="polite" data-caption></div>
         </div>
-        <figcaption class="label muted"><span>Tech specs — ruled rows</span></figcaption>
-      </figure>
-      <figure class="study-pages__offset">
-        <div class="frame frame--scroll" data-scroll-through>
-          <div class="frame__bar" aria-hidden="true"><i><b></b><b></b><b></b></i><span class="frame__url label">voyagaer.com/lifecycle-services</span><i></i></div>
-          <div class="frame__view"><img src="../../assets/images/voyagaer-lifecycle.webp" alt="Lifecycle services page: hero, service accordion, service agreement benefits and services matched to customer priorities" width="1400" height="3031" loading="lazy" decoding="async"></div>
-          <span class="marks" aria-hidden="true"></span>
+        <div>
+          <div data-stage aria-label="Voyagaer screens"></div>
+          <div class="g-hint mono"><span data-count>1 / 9</span><span>Drag, swipe or use the arrow keys · click the front screen to open it</span></div>
         </div>
-        <figcaption class="label muted"><span>Lifecycle services</span></figcaption>
-      </figure>
-    </section>
-
-    <!-- Industries -->
-    <section class="study-section" data-nav-section="work" data-nav-label="Industries" aria-labelledby="industries-title">
-      <div class="study-section__head">
-        <div class="section-label" data-reveal="fade"><span>Industries</span></div>
-      </div>
-      <div class="study-section__body">
-        <h2 class="study-lead" id="industries-title" data-split="lines" data-reveal="text">
-          <span class="line">Grouped by where</span>
-          <span class="line">the systems run.</span>
-        </h2>
-        <p class="study-copy muted" data-reveal="fade">Marine, industrial and civil, each with its own photography, a short description and the systems that apply, shown as tags.</p>
       </div>
     </section>
 
-    <section class="study-pair study-pair--overlap" data-nav-section="work" data-nav-label="Industries" aria-label="Industries page">
-      <figure class="study-pair__a" data-reveal="media" data-from="bottom">
-        <div class="study-media"><img src="../../assets/images/voyagaer-harbour.webp" alt="A harbour at dusk in deep teal light, ships moored beneath a lit waterfront building" width="1600" height="681" loading="lazy" decoding="async"><span class="marks" aria-hidden="true"></span></div>
-        <figcaption class="label muted"><span>Industries — opening image</span></figcaption>
-      </figure>
-      <figure class="study-pair__b" data-reveal="media" data-from="top">
-        <div class="study-media"><img src="../../assets/images/voyagaer-marine.webp" alt="Marine section: commercial and cargo, navy, and offshore and support, each with a photo and system tags" width="1400" height="865" loading="lazy" decoding="async"><span class="marks" aria-hidden="true"></span></div>
-        <figcaption class="label muted"><span>Marine — commercial, navy, offshore</span></figcaption>
-      </figure>
-    </section>
-
-    <!-- Identity -->
-    <section class="study-section" data-nav-section="work" data-nav-label="Identity" aria-labelledby="identity-title">
-      <div class="study-section__head">
-        <div class="section-label" data-reveal="fade"><span>Identity</span></div>
-      </div>
-      <div class="study-section__body">
-        <h2 class="study-lead" id="identity-title" data-split="lines" data-reveal="text">
-          <span class="line">Deep sea teal,</span>
-          <span class="line">thin type.</span>
-        </h2>
-        <ul class="study-palette" aria-label="Site colour palette">
-          <li style="--swatch:#002E3B;--ink:#F2F2F0" data-swatch><span class="label">Deep sea</span><span class="label">#002E3B</span></li>
-          <li style="--swatch:#48BDA9;--ink:#002E3B" data-swatch><span class="label">Voyagaer teal</span><span class="label">#48BDA9</span></li>
-          <li style="--swatch:#F4F7F7;--ink:#002E3B" data-swatch><span class="label">Mist</span><span class="label">#F4F7F7</span></li>
-          <li style="--swatch:#FFFFFF;--ink:#002E3B" data-swatch><span class="label">White</span><span class="label">#FFFFFF</span></li>
-        </ul>
-        <p class="study-copy muted" data-reveal="fade">Artifakt Thin sets the lowercase display headings, Artifakt Regular the second tier, and Aptos the body. The radiating teal mark is the one flourish; deep sea footers map the whole site.</p>
+    <section class="sec" aria-labelledby="decisions-title">
+      <div class="sec__head"><h2 id="decisions-title">Minimal, so<br>the products lead</h2><span class="mono muted">After trying a few directions.</span></div>
+      <div class="note"><p>I stripped the design back. It borrows the restraint of a premium automotive brand (thin lowercase headings, generous space, one deep sea teal) and pairs it with the depth engineers expect: line drawings instead of renders, full specification sheets and clear routes to an enquiry.</p></div>
+      <div class="cols">
+        <div><span class="mono">01 · Drawings, not renders</span><h3>One consistent range.</h3><p>Every product is shown as a technical line drawing, so the range reads consistently side by side.</p></div>
+        <div><span class="mono">02 · Depth on demand</span><h3>As deep as needed.</h3><p>Product pages open simply, then go as deep as needed: process, compliance and the full tech sheet.</p></div>
+        <div><span class="mono">03 · Slow motion</span><h3>Nothing gimmicky.</h3><p>GSAP clip-path wipes and paced scroll reveals, with fast, gimmicky hover effects removed.</p></div>
       </div>
     </section>
 
-    <!-- More of the site -->
-    <section class="study-section study-section--stack" data-nav-section="work" data-nav-label="After installation" aria-labelledby="more-title">
-      <div class="study-section__head">
-        <div class="section-label" data-reveal="fade"><span>Around the site</span></div>
-      </div>
-      <div class="study-section__body">
-        <h2 class="study-lead" id="more-title" data-split="lines" data-reveal="text">
-          <span class="line">After the</span>
-          <span class="line">installation.</span>
-        </h2>
-        <p class="study-copy muted" data-reveal="fade">Beyond the products, the site sells what happens after installation — commissioning, training, spare parts, maintenance, surveys and retrofits — and the company's commitment to long-term, responsible partnerships.</p>
-      </div>
-      <div class="study-guest">
-        <figure data-reveal="media" data-from="bottom">
-          <div class="frame frame--fit"><div class="frame__bar" aria-hidden="true"><i><b></b><b></b><b></b></i><span class="frame__url label">voyagaer.com/lifecycle-services</span><i></i></div>
-            <div class="frame__view"><img src="../../assets/images/voyagaer-services.webp" alt="Six lifecycle services in an accordion on deep teal" width="1400" height="659" loading="lazy" decoding="async"></div><span class="marks" aria-hidden="true"></span></div>
-          <figcaption class="label muted"><span>Lifecycle services</span></figcaption>
-        </figure>
-        <figure data-reveal="media" data-from="bottom">
-          <div class="frame frame--fit"><div class="frame__bar" aria-hidden="true"><i><b></b><b></b><b></b></i><span class="frame__url label">voyagaer.com</span><i></i></div>
-            <div class="frame__view"><img src="../../assets/images/voyagaer-sustainability.webp" alt="Sustainability section: building long-term partnerships, responsibly, beside white-rendered equipment" width="1400" height="686" loading="lazy" decoding="async"></div><span class="marks" aria-hidden="true"></span></div>
-          <figcaption class="label muted"><span>Sustainability</span></figcaption>
-        </figure>
-        <figure data-reveal="media" data-from="bottom">
-          <div class="frame frame--fit"><div class="frame__bar" aria-hidden="true"><i><b></b><b></b><b></b></i><span class="frame__url label">voyagaer.com</span><i></i></div>
-            <div class="frame__view"><img src="../../assets/images/voyagaer-links.webp" alt="Oversized homepage links: lifecycle services, product catalog, our values" width="1400" height="544" loading="lazy" decoding="async"></div><span class="marks" aria-hidden="true"></span></div>
-          <figcaption class="label muted"><span>Homepage — oversized links</span></figcaption>
-        </figure>
-      </div>
+    <section class="sec" aria-labelledby="proud-title">
+      <div class="sec__head"><h2 id="proud-title">The proudest<br>part</h2><span class="mono muted">Every spec, one page.</span></div>
+      <div class="note"><p>The product pages. Each one holds all of a system's specs and functions: it opens on deep teal with its own drawing and a one-line promise, then tabs through process and features, compliance and technical specifications, each tab with a layout suited to what it holds.</p></div>
     </section>
 
-    <!-- Build -->
-    <section class="study-section" data-nav-section="work" data-nav-label="Build" aria-labelledby="build-title">
-      <div class="study-section__head">
-        <div class="section-label" data-reveal="fade"><span>Build</span></div>
+    <section class="sec" aria-labelledby="hard-title">
+      <div class="sec__head"><h2 id="hard-title">The hard<br>part</h2><span class="mono muted">Content and flow.</span></div>
+      <div class="note"><p>Information and photos arrived in pieces, so I was planning how the site should tell its story, and how customers should move from the company to a product to an enquiry, before I had everything in hand. I tried several flows and layouts before settling on a minimal, professional one.</p></div>
+      <div class="cols">
+        <div><span class="mono">My role</span><h3>Design system and build.</h3><p>A shared design-token system for type, colour and spacing, every section a custom HTML/CSS/JavaScript widget in Elementor, and GSAP/ScrollTrigger motion.</p></div>
+        <div><span class="mono">In the build</span><h3>Scoped widgets.</h3><p>Many independently built widgets share each page, so every widget's JavaScript is scoped to its own section and they all draw on the same design tokens.</p></div>
+        <div><span class="mono">Next time</span><h3>Narrative first.</h3><p>I'd settle the flow and the narrative of the site first, and only then start on the design.</p></div>
       </div>
-      <div class="study-section__body">
-        <h2 class="study-lead" id="build-title" data-split="lines" data-reveal="text">
-          <span class="line">WordPress, with</span>
-          <span class="line">hand-coded widgets.</span>
-        </h2>
-        <ul class="study-stack">
-          <li data-reveal="fade"><span>WordPress · Elementor</span><span class="label muted">Platform</span></li>
-          <li data-reveal="fade"><span>Custom HTML / CSS / JS widgets</span><span class="label muted">Scoped, per section</span></li>
-          <li data-reveal="fade"><span>GSAP · ScrollTrigger</span><span class="label muted">Motion</span></li>
-          <li data-reveal="fade"><span>Design tokens</span><span class="label muted">Colour, type &amp; spacing</span></li>
-          <li data-reveal="fade"><span>Responsive layouts</span><span class="label muted">Desktop, tablet &amp; mobile</span></li>
-        </ul>
-      </div>
-    </section>
-
-    <!-- Live + next -->
-    <section class="study-end" data-nav-section="work" data-nav-label="Live" aria-labelledby="live-title">
-      <p class="study-outcome" data-reveal="fade"><span class="label accent">Status</span><span>Built and waiting to launch: nine systems with full specifications in tabs, six industries and six lifecycle services, all on one shared design-token system. The live link goes here once it's public.</span></p>
-      <div class="section-label" data-reveal="fade"><span>Live site — coming soon</span></div>
-      <h2 class="study-end__link study-end__link--long" id="live-title">
-        <span class="study-end__soon"><span data-split="chars" data-reveal="text">voyagaer.com</span></span>
-      </h2>
-      <div class="study-cta">
-        <p class="study-cta__line">Have a project like this in mind?</p>
-        <a class="cta" href="../../#start" data-pf-open aria-haspopup="dialog" aria-controls="project-form">
-          <span class="cta__fill" aria-hidden="true"></span>
-          <span class="marks" aria-hidden="true"></span>
-          <span class="cta__label">Start a project <span class="arrow" aria-hidden="true">→</span></span>
-        </a>
-      </div>
-      <nav class="study-next" aria-label="More work">
-        <a class="study-next__back link-line label" href="../luumens/"><span class="arrow arrow--back" aria-hidden="true">←</span> Luumens</a>
-        <a class="study-next__project" href="../ganko/" data-magnetic="0.2">
-          <span class="study-next__peek" aria-hidden="true"><img src="../../assets/images/ganko-home-900.webp" alt="" width="900" height="560" loading="lazy" decoding="async"><span class="marks"></span></span>
-          <span class="label muted">Next project</span>
-          <span class="study-next__name" data-magnetic-inner>Ganko.sg <span class="arrow" aria-hidden="true">→</span></span>
-        </a>
-      </nav>
     </section>
   </main>
+</main>
 
-  <footer class="footer" data-nav-section="contact" data-nav-label="Contact">
-    <div class="footer__grid">
-      <div class="footer__brand">
-        <p class="footer__name logo" aria-label="Noah">noah<i class="logo__dot"><b></b></i></p>
-        <p class="muted">Creative Developer<br>Web Designer</p>
-      </div>
-      <nav class="footer__nav" aria-label="Footer">
-        <ul class="footer__links">
-          <li><a class="link-line" href="../../#work">Work</a></li>
-          <li><a class="link-line" href="../../#about">About</a></li>
-          <li><a class="link-line" href="../../#contact">Contact</a></li>
-        </ul>
-      </nav>
-      <a class="footer__back label" href="#top" data-magnetic><span data-magnetic-inner>Back to top ↑</span></a>
-    </div>
-    <p class="footer__mark" aria-hidden="true"><span>n</span><span>o</span><span>a</span><span>h</span><span class="logo__dot"><b></b></span></p>
-    <div class="footer__bottom label muted">
-      <span>© 2026 Noah</span>
-      <span>1.3521° N — 103.8198° E</span>
-      <a class="link-line" href="../../colophon/">Designed &amp; built by hand — colophon</a>
-    </div>
+  <footer class="next">
+    <span class="mono">Next project · 04 / 04</span><br>
+    <a class="big" href="/work/industmarine/">Industmarine<i aria-hidden="true"></i></a>
+    <div class="foot mono"><span>© 2026 Noah Zaw Min Htut</span><span>Singapore → Worldwide</span><a href="/colophon/">Colophon</a><a href="/">Back to the homepage</a></div>
   </footer>
-  <!-- Project enquiry (tinted with this case study's accent): opens from "Start a project". Sends through /api/contact (Cloudflare Pages Function). -->
-  <div class="pf" id="project-form" role="dialog" aria-modal="true" aria-labelledby="pf-title" hidden>
-    <span class="pf__wipe" aria-hidden="true"></span>
-    <div class="pf__panel">
-      <div class="grid-lines pf__grid" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
-      <header class="pf__top label">
-        <span class="pf__item"><span class="status-dot" aria-hidden="true"></span>New project</span>
-        <button class="pf__close" type="button" data-pf-close aria-label="Close the form"><span class="pf__item">Close <span aria-hidden="true">✕</span></span></button>
-      </header>
 
-      <form class="pf__form" novalidate>
-        <h2 class="pf__title" id="pf-title"><span class="pf__mask"><span class="pf__item">Tell me about it.</span></span></h2>
-
-        <p class="pf__sentence">
-          <span class="pf__mask"><span class="pf__item">Hi Noah, I'm</span></span>
-          <label class="pf__field" data-field="name"><span class="sr-only">Your name</span><input name="name" type="text" autocomplete="name" placeholder="your name" maxlength="80" required><span class="pf__rule" aria-hidden="true"></span></label>
-          <span class="pf__mask"><span class="pf__item">from</span></span>
-          <span class="pf__nb"><label class="pf__field" data-field="company"><span class="sr-only">Company (optional)</span><input name="company" type="text" autocomplete="organization" placeholder="company (optional)" maxlength="100"><span class="pf__rule" aria-hidden="true"></span></label><span class="pf__mask"><span class="pf__item">.</span></span></span>
-          <span class="pf__mask"><span class="pf__item">I need</span></span>
-          <label class="pf__field pf__field--select" data-field="type"><span class="sr-only">What you need</span>
-            <select name="type" required>
-              <option value="a new website">a new website</option>
-              <option value="a redesign">a redesign</option>
-              <option value="improvements to my site">improvements to my site</option>
-              <option value="something else">something else</option>
-            </select><span class="pf__rule" aria-hidden="true"></span></label>
-          <span class="pf__mask"><span class="pf__item">and my budget is</span></span>
-          <span class="pf__nb"><label class="pf__field pf__field--select" data-field="budget"><span class="sr-only">Budget</span>
-            <select name="budget">
-              <option value="not sure yet">not sure yet</option>
-              <option value="under S$3k">under S$3k</option>
-              <option value="S$3k–8k">S$3k–8k</option>
-              <option value="S$8k–15k">S$8k–15k</option>
-              <option value="S$15k+">S$15k+</option>
-            </select><span class="pf__rule" aria-hidden="true"></span></label><span class="pf__mask"><span class="pf__item">.</span></span></span>
-          <span class="pf__mask"><span class="pf__item">Reach me at</span></span>
-          <label class="pf__field" data-field="email"><span class="sr-only">Your email</span><input name="email" type="email" autocomplete="email" placeholder="you@email.com" maxlength="254" required><span class="pf__rule" aria-hidden="true"></span></label>
-          <span class="pf__mask"><span class="pf__item">or</span></span>
-          <span class="pf__nb"><label class="pf__field" data-field="mobile"><span class="sr-only">Mobile (optional)</span><input name="mobile" type="tel" inputmode="tel" autocomplete="tel" placeholder="mobile (optional)" maxlength="24"><span class="pf__rule" aria-hidden="true"></span></label><span class="pf__mask"><span class="pf__item">.</span></span></span>
-        </p>
-
-        <label class="pf__message" data-field="message">
-          <span class="label muted pf__item">Anything else? (optional)</span>
-          <textarea name="message" rows="3" maxlength="2000" placeholder="A link, a deadline, an idea…"></textarea>
-          <span class="pf__rule" aria-hidden="true"></span>
-        </label>
-
-        <!-- Honeypot: hidden from people, filled by bots. -->
-        <label class="pf__hp" aria-hidden="true">Website<input name="website" type="text" tabindex="-1" autocomplete="off"></label>
-
-        <div class="pf__foot">
-          <div class="pf__captcha" data-pf-captcha></div>
-          <button class="pf__send" type="submit">
-            <span class="pf__send-fill" aria-hidden="true"></span>
-            <span class="marks" aria-hidden="true"></span>
-            <span class="pf__send-label">Send <span class="arrow" aria-hidden="true">→</span></span>
-            <span class="pf__send-progress" aria-hidden="true"></span>
-          </button>
-        </div>
-        <p class="pf__status label" role="status" aria-live="polite"></p>
-      </form>
-
-      <!-- Result: the form fades out and this rises in its place (sent or not sent). -->
-      <div class="pf__result" hidden data-state="sent" role="status" aria-live="polite">
-        <p class="label muted pf__result-item" data-pf-r="label">Message sent</p>
-        <p class="pf__result-title"><span class="pf__mask"><span class="pf__result-item" data-pf-r="t1">Thanks —</span></span><span class="pf__mask"><span class="pf__result-item pf__result-accent" data-pf-r="t2">talk soon.</span></span></p>
-        <p class="pf__result-note muted pf__result-item"><span data-pf-r="note">I usually reply within a day or two.</span></p>
-        <div class="pf__actions pf__result-item">
-          <button class="pf__action link-line label" type="button" data-pf-retry hidden>Try again</button>
-          <button class="pf__action link-line label" type="button" data-pf-close>Back to the site</button>
-        </div>
-      </div>
-    </div>
-  </div>
+  <script type="application/json" id="screens">{"base": "/assets/images/voyagaer-", "rows": [["Built in", "Elementor + custom widgets"]], "screens": [["hero-poster.webp", "Homepage", "Hero", "The homepage opening, in deep sea teal."], ["carousel.webp", "Product carousel", "Line drawings", "Sewage treatment plant, oily water separator, reverse osmosis freshwater maker and hydrophore system as line drawings."], ["catalog.webp", "Product catalog", "Nine systems, one catalog", "Search, then filter by category, application or system type, and see each product’s status at a glance."], ["product.webp", "Hydrophore system", "Product page", "Deep teal hero with the line drawing, a tagline and three key specifications."], ["specs.webp", "Tech specs", "Ruled rows", "Side navigation, the general-arrangement drawing and ruled specification rows."], ["lifecycle.webp", "Lifecycle services", "After the installation", "Commissioning, training, spare parts, maintenance, surveys and retrofits."], ["marine.webp", "Industries", "Marine", "Commercial and cargo, navy, and offshore and support, each with a photo and system tags."], ["services.webp", "Services", "Accordion", "Six lifecycle services in an accordion on deep teal."], ["links.webp", "Homepage", "Oversized links", "Lifecycle services, product catalog, our values."]]}</script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js" defer></script>
+  <script src="/js/theme.js" defer></script>
+  <script src="/js/contact.js" defer></script>
+  <script src="/js/gallery.js" defer></script>
+  <script src="/js/case.js" defer></script>
 </body>
 </html>

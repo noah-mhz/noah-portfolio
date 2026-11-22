@@ -1,28 +1,8 @@
-/* Redesign samples: theme switch, smooth scroll, the sample switcher, small helpers. */
+/* Homepage helpers: Lenis smooth scroll synced to ScrollTrigger, anchor scrolling, splitChars, magnet, scramble. */
 (() => {
   const root = document.documentElement;
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
   window.REDUCE = reduce;
-
-  // Sample switcher bar.
-  const here = location.pathname.match(/samples\/(\w)\//)?.[1];
-  const bar = document.createElement('nav');
-  bar.className = 'samples-bar';
-  bar.setAttribute('aria-label', 'Redesign samples');
-  const solo = root.dataset.solo !== undefined;
-  bar.innerHTML = (solo ? [] : [['a', 'A · Print'], ['b', 'B · Kinetic'], ['c', 'C · Gallery']])
-    .map(([k, t]) => `<a href="../${k}/"${k === here ? ' aria-current="page"' : ''}>${t.replace(' · ', '<span class="sb-l"> · ')}</span></a>`).join('') +
-    '<button type="button" data-theme-toggle>Light / Dark</button>';
-  if (root.dataset.bar !== 'none') document.body.append(bar);
-
-  const setTheme = (t) => {
-    root.dataset.theme = t;
-    try { localStorage.setItem('sample-theme', t); } catch (e) {}
-    document.dispatchEvent(new CustomEvent('sample:theme', { detail: t }));
-  };
-  document.addEventListener('click', (e) => {
-    if (e.target.closest('[data-theme-toggle]')) setTheme(root.dataset.theme === 'dark' ? 'light' : 'dark');
-  });
 
   if (!window.gsap) return;
   gsap.registerPlugin(ScrollTrigger);

@@ -3,413 +3,122 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Luumens — Case Study · Noah Zaw Min Htut, Web Designer</title>
+  <title>Luumens case study · Noah Zaw Min Htut</title>
   <meta name="description" content="Website design and development for Luumens, a Singapore alternative energy solutions provider working across solar, energy storage and methanol and hydrogen fuel cells.">
   <link rel="canonical" href="https://noah-portfolio.pages.dev/work/luumens/">
-  <meta property="og:url" content="https://noah-portfolio.pages.dev/work/luumens/">
-  <meta name="author" content="Noah Zaw Min Htut">
-  <meta name="theme-color" content="#0A0A0A">
-  <meta property="og:title" content="Luumens — Case Study — Noah">
+  <meta property="og:title" content="Luumens case study · Noah Zaw Min Htut">
   <meta property="og:description" content="Website design and build for Luumens, alternative energy solutions.">
-  <meta property="og:type" content="article">
   <meta property="og:image" content="https://noah-portfolio.pages.dev/assets/images/og/luumens.jpg">
-  <meta property="og:image:width" content="1200">
-  <meta property="og:image:height" content="630">
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Luumens — Case Study — Noah">
-  <meta name="twitter:description" content="Website design and build for Luumens, alternative energy solutions.">
-  <meta name="twitter:image" content="https://noah-portfolio.pages.dev/assets/images/og/luumens.jpg">
+  <meta property="og:url" content="https://noah-portfolio.pages.dev/work/luumens/">
+    <meta name="twitter:card" content="summary_large_image">
+  <meta name="theme-color" content="#F8DBC1" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0E1718" media="(prefers-color-scheme: dark)">
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="/apple-touch-icon.png">
-
-  <style>html{background:#0A0A0A}</style>
-  <script>try{if(localStorage.getItem("theme")==="daylight"){var d=document.documentElement;d.setAttribute("data-theme","daylight");d.style.background="#F2F2F0";}}catch(e){}</script>
-  <link rel="preload" href="../../assets/fonts/inter-tight-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="preload" href="../../assets/fonts/jetbrains-mono-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="../../css/style.css">
-  <link rel="stylesheet" href="../../css/project.css">
-
-  <script>document.documentElement.classList.add('js');
-    // Arriving from the homepage transition: paint its image on the first frame.
-    try { var pt = sessionStorage.getItem('pt:image'); if (pt !== null && !matchMedia('(prefers-reduced-motion: reduce)').matches) { document.documentElement.classList.add('pt-enter'); if (pt) document.documentElement.style.setProperty('--pt-src', 'url("' + pt.replace(/"/g, '') + '")'); } } catch (e) {}
-  </script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
-  <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js" defer></script>
-  <script type="module" src="../../js/project.js"></script>
-  <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "CreativeWork",
-  "name": "Luumens — case study",
-  "url": "https://noah-portfolio.pages.dev/work/luumens/",
-  "description": "Website design and development for Luumens, built in-house at Pomar Engineering.",
-  "about": {
-    "@type": "Organization",
-    "name": "Luumens"
-  },
-  "image": "https://noah-portfolio.pages.dev/assets/images/og/luumens.jpg",
-  "creator": {
-    "@type": "Person",
-    "name": "Zaw Min Htut",
-    "alternateName": "Noah",
-    "url": "https://noah-portfolio.pages.dev/"
-  },
-  "dateCreated": "2026"
-}
-  </script>
+  <script>try{var t=localStorage.getItem('noah-theme');if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+  <link rel="stylesheet" href="/css/base.css">
+  <link rel="stylesheet" href="/css/contact.css">
+  <link rel="stylesheet" href="/css/site.css">
 </head>
-<body class="study-page" style="--case: #E33F4D; --case-day: #C4202E; --case-inv: #2ED2C2;">  <!-- Case tint: the client's colour replaces mint on this page. -->
-  <a class="skip-link" href="#main">Skip to content</a>
-
-  <div class="grid-lines" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
-  <div class="progress" aria-hidden="true"><span class="progress__bar"></span></div>
-
-  <div class="cursor" aria-hidden="true">
-    <span class="cursor__circle"></span>
-    <span class="cursor__label"></span>
-  </div>
-
-  <header class="nav">
-    <a class="nav__logo logo" href="../../" aria-label="Noah — home" data-logo><span class="logo__word" aria-hidden="true"><span class="logo__m"><span class="logo__l" style="--i:0">n</span></span><span class="logo__rest"><span class="logo__restin"><span class="logo__m"><span class="logo__l" style="--i:1">o</span></span><span class="logo__m"><span class="logo__l" style="--i:2">a</span></span><span class="logo__m"><span class="logo__l" style="--i:3">h</span></span></span></span><i class="logo__dot"><b></b></i></span></a>
-    <span class="nav__clock" data-clock aria-hidden="true">— SGT</span>
-    <nav class="nav__right" aria-label="Primary" data-nav>
-      <ul class="nav__list" id="nav-list">
-        <li><a class="nav__link" href="../../#work" data-nav-link="work">Work</a></li>
-        <li><a class="nav__link" href="../../concepts/" data-nav-link="concepts">Concepts</a></li>
-        <li><a class="nav__link" href="../../#about" data-nav-link="about">About</a></li>
-        <li><a class="nav__link nav__link--file" href="../../assets/docs/Zaw_Min_Htut_Resume_2026.pdf" target="_blank" rel="noopener">Résumé <span class="arrow arrow--diag" aria-hidden="true">↗</span></a></li>
-      </ul>
-      <button class="nav__status" type="button" aria-expanded="false" aria-controls="nav-list" data-nav-status>
-        <span class="nav__status-text" data-nav-status-text></span>
-        <span class="nav__status-menu"><span class="nav__status-word">Menu</span><i class="nav__status-icon" aria-hidden="true">+</i></span>
-      </button>
-      <button class="theme-toggle theme-toggle--nav" type="button" data-theme-toggle aria-pressed="false" aria-label="Darkroom mode — switch to daylight"><span class="theme-toggle__dot" aria-hidden="true"></span><span class="theme-toggle__label">Darkroom</span></button>
-      <a class="nav__link nav__cta" href="../../#start" data-pf-open aria-haspopup="dialog" aria-controls="project-form">Start a project</a>
-    </nav>
+<body>
+  <a class="skip mono" href="#main">Skip to content</a>
+  <header class="top">
+    <a class="logo" href="/">noah<i></i></a>
+    <a class="back mono" href="/#work"><span aria-hidden="true">←</span><span class="lbl">All work</span><span class="sr-only">Back to all work</span></a>
+    <div class="top__end">
+      <button class="theme mono" type="button" data-theme-switch aria-pressed="false"><span class="theme__icon" aria-hidden="true"><i></i></span><span class="sr-only">Dark mode, currently </span><span class="theme__label">Light</span></button>
+      <a class="pill" href="/#contact" data-pf-open aria-haspopup="dialog" aria-controls="project-form">Discuss a project <b aria-hidden="true">→</b></a>
+    </div>
   </header>
 
   <main id="main">
-
-    <!-- Hero -->
-    <section class="study-hero" id="top" data-nav-label="">
-      <div class="study-hero__top label muted">
-        <a class="study-back link-line" href="../../#work"><span class="arrow arrow--back" aria-hidden="true">←</span> All work</a>
-        <span class="hide-sm">Case study — Website</span>
-        <span><span class="status-dot" aria-hidden="true"></span>Singapore</span>
-      </div>
-
-      <div class="study-hero__title">
-        <h1 class="study-hero__name" data-split="chars" data-hero-title>Luumens</h1>
-        <p class="study-hero__sub" data-hero-sub>Alternative energy solutions</p>
-        <p class="study-hero__jp study-hero__jp--mono" aria-hidden="true">Harness nature's power</p>
-      </div>
-
-      <dl class="study-meta label">
-        <div data-hero-meta><dt>Built for</dt><dd>Luumens · In-house, Pomar Engineering</dd></div>
-        <div data-hero-meta><dt>Role</dt><dd>Web design &amp; development</dd></div>
-        <div data-hero-meta><dt>Platform</dt><dd>WordPress · Elementor</dd></div>
-        <div data-hero-meta><dt>Live site</dt><dd><a class="link-line accent" href="https://luumens.com" target="_blank" rel="noopener">luumens.com <span class="arrow arrow--diag" aria-hidden="true">↗</span></a></dd></div>
+    <section class="head">
+      <p class="mono">Case study · In-house · Pomar Engineering · Energy · 2026</p>
+      <h1 aria-label="Luumens">Luumens<i aria-hidden="true"></i></h1>
+      <p class="head__lede">Luumens supplies photovoltaic panels, Huawei inverters, energy storage and methanol and hydrogen fuel cells for land and marine use. The site is for customers looking to buy, and it also has to explain the benefits of the products, and of alternative energy itself.</p>
+      <dl class="facts mono">
+        <dt>Built for</dt><dd>Luumens · In-house, Pomar Engineering</dd>
+        <dt>Role</dt><dd>Web design &amp; development</dd>
+        <dt>Platform</dt><dd>WordPress + Elementor, custom HTML widgets, GSAP</dd>
+        <dt>Live site</dt><dd><a href="https://luumens.com" target="_blank" rel="noopener"><span class="ulink">luumens.com</span> <span class="arr" aria-hidden="true">↗</span></a></dd>
       </dl>
+    </section>
 
-      <figure class="study-hero__media" data-hero-media>
-        <div class="frame">
-          <div class="frame__bar" aria-hidden="true"><i><b></b><b></b><b></b></i><span class="frame__url label">luumens.com</span><i></i></div>
-          <video data-inview-video muted playsinline preload="auto" poster="../../assets/images/luumens-hero-poster.webp" width="1600" height="1000"
-            aria-label="The Luumens homepage loading: navigation, then the solar hero with Generate your own power and two buttons">
-            <source src="../../assets/video/luumens-hero.mp4" type="video/mp4">
-          </video>
-          <span class="marks" aria-hidden="true"></span>
+    <section class="sec" aria-labelledby="screens-title">
+      <div class="sec__head">
+        <h2 id="screens-title">The<br>screens</h2>
+        <div class="seg mono" role="group" aria-label="Arrange the screens" data-seg>
+          <button type="button" data-arr="coverflow" aria-pressed="true">Coverflow</button>
+          <button type="button" data-arr="fan" aria-pressed="false">Fan</button>
+          <button type="button" data-arr="stack" aria-pressed="false">Stack</button>
+          <button type="button" data-arr="helix" aria-pressed="false">Helix</button>
+          <button type="button" data-arr="grid" aria-pressed="false">Grid</button>
         </div>
-      </figure>
-    </section>
-
-    <!-- Brief -->
-    <section class="study-section" data-nav-section="work" data-nav-label="Brief" aria-labelledby="brief-title">
-      <div class="study-section__head">
-        <div class="section-label" data-reveal="fade"><span>Brief</span></div>
       </div>
-      <div class="study-section__body">
-        <h2 class="study-lead" id="brief-title" data-split="lines" data-reveal="text">
-          <span class="line">Products, and the case</span>
-          <span class="line">for <em class="accent">alternative energy.</em></span>
-        </h2>
-        <p class="study-copy muted" data-reveal="fade">Luumens supplies photovoltaic panels, Huawei inverters, energy storage and methanol and hydrogen fuel cells for land and marine use. The site is for customers looking to buy, and it also has to explain the benefits of the products, and of alternative energy itself.</p>
-        <dl class="study-own">
-          <div data-reveal="fade"><dt class="label muted">Design</dt><dd>The page flow, layouts and visual design, from scratch. The company set the goal and the information that mattered; everything else was mine.</dd></div>
-          <div data-reveal="fade"><dt class="label muted">Development</dt><dd>Every section is a custom HTML widget in Elementor — none of its drag-and-drop widgets — with hand-written CSS and GSAP motion.</dd></div>
-          <div data-reveal="fade"><dt class="label muted">Delivery</dt><dd>Built and tested for widescreen, laptop, tablet and phone, solo, as the in-house web designer and developer at Pomar Engineering, the group behind Luumens. Launched in 2026, and I keep refining it.</dd></div>
-          <div data-reveal="fade"><dt class="label muted">Starting point</dt><dd>The earlier site had little motion, and its layouts didn't give the important sections and headings the weight they needed. Fixing that did the most for the customer experience.</dd></div>
-          <div data-reveal="fade"><dt class="label muted">The hard part</dt><dd>Working out a layout that properly represents the company, and making every hand-coded section work at every screen size (more below).</dd></div>
-          <div data-reveal="fade"><dt class="label muted">Next time</dt><dd>I'd pin down everyone's expectations and preferences carefully at the start, so there are fewer rounds of changes later.</dd></div>
-        </dl>
-      </div>
-    </section>
-
-    <!-- Decisions: the text holds while the screens change (desktop); stacked on smaller screens. -->
-    <section class="study-chapter" data-chapter data-nav-section="work" data-nav-label="Decisions" aria-labelledby="decisions-title">
-      <div class="study-chapter__head">
-        <div class="section-label" data-reveal="fade"><span>Three decisions</span></div>
-        <h2 class="study-lead" id="decisions-title" data-split="lines" data-reveal="text">
-          <span class="line">How the pages</span>
-          <span class="line">are ordered.</span>
-        </h2>
-      </div>
-      <div class="study-chapter__grid">
-        <ol class="study-chapter__steps">
-          <li class="study-step" data-step>
-            <span class="label accent">Story first</span>
-            <h3 class="study-step__title">The energy, before the products.</h3>
-            <p class="study-step__text muted">The homepage opens on an illustrated energy cycle — how clean power is made and used — ahead of anything for sale.</p>
-            <figure class="study-step__media" data-reveal="media" data-from="bottom">
-              <div class="frame frame--stage"><div class="frame__bar" aria-hidden="true"><i><b></b><b></b><b></b></i><span class="frame__url label">luumens.com</span><i></i></div>
-                <div class="frame__view"><img src="../../assets/images/luumens-v2-cycle.webp" alt="Illustrated energy cycle on the homepage: water and renewable energy through electrolysis and methanol synthesis to hydrogen, methanol and oxygen consumers" width="1600" height="1393" loading="lazy" decoding="async"></div><span class="marks" aria-hidden="true"></span></div>
-            </figure>
-          </li>
-          <li class="study-step" data-step>
-            <span class="label accent">By situation</span>
-            <h3 class="study-step__title">Start from where you need power.</h3>
-            <p class="study-step__text muted">Six photographic cards — ship, camping, RV, signal tower, emergency rescue and monitoring — each lead to a page for that setting.</p>
-            <figure class="study-step__media" data-reveal="media" data-from="bottom">
-              <div class="frame frame--stage"><div class="frame__bar" aria-hidden="true"><i><b></b><b></b><b></b></i><span class="frame__url label">luumens.com</span><i></i></div>
-                <div class="frame__view"><img src="../../assets/images/luumens-v2-solutions.webp" alt="Energy Solutions on the homepage: six photo cards for Ship, Camping, RV, Signal Tower, Emergency Rescue and Monitoring" width="1600" height="1021" loading="lazy" decoding="async"></div><span class="marks" aria-hidden="true"></span></div>
-            </figure>
-          </li>
-          <li class="study-step" data-step>
-            <span class="label accent">Figures up front</span>
-            <h3 class="study-step__title">Products lead with the numbers.</h3>
-            <p class="study-step__text muted">Product pages open on the product and its key figures, laid out as a bento grid of cards, then explain the technology card by card. The bento product page is the part of the site I'm proudest of.</p>
-            <figure class="study-step__media" data-reveal="media" data-from="bottom">
-              <div class="frame frame--stage"><div class="frame__bar" aria-hidden="true"><i><b></b><b></b><b></b></i><span class="frame__url label">luumens.com/pv-panel</span><i></i></div>
-                <div class="frame__view"><img src="../../assets/images/luumens-v2-pv.webp" alt="PV Panel product page: a photo card and the panel itself above three figure cards" width="1600" height="1092" loading="lazy" decoding="async"></div><span class="marks" aria-hidden="true"></span></div>
-            </figure>
-          </li>
-        </ol>
-        <div class="study-chapter__stage" data-stage aria-hidden="true">
-          <div class="frame frame--stage">
-            <div class="frame__bar"><i><b></b><b></b><b></b></i><span class="frame__url label" data-stage-url>luumens.com</span><i></i></div>
-            <div class="frame__view">
-              <img src="../../assets/images/luumens-v2-cycle.webp" alt="" data-stage-img data-url="luumens.com" width="1600" height="1393" loading="lazy" decoding="async">
-              <img src="../../assets/images/luumens-v2-solutions.webp" alt="" data-stage-img data-url="luumens.com" width="1600" height="1021" loading="lazy" decoding="async">
-              <img src="../../assets/images/luumens-v2-pv.webp" alt="" data-stage-img data-url="luumens.com/pv-panel" width="1600" height="1092" loading="lazy" decoding="async">
-            </div>
-            <span class="marks"></span>
-          </div>
+      <div class="gal">
+        <div>
+          <ol class="idx mono" data-idx></ol>
+          <div class="caption" aria-live="polite" data-caption></div>
+        </div>
+        <div>
+          <div data-stage aria-label="Luumens screens"></div>
+          <div class="g-hint mono"><span data-count>1 / 9</span><span>Drag, swipe or use the arrow keys · click the front screen to open it</span></div>
         </div>
       </div>
     </section>
 
-    <!-- Details: short recordings that play while on screen -->
-    <section class="study-details" data-nav-section="work" data-nav-label="Details" aria-labelledby="details-title">
-      <div class="study-details__head">
-        <div class="section-label" data-reveal="fade"><span>In motion</span></div>
-        <h2 class="study-lead" id="details-title" data-split="lines" data-reveal="text"><span class="line">Motion, added</span><span class="line">throughout.</span></h2>
-      </div>
-      <div class="study-details__grid">
-        <figure data-reveal="media" data-from="bottom">
-          <div class="frame"><div class="frame__bar" aria-hidden="true"><i><b></b><b></b><b></b></i><span class="frame__url label">luumens.com</span><i></i></div>
-            <video data-inview-video muted loop playsinline preload="none" poster="../../assets/images/luumens-menu-poster.webp" width="1440" height="900" aria-label="Opening the Products and Solutions mega menus"><source src="../../assets/video/luumens-menu.mp4" type="video/mp4"></video>
-            <span class="marks" aria-hidden="true"></span></div>
-          <figcaption class="label muted"><span>Mega menus</span><span>Products · Solutions</span></figcaption>
-        </figure>
-        <figure data-reveal="media" data-from="bottom">
-          <div class="frame"><div class="frame__bar" aria-hidden="true"><i><b></b><b></b><b></b></i><span class="frame__url label">luumens.com/discover</span><i></i></div>
-            <video data-inview-video muted loop playsinline preload="none" poster="../../assets/images/luumens-tabs-poster.webp" width="1440" height="900" aria-label="Switching between the Why Luumens tabs"><source src="../../assets/video/luumens-tabs.mp4" type="video/mp4"></video>
-            <span class="marks" aria-hidden="true"></span></div>
-          <figcaption class="label muted"><span>Discover</span><span>Tabs</span></figcaption>
-        </figure>
-        <figure data-reveal="media" data-from="bottom">
-          <div class="frame"><div class="frame__bar" aria-hidden="true"><i><b></b><b></b><b></b></i><span class="frame__url label">luumens.com/htmfc</span><i></i></div>
-            <video data-inview-video muted loop playsinline preload="none" poster="../../assets/images/luumens-htmfc-poster.webp" width="1440" height="900" aria-label="Scrolling the HTMFC fuel cell product page"><source src="../../assets/video/luumens-htmfc.mp4" type="video/mp4"></video>
-            <span class="marks" aria-hidden="true"></span></div>
-          <figcaption class="label muted"><span>Product page</span><span>HTMFC</span></figcaption>
-        </figure>
-        <figure data-reveal="media" data-from="bottom">
-          <div class="frame"><div class="frame__bar" aria-hidden="true"><i><b></b><b></b><b></b></i><span class="frame__url label">luumens.com</span><i></i></div>
-            <video data-inview-video muted loop playsinline preload="none" poster="../../assets/images/luumens-scroll-poster.webp" width="1440" height="900" aria-label="Scrolling through the Luumens homepage"><source src="../../assets/video/luumens-scroll.mp4" type="video/mp4"></video>
-            <span class="marks" aria-hidden="true"></span></div>
-          <figcaption class="label muted"><span>Homepage</span><span>Scroll</span></figcaption>
-        </figure>
+    <section class="sec" aria-labelledby="brief-title">
+      <div class="sec__head"><h2 id="brief-title">The<br>brief</h2><span class="mono muted">Products, and the case for alternative energy.</span></div>
+      <div class="cols">
+        <div><span class="mono">Design</span><h3>From scratch.</h3><p>The page flow, layouts and visual design. The company set the goal and the information that mattered; everything else was mine.</p></div>
+        <div><span class="mono">Development</span><h3>Custom widgets only.</h3><p>Every section is a custom HTML widget in Elementor, none of its drag-and-drop widgets, with hand-written CSS and GSAP motion.</p></div>
+        <div><span class="mono">Starting point</span><h3>More weight, more motion.</h3><p>The earlier site had little motion, and its layouts didn't give the important sections and headings the weight they needed.</p></div>
       </div>
     </section>
 
-    <!-- How it's evolved -->
-    <section class="study-evolve" data-nav-section="work" data-nav-label="Evolution" aria-labelledby="evolve-title">
-      <div class="study-evolve__text">
-        <div class="section-label" data-reveal="fade"><span>How it's evolved</span></div>
-        <h2 class="study-lead" id="evolve-title" data-split="lines" data-reveal="text"><span class="line">The homepage,</span><span class="line">reworked.</span></h2>
-        <p class="study-copy muted" data-reveal="fade">The homepage changed the most. My first layout didn't flow well, so I reworked it for a clearer path through the site and easier navigation. The latest update opens up the hero, lets products lead with their figures and gives every page more room.</p>
-      </div>
-      <div class="study-evolve__grid">
-        <figure data-reveal="fade"><div class="study-media study-evolve__shot"><img src="../../assets/images/luumens-home-1600.webp" alt="Earlier homepage hero: a short banner over solar panels" width="1600" height="1000" loading="lazy" decoding="async"></div><figcaption class="label muted"><span>Earlier</span><span>Hero</span></figcaption></figure>
-        <figure data-reveal="fade"><div class="study-media study-evolve__shot"><img src="../../assets/images/luumens-v2-hero.webp" alt="Current homepage hero: full height, with two buttons and a scroll cue" width="1200" height="750" loading="lazy" decoding="async"><span class="marks" aria-hidden="true"></span></div><figcaption class="label"><span class="accent">Now</span><span class="muted">Hero</span></figcaption><p class="study-evolve__note">Full height, with a second way in and a scroll cue.</p></figure>
-        <figure data-reveal="fade"><div class="study-media study-evolve__shot"><img src="../../assets/images/luumens-pv-bento.webp" alt="Earlier PV panel page: a bento grid of icon cards" width="1600" height="933" loading="lazy" decoding="async"></div><figcaption class="label muted"><span>Earlier</span><span>PV panel</span></figcaption></figure>
-        <figure data-reveal="fade"><div class="study-media study-evolve__shot"><img src="../../assets/images/luumens-v2-pv.webp" alt="Current PV panel page: product card, panel and figure cards" width="1600" height="1092" loading="lazy" decoding="async"><span class="marks" aria-hidden="true"></span></div><figcaption class="label"><span class="accent">Now</span><span class="muted">PV panel</span></figcaption><p class="study-evolve__note">Key figures moved to the top, under the product.</p></figure>
+    <section class="sec" aria-labelledby="decisions-title">
+      <div class="sec__head"><h2 id="decisions-title">Three<br>decisions</h2><span class="mono muted">How the pages are ordered.</span></div>
+      <div class="cols">
+        <div><span class="mono">01 · Story first</span><h3>The energy, before the products.</h3><p>The homepage opens on an illustrated energy cycle, how clean power is made and used, ahead of anything for sale.</p></div>
+        <div><span class="mono">02 · By situation</span><h3>Start from where you need power.</h3><p>Six photographic cards (ship, camping, RV, signal tower, emergency rescue and monitoring) each lead to a page for that setting.</p></div>
+        <div><span class="mono">03 · Figures up front</span><h3>Products lead with the numbers.</h3><p>Product pages open on the product and its key figures as a bento grid of cards, then explain the technology card by card. The bento product page is the part I'm proudest of.</p></div>
       </div>
     </section>
 
-    <!-- System -->
-    <section class="study-section study-section--stack" data-nav-section="work" data-nav-label="System" aria-labelledby="system-title">
-      <div class="study-section__head">
-        <div class="section-label" data-reveal="fade"><span>Design system</span></div>
-      </div>
-      <div class="study-section__body">
-        <h2 class="study-lead" id="system-title" data-split="lines" data-reveal="text">
-          <span class="line">One red,</span>
-          <span class="line">one card system.</span>
-        </h2>
-        <ul class="study-palette" aria-label="Site colour palette">
-          <li style="--swatch:#E2323F;--ink:#000000" data-swatch><span class="label">Luumens red</span><span class="label">#E2323F</span></li>
-          <li style="--swatch:#1C1C1C;--ink:#F2F2F0" data-swatch><span class="label">Ink</span><span class="label">#1C1C1C</span></li>
-          <li style="--swatch:#F7F7F7;--ink:#1C1C1C" data-swatch><span class="label">Mist</span><span class="label">#F7F7F7</span></li>
-          <li style="--swatch:#FFFFFF;--ink:#1C1C1C" data-swatch><span class="label">White</span><span class="label">#FFFFFF</span></li>
-        </ul>
-      </div>
-      <div class="study-ui">
-        <figure class="study-ui__tile study-ui__tile--wide" style="--tile:#FFFFFF" data-reveal="fade"><img src="../../assets/images/luumens-ui-text.webp" alt="Section label, heading, body text and the red Contact us button" width="1128" height="716" style="max-width:30rem" loading="lazy" decoding="async"></figure>
-        <figure class="study-ui__tile" style="--tile:#FFFFFF" data-reveal="fade"><img src="../../assets/images/luumens-ui-techlist.webp" alt="Technology list card with red arrows" width="612" height="780" style="max-width:16rem" loading="lazy" decoding="async"></figure>
-        <figure class="study-ui__tile study-ui__tile--wide" style="--tile:#FFFFFF" data-reveal="fade"><img src="../../assets/images/luumens-ui-stats.webp" alt="Three figure cards in the Luumens red" width="1200" height="180" style="max-width:52rem" loading="lazy" decoding="async"></figure>
-        <figure class="study-ui__tile" style="--tile:#F7F7F7" data-reveal="fade"><img src="../../assets/images/luumens-ui-chips.webp" alt="Product chips" width="1124" height="184" style="max-width:30rem" loading="lazy" decoding="async"></figure>
-      </div>
+    <section class="sec" aria-labelledby="evolved-title">
+      <div class="sec__head"><h2 id="evolved-title">How it's<br>evolved</h2><span class="mono muted">The homepage, reworked.</span></div>
+      <div class="note"><p>The homepage changed the most. My first layout didn't flow well, so I reworked it for a clearer path through the site and easier navigation. The latest update opens up the hero, lets products lead with their figures and gives every page more room.</p></div>
     </section>
 
-    <!-- Mobile -->
-    <section class="study-phones" data-nav-section="work" data-nav-label="Responsive" aria-labelledby="mobile-title">
-      <div class="study-phones__head">
-        <div class="section-label" data-reveal="fade"><span>The hard part — responsive</span></div>
-        <h2 class="study-lead" id="mobile-title" data-split="lines" data-reveal="text"><span class="line">Working at</span><span class="line">every screen size.</span></h2>
-        <p class="study-copy muted" data-reveal="fade">With every section written by hand rather than built from Elementor's widgets, each layout had to be designed and tested for widescreen, laptop, tablet and phone. On phones the solution cards become a swipeable row, product figures restack and the menu opens into a full-screen list.</p>
-      </div>
-      <ul class="study-phones__row" aria-label="Mobile screens">
-        <li data-reveal="fade"><img src="../../assets/images/luumens-m1.webp" alt="Mobile homepage hero" width="640" height="1283" loading="lazy" decoding="async"></li>
-        <li data-reveal="fade"><img src="../../assets/images/luumens-m2.webp" alt="Mobile energy solutions carousel" width="640" height="1283" loading="lazy" decoding="async"></li>
-        <li data-reveal="fade"><img src="../../assets/images/luumens-m3.webp" alt="Mobile PV panel product page" width="640" height="1283" loading="lazy" decoding="async"></li>
-        <li data-reveal="fade"><img src="../../assets/images/luumens-m4.webp" alt="Mobile menu with Solutions expanded" width="640" height="1283" loading="lazy" decoding="async"></li>
-        <li data-reveal="fade"><img src="../../assets/images/luumens-m5.webp" alt="Mobile RV energy solution page" width="640" height="1283" loading="lazy" decoding="async"></li>
-      </ul>
+    <section class="sec" aria-labelledby="hard-title">
+      <div class="sec__head"><h2 id="hard-title">The hard<br>part</h2><span class="mono muted">Every screen size.</span></div>
+      <div class="note"><p>Working out a layout that properly represents the company, and making every hand-coded section work at every size. Each layout was designed and tested for widescreen, laptop, tablet and phone: on phones the solution cards become a swipeable row, product figures restack and the menu opens into a full-screen list.</p></div>
     </section>
 
-    <!-- Live + next -->
-    <section class="study-end" data-nav-section="work" data-nav-label="Live" aria-labelledby="live-title">
-      <p class="study-outcome" data-reveal="fade"><span class="label accent">Outcome</span><span>Launched in 2026: a reworked homepage, product pages that lead with the numbers, motion throughout and layouts tuned for every screen size. Designed, built and still refined by me.</span></p>
-      <div class="section-label" data-reveal="fade"><span>Visit the live site</span></div>
-      <h2 class="study-end__link study-end__link--long" id="live-title">
-        <a href="https://luumens.com" target="_blank" rel="noopener" data-cursor="Open"><span data-split="chars" data-reveal="text">luumens.com</span> <span class="arrow arrow--diag accent" aria-hidden="true">↗</span></a>
-      </h2>
-      <div class="study-cta">
-        <p class="study-cta__line">Have a project like this in mind?</p>
-        <a class="cta" href="../../#start" data-pf-open aria-haspopup="dialog" aria-controls="project-form">
-          <span class="cta__fill" aria-hidden="true"></span>
-          <span class="marks" aria-hidden="true"></span>
-          <span class="cta__label">Start a project <span class="arrow" aria-hidden="true">→</span></span>
-        </a>
-      </div>
-      <nav class="study-next" aria-label="More work">
-        <a class="study-next__back link-line label" href="../ganko/"><span class="arrow arrow--back" aria-hidden="true">←</span> Ganko.sg</a>
-        <a class="study-next__project" href="../voyagaer/" data-magnetic="0.2">
-          <span class="study-next__peek" aria-hidden="true"><img src="../../assets/images/voyagaer-card-poster.webp" alt="" width="900" height="560" loading="lazy" decoding="async"><span class="marks"></span></span>
-          <span class="label muted">Next project</span>
-          <span class="study-next__name" data-magnetic-inner>Voyagaer <span class="arrow" aria-hidden="true">→</span></span>
-        </a>
-      </nav>
+    <section class="sec" aria-labelledby="next-title">
+      <div class="sec__head"><h2 id="next-title">Next<br>time</h2><span class="mono muted">Expectations first.</span></div>
+      <div class="note"><p>I'd pin down everyone's expectations and preferences carefully at the start, so there are fewer rounds of changes later.</p></div>
+    </section>
+
+    <section class="sec" aria-labelledby="outcome-title">
+      <div class="sec__head"><h2 id="outcome-title">Outcome</h2><span class="mono muted">Launched in 2026</span></div>
+      <div class="note"><p>A reworked homepage, product pages that lead with the numbers, motion throughout and layouts tuned for every screen size. Designed, built and still refined by me.</p></div>
     </section>
   </main>
+</main>
 
-  <footer class="footer" data-nav-section="contact" data-nav-label="Contact">
-    <div class="footer__grid">
-      <div class="footer__brand">
-        <p class="footer__name logo" aria-label="Noah">noah<i class="logo__dot"><b></b></i></p>
-        <p class="muted">Creative Developer<br>Web Designer</p>
-      </div>
-      <nav class="footer__nav" aria-label="Footer">
-        <ul class="footer__links">
-          <li><a class="link-line" href="../../#work">Work</a></li>
-          <li><a class="link-line" href="../../#about">About</a></li>
-          <li><a class="link-line" href="../../#contact">Contact</a></li>
-        </ul>
-      </nav>
-      <a class="footer__back label" href="#top" data-magnetic><span data-magnetic-inner>Back to top ↑</span></a>
-    </div>
-    <p class="footer__mark" aria-hidden="true"><span>n</span><span>o</span><span>a</span><span>h</span><span class="logo__dot"><b></b></span></p>
-    <div class="footer__bottom label muted">
-      <span>© 2026 Noah</span>
-      <span>1.3521° N — 103.8198° E</span>
-      <a class="link-line" href="../../colophon/">Designed &amp; built by hand — colophon</a>
-    </div>
+  <footer class="next">
+    <span class="mono">Next project · 03 / 04</span><br>
+    <a class="big" href="/work/voyagaer/">Voyagaer<i aria-hidden="true"></i></a>
+    <div class="foot mono"><span>© 2026 Noah Zaw Min Htut</span><span>Singapore → Worldwide</span><a href="/colophon/">Colophon</a><a href="/">Back to the homepage</a></div>
   </footer>
-  <!-- Project enquiry (tinted with this case study's accent): opens from "Start a project". Sends through /api/contact (Cloudflare Pages Function). -->
-  <div class="pf" id="project-form" role="dialog" aria-modal="true" aria-labelledby="pf-title" hidden>
-    <span class="pf__wipe" aria-hidden="true"></span>
-    <div class="pf__panel">
-      <div class="grid-lines pf__grid" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
-      <header class="pf__top label">
-        <span class="pf__item"><span class="status-dot" aria-hidden="true"></span>New project</span>
-        <button class="pf__close" type="button" data-pf-close aria-label="Close the form"><span class="pf__item">Close <span aria-hidden="true">✕</span></span></button>
-      </header>
 
-      <form class="pf__form" novalidate>
-        <h2 class="pf__title" id="pf-title"><span class="pf__mask"><span class="pf__item">Tell me about it.</span></span></h2>
-
-        <p class="pf__sentence">
-          <span class="pf__mask"><span class="pf__item">Hi Noah, I'm</span></span>
-          <label class="pf__field" data-field="name"><span class="sr-only">Your name</span><input name="name" type="text" autocomplete="name" placeholder="your name" maxlength="80" required><span class="pf__rule" aria-hidden="true"></span></label>
-          <span class="pf__mask"><span class="pf__item">from</span></span>
-          <span class="pf__nb"><label class="pf__field" data-field="company"><span class="sr-only">Company (optional)</span><input name="company" type="text" autocomplete="organization" placeholder="company (optional)" maxlength="100"><span class="pf__rule" aria-hidden="true"></span></label><span class="pf__mask"><span class="pf__item">.</span></span></span>
-          <span class="pf__mask"><span class="pf__item">I need</span></span>
-          <label class="pf__field pf__field--select" data-field="type"><span class="sr-only">What you need</span>
-            <select name="type" required>
-              <option value="a new website">a new website</option>
-              <option value="a redesign">a redesign</option>
-              <option value="improvements to my site">improvements to my site</option>
-              <option value="something else">something else</option>
-            </select><span class="pf__rule" aria-hidden="true"></span></label>
-          <span class="pf__mask"><span class="pf__item">and my budget is</span></span>
-          <span class="pf__nb"><label class="pf__field pf__field--select" data-field="budget"><span class="sr-only">Budget</span>
-            <select name="budget">
-              <option value="not sure yet">not sure yet</option>
-              <option value="under S$3k">under S$3k</option>
-              <option value="S$3k–8k">S$3k–8k</option>
-              <option value="S$8k–15k">S$8k–15k</option>
-              <option value="S$15k+">S$15k+</option>
-            </select><span class="pf__rule" aria-hidden="true"></span></label><span class="pf__mask"><span class="pf__item">.</span></span></span>
-          <span class="pf__mask"><span class="pf__item">Reach me at</span></span>
-          <label class="pf__field" data-field="email"><span class="sr-only">Your email</span><input name="email" type="email" autocomplete="email" placeholder="you@email.com" maxlength="254" required><span class="pf__rule" aria-hidden="true"></span></label>
-          <span class="pf__mask"><span class="pf__item">or</span></span>
-          <span class="pf__nb"><label class="pf__field" data-field="mobile"><span class="sr-only">Mobile (optional)</span><input name="mobile" type="tel" inputmode="tel" autocomplete="tel" placeholder="mobile (optional)" maxlength="24"><span class="pf__rule" aria-hidden="true"></span></label><span class="pf__mask"><span class="pf__item">.</span></span></span>
-        </p>
-
-        <label class="pf__message" data-field="message">
-          <span class="label muted pf__item">Anything else? (optional)</span>
-          <textarea name="message" rows="3" maxlength="2000" placeholder="A link, a deadline, an idea…"></textarea>
-          <span class="pf__rule" aria-hidden="true"></span>
-        </label>
-
-        <!-- Honeypot: hidden from people, filled by bots. -->
-        <label class="pf__hp" aria-hidden="true">Website<input name="website" type="text" tabindex="-1" autocomplete="off"></label>
-
-        <div class="pf__foot">
-          <div class="pf__captcha" data-pf-captcha></div>
-          <button class="pf__send" type="submit">
-            <span class="pf__send-fill" aria-hidden="true"></span>
-            <span class="marks" aria-hidden="true"></span>
-            <span class="pf__send-label">Send <span class="arrow" aria-hidden="true">→</span></span>
-            <span class="pf__send-progress" aria-hidden="true"></span>
-          </button>
-        </div>
-        <p class="pf__status label" role="status" aria-live="polite"></p>
-      </form>
-
-      <!-- Result: the form fades out and this rises in its place (sent or not sent). -->
-      <div class="pf__result" hidden data-state="sent" role="status" aria-live="polite">
-        <p class="label muted pf__result-item" data-pf-r="label">Message sent</p>
-        <p class="pf__result-title"><span class="pf__mask"><span class="pf__result-item" data-pf-r="t1">Thanks —</span></span><span class="pf__mask"><span class="pf__result-item pf__result-accent" data-pf-r="t2">talk soon.</span></span></p>
-        <p class="pf__result-note muted pf__result-item"><span data-pf-r="note">I usually reply within a day or two.</span></p>
-        <div class="pf__actions pf__result-item">
-          <button class="pf__action link-line label" type="button" data-pf-retry hidden>Try again</button>
-          <button class="pf__action link-line label" type="button" data-pf-close>Back to the site</button>
-        </div>
-      </div>
-    </div>
-  </div>
+  <script type="application/json" id="screens">{"base": "/assets/images/luumens-", "rows": [["Built in", "Elementor + custom HTML"]], "href": "https://luumens.com", "cta": "Visit luumens.com", "screens": [["v2-hero.webp", "Homepage", "Hero", "Full height, with a second way in and a scroll cue."], ["v2-cycle.webp", "Energy cycle", "Story first", "An illustrated energy cycle: water and renewable energy through electrolysis and methanol synthesis to hydrogen, methanol and oxygen consumers."], ["v2-solutions.webp", "Energy solutions", "By situation", "Six photo cards for ship, camping, RV, signal tower, emergency rescue and monitoring, each leading to a page for that setting."], ["v2-pv.webp", "PV panel", "Figures up front", "A product card and the panel itself above three figure cards."], ["menu-poster.webp", "Mega menus", "Products · Solutions", "Motion, added throughout: the mega menus for Products and Solutions."], ["tabs-poster.webp", "Discover", "Tabs", "The Discover page’s tabs."], ["htmfc-poster.webp", "HTMFC", "Product page", "The HTMFC product page."], ["home-1600.webp", "Earlier homepage", "Before", "The earlier hero: a short banner over solar panels."], ["pv-bento.webp", "Earlier PV panel", "Before", "The earlier PV panel page: a bento grid of icon cards. Key figures have since moved to the top, under the product."]]}</script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js" defer></script>
+  <script src="/js/theme.js" defer></script>
+  <script src="/js/contact.js" defer></script>
+  <script src="/js/gallery.js" defer></script>
+  <script src="/js/case.js" defer></script>
 </body>
 </html>
