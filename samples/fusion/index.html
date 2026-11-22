@@ -181,13 +181,103 @@
     .deck__ctrl [data-count] { white-space: nowrap; }
     @media (max-width: 600px) { .deck__ctrl .muted { display: none; } }
 
+    .bubble { position: fixed; z-index: 80; left: 0; top: 0; width: 6.5rem; height: 6.5rem; margin: -3.25rem 0 0 -3.25rem; border-radius: 50%; background: var(--pink); color: var(--on-pink); display: grid; place-items: center; font: 600 .78rem 'Geist Mono'; letter-spacing: .06em; text-transform: uppercase; pointer-events: none; scale: 0; }
     /* ---------- Services, concepts, contact (B) ---------- */
+    .h2s { margin: 0; font-weight: 800; font-size: clamp(3rem, 9vw, 10rem); line-height: .8; text-transform: uppercase; font-stretch: 62%; }
     .svc { padding: clamp(6rem, 16vh, 10rem) var(--gutter) 0; }
     .svc__grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-top: 2rem; }
     .svc__item { padding: 1.5rem; border-radius: 1rem; background: var(--bg-2); min-height: 22rem; display: flex; flex-direction: column; justify-content: space-between; transition: background-color .5s var(--ease), color .5s var(--ease), translate .6s var(--ease); }
-    .svc__item:hover { background: var(--ink); color: var(--bg); translate: 0 -.5rem; }
-    .svc__item h3 { margin: 0 0 .8rem; font-weight: 800; font-size: clamp(1.8rem, 2.6vw, 2.8rem); line-height: .9; text-transform: uppercase; font-stretch: 70%; }
+        .svc__item h3 { margin: 0 0 .8rem; font-weight: 800; font-size: clamp(1.8rem, 2.6vw, 2.8rem); line-height: .9; text-transform: uppercase; font-stretch: 70%; }
     .svc__item p { margin: 0; line-height: 1.4; opacity: .8; }
+    /* Each card acts out its service on hover (touch: when centred). */
+    .svc__item { gap: 1.2rem; justify-content: flex-start; min-height: 0; padding: 1.1rem; }
+    .svc__item > div:last-child { margin-top: auto; }
+    .svc__item.is-on { background: var(--ink); color: var(--bg); translate: 0 -.5rem; }
+    /* Stage: a little browser window the scene plays in. Sizes scale with its width (cqw). */
+    .stage { position: relative; aspect-ratio: 16 / 11; border-radius: .7rem; overflow: hidden; background: #FBEBDD; color: #1B1411; container-type: inline-size; box-shadow: inset 0 0 0 1px rgba(27,20,17,.1); }
+    :root[data-theme='dark'] .stage { background: #18282A; color: #F8DBC1; box-shadow: inset 0 0 0 1px rgba(248,219,193,.12); }
+    .stage__bar { position: absolute; z-index: 9; inset: 0 0 auto; height: 7cqw; display: flex; align-items: center; gap: 1.2cqw; padding: 0 2.6cqw; background: rgba(27,20,17,.06); }
+    :root[data-theme='dark'] .stage__bar { background: rgba(248,219,193,.06); }
+    .stage__bar i { width: 1.6cqw; height: 1.6cqw; border-radius: 50%; background: currentColor; opacity: .25; }
+    .view { position: absolute; inset: 7cqw 0 0; overflow: hidden; }
+
+    /* A mini homepage, positioned the same way in every style so pieces can swap one for one. */
+    .mp { position: absolute; inset: 0; font-size: 2.4cqw; }
+    .mp > * { position: absolute; display: flex; align-items: center; }
+    .p-logo { left: 6%; top: 7%; width: 18%; height: 9%; }
+    .p-nav { right: 6%; top: 7%; width: 44%; height: 9%; justify-content: flex-end; gap: 3cqw; }
+    .p-h { left: 6%; top: 25%; width: 50%; height: 30%; align-items: flex-start; }
+    .p-txt { left: 6%; top: 57%; width: 46%; height: 12%; align-items: flex-start; }
+    .p-btn { left: 6%; top: 73%; width: 30%; height: 13%; justify-content: center; }
+    .p-img { right: 6%; top: 25%; width: 34%; height: 61%; overflow: hidden; }
+    .p-img img { width: 100%; height: 100%; object-fit: cover; }
+    .mp-bg { position: absolute; inset: 0; }
+
+    /* wire: grey placeholders */
+    .v-wire .ph { background: rgba(127,127,127,.22); border-radius: 1cqw; }
+    .v-wire .p-nav span { width: 8cqw; height: 1.8cqw; }
+    .v-wire .p-h { flex-direction: column; gap: 2cqw; } .v-wire .p-h span { width: 100%; height: 5cqw; } .v-wire .p-h span:last-child { width: 70%; }
+    .v-wire .p-txt { flex-direction: column; gap: 1.4cqw; } .v-wire .p-txt span { width: 100%; height: 1.6cqw; } .v-wire .p-txt span:last-child { width: 60%; }
+    .v-wire .p-img { background: rgba(127,127,127,.22); border-radius: 1cqw; } .v-wire .p-img::before, .v-wire .p-img::after { content: ''; position: absolute; left: 50%; top: 50%; width: 140%; height: 1px; background: rgba(127,127,127,.5); rotate: 58deg; translate: -50% 0; } .v-wire .p-img::after { rotate: -58deg; }
+    .v-wire .p-logo { background: rgba(127,127,127,.22); border-radius: 1cqw; } .v-wire .p-btn { background: rgba(127,127,127,.22); border-radius: 99px; }
+
+    /* fin: the finished, current look */
+    .v-fin .mp-bg { background: #F8DBC1; } :root[data-theme='dark'] .v-fin .mp-bg { background: #0E1718; }
+    .v-fin { color: #1B1411; } :root[data-theme='dark'] .v-fin { color: #F8DBC1; }
+    .v-fin .p-logo { font-weight: 800; font-size: 3.6cqw; letter-spacing: -.04em; } .v-fin .p-logo i { display: inline-block; width: .17em; height: .17em; margin-left: .06em; background: #EA4F6E; align-self: flex-end; margin-bottom: .3em; }
+    .v-fin .p-nav { font: 1.7cqw 'Geist Mono'; text-transform: uppercase; letter-spacing: .06em; }
+    .v-fin .p-h { font-weight: 800; font-size: 6.4cqw; line-height: .88; text-transform: uppercase; font-stretch: 75%; }
+    .v-fin .p-txt { font-size: 1.9cqw; line-height: 1.35; opacity: .7; }
+    .v-fin .p-btn { background: #EA4F6E; color: #1B1411; border-radius: 99px; font-weight: 600; font-size: 2cqw; }
+    .v-fin .p-img { border-radius: 1.6cqw; }
+
+    /* old: a dated homepage */
+    .v-old .mp-bg { background: #C8C8C8; }
+    .v-old { color: #000; font-family: 'Times New Roman', Times, serif; }
+    .v-old .p-logo { font-size: 3.4cqw; font-weight: 700; font-style: italic; color: #800000; }
+    .v-old .p-nav { font-size: 2cqw; color: #0000EE; text-decoration: underline; gap: 1.2cqw; }
+    .v-old .p-h { font-size: 4.6cqw; line-height: 1.05; justify-content: center; text-align: center; color: #000080; }
+    .v-old .p-txt { font-size: 2cqw; justify-content: center; text-align: center; font-style: italic; }
+    .v-old .p-btn { background: #DDD; border: .5cqw outset #EEE; font-size: 2.2cqw; font-family: Arial, sans-serif; }
+    .v-old .p-img { border: .7cqw ridge #888; } .v-old .p-img img { filter: saturate(.25) contrast(.8) blur(.3px); image-rendering: pixelated; }
+
+    /* brut: loud mono */
+    .v-brut .mp-bg { background: #fff; } .v-brut { color: #000; font-family: 'Geist Mono', monospace; }
+    .v-brut .p-logo { font-size: 3cqw; font-weight: 700; border: .4cqw solid #000; justify-content: center; }
+    .v-brut .p-nav { font-size: 1.8cqw; text-transform: uppercase; }
+    .v-brut .p-h { font-size: 5.6cqw; line-height: .95; text-transform: uppercase; }
+    .v-brut .p-txt { font-size: 1.8cqw; }
+    .v-brut .p-btn { background: #000; color: #fff; font-size: 2cqw; text-transform: uppercase; }
+    .v-brut .p-img { border: .4cqw solid #000; } .v-brut .p-img img { filter: grayscale(1) contrast(1.6); }
+
+    /* soft: rounded pastel */
+    .v-soft .mp-bg { background: #DDEBE8; } .v-soft { color: #1D646C; }
+    .v-soft .p-logo { font-size: 3.2cqw; font-weight: 600; font-style: italic; }
+    .v-soft .p-nav { font-size: 1.9cqw; }
+    .v-soft .p-h { font-size: 5cqw; line-height: 1; font-weight: 300; letter-spacing: -.03em; }
+    .v-soft .p-txt { font-size: 1.9cqw; opacity: .8; }
+    .v-soft .p-btn { background: #fff; border-radius: 99px; font-size: 2cqw; box-shadow: 0 1cqw 2cqw rgba(29,100,108,.2); }
+    .v-soft .p-img { border-radius: 50% 50% 2cqw 2cqw; } .v-soft .p-img img { filter: saturate(.7) brightness(1.08); }
+
+    .layer { position: absolute; inset: 0; }
+
+    /* 3A / 3B: code panes */
+    .code { position: absolute; left: 5%; top: 8%; width: 52%; margin: 0; padding: 3cqw; border-radius: 1.6cqw; background: #0E1718; color: #F8DBC1; font: 2.1cqw/1.75 'Geist Mono', monospace; white-space: pre; overflow: hidden; }
+    .code .ln { display: block; padding: 0 1cqw; margin: 0 -1cqw; border-radius: .6cqw; transition: background-color .3s, color .3s; }
+    .code .ln.is-run { background: rgba(234,79,110,.25); }
+    .code .k { color: #5FB3BA; } .code .s { color: #EA4F6E; } .code .v { color: #F2C27B; }
+    .comp { position: absolute; right: 7%; top: 22%; width: 28%; aspect-ratio: 3 / 4; border-radius: 2cqw; background: #fff; box-shadow: 0 2cqw 4cqw -2cqw rgba(0,0,0,.35); overflow: hidden; display: flex; flex-direction: column; }
+    .comp img { width: 100%; height: 62%; object-fit: cover; }
+    .comp b { display: block; margin: 1.6cqw 1.6cqw .6cqw; height: 1.8cqw; width: 70%; background: #1B1411; border-radius: .6cqw; opacity: .8; }
+    .comp b + b { margin-top: 0; width: 45%; opacity: .3; }
+    .comp-sel { position: absolute; inset: -1.2cqw; border: .3cqw dashed #1D646C; border-radius: 3cqw; opacity: 0; }
+    .knobs { position: absolute; left: 5%; bottom: 7%; font: 1.6cqw 'Geist Mono'; opacity: .7; text-transform: uppercase; }
+
+    /* 4B: versions */
+    .ver { position: absolute; width: 74%; height: 74%; container-type: inline-size; border-radius: 1.6cqw; overflow: hidden; box-shadow: 0 2cqw 5cqw -2cqw rgba(0,0,0,.4); }
+    .ver__tag { position: absolute; z-index: 5; right: 2cqw; top: 2cqw; padding: .5cqw 1.2cqw; border-radius: 99px; background: #1B1411; color: #F8DBC1; font: 1.6cqw 'Geist Mono'; }
+
+
     .svc__item .mono { color: var(--pink); }
     .cps { padding: clamp(6rem, 16vh, 10rem) var(--gutter) 0; }
     .cps__grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-top: 2rem; perspective: 900px; }
@@ -208,7 +298,7 @@
       .hero__intro, .hero__foot, .cta__row, .work__head { flex-direction: column; align-items: start; }
       .case__steps { display: none; }
       .more__grid { grid-template-columns: 1fr; gap: 2rem; } .more__side { display: contents; } .more__side .h2s { order: 0; } .more__grid > div:last-child { order: 1; } .record { order: 2; } .more__index { order: 3; } .deck__card { inset: 6% 8% 4% 0; } .deck__ctrl { padding-right: 8%; }
-      .svc__grid, .cps__grid { grid-template-columns: 1fr 1fr; } .svc__item { min-height: 15rem; }
+      .svc__grid, .cps__grid { grid-template-columns: 1fr 1fr; }
       .pnav { position: static; translate: none; margin-left: auto; }
       .pnav__links { display: none; }
       .pnav .pnav__status { max-width: 30rem; opacity: 1; padding-inline: .9rem; }
@@ -326,10 +416,10 @@
     <section class="svc" id="services" data-section="Services" data-nav="services" data-status="Services">
       <h2 class="h2s">Services</h2>
       <div class="svc__grid">
-        <div class="svc__item"><span class="mono">01</span><div><h3>New<br>website</h3><p>From first sketch to a launched site, for businesses that need a proper online presence.</p></div></div>
-        <div class="svc__item"><span class="mono">02</span><div><h3>Redesign</h3><p>For businesses that have outgrown their site: clearer navigation, better content, consistent on every screen.</p></div></div>
-        <div class="svc__item"><span class="mono">03</span><div><h3>Custom<br>front-end</h3><p>When a template won’t do: hand-coded pages, motion and interactive components.</p></div></div>
-        <div class="svc__item"><span class="mono">04</span><div><h3>Ongoing<br>improvements</h3><p>For a site you already have: new pages, layout and content updates, performance and new features.</p></div></div>
+        <div class="svc__item" data-scene="wire"><span class="mono">01</span><div data-stage></div><div><h3>New<br>website</h3><p>From first sketch to a launched site, for businesses that need a proper online presence.</p></div></div>
+        <div class="svc__item" data-scene="loop"><span class="mono">02</span><div data-stage></div><div><h3>Redesign</h3><p>For businesses that have outgrown their site: clearer navigation, better content, consistent on every screen.</p></div></div>
+        <div class="svc__item" data-scene="code"><span class="mono">03</span><div data-stage></div><div><h3>Custom<br>front-end</h3><p>When a template won’t do: hand-coded pages, motion and interactive components.</p></div></div>
+        <div class="svc__item" data-scene="versions"><span class="mono">04</span><div data-stage></div><div><h3>Ongoing<br>improvements</h3><p>For a site you already have: new pages, layout and content updates, performance and new features.</p></div></div>
       </div>
     </section>
 
@@ -547,6 +637,87 @@
 
     if (!window.gsap) { place(); return; }
     ScrollTrigger.addEventListener('refresh', place);
+    /* ---------- Services: each card acts out its service (picked options) ---------- */
+    const IMG = '../../assets/images/';
+    const page = (v) => {
+      const c = {
+        wire: { logo: '', nav: '<span class="ph"></span><span class="ph"></span><span class="ph"></span>', h: '<span class="ph"></span><span class="ph"></span>', txt: '<span class="ph"></span><span class="ph"></span>', btn: '', img: '' },
+        fin: { logo: 'Mori<i></i>', nav: '<span>Menu</span><span>Story</span><span>Book</span>', h: 'Fresh, every morning', txt: 'A small bakery-café. Bread out of the oven at seven.', btn: 'Book a table', img: `<img src="${IMG}concept-crumb-and-kin-poster.webp" alt="">` },
+        old: { logo: "Mori's", nav: '<span>Home</span>|<span>About</span>|<span>Contact</span>', h: 'Welcome to our Homepage!!', txt: 'Best viewed in 800×600', btn: 'Click Here', img: `<img src="${IMG}concept-crumb-and-kin-poster.webp" alt="">` },
+        brut: { logo: 'MORI', nav: '<span>Menu</span><span>Story</span><span>Book</span>', h: 'Fresh every morning', txt: 'Bread at 07:00.', btn: 'Book →', img: `<img src="${IMG}concept-crumb-and-kin-poster.webp" alt="">` },
+        soft: { logo: 'mori', nav: '<span>menu</span><span>story</span><span>book</span>', h: 'Fresh, every morning', txt: 'A small bakery-café.', btn: 'Book a table', img: `<img src="${IMG}concept-crumb-and-kin-poster.webp" alt="">` },
+      }[v];
+      const ph = v === 'wire' ? ' ph' : '';
+      return `<div class="mp v-${v}"><div class="mp-bg"></div><div class="p-logo${ph}" data-k="logo">${c.logo}</div><div class="p-nav" data-k="nav">${c.nav}</div><div class="p-h" data-k="h">${c.h}</div><div class="p-txt" data-k="txt">${c.txt}</div><div class="p-btn${ph}" data-k="btn">${c.btn}</div><div class="p-img" data-k="img">${c.img}</div></div>`;
+    };
+    const stage = (inner) => `<div class="stage"><div class="stage__bar"><i></i><i></i><i></i></div><div class="view">${inner}</div></div>`;
+    const KEYS = ['logo', 'nav', 'h', 'txt', 'btn', 'img'];
+    const SCENES = {
+      wire: {
+        html: () => stage(`<div class="layer a">${page('wire')}</div><div class="layer b">${page('fin')}</div>`),
+        tl: (el) => {
+          const tl = gsap.timeline({ paused: true });
+          tl.set($('.b .mp-bg', el), { opacity: 0 }, 0);
+          KEYS.forEach((k) => tl.set($(`.b [data-k="${k}"]`, el), { clipPath: 'inset(0% 100% 0% 0%)' }, 0));
+          tl.to($('.b .mp-bg', el), { opacity: 1, duration: .5 }, 0);
+          KEYS.forEach((k, i) => {
+            tl.to($(`.a [data-k="${k}"]`, el), { opacity: 0, duration: .3 }, .15 + i * .14)
+              .to($(`.b [data-k="${k}"]`, el), { clipPath: 'inset(0% 0% 0% 0%)', duration: .55, ease: 'expo.out' }, .15 + i * .14);
+          });
+          return tl;
+        },
+      },
+      loop: {
+        html: () => stage(`<div class="layer s0">${page('old')}</div><div class="layer s1">${page('brut')}</div><div class="layer s2">${page('soft')}</div><div class="layer s3">${page('fin')}</div>`),
+        tl: (el) => {
+          const L = ['.s1', '.s2', '.s3'].map((s) => $(s, el));
+          gsap.set(L, { clipPath: 'inset(0% 0% 100% 0%)' });
+          const tl = gsap.timeline({ paused: true });
+          L.forEach((l, i) => tl.to(l, { clipPath: 'inset(0% 0% 0% 0%)', duration: .45, ease: 'expo.inOut' }, i * .6));
+          return tl;
+        },
+      },
+      code: {
+        html: () => stage(`<pre class="code"><span class="ln"><span class="k">const</span> card = $(<span class="s">".card"</span>)</span><span class="ln">gsap.to(card, { y: <span class="v">-24</span> })</span><span class="ln">gsap.to(card, { rotate: <span class="v">6</span> })</span><span class="ln">gsap.to(card, { scale: <span class="v">1.12</span> })</span><span class="ln">card.style.bg = <span class="s">"pink"</span></span></pre>
+          <div class="comp"><img src="${IMG}concept-common-table-cover.webp" alt=""><b></b><b></b><span class="comp-sel"></span></div>`),
+        tl: (el) => {
+          const ln = $$('.ln', el), comp = $('.comp', el), sel = $('.comp-sel', el);
+          const tl = gsap.timeline({ paused: true });
+          const run = (i, at) => tl.add(() => ln.forEach((l, k) => l.classList.toggle('is-run', k === i)), at);
+          run(0, 0); tl.to(sel, { opacity: 1, duration: .25 }, 0);
+          run(1, .5); tl.to(comp, { y: '-6cqw', duration: .5, ease: 'back.out(2)' }, .5);
+          run(2, 1.0); tl.to(comp, { rotation: 6, duration: .5, ease: 'back.out(2)' }, 1.0);
+          run(3, 1.5); tl.to(comp, { scale: 1.12, duration: .5, ease: 'back.out(2)' }, 1.5);
+          run(4, 2.0); tl.to(comp, { backgroundColor: '#EA4F6E', duration: .4 }, 2.0).to(sel, { opacity: 0, duration: .3 }, 2.2);
+          tl.add(() => {}, 2.6);
+          tl.eventCallback('onReverseComplete', () => ln.forEach((l) => l.classList.remove('is-run')));
+          return tl;
+        },
+      },
+      versions: {
+        html: () => stage(`<div class="ver v0" style="left:6%;top:8%">${page('wire')}<span class="ver__tag">v1.0</span></div><div class="ver v1" style="left:13%;top:15%">${page('soft')}<span class="ver__tag">v1.1</span></div><div class="ver v2" style="left:20%;top:22%">${page('fin')}<span class="ver__tag">v1.2</span></div>`),
+        tl: (el) => {
+          gsap.set($('.v0 .mp-bg', el), { background: '#FBEBDD' });
+          return gsap.timeline({ paused: true })
+            .fromTo($('.v1', el), { xPercent: 120, rotation: 8 }, { xPercent: 0, rotation: 0, duration: .7, ease: 'expo.out', immediateRender: true }, .1)
+            .fromTo($('.v2', el), { xPercent: 120, rotation: 8 }, { xPercent: 0, rotation: 0, duration: .7, ease: 'expo.out', immediateRender: true }, .6);
+        },
+      },
+    };
+    $$('.svc__item[data-scene]').forEach((card) => {
+      const sc = SCENES[card.dataset.scene];
+      $('[data-stage]', card).outerHTML = sc.html();
+      const tl = sc.tl(card, card);
+      tl.progress(1).progress(0);
+      $$('.is-run', card).forEach((l) => l.classList.remove('is-run'));
+      if (REDUCE) { tl.progress(1); return; }
+      const on = () => { card.classList.add('is-on'); tl.timeScale(1).play(); };
+      const off = () => { card.classList.remove('is-on'); tl.timeScale(1.8).reverse(); };
+      if (matchMedia('(hover: hover) and (pointer: fine)').matches) { card.addEventListener('pointerenter', on); card.addEventListener('pointerleave', off); }
+      else ScrollTrigger.create({ trigger: card, start: 'top 60%', end: 'bottom 40%', onToggle: (st) => (st.isActive ? on() : off()) });
+      card.tabIndex = 0; card.addEventListener('focus', on); card.addEventListener('blur', off);
+    });
+
     if (REDUCE) { place(); return; }
 
     /* ---------- Hero ---------- */
