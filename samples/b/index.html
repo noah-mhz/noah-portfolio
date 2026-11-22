@@ -1,0 +1,315 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>Sample B · Kinetic studio — Noah Zaw Min Htut</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <script>try{var t=localStorage.getItem('sample-theme');if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+  <link rel="stylesheet" href="../shared.css">
+  <style>
+    body { font-family: 'Archivo', system-ui, sans-serif; font-size: 1rem; line-height: 1.5; overflow-x: clip; }
+    html, main { overflow-x: clip; }
+    .mono { font-family: 'Geist Mono', monospace; font-size: 0.72rem; letter-spacing: 0.06em; text-transform: uppercase; }
+    .wrap { padding: 0 var(--gutter); }
+
+    /* Header */
+    .top { position: fixed; z-index: 50; inset: 0 0 auto; display: flex; align-items: center; justify-content: space-between; padding: 1.1rem var(--gutter); pointer-events: none; }
+    .top > * { pointer-events: auto; }
+    .top .logo { padding: .55rem .8rem; margin-left: -.8rem; border-radius: 99px; background: color-mix(in srgb, var(--bg) 70%, transparent); backdrop-filter: blur(10px); }
+    @media (max-width: 900px) { .hero { min-height: 0; padding-top: 8rem; } }
+    .logo { font-weight: 800; font-size: 1.55rem; letter-spacing: -0.04em; line-height: 1; text-decoration: none; font-stretch: 100%; }
+    .logo i { display: inline-block; width: .17em; height: .17em; margin-left: .06em; background: var(--pink); }
+    .top nav { display: flex; gap: .3rem; padding: .3rem; border-radius: 99px; background: color-mix(in srgb, var(--bg) 70%, transparent); backdrop-filter: blur(10px); border: 1px solid var(--line); }
+    .top nav a { padding: .55rem .9rem; border-radius: 99px; text-decoration: none; }
+    .top nav a:hover { background: var(--ink); color: var(--bg); }
+    .pill { display: inline-flex; align-items: center; gap: .6rem; padding: .95rem 1.35rem; border-radius: 99px; background: var(--ink); color: var(--bg); text-decoration: none; font: 600 .95rem/1 'Archivo'; font-stretch: 110%; }
+    .pill b { display: grid; place-items: center; width: 1.4rem; height: 1.4rem; border-radius: 50%; background: var(--pink); color: var(--on-pink); font-weight: 600; transition: rotate .5s var(--ease); }
+    .pill:hover b { rotate: -45deg; }
+
+    /* Hero: letters swell in width and weight near the cursor (React Bits "Text Pressure"). */
+    .hero { min-height: 100svh; display: flex; flex-direction: column; justify-content: flex-end; padding-top: 6rem; padding-bottom: 2.2rem; }
+    .hero__intro { display: flex; justify-content: space-between; align-items: end; gap: 2rem; margin-bottom: 1.4rem; }
+    .hero__intro p { margin: 0; font-size: clamp(1.1rem, 1.6vw, 1.55rem); line-height: 1.25; max-width: 30rem; font-stretch: 100%; font-weight: 450; }
+    .hero__intro p span { color: var(--muted); }
+    .press { margin: 0; text-transform: uppercase; font-weight: 800; line-height: .8; letter-spacing: -.01em; white-space: nowrap; user-select: none; }
+    .press .ln { display: flex; justify-content: space-between; align-items: center; }
+    .press .ch { display: inline-block; font-variation-settings: 'wdth' 100, 'wght' 800; will-change: font-variation-settings; }
+    .press .ln + .ln { margin-top: .03em; }
+    .press .reel { flex: none; height: .7em; aspect-ratio: 16 / 10; margin: 0 .08em; border-radius: .08em; overflow: hidden; background: var(--pink); position: relative; }
+    .press .reel video { width: 100%; height: 100%; object-fit: cover; }
+    .press .sq { flex: none; width: .2em; height: .2em; align-self: flex-end; margin-bottom: .05em; background: var(--pink); }
+    .hero__foot { display: flex; justify-content: space-between; align-items: center; gap: 1rem; margin-top: 2rem; }
+    .hero__foot .tags { display: flex; gap: .4rem; flex-wrap: wrap; }
+    .tag { padding: .5rem .8rem; border: 1px solid var(--line); border-radius: 99px; }
+    .tag--on { background: var(--teal); color: var(--on-teal); border-color: transparent; display: inline-flex; gap: .45rem; align-items: center; }
+    .tag--on::before { content: ''; width: .45rem; height: .45rem; border-radius: 50%; background: var(--pink); }
+
+    /* Velocity marquee (React Bits "Scroll Velocity") */
+    .marquee { background: var(--pink); color: var(--on-pink); overflow: hidden; padding: 1.4rem 0; rotate: -2deg; margin: 3rem -2vw; }
+    .marquee__track { display: flex; width: max-content; }
+    .marquee__track span { font-weight: 800; font-size: clamp(2.6rem, 6vw, 6rem); text-transform: uppercase; line-height: 1; font-stretch: 125%; letter-spacing: -.02em; padding-right: .5em; white-space: nowrap; }
+    .marquee__track span i { font-style: normal; color: var(--bg); padding-left: .5em; }
+
+    /* Statement: words light up as you scroll (React Bits "Scroll Reveal"). */
+    .statement { padding: clamp(6rem, 18vh, 12rem) var(--gutter); }
+    .statement .mono { display: block; margin-bottom: 2rem; color: var(--teal); }
+    .statement p { margin: 0; font-weight: 600; font-size: clamp(2rem, 4.6vw, 4.8rem); line-height: 1.02; letter-spacing: -.035em; font-stretch: 92%; max-width: 22ch; }
+    .statement .w { opacity: .14; }
+    .statement .w.k { color: var(--pink); }
+
+    /* Work: pinned horizontal reel */
+    .work { position: relative; padding-top: 5.5rem; }
+    .work__head { display: flex; justify-content: space-between; align-items: end; padding: 0 var(--gutter) 1.5rem; }
+    .work__head h2 { margin: 0; font-weight: 800; font-size: clamp(3rem, 9vw, 10rem); line-height: .8; text-transform: uppercase; font-stretch: 62%; letter-spacing: -.01em; }
+    .reel-wrap { overflow: hidden; }
+    .track { display: flex; gap: 2vw; padding: 0 var(--gutter); width: max-content; }
+    .card { position: relative; width: min(72vw, 72rem); flex: none; text-decoration: none; display: block; }
+    .card__img { aspect-ratio: 16 / 10; border-radius: 1rem; overflow: hidden; background: var(--bg-2); }
+    .card__img img { width: 100%; height: 100%; object-fit: cover; scale: 1.08; transition: scale 1.2s var(--ease); }
+    .card:hover .card__img img { scale: 1.02; }
+    .card__row { display: flex; justify-content: space-between; align-items: start; gap: 1rem; padding-top: 1rem; }
+    .card h3 { margin: 0; font-weight: 800; font-size: clamp(2.4rem, 5.4vw, 6rem); line-height: .85; text-transform: uppercase; font-stretch: 75%; letter-spacing: -.01em; transition: font-stretch .6s var(--ease), color .4s; }
+    .card:hover h3 { font-stretch: 125%; color: var(--pink); }
+    .card__meta { text-align: right; display: grid; gap: .3rem; }
+    .card__meta .eng { color: var(--teal); }
+    .card--end { width: min(40vw, 30rem); display: grid; place-items: center; aspect-ratio: auto; }
+    .card--end a { display: grid; place-items: center; width: 100%; aspect-ratio: 1; border-radius: 50%; background: var(--teal); color: var(--on-teal); text-decoration: none; font-weight: 800; font-size: clamp(1.6rem, 2.6vw, 2.6rem); text-transform: uppercase; text-align: center; line-height: .95; font-stretch: 80%; }
+
+    /* Cursor bubble over cards */
+    .bubble { position: fixed; z-index: 80; left: 0; top: 0; width: 6.5rem; height: 6.5rem; margin: -3.25rem 0 0 -3.25rem; border-radius: 50%; background: var(--pink); color: var(--on-pink); display: grid; place-items: center; font: 600 .78rem 'Geist Mono'; letter-spacing: .06em; text-transform: uppercase; pointer-events: none; scale: 0; }
+
+    /* Services */
+    .svc { padding: clamp(6rem, 16vh, 10rem) var(--gutter) 0; }
+    .svc__grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-top: 2rem; }
+    .svc__item { padding: 1.5rem; border-radius: 1rem; background: var(--bg-2); min-height: 22rem; display: flex; flex-direction: column; justify-content: space-between; transition: background-color .5s var(--ease), color .5s var(--ease), translate .6s var(--ease); }
+    .svc__item:hover { background: var(--ink); color: var(--bg); translate: 0 -.5rem; }
+    .svc__item h3 { margin: 0; font-weight: 800; font-size: clamp(1.8rem, 2.6vw, 2.8rem); line-height: .9; text-transform: uppercase; font-stretch: 70%; }
+    .svc__item p { margin: 0; font-size: 1rem; line-height: 1.4; opacity: .8; }
+    .svc__item .mono { color: var(--pink); }
+    .h2s { margin: 0; font-weight: 800; font-size: clamp(3rem, 9vw, 10rem); line-height: .8; text-transform: uppercase; font-stretch: 62%; }
+
+    /* Concepts */
+    .cps { padding: clamp(6rem, 16vh, 10rem) var(--gutter) 0; }
+    .cps__grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-top: 2rem; perspective: 900px; }
+    .cps__grid a { text-decoration: none; transform-style: preserve-3d; }
+    .cps__grid .im { aspect-ratio: 4 / 5; border-radius: 1rem; overflow: hidden; }
+    .cps__grid img { width: 100%; height: 100%; object-fit: cover; }
+    .cps__grid .mono { display: flex; justify-content: space-between; padding-top: .8rem; }
+
+    /* Contact */
+    .cta { margin-top: clamp(7rem, 18vh, 12rem); background: var(--ink); color: var(--bg); border-radius: 2rem 2rem 0 0; padding: clamp(4rem, 12vh, 8rem) var(--gutter) 1.5rem; }
+    .cta .press { color: var(--bg); }
+    .cta .press .sq { background: var(--pink); }
+    .cta__row { display: flex; justify-content: space-between; align-items: end; gap: 2rem; margin-top: 3rem; }
+    .cta__row p { margin: 0; max-width: 28rem; font-size: 1.2rem; line-height: 1.35; }
+    .cta .pill { background: var(--pink); color: var(--on-pink); font-size: 1.15rem; padding: 1.3rem 1.8rem; }
+    .cta .pill b { background: var(--bg); color: var(--ink); }
+    .foot { display: flex; justify-content: space-between; gap: 1rem; margin-top: 5rem; padding-top: 1.2rem; border-top: 1px solid color-mix(in srgb, var(--bg) 25%, transparent); }
+
+    @media (max-width: 900px) {
+      .top nav { display: none; }
+      .hero__intro { flex-direction: column; align-items: start; }
+      .hero__foot { flex-direction: column; align-items: start; }
+      .card { width: 84vw; } .card--end { width: 60vw; }
+      .svc__grid, .cps__grid { grid-template-columns: 1fr 1fr; } .svc__item { min-height: 15rem; }
+      .cta__row { flex-direction: column; align-items: start; }
+      .work__head { flex-direction: column; align-items: start; gap: 1rem; }
+    }
+    @media (max-width: 600px) { .svc__grid { grid-template-columns: 1fr; } .press .reel { display: none; } }
+  </style>
+</head>
+<body>
+  <header class="top">
+    <a class="logo" href="#top" aria-label="Noah — top">noah<i></i></a>
+    <nav class="mono" aria-label="Main"><a href="#work" data-scr>Work</a><a href="#services" data-scr>Services</a><a href="#concepts" data-scr>Concepts</a><a href="#contact" data-scr>Contact</a></nav>
+    <a class="pill" href="#contact" data-mag>Discuss a project <b>→</b></a>
+  </header>
+
+  <main id="top">
+    <section class="hero wrap">
+      <div class="hero__intro">
+        <p>Independent web designer &amp; developer in Singapore — <span>premium design, engineered properly.</span></p>
+        <span class="mono">I design &amp; build</span>
+      </div>
+      <h1 class="press" data-press aria-label="I design &amp; build distinctive websites.">
+        <span class="ln" data-fit><span class="t">Distinctive</span></span>
+        <span class="ln" data-fit><span class="reel" aria-hidden="true"><video muted loop playsinline autoplay poster="../../assets/images/ganko-scroll-poster.webp"><source src="../../assets/video/ganko-scroll.mp4" type="video/mp4"></video></span><span class="t">Websites</span><span class="sq" aria-hidden="true"></span></span>
+      </h1>
+      <div class="hero__foot">
+        <div class="tags mono"><span class="tag tag--on">Taking freelance projects</span><span class="tag">Restaurants</span><span class="tag">Lifestyle brands</span><span class="tag">Established companies</span></div>
+        <span class="mono">Singapore → Worldwide</span>
+      </div>
+    </section>
+
+    <div class="marquee" aria-hidden="true"><div class="marquee__track">
+      <span>New website<i>✳</i></span><span>Redesign<i>✳</i></span><span>Custom front-end<i>✳</i></span><span>Ongoing improvements<i>✳</i></span>
+      <span>New website<i>✳</i></span><span>Redesign<i>✳</i></span><span>Custom front-end<i>✳</i></span><span>Ongoing improvements<i>✳</i></span>
+    </div></div>
+
+    <section class="statement">
+      <span class="mono">About the work</span>
+      <p data-reveal>Every site in this portfolio was designed and built by one person — <span data-k>from first sketch to launch.</span> For restaurants, lifestyle brands and established companies.</p>
+    </section>
+
+    <section class="work" id="work">
+      <div class="work__head"><h2>Selected<br>work</h2><span class="mono">01 — 03 · Drag your scroll →</span></div>
+      <div class="reel-wrap">
+        <div class="track">
+          <a class="card" href="/work/ganko/" data-view>
+            <div class="card__img"><img src="../../assets/images/ganko-home-1600.webp" alt="Ganko.sg homepage"></div>
+            <div class="card__row"><h3>Ganko.sg</h3><div class="card__meta mono"><span>01 · Restaurant · 2025</span><span class="eng">Freelance</span></div></div>
+          </a>
+          <a class="card" href="/work/luumens/" data-view>
+            <div class="card__img"><img src="../../assets/images/luumens-home-1600.webp" alt="Luumens homepage"></div>
+            <div class="card__row"><h3>Luumens</h3><div class="card__meta mono"><span>02 · Energy · 2026</span><span class="eng">In-house · Pomar Engineering</span></div></div>
+          </a>
+          <a class="card" href="/work/voyagaer/" data-view>
+            <div class="card__img"><img src="../../assets/images/voyagaer-hero-poster.webp" alt="Voyagaer homepage"></div>
+            <div class="card__row"><h3>Voyagaer</h3><div class="card__meta mono"><span>03 · Marine · Not yet launched</span><span class="eng">In-house · Pomar Engineering</span></div></div>
+          </a>
+          <div class="card card--end"><a href="/concepts/" data-mag>See the<br>concepts →</a></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="svc" id="services">
+      <h2 class="h2s">Services</h2>
+      <div class="svc__grid">
+        <div class="svc__item"><span class="mono">01</span><div><h3>New<br>website</h3><p>From first sketch to a launched site, for businesses that need a proper online presence.</p></div></div>
+        <div class="svc__item"><span class="mono">02</span><div><h3>Redesign</h3><p>For businesses that have outgrown their site: clearer navigation, better content, consistent on every screen.</p></div></div>
+        <div class="svc__item"><span class="mono">03</span><div><h3>Custom<br>front-end</h3><p>When a template won’t do: hand-coded pages, motion and interactive components.</p></div></div>
+        <div class="svc__item"><span class="mono">04</span><div><h3>Ongoing<br>improvements</h3><p>For a site you already have: new pages, layout and content updates, performance and new features.</p></div></div>
+      </div>
+    </section>
+
+    <section class="cps" id="concepts">
+      <h2 class="h2s">Concepts</h2>
+      <div class="cps__grid">
+        <a href="/concepts/#pixel-pull" data-tilt><div class="im"><img src="../../assets/images/concept-pixel-pull-cover.webp" alt="" loading="lazy"></div><span class="mono"><span>Pixel Pull</span><span>Card shop</span></span></a>
+        <a href="/concepts/#little-rosti" data-tilt><div class="im"><img src="../../assets/images/concept-little-rosti-poster.webp" alt="" loading="lazy"></div><span class="mono"><span>Little Rösti</span><span>Café</span></span></a>
+        <a href="/concepts/#common-table" data-tilt><div class="im"><img src="../../assets/images/concept-common-table-cover.webp" alt="" loading="lazy"></div><span class="mono"><span>Common Table</span><span>Restaurant</span></span></a>
+        <a href="/concepts/#crumb-and-kin" data-tilt><div class="im"><img src="../../assets/images/concept-crumb-and-kin-poster.webp" alt="" loading="lazy"></div><span class="mono"><span>Crumb &amp; Kin</span><span>Bakery</span></span></a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="cta" id="contact">
+    <h2 class="press" data-press aria-label="Discuss a project.">
+      <span class="ln" data-fit><span class="t">Discuss a</span></span>
+      <span class="ln" data-fit><span class="t">project</span><span class="sq" aria-hidden="true"></span></span>
+    </h2>
+    <div class="cta__row">
+      <p>No pressure, no complicated process. Tell me a little about your project and I'll reply within a day or two.</p>
+      <a class="pill" href="#contact" data-mag>Start a project <b>→</b></a>
+    </div>
+    <div class="foot mono"><span>© 2026 Noah Zaw Min Htut</span><span>Sample B · Kinetic studio</span></div>
+  </footer>
+  <div class="bubble" aria-hidden="true">View</div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js" defer></script>
+  <script src="../shared.js" defer></script>
+  <script defer>
+  addEventListener('DOMContentLoaded', () => {
+    const fine = matchMedia('(pointer: fine)').matches;
+
+    // Split pressure lines into letters and size each line to fill the width.
+    const presses = [...document.querySelectorAll('[data-press]')];
+    presses.forEach((h) => h.querySelectorAll('.t').forEach((t) => splitChars(t)));
+    const fit = () => presses.forEach((h) => {
+      const W = h.clientWidth;
+      h.querySelectorAll('[data-fit]').forEach((ln) => {
+        ln.style.fontSize = '100px';
+        const w = [...ln.children].reduce((a, c) => a + c.getBoundingClientRect().width, 0);
+        ln.style.fontSize = (100 * W / w * 0.995) + 'px';
+      });
+    });
+    fit(); document.fonts.load('800 100px Archivo').then(fit); document.fonts.ready.then(fit); addEventListener('resize', fit);
+
+    if (!window.gsap || REDUCE) return;
+
+    // Load: letters arrive narrow and light, then open up.
+    const heroChars = document.querySelectorAll('.hero .press .ch');
+    const state = [...heroChars].map(() => ({ w: 62, g: 300 }));
+    const paint = (els, st) => els.forEach((el, i) => el.style.fontVariationSettings = `'wdth' ${st[i].w}, 'wght' ${st[i].g}`);
+    gsap.from('.hero .press .ln', { yPercent: 100, opacity: 0, duration: 1.2, stagger: .12, ease: 'expo.out', delay: .1 });
+    gsap.to(state, { w: 100, g: 800, duration: 1.6, stagger: .03, ease: 'expo.out', delay: .25, onUpdate: () => paint(heroChars, state) });
+    gsap.from('.hero__intro > *, .hero__foot > *, .top > *', { y: 20, opacity: 0, duration: 1, stagger: .06, ease: 'power3.out', delay: .6 });
+
+    // Pressure: each letter swells with closeness to the cursor.
+    if (fine) presses.forEach((h) => {
+      const chars = [...h.querySelectorAll('.ch')];
+      let mx = -9999, my = -9999, on = false;
+      addEventListener('pointermove', (e) => { mx = e.clientX; my = e.clientY; on = true; });
+      const st = chars.map(() => ({ w: 100, g: 800 }));
+      gsap.ticker.add(() => {
+        if (!on) return;
+        const r = h.getBoundingClientRect(); if (r.bottom < 0 || r.top > innerHeight) return;
+        chars.forEach((c, i) => {
+          const b = c.getBoundingClientRect();
+          const d = Math.hypot(mx - (b.left + b.width / 2), my - (b.top + b.height / 2));
+          const k = Math.max(0, 1 - d / (r.height * 0.9));
+          const tw = 85 + 40 * k, tg = 560 + 340 * k;
+          st[i].w += (tw - st[i].w) * .12; st[i].g += (tg - st[i].g) * .12;
+          c.style.fontVariationSettings = `'wdth' ${st[i].w.toFixed(1)}, 'wght' ${st[i].g.toFixed(0)}`;
+        });
+      });
+      setTimeout(fit, 0);
+    });
+
+    // Marquee: drifts on its own, scroll speed pushes it and flips its direction.
+    const track = document.querySelector('.marquee__track');
+    let x = 0, dir = -1, boost = 0;
+    gsap.ticker.add((t, dt) => {
+      const half = track.scrollWidth / 2;
+      x += dir * (0.06 + boost) * dt; boost *= .92;
+      if (x <= -half) x += half; if (x > 0) x -= half;
+      gsap.set(track, { x, skewX: gsap.utils.clamp(-12, 12, -boost * dir * 8) });
+    });
+    ScrollTrigger.create({ onUpdate: (s) => { dir = s.direction > 0 ? -1 : 1; boost = Math.min(Math.abs(s.getVelocity()) / 2000, 1.4); } });
+
+    // Statement: words light up in order.
+    const p = document.querySelector('[data-reveal]');
+    const words = (txt, cls) => txt.split(/(\s+)/).map((w) => /\s/.test(w) || !w ? w : `<span class="w${cls}">${w}</span>`).join('');
+    p.innerHTML = [...p.childNodes].map((n) => n.nodeType === 3 ? words(n.textContent, '') : words(n.textContent, ' k')).join('');
+    gsap.to(p.querySelectorAll('.w'), { opacity: 1, stagger: .1, ease: 'none', scrollTrigger: { trigger: p, start: 'top 80%', end: 'bottom 45%', scrub: true } });
+
+    // Work: pinned, scrolls sideways; cards lean with speed.
+    const tr = document.querySelector('.track');
+    const dist = () => tr.scrollWidth - innerWidth;
+    const lean = gsap.quickTo('.card', 'skewX', { duration: .5, ease: 'power3' });
+    gsap.to(tr, { x: () => -dist(), ease: 'none', scrollTrigger: { trigger: '.work', start: 'top top', end: () => '+=' + dist(), pin: true, scrub: 1, invalidateOnRefresh: true,
+      onUpdate: (s) => lean(gsap.utils.clamp(-3, 3, s.getVelocity() / -600)) } });
+    gsap.utils.toArray('.card__img img').forEach((img) => gsap.fromTo(img, { xPercent: -4 }, { xPercent: 4, ease: 'none', scrollTrigger: { trigger: '.work', start: 'top top', end: () => '+=' + dist(), scrub: true } }));
+
+    // "View" bubble follows the cursor over cards.
+    if (fine) {
+      const b = document.querySelector('.bubble');
+      const bx = gsap.quickTo(b, 'x', { duration: .45, ease: 'power3' }), by = gsap.quickTo(b, 'y', { duration: .45, ease: 'power3' });
+      addEventListener('pointermove', (e) => { bx(e.clientX); by(e.clientY); });
+      document.querySelectorAll('[data-view]').forEach((c) => {
+        c.addEventListener('pointerenter', () => gsap.to(b, { scale: 1, duration: .5, ease: 'back.out(2)' }));
+        c.addEventListener('pointerleave', () => gsap.to(b, { scale: 0, duration: .35, ease: 'power3.in' }));
+      });
+      // Tilted cards (React Bits "Tilted Card").
+      document.querySelectorAll('[data-tilt]').forEach((c) => {
+        const rx = gsap.quickTo(c, 'rotationX', { duration: .6, ease: 'power3' }), ry = gsap.quickTo(c, 'rotationY', { duration: .6, ease: 'power3' });
+        c.addEventListener('pointermove', (e) => { const r = c.getBoundingClientRect(); ry(((e.clientX - r.left) / r.width - .5) * 14); rx(-((e.clientY - r.top) / r.height - .5) * 14); });
+        c.addEventListener('pointerleave', () => { rx(0); ry(0); });
+      });
+    }
+
+    // Reveals
+    gsap.utils.toArray('.h2s, .work__head h2').forEach((h) => gsap.from(h, { yPercent: 50, opacity: 0, duration: 1.2, ease: 'expo.out', scrollTrigger: { trigger: h, start: 'top 88%' } }));
+    gsap.from('.svc__item', { y: 60, opacity: 0, duration: 1.1, stagger: .08, ease: 'expo.out', scrollTrigger: { trigger: '.svc__grid', start: 'top 85%' } });
+    gsap.from('.cps__grid > a', { y: 60, opacity: 0, duration: 1.1, stagger: .08, ease: 'expo.out', scrollTrigger: { trigger: '.cps__grid', start: 'top 85%' } });
+    gsap.from('.cta .ln', { yPercent: 100, opacity: 0, duration: 1.2, stagger: .1, ease: 'expo.out', scrollTrigger: { trigger: '.cta', start: 'top 70%' } });
+    document.querySelectorAll('[data-mag]').forEach((el) => magnet(el, .3));
+    document.querySelectorAll('[data-scr]').forEach((a) => a.addEventListener('pointerenter', () => scramble(a, { duration: .45 })));
+  });
+  </script>
+</body>
+</html>

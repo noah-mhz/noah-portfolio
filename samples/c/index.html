@@ -1,0 +1,257 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>Sample C · Quiet gallery — Noah Zaw Min Htut</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <script>try{var t=localStorage.getItem('sample-theme');if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+  <link rel="stylesheet" href="../shared.css">
+  <style>
+    body { font-family: 'Geist', system-ui, sans-serif; font-size: 0.9375rem; line-height: 1.5; }
+    .mono { font-family: 'Geist Mono', monospace; font-size: 0.6875rem; letter-spacing: 0.04em; text-transform: uppercase; }
+    .wrap { padding: 0 var(--gutter); }
+    .grid { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gutter); }
+    .muted { color: var(--muted); }
+
+    .top { position: fixed; inset: 0 0 auto; z-index: 50; padding: 1.25rem var(--gutter); align-items: baseline; background: color-mix(in srgb, var(--bg) 82%, transparent); backdrop-filter: blur(12px); transition: background-color .6s var(--ease); }
+    .logo { grid-column: 1 / 3; white-space: nowrap; font-weight: 600; font-size: 1.3rem; letter-spacing: -0.045em; line-height: 1; text-decoration: none; }
+    .logo i { display: inline-block; width: .16em; height: .16em; margin-left: .07em; background: var(--pink); }
+    .top .who { grid-column: 4 / 9; }
+    .top nav { grid-column: 9 / 13; justify-self: end; display: flex; gap: 1.5rem; }
+    .top a { text-decoration: none; }
+    .ul { background: linear-gradient(currentColor, currentColor) 0 100% / 0 1px no-repeat; transition: background-size .6s var(--ease); }
+    .ul:hover { background-size: 100% 1px; }
+
+    /* Hero: a quiet line of type over a field that leaves a trail of work under the cursor (React Bits "Image Trail"). */
+    .hero { position: relative; height: 100svh; min-height: 40rem; overflow: hidden; }
+    /* The one soft colour wash: a tasteful, slow blur of the two accents behind the type. */
+    .wash { position: absolute; inset: -20%; z-index: 0; pointer-events: none; opacity: .5; filter: blur(80px); }
+    .wash span { position: absolute; width: 38vw; height: 38vw; border-radius: 50%; }
+    .wash span:nth-child(1) { background: var(--pink); left: 55%; top: 30%; opacity: .35; }
+    .wash span:nth-child(2) { background: var(--teal); left: 15%; top: 55%; opacity: .25; }
+    :root[data-theme='dark'] .wash { opacity: .45; }
+    .trail { position: absolute; inset: 0; z-index: 1; }
+    .trail img { position: absolute; left: 0; top: 0; width: clamp(10rem, 17vw, 17rem); aspect-ratio: 4 / 3; object-fit: cover; opacity: 0; pointer-events: none; border-radius: 2px; }
+    .hero__txt { position: absolute; z-index: 2; left: var(--gutter); right: var(--gutter); bottom: clamp(2rem, 6vh, 3.5rem); pointer-events: none; }
+    .hero h1 { margin: 0; font-weight: 300; font-size: clamp(2.6rem, 7.4vw, 8.6rem); line-height: .96; letter-spacing: -.055em; max-width: 13ch; }
+    .hero h1 .w { display: inline-block; }
+    .hero h1 em { font-style: normal; color: var(--teal); }
+    .hero__meta { margin-top: 2.2rem; align-items: end; }
+    .hero__meta p { grid-column: 1 / 5; margin: 0; }
+    .hero__meta .mono:nth-child(2) { grid-column: 7 / 10; }
+    .hero__meta .mono:nth-child(3) { grid-column: 10 / 13; justify-self: end; }
+    .hint { position: absolute; z-index: 2; right: var(--gutter); top: 50%; }
+
+    /* Index */
+    .sec { padding-top: clamp(7rem, 18vh, 12rem); }
+    .sec__head { padding-bottom: 1rem; border-bottom: 1px solid var(--line); align-items: baseline; }
+    .sec__head h2 { grid-column: 1 / 7; margin: 0; font-weight: 400; font-size: clamp(1.6rem, 2.4vw, 2.4rem); letter-spacing: -.04em; }
+    .sec__head .mono { grid-column: 7 / 13; justify-self: end; }
+    .idx { list-style: none; margin: 0; padding: 0; }
+    .idx a { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gutter); align-items: baseline; padding: 1.6rem 0; border-bottom: 1px solid var(--line); text-decoration: none; position: relative; }
+    .idx .n { grid-column: 1 / 2; }
+    .idx h3 { grid-column: 2 / 7; margin: 0; font-weight: 400; font-size: clamp(2rem, 4.4vw, 4.6rem); letter-spacing: -.05em; line-height: 1; transition: translate .7s var(--ease), color .4s; }
+    .idx .c1 { grid-column: 7 / 9; } .idx .c2 { grid-column: 9 / 12; } .idx .c3 { grid-column: 12 / 13; justify-self: end; }
+    .idx a:hover h3 { translate: 1.2rem 0; color: var(--pink); }
+    .idx ul:hover a:not(:hover) { opacity: .35; }
+    .idx a { transition: opacity .5s var(--ease); }
+    .idx .th { display: none; }
+    .peek { position: fixed; z-index: 40; left: 0; top: 0; width: 26rem; aspect-ratio: 16 / 10; pointer-events: none; overflow: hidden; clip-path: inset(50% 50% 50% 50%); }
+    .peek img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity .4s; }
+    .peek img.on { opacity: 1; }
+
+    /* Wall: a gallery hang, images moving at slightly different speeds. */
+    .wall { margin-top: clamp(4rem, 10vh, 7rem); row-gap: clamp(4rem, 12vh, 9rem); }
+    .fig { margin: 0; }
+    .fig .im { overflow: hidden; background: var(--bg-2); }
+    .fig img { width: 100%; height: 100%; object-fit: cover; scale: 1.12; }
+    .fig figcaption { display: flex; justify-content: space-between; gap: 1rem; padding-top: .8rem; }
+    .f1 { grid-column: 1 / 8; } .f1 .im { aspect-ratio: 16 / 10; }
+    .f2 { grid-column: 9 / 13; align-self: end; } .f2 .im { aspect-ratio: 4 / 5; }
+    .f3 { grid-column: 3 / 7; } .f3 .im { aspect-ratio: 4 / 5; }
+    .f4 { grid-column: 8 / 13; align-self: center; } .f4 .im { aspect-ratio: 16 / 11; }
+
+    /* Services: plain and generous */
+    .svc { margin-top: 0; }
+    .svc > div { padding: 2.2rem 0 0; }
+    .svc > div:nth-child(odd) { grid-column: 1 / 6; } .svc > div:nth-child(even) { grid-column: 7 / 12; }
+    .svc h3 { margin: 0 0 .7rem; font-weight: 500; font-size: 1.35rem; letter-spacing: -.03em; display: flex; gap: 1rem; align-items: baseline; }
+    .svc h3 .mono { color: var(--pink); }
+    .svc p { margin: 0; color: var(--muted); max-width: 32rem; }
+
+    /* Concepts: a row of small prints */
+    .cps { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--gutter); margin-top: 2rem; }
+    .cps a { text-decoration: none; }
+    .cps .im { aspect-ratio: 3 / 4; overflow: hidden; }
+    .cps img { width: 100%; height: 100%; object-fit: cover; transition: scale 1.2s var(--ease); }
+    .cps a:hover img { scale: 1.05; }
+    .cps .mono { display: flex; justify-content: space-between; padding-top: .7rem; }
+
+    /* Contact */
+    .contact { padding: clamp(8rem, 22vh, 14rem) var(--gutter) 1.5rem; }
+    .contact .mono:first-child { display: block; margin-bottom: 1.5rem; }
+    .big { display: inline-flex; align-items: baseline; gap: .3em; font-weight: 300; font-size: clamp(3rem, 9vw, 10rem); letter-spacing: -.06em; line-height: 1; text-decoration: none; position: relative; }
+    .big::after { content: ''; position: absolute; left: 0; right: 0; bottom: -.08em; height: 2px; background: var(--ink); transform-origin: right; transition: scale .8s var(--ease); }
+    .big:hover::after { scale: 0 1; }
+    .big b { font-weight: 300; color: var(--pink); display: inline-block; transition: translate .7s var(--ease); }
+    .big:hover b { translate: .15em -.15em; }
+    .contact p { max-width: 28rem; margin: 2.5rem 0 0; color: var(--muted); font-size: 1.05rem; }
+    .foot { margin-top: clamp(5rem, 14vh, 9rem); padding-top: 1rem; border-top: 1px solid var(--line); display: flex; justify-content: space-between; gap: 1rem; }
+
+    @media (max-width: 900px) {
+      .top .who { display: none; } .top nav { grid-column: 4 / 13; }
+      .hero__meta p { grid-column: 1 / 13; } .hero__meta .mono:nth-child(2) { grid-column: 1 / 7; margin-top: 1.5rem; } .hero__meta .mono:nth-child(3) { grid-column: 7 / 13; }
+      .hint { display: none; }
+      .idx a { grid-template-columns: 1fr 1fr; row-gap: .5rem; } .idx .n, .idx h3, .idx .th { grid-column: 1 / -1; } .idx .c1 { grid-column: 1; } .idx .c2 { grid-column: 2; justify-self: end; } .idx .c3 { display: none; }
+      .idx .th { display: block; aspect-ratio: 16 / 10; overflow: hidden; margin: .6rem 0; } .idx .th img { width: 100%; height: 100%; object-fit: cover; }
+      .f1, .f2, .f3, .f4 { grid-column: 1 / 13; }
+      .svc > div:nth-child(odd), .svc > div:nth-child(even) { grid-column: 1 / 13; }
+      .cps { grid-template-columns: 1fr 1fr; }
+      .sec__head h2, .sec__head .mono { grid-column: 1 / 13; justify-self: start; }
+    }
+  </style>
+</head>
+<body>
+  <header class="top grid">
+    <a class="logo" href="#top" aria-label="Noah — top">noah<i></i></a>
+    <span class="who muted">Noah Zaw Min Htut — web designer &amp; developer, Singapore</span>
+    <nav aria-label="Main"><a class="ul" href="#work">Work</a><a class="ul" href="#concepts">Concepts</a><a class="ul" href="#contact">Contact</a></nav>
+  </header>
+
+  <main id="top">
+    <section class="hero" data-trail>
+      <div class="wash" aria-hidden="true"><span></span><span></span></div>
+      <div class="trail" aria-hidden="true">
+        <img src="../../assets/images/ganko-dishes.webp" alt=""><img src="../../assets/images/luumens-v2-pv.webp" alt=""><img src="../../assets/images/voyagaer-marine.webp" alt="">
+        <img src="../../assets/images/ganko-interiors.webp" alt=""><img src="../../assets/images/luumens-pv-bento.webp" alt=""><img src="../../assets/images/voyagaer-product.webp" alt="">
+        <img src="../../assets/images/concept-pp2-hero.webp" alt=""><img src="../../assets/images/ganko-tradition.webp" alt=""><img src="../../assets/images/luumens-v2-solutions.webp" alt="">
+        <img src="../../assets/images/voyagaer-harbour.webp" alt=""><img src="../../assets/images/concept-common-table-cover.webp" alt=""><img src="../../assets/images/ganko-hospitality.webp" alt="">
+      </div>
+      <span class="hint mono muted" aria-hidden="true">Move the cursor ↗</span>
+      <div class="hero__txt">
+        <h1 data-blur>I design &amp; build <em>distinctive</em> websites.</h1>
+        <div class="hero__meta grid">
+          <p>Independent web designer &amp; developer in Singapore — premium design, engineered properly.</p>
+          <span class="mono muted">For restaurants, lifestyle brands<br>and established companies</span>
+          <span class="mono">● Taking freelance projects</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="sec wrap" id="work">
+      <div class="sec__head grid"><h2>Index</h2><span class="mono muted">Selected work · 2025 — now</span></div>
+      <ul class="idx">
+        <li><a href="/work/ganko/" data-peek="0"><span class="n mono muted">01</span><h3>Ganko.sg</h3><span class="th"><img src="../../assets/images/ganko-home-900.webp" alt="" loading="lazy"></span><span class="c1 mono">Restaurant</span><span class="c2 mono muted">Freelance</span><span class="c3 mono muted">2025</span></a></li>
+        <li><a href="/work/luumens/" data-peek="1"><span class="n mono muted">02</span><h3>Luumens</h3><span class="th"><img src="../../assets/images/luumens-card-poster.webp" alt="" loading="lazy"></span><span class="c1 mono">Energy</span><span class="c2 mono muted">In-house · Pomar Engineering</span><span class="c3 mono muted">2026</span></a></li>
+        <li><a href="/work/voyagaer/" data-peek="2"><span class="n mono muted">03</span><h3>Voyagaer</h3><span class="th"><img src="../../assets/images/voyagaer-card-poster.webp" alt="" loading="lazy"></span><span class="c1 mono">Marine</span><span class="c2 mono muted">In-house · Pomar Engineering</span><span class="c3 mono muted">—</span></a></li>
+        <li><a href="/concepts/" data-peek="3"><span class="n mono muted">04</span><h3>Concepts</h3><span class="th"><img src="../../assets/images/concept-pixel-pull-cover.webp" alt="" loading="lazy"></span><span class="c1 mono">Four pitched homepages</span><span class="c2 mono muted">Concept</span><span class="c3 mono muted">—</span></a></li>
+      </ul>
+      <div class="wall grid">
+        <figure class="fig f1"><div class="im"><img src="../../assets/images/ganko-home-1600.webp" alt="Ganko.sg homepage" loading="lazy" data-speed="1"></div><figcaption class="mono"><span>Ganko.sg — Homepage</span><span class="muted">Freelance</span></figcaption></figure>
+        <figure class="fig f2"><div class="im"><img src="../../assets/images/luumens-m2.webp" alt="Luumens on a phone" loading="lazy" data-speed="1.6"></div><figcaption class="mono"><span>Luumens — Mobile</span><span class="muted">In-house</span></figcaption></figure>
+        <figure class="fig f3"><div class="im"><img src="../../assets/images/voyagaer-specs.webp" alt="Voyagaer product specs in tabs" loading="lazy" data-speed="1.3"></div><figcaption class="mono"><span>Voyagaer — Specs in tabs</span><span class="muted">In-house</span></figcaption></figure>
+        <figure class="fig f4"><div class="im"><img src="../../assets/images/luumens-pv-bento.webp" alt="Luumens bento product page" loading="lazy" data-speed=".8"></div><figcaption class="mono"><span>Luumens — Bento product page</span><span class="muted">In-house</span></figcaption></figure>
+      </div>
+    </section>
+
+    <section class="sec wrap" id="services">
+      <div class="sec__head grid"><h2>Services</h2><span class="mono muted">Design and build, by one person</span></div>
+      <div class="svc grid">
+        <div><h3><span class="mono">01</span>New website</h3><p>From first sketch to a launched site, for businesses that need a proper online presence.</p></div>
+        <div><h3><span class="mono">02</span>Redesign</h3><p>For businesses that have outgrown their site: clearer navigation, better content, consistent on every screen.</p></div>
+        <div><h3><span class="mono">03</span>Custom front-end</h3><p>When a template won’t do: hand-coded pages, motion and interactive components.</p></div>
+        <div><h3><span class="mono">04</span>Ongoing improvements</h3><p>For a site you already have: new pages, layout and content updates, performance and new features.</p></div>
+      </div>
+    </section>
+
+    <section class="sec wrap" id="concepts">
+      <div class="sec__head grid"><h2>Concepts</h2><span class="mono muted">Pitched homepages · Anonymised</span></div>
+      <div class="cps">
+        <a href="/concepts/#pixel-pull"><div class="im"><img src="../../assets/images/concept-pixel-pull-cover.webp" alt="" loading="lazy"></div><span class="mono"><span>Pixel Pull</span><span class="muted">Card shop</span></span></a>
+        <a href="/concepts/#little-rosti"><div class="im"><img src="../../assets/images/concept-little-rosti-poster.webp" alt="" loading="lazy"></div><span class="mono"><span>Little Rösti</span><span class="muted">Café</span></span></a>
+        <a href="/concepts/#common-table"><div class="im"><img src="../../assets/images/concept-common-table-cover.webp" alt="" loading="lazy"></div><span class="mono"><span>Common Table</span><span class="muted">Restaurant</span></span></a>
+        <a href="/concepts/#crumb-and-kin"><div class="im"><img src="../../assets/images/concept-crumb-and-kin-poster.webp" alt="" loading="lazy"></div><span class="mono"><span>Crumb &amp; Kin</span><span class="muted">Bakery</span></span></a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="contact" id="contact">
+    <span class="mono muted">Contact</span>
+    <a class="big" href="#contact">Discuss a project <b>↗</b></a>
+    <p>No pressure, no complicated process. Tell me a little about your project and I'll reply within a day or two.</p>
+    <div class="foot mono muted"><span>© 2026 Noah Zaw Min Htut</span><span>Singapore → Worldwide</span><span>Sample C · Quiet gallery</span></div>
+  </footer>
+  <div class="peek" aria-hidden="true">
+    <img src="../../assets/images/ganko-home-900.webp" alt=""><img src="../../assets/images/luumens-card-poster.webp" alt=""><img src="../../assets/images/voyagaer-card-poster.webp" alt=""><img src="../../assets/images/concept-pixel-pull-cover.webp" alt="">
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js" defer></script>
+  <script src="../shared.js" defer></script>
+  <script defer>
+  addEventListener('DOMContentLoaded', () => {
+    if (!window.gsap || REDUCE) return;
+    const fine = matchMedia('(pointer: fine)').matches;
+
+    // Headline: words come out of a blur (React Bits "Blur Text").
+    const h1 = document.querySelector('[data-blur]');
+    h1.setAttribute('aria-label', h1.textContent);
+    const wrapWords = (node) => [...node.childNodes].forEach((n) => {
+      if (n.nodeType === 3) { const f = document.createElement('span'); f.innerHTML = n.textContent.split(/(\s+)/).map((w) => /\s/.test(w) || !w ? w : `<span class="w" aria-hidden="true">${w}</span>`).join(''); n.replaceWith(...f.childNodes); }
+      else if (n.nodeType === 1) { n.classList.add('w'); n.setAttribute('aria-hidden', 'true'); }
+    });
+    wrapWords(h1);
+    gsap.timeline({ delay: .2 })
+      .from(h1.querySelectorAll('.w'), { filter: 'blur(18px)', opacity: 0, y: 30, duration: 1.4, stagger: .08, ease: 'power3.out', clearProps: 'filter' })
+      .from('.hero__meta > *, .top > *, .hint', { opacity: 0, y: 14, duration: 1, stagger: .05, ease: 'power3.out' }, .6);
+
+    // The colour wash drifts slowly.
+    gsap.to('.wash span:nth-child(1)', { xPercent: -30, yPercent: 20, duration: 14, repeat: -1, yoyo: true, ease: 'sine.inOut' });
+    gsap.to('.wash span:nth-child(2)', { xPercent: 40, yPercent: -25, duration: 17, repeat: -1, yoyo: true, ease: 'sine.inOut' });
+
+    // Image trail: every ~90px of cursor travel drops the next image, which settles and fades.
+    const hero = document.querySelector('[data-trail]');
+    const imgs = [...hero.querySelectorAll('.trail img')];
+    let i = 0, last = null, z = 1;
+    const drop = (x, y) => {
+      const img = imgs[i++ % imgs.length];
+      const w = img.offsetWidth, h = img.offsetHeight;
+      gsap.killTweensOf(img);
+      gsap.set(img, { zIndex: z++, x: x - w / 2, y: y - h / 2, opacity: 1, scale: .6, rotation: gsap.utils.random(-6, 6) });
+      gsap.timeline().to(img, { scale: 1, duration: .6, ease: 'expo.out' }).to(img, { opacity: 0, scale: .85, duration: .9, ease: 'power2.in' }, .7);
+    };
+    if (fine) hero.addEventListener('pointermove', (e) => {
+      const r = hero.getBoundingClientRect(), x = e.clientX - r.left, y = e.clientY - r.top;
+      if (!last || Math.hypot(x - last.x, y - last.y) > 90) { drop(x, y); last = { x, y }; }
+    });
+    else { // touch: the trail plays on its own along a slow path
+      let t = 0; setInterval(() => { if (hero.getBoundingClientRect().bottom < 0) return; t += .55; const r = hero.getBoundingClientRect(); drop(r.width * (.5 + .32 * Math.sin(t)), r.height * (.38 + .18 * Math.sin(t * 1.7))); }, 520);
+    }
+
+    // Index: a preview opens beside the cursor over each row.
+    if (fine) {
+      const peek = document.querySelector('.peek'), pims = [...peek.querySelectorAll('img')];
+      const px = gsap.quickTo(peek, 'x', { duration: .7, ease: 'power3' }), py = gsap.quickTo(peek, 'y', { duration: .7, ease: 'power3' });
+      addEventListener('pointermove', (e) => { px(e.clientX + 30); py(e.clientY - peek.offsetHeight / 2); });
+      document.querySelectorAll('[data-peek]').forEach((a) => {
+        a.addEventListener('pointerenter', () => { pims.forEach((im, k) => im.classList.toggle('on', k == a.dataset.peek)); gsap.to(peek, { clipPath: 'inset(0% 0% 0% 0%)', duration: .7, ease: 'expo.out' }); });
+        a.addEventListener('pointerleave', () => gsap.to(peek, { clipPath: 'inset(50% 50% 50% 50%)', duration: .5, ease: 'expo.in' }));
+      });
+    }
+
+    // Wall: each image drifts at its own speed; frames open from the bottom.
+    gsap.utils.toArray('.fig').forEach((f) => {
+      const img = f.querySelector('img'), sp = +img.dataset.speed;
+      gsap.fromTo(img, { yPercent: -5 * sp }, { yPercent: 5 * sp, ease: 'none', scrollTrigger: { trigger: f, start: 'top bottom', end: 'bottom top', scrub: true } });
+      gsap.from(f.querySelector('.im'), { clipPath: 'inset(100% 0% 0% 0%)', duration: 1.6, ease: 'expo.inOut', scrollTrigger: { trigger: f, start: 'top 85%' } });
+      gsap.from(f.querySelector('figcaption'), { opacity: 0, y: 10, duration: 1, delay: .5, scrollTrigger: { trigger: f, start: 'top 85%' } });
+    });
+    gsap.utils.toArray('.sec__head, .idx li, .svc > div, .cps > a').forEach((el) => gsap.from(el, { opacity: 0, y: 24, duration: 1.1, ease: 'power3.out', scrollTrigger: { trigger: el, start: 'top 90%' } }));
+    gsap.from('.big', { opacity: 0, y: 40, filter: 'blur(14px)', duration: 1.4, ease: 'power3.out', clearProps: 'filter', scrollTrigger: { trigger: '.contact', start: 'top 70%' } });
+  });
+  </script>
+</body>
+</html>
