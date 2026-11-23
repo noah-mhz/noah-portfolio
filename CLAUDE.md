@@ -94,7 +94,7 @@ README.md has the file-by-file structure and the motion tiers; read it before la
   `js/case.js` (case-study galleries; each page lists its screens in `<script type="application/json" id="screens">`),
   `js/concepts.js`, `js/colophon.js`, `js/contact.js` (project form).
 - Pages: `/`, `/work/{ganko,luumens,voyagaer,industmarine}/`, `/concepts/` (+ the concept homepages,
-  self-contained), `/colophon/`, `/404.html`. Case studies run 01 / 04 Ganko → Luumens → Voyagaer →
+  self-contained), `/colophon/`, `/other-side/`, `/404.html`. Case studies run 01 / 04 Ganko → Luumens → Voyagaer →
   Industmarine; the homepage deck (`WORK` in `js/home.js`) and the "Next project" footers follow that order.
 - Contact: any `[data-pf-open]` link opens the form, which `js/contact.js` builds on the page. It posts to
   `functions/api/contact.js` (Turnstile + Resend). Field names must match the function.
@@ -105,9 +105,29 @@ README.md has the file-by-file structure and the motion tiers; read it before la
 - Search: titles name "Noah Zaw Min Htut"; Person/WebSite JSON-LD on the homepage; canonical
   URLs on every page; update `sitemap.xml` lastmod when pages change.
 
+## Hero 3 and The Other Side (branch `redesign-3`)
+
+- Hero: DIGITAL / EXPERIENCES. with the hook "Tailored to your brand." (desktop: above DIGITAL; phones:
+  beside it). The stage (`.hstage`, not `.stage`: services use `.stage`) holds three real screens as links
+  (Ganko front, Luumens, Voyagaer), each framed in its own site's palette; Voyagaer and Luumens sit behind
+  the headline. Hover/focus: the screen comes forward, the hero tints to the brand (`data-active`), "your"
+  rolls to the brand name. `fit()` sizes the stage (`--sw`, `--st`). Hero images: `assets/images/hero-*.webp`.
+- Hero → work: no pin. A scrubbed timeline parts the composition while the Ganko screen flies (the
+  `.reel-flyer`, transforms only) into the case image. Ganko pin is `+=120%` with re-paced stages.
+- Portal: the full stop of EXPERIENCES. (`.portal`, link to `/other-side/`, 44px hit area). Hover/focus
+  opens it onto the other world with the label "THE OTHER SIDE ↗"; one idle reveal per session
+  (`os-hint`). Click: letters lean in, everything clears, the square grows, then navigates; the square's
+  rect goes in sessionStorage `os-from`. Return: `os-return` holds the back button's square; the homepage
+  flies it into the full stop (`comeBack()`, also on bfcache `pageshow`).
+- The Other Side: `other-side/index.html`, `css/other-side.css`, `js/other-side.js`, `other-side/assets/`.
+  Own palette (ultramarine `#2A2AE8`, lime `#D6FF3D`, hot `#FF7A1A`, paper `#F4F1E8`); loaded only there.
+  Desktop: bounded board, scroll drives a camera through five stops, drag/keys/ticks/mini-map. Phones
+  (< 900px): stacked. Exhibits: Stretch, Pressure, Helix, Concepts pile; each runs only when near/visible.
+  A fifth (technical experiments) is reserved for real material only.
+
 ## Pitfalls already hit (don't repeat)
 
-- The Ganko pin (`stageIn` / `stageOut` / `total` and `end: '+=160%'` in `js/home.js`) keeps its last stage
+- The Ganko pin (`stageIn` / `stageOut` / `total` and its `end` in `js/home.js`) keeps its last stage
   on screen; don't add an exit or the section ends on an empty screen.
 - The hero headline is measured at its resting width (`fit()` includes margins); measure after fonts load.
 - Industmarine screenshots were rendered from saved pages without photos (the sandbox can't reach the live

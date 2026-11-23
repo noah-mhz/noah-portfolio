@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>The Other Side · Noah Zaw Min Htut</title>
+  <meta name="description" content="The other side of Noah's portfolio: four interactive experiments in variable type, motion and interface, built by hand.">
+  <link rel="canonical" href="https://noah-portfolio.pages.dev/other-side/">
+  <meta property="og:title" content="The Other Side · Noah Zaw Min Htut">
+  <meta property="og:description" content="Four interactive experiments in type, motion and interface.">
+  <meta property="og:url" content="https://noah-portfolio.pages.dev/other-side/">
+  <meta property="og:image" content="https://noah-portfolio.pages.dev/assets/images/og/home-2.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="theme-color" content="#2A2AE8">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <!-- Entry: if we came through the portal, the world opens from the exact square that was clicked.
+       Outside that square, the professional ground (dark or light) is still showing. -->
+  <script>
+    (function () {
+      var d = document.documentElement, f = null, th = 'dark';
+      try { f = JSON.parse(sessionStorage.getItem('os-from') || 'null'); sessionStorage.removeItem('os-from'); } catch (e) {}
+      try { th = localStorage.getItem('noah-theme') || 'dark'; } catch (e) {}
+      d.style.setProperty('--from-ground', th === 'light' ? '#F8DBC1' : '#0E1718');
+      if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      var W = innerWidth, H = innerHeight;
+      if (!f) f = { x: W / 2 - 22, y: H / 2 - 22, w: 44, h: 44 };
+      d.classList.add('os-enter');
+      d.style.setProperty('--at', Math.max(0, f.y) + 'px'); d.style.setProperty('--al', Math.max(0, f.x) + 'px');
+      d.style.setProperty('--ar', Math.max(0, W - f.x - f.w) + 'px'); d.style.setProperty('--ab', Math.max(0, H - f.y - f.h) + 'px');
+      if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+    })();
+  </script>
+  <link rel="preload" href="/assets/fonts/archivo.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/css/base.css">
+  <link rel="stylesheet" href="/css/other-side.css">
+</head>
+<body class="os">
+  <a class="os-skip" href="#ex-stretch">Skip to the first exhibit</a>
+
+  <!-- Fixed controls: always visible. -->
+  <a class="os-back" href="/" data-back><span class="os-back__sq" aria-hidden="true"></span><span>← Back to reality</span></a>
+  <p class="os-mark" aria-hidden="true"><span>The other side</span><span>noah<i></i></span></p>
+  <nav class="os-nav" aria-label="Exhibits">
+    <p class="os-nav__now"><span data-now-n>01 / 05</span> · <span data-now-name>Welcome</span></p>
+    <ol class="os-nav__ticks">
+      <li><button type="button" data-goto="0" aria-label="Welcome"><i></i></button></li>
+      <li><button type="button" data-goto="1" aria-label="Exhibit 1: Stretch"><i></i></button></li>
+      <li><button type="button" data-goto="2" aria-label="Exhibit 2: Pressure"><i></i></button></li>
+      <li><button type="button" data-goto="3" aria-label="Exhibit 3: Helix"><i></i></button></li>
+      <li><button type="button" data-goto="4" aria-label="Exhibit 4: Concepts pile"><i></i></button></li>
+    </ol>
+    <p class="os-nav__hint" data-hint>Scroll, drag the board or use ← → to move</p>
+    <svg class="os-map" viewBox="0 0 100 100" aria-hidden="true" data-map></svg>
+  </nav>
+
+  <div class="world" data-world>
+    <main class="board" id="main" data-board>
+      <svg class="route" aria-hidden="true" data-route><path d=""/></svg>
+
+      <section class="ex ex--welcome" data-ex="welcome" data-name="Welcome" aria-labelledby="welcome-title">
+        <h1 class="welcome" id="welcome-title" aria-label="Welcome to the other side.">
+          <span class="welcome__l welcome__l--1" aria-hidden="true">Welcome</span>
+          <span class="welcome__l welcome__l--2" aria-hidden="true">to the</span>
+          <span class="welcome__l welcome__l--3" aria-hidden="true">Other side<i></i></span>
+        </h1>
+        <div class="welcome__foot">
+          <p>The professional side is next door. This side is where I play: four experiments in variable type, motion and interface, built by hand with no templates.</p>
+          <button class="os-btn" type="button" data-goto="1">Begin <b aria-hidden="true">→</b></button>
+        </div>
+      </section>
+
+      <section class="ex ex--stretch" id="ex-stretch" data-ex="stretch" data-name="Stretch" aria-labelledby="stretch-title">
+        <header class="ex__head"><span class="mono">01</span><h2 id="stretch-title">Stretch</h2><p>One typeface, two axes. Grab the word and pull: sideways stretches the letters you hold, up and down changes their weight. Let go and it springs back.</p></header>
+        <div class="stretch" data-stretch>
+          <div class="stretch__word" tabindex="0" role="group" aria-label="The word STRETCH. Use the arrow keys to change width and weight." data-stretch-word>Stretch</div>
+        </div>
+        <div class="ex__ctrl mono">
+          <label>Width <input type="range" min="62" max="125" step="1" value="100" data-axis="w"> <output data-out="w">100</output></label>
+          <label>Weight <input type="range" min="100" max="900" step="10" value="800" data-axis="g"> <output data-out="g">800</output></label>
+        </div>
+      </section>
+
+      <section class="ex ex--pressure" data-ex="pressure" data-name="Pressure" aria-labelledby="pressure-title">
+        <header class="ex__head"><span class="mono">02</span><h2 id="pressure-title">Pressure</h2><p>A field of letters that remembers where you've been. Move across it to leave a trail; click or tap to send a ripple through it.</p></header>
+        <div class="pressure" tabindex="0" aria-label="Pressure field. Use the arrow keys to move the pressure point, Enter for a ripple." data-pressure></div>
+      </section>
+
+      <section class="ex ex--helix" data-ex="helix" data-name="Helix" aria-labelledby="helix-title">
+        <header class="ex__head"><span class="mono">03</span><h2 id="helix-title">Helix</h2><p>Every screen from the work and the concepts, wound into a helix that screws along its own axis. Drag to spin it, or unwind it into a wall. Open the one in front.</p></header>
+        <div class="helix" data-helix><div class="helix__spin" data-helix-spin></div></div>
+        <div class="ex__ctrl mono">
+          <button class="os-btn os-btn--line" type="button" data-unwind aria-pressed="false">Unwind</button>
+          <p class="helix__now" aria-live="polite" data-helix-now></p>
+        </div>
+      </section>
+
+      <section class="ex ex--pile" data-ex="pile" data-name="Concepts pile" aria-labelledby="pile-title">
+        <header class="ex__head"><span class="mono">04</span><h2 id="pile-title">Concepts pile</h2><p>Homepages I designed and built to pitch small businesses, printed and dropped on the table. Throw them around; double-click one, or press Enter, to open it.</p></header>
+        <div class="pile" data-pile></div>
+        <div class="ex__ctrl mono">
+          <button class="os-btn os-btn--line" type="button" data-shuffle>Shuffle</button>
+          <button class="os-btn os-btn--line" type="button" data-tidy>Tidy</button>
+        </div>
+      </section>
+      <!-- A fifth exhibit (technical experiments: Unity AR, interfaces) is reserved for when there's material to show. -->
+    </main>
+  </div>
+  <div class="track" aria-hidden="true" data-track></div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js" defer></script>
+  <script src="/js/other-side.js" defer></script>
+</body>
+</html>

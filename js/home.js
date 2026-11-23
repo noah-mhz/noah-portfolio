@@ -672,7 +672,9 @@
     } else {
       section.classList.add('is-pinned');
       const steps = $$('.case__steps li', section), bar = $('[data-case-bar]', section), wrap = $('.case__stages', section), next = $$('[data-case-next]', section);
-      const stageIn = [.5, 2.1, 3.7, 5.3], stageOut = [1.8, 3.4, 5.0, 99], exitAt = 6.5, total = 7.0;
+      // Pacing for a 120% pin: short entries and exits, so each stage holds for about a tenth of a screen of
+      // scrolling, and the last one for the rest.
+      const stageIn = [.15, 1.6, 3.05, 4.5], stageOut = [1.35, 2.8, 4.25, 99], exitAt = 5.6, total = 6.2;
       let cur = -1;
       const setStep = (i) => { if (i === cur) return; cur = i; steps.forEach((s, k) => s.classList.toggle('is-active', k === i)); twStage.set(STAGES[i]); };
       const mediaShift = () => wrap.offsetLeft - media.offsetLeft;
@@ -691,10 +693,10 @@
         .to({}, { duration: .1 }, total - .1);
       stages.forEach((stage, i) => {
         const items = $$('[data-stage-item]', stage);
-        tl.set(stage, { autoAlpha: 1 }, stageIn[i] + (i ? .25 : 0))
-          .fromTo(items, { yPercent: 110 }, { yPercent: 0, duration: .75, stagger: .06, ease: 'power3.out' }, stageIn[i] + (i ? .3 : 0));
-        if (i < stages.length - 1) tl.to(items, { yPercent: -110, duration: .3, stagger: .015, ease: 'power3.in' }, stageOut[i])
-          .set(stage, { autoAlpha: 0 }, stageOut[i] + .45);
+        tl.set(stage, { autoAlpha: 1 }, stageIn[i] + (i ? .1 : 0))
+          .fromTo(items, { yPercent: 110 }, { yPercent: 0, duration: .45, stagger: .04, ease: 'power3.out' }, stageIn[i] + (i ? .12 : 0));
+        if (i < stages.length - 1) tl.to(items, { yPercent: -110, duration: .22, stagger: .01, ease: 'power3.in' }, stageOut[i])
+          .set(stage, { autoAlpha: 0 }, stageOut[i] + .3);
       });
       setStep(0);
     }
