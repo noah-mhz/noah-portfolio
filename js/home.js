@@ -65,21 +65,44 @@
       if (!window.gsap || REDUCE || instant) { if (window.gsap) gsap.set(c, { ...pose(d), x: pose(d).x, rotationX: 0, rotationY: 0 }); else { c.style.zIndex = WORK.length - d; c.style.opacity = d > 3 ? 0 : 1; c.style.transform = `translate(${d * 26}px, ${-d * 20}px) scale(${1 - d * .045})`; } return; }
       gsap.to(c, { ...pose(d), rotationX: 0, rotationY: 0, duration: .8, ease: 'expo.out', overwrite: 'auto', zIndex: WORK.length - d });
     });
-    // Send the top card off in a direction, then tuck it in at the back.
-    const flick = (dir = 1, vy = 0) => {
-      const c = deckCards[top()];
-      order.push(order.shift());
+    // Cards move in one continuous pass: the ones leaving the front arc out and tuck in at the back
+    // while the rest slide forward together. One record update per move, however many cards it skips.
+    const settle = (skip = []) => order.forEach((ci, d) => {
+      if (skip.includes(ci)) return;
+      const { zIndex, ...to } = pose(d);
+      deckCards[ci].style.zIndex = zIndex;
+      gsap.to(deckCards[ci], { ...to, rotationX: 0, rotationY: 0, duration: .6, ease: 'power3.out', overwrite: true, delay: d * .025 });
+    });
+    const sendBack = (c, dir, i = 0, vy = 0) => {
+      const w = deckEl.offsetWidth, { zIndex, ...to } = pose(order.indexOf(+c.dataset.i));
+      c.style.zIndex = WORK.length * 2 - i; // stays above the deck while it flies out
+      gsap.timeline({ delay: i * .07 })
+        .to(c, { x: dir * w * .72, y: vy - 24, rotation: dir * 9, rotationX: 0, rotationY: 0, duration: .3, ease: 'power2.in', overwrite: true })
+        .add(() => { c.style.zIndex = zIndex; })
+        .to(c, { ...to, duration: .5, ease: 'power3.out' });
+    };
+    const move = (leaving, dir = 1, vy = 0) => {
+      if (!leaving.length) return;
+      order = order.filter((ci) => !leaving.includes(ci)).concat(leaving);
       if (window.gsap && !REDUCE) {
-        gsap.timeline()
-          .to(c, { x: dir * deckEl.offsetWidth * .9, y: vy, rotation: dir * 14, duration: .45, ease: 'power3.in', overwrite: true })
-          .set(c, { zIndex: 0 })
-          .add(() => layout());
-        order.slice(0, -1).forEach((ci, d) => gsap.to(deckCards[ci], { ...pose(d), duration: .8, ease: 'expo.out', delay: .12 }));
+        leaving.forEach((ci, i) => sendBack(deckCards[ci], dir, i, i ? 0 : vy));
+        settle(leaving);
       } else layout(true);
       record();
     };
-    const back = () => { order.unshift(order.pop()); const c = deckCards[top()]; if (window.gsap && !REDUCE) gsap.fromTo(c, { x: -deckEl.offsetWidth * .9, rotation: -14, zIndex: WORK.length + 1 }, { x: 0, rotation: 0, duration: .7, ease: 'expo.out' }); layout(); record(); };
-    const goTo = (i) => { let n = 0; while (top() !== i && n++ < WORK.length) flick(1); };
+    const flick = (dir = 1, vy = 0) => move([top()], dir, vy);
+    const back = () => {
+      order.unshift(order.pop());
+      const c = deckCards[top()];
+      if (window.gsap && !REDUCE) {
+        c.style.zIndex = WORK.length * 2;
+        const { zIndex, ...to } = pose(0);
+        gsap.fromTo(c, { x: -deckEl.offsetWidth * .72, y: -24, rotation: -9 }, { ...to, onComplete: () => { c.style.zIndex = zIndex; }, rotationX: 0, rotationY: 0, duration: .6, ease: 'power3.out', overwrite: true });
+        settle([top()]);
+      } else layout(true);
+      record();
+    };
+    const goTo = (i) => { const k = order.indexOf(i); if (k > 0) move(order.slice(0, k)); };
     function initDeck() {
       // Drag / swipe the top card; tilt it under the cursor.
       let drag = null, moved = false;
@@ -95,16 +118,16 @@
           gsap.set(drag.c, { x: drag.dx, y: drag.dy * .35, rotation: drag.dx * .04, rotationX: 0, rotationY: 0 });
           return;
         }
-        if (!fine) return;
-        const c = deckCards[top()], r = c.getBoundingClientRect();
-        if (e.clientX < r.left || e.clientX > r.right || e.clientY < r.top || e.clientY > r.bottom) return;
-        gsap.to(c, { rotationY: ((e.clientX - r.left) / r.width - .5) * 12, rotationX: -((e.clientY - r.top) / r.height - .5) * 12, duration: .5, ease: 'power3.out' });
+        if (!fine || gsap.isTweening(deckCards[top()])) return;
+        const c = deckCards[top()], r = deckEl.getBoundingClientRect();
+        const px = (e.clientX - r.left) / r.width - .5, py = (e.clientY - r.top) / r.height - .5;
+        gsap.to(c, { rotationY: px * 10, rotationX: -py * 10, duration: .6, ease: 'power3.out', overwrite: 'auto' });
       });
       const end = () => {
         if (!drag) return;
         const v = drag.dx / Math.max(1, performance.now() - drag.t0);
         if (Math.abs(drag.dx) > deckEl.offsetWidth * .22 || Math.abs(v) > .6) flick(Math.sign(drag.dx) || 1, drag.dy * .35);
-        else gsap.to(drag.c, { ...pose(0), duration: .7, ease: 'elastic.out(1, .6)' });
+        else gsap.to(drag.c, { ...pose(0), duration: .6, ease: 'back.out(1.6)', overwrite: true });
         drag = null;
       };
       deckEl.addEventListener('pointerup', end); deckEl.addEventListener('pointercancel', end);
