@@ -18,14 +18,25 @@
       // Spaces collapse inside the flex line: give each one its own letter box.
       [...t.childNodes].filter((n) => n.nodeType === 3 && /\s/.test(n.data)).forEach((n) => { const sp = document.createElement('span'); sp.className = 'ch'; sp.setAttribute('aria-hidden', 'true'); sp.innerHTML = '&nbsp;'; n.replaceWith(sp); });
     }));
-    const fit = () => presses.forEach((h) => {
-      const W = h.clientWidth;
-      $$('[data-fit]', h).forEach((ln) => {
-        ln.classList.add('m'); ln.style.fontSize = '100px';
-        const w = [...ln.children].reduce((a, c) => { const cs = getComputedStyle(c); return a + c.getBoundingClientRect().width + parseFloat(cs.marginLeft) + parseFloat(cs.marginRight); }, 0);
-        ln.style.fontSize = (100 * W / w * 0.995) + 'px'; ln.classList.remove('m');
+    const heroEl = $('.hero'), stageEl = $('[data-stage-hero]');
+    const fit = () => {
+      presses.forEach((h) => {
+        const W = h.clientWidth; let size = '';
+        $$('[data-fit]', h).forEach((ln) => {
+          ln.classList.add('m'); ln.style.fontSize = '100px';
+          const w = [...ln.children].reduce((a, c) => { const cs = getComputedStyle(c); return a + c.getBoundingClientRect().width + parseFloat(cs.marginLeft) + parseFloat(cs.marginRight); }, 0);
+          size = ln.style.fontSize = (100 * W / w * 0.995) + 'px'; ln.classList.remove('m');
+        });
+        if (size) $$('[data-fit-copy]', h).forEach((ln) => (ln.style.fontSize = size));
       });
-    });
+      // Desktop: the stage takes the right of the hero; Voyagaer and Luumens dip behind the headline.
+      if (stageEl && matchMedia('(min-width: 1024px)').matches) {
+        const l1 = $('.hero .ln--1'), hr = heroEl.getBoundingClientRect(), r1 = l1.getBoundingClientRect();
+        const foot = r1.bottom - hr.top + r1.height * .12, topMin = 84, W = heroEl.clientWidth;
+        const sw = Math.max(320, Math.min(W * .56, (foot - topMin) / .64));
+        heroEl.style.setProperty('--sw', sw + 'px'); heroEl.style.setProperty('--st', (foot - sw * .64) + 'px');
+      } else if (heroEl) { heroEl.style.removeProperty('--sw'); heroEl.style.removeProperty('--st'); }
+    };
     fit(); document.fonts.load('800 100px Archivo').then(() => { fit(); window.ScrollTrigger?.refresh(); }); addEventListener('resize', fit);
 
     /* ---------- Deck data + behaviour ---------- */
@@ -348,9 +359,11 @@
       const heroLogo = $('.top .logo'), lines = $$('.hero .press .ln'), line1 = lines[0], rest = lines.slice(1);
       const restChars = rest.flatMap((l) => $$('.ch', l));
       const intro = $$('.hero__intro > *, .hero__foot > *');
+      const screens = ['.scr--voyagaer', '.scr--luumens', '.scr--ganko'].map((q) => $(q)).filter(Boolean), hook = $('.hero .hook');
 
       const word = (txt) => `<div class="press"><span class="ln"><span class="t" style="flex:none">${txt}</span></span></div>`;
       mask.innerHTML = word('Design') + word('Detail') + `<div class="press">${line1.outerHTML}</div>`;
+      $$('.hook', mask).forEach((h) => h.remove());
       const words = $$('.press', mask), wordLines = words.map((w) => $('.ln', w));
 
       // Pin the loader's logo and word to the header logo and the hero's first line.
@@ -373,12 +386,13 @@
       gsap.set(words, { yPercent: 160 });
       gsap.set(rest, { yPercent: 70, autoAlpha: 0 });
       gsap.set(intro, { y: 24, autoAlpha: 0 });
+      gsap.set(screens, { y: 60, autoAlpha: 0 }); if (hook) gsap.set(hook, { autoAlpha: 0 });
 
       const cnt = { v: 1 };
       const draw = () => { const v = Math.round(cnt.v); count.textContent = String(v).padStart(2, '0') + '%'; bar.style.transform = `scaleX(${cnt.v / 100})`; };
       const wait = (ms) => new Promise((r) => setTimeout(r, ms));
       const fonts = document.fonts ? document.fonts.load('800 100px Archivo').then(() => document.fonts.ready) : Promise.resolve();
-      const poster = new Promise((r) => { const i = new Image(); i.onload = i.onerror = r; i.src = '/assets/images/ganko-scroll-poster.webp'; });
+      const poster = new Promise((r) => { const i = new Image(); i.onload = i.onerror = r; i.src = '/assets/images/hero-ganko-1200.webp'; });
       const gate = (promise, at) => {
         let ok = false; promise.then(() => { ok = true; requestAnimationFrame(place); });
         tl.add(() => { if (ok) return; tl.pause(); promise.then(() => requestAnimationFrame(() => { place(); tl.resume(); })); }, at);
@@ -416,7 +430,11 @@
       // 5 · The rest of the hero rises in, with the letters swelling as on the old intro
         .to(rest, { yPercent: 0, autoAlpha: 1, duration: .9, stagger: .08, ease: 'expo.out', clearProps: 'transform,opacity,visibility' }, 2.45)
         .fromTo(restChars, { fontVariationSettings: "'wdth' 62, 'wght' 300" }, { fontVariationSettings: "'wdth' 100, 'wght' 800", duration: 1, stagger: .02, ease: 'expo.out', clearProps: 'fontVariationSettings' }, 2.5)
-        .to(intro, { y: 0, autoAlpha: 1, duration: .8, stagger: .05, ease: 'power3.out', clearProps: 'transform,opacity,visibility' }, 2.6);
+        .to(intro, { y: 0, autoAlpha: 1, duration: .8, stagger: .05, ease: 'power3.out', clearProps: 'transform,opacity,visibility' }, 2.75)
+        // The screens enter back to front, the largest last; then the hook draws in.
+        .to(screens, { y: 0, autoAlpha: 1, duration: 1.1, stagger: .15, ease: 'expo.out', clearProps: 'transform,opacity,visibility' }, 2.4);
+      if (hook) tl.fromTo(hook, { autoAlpha: 0 }, { autoAlpha: 1, duration: .5, clearProps: 'opacity,visibility' }, 2.95)
+        .fromTo($('.hook__rule', hook), { scaleX: 0 }, { scaleX: 1, duration: .8, ease: 'expo.out', clearProps: 'transform' }, 2.95);
     }
 
     if (fine) presses.forEach((h) => {
@@ -440,7 +458,7 @@
         let moving = false;
         chars.forEach((c, i) => {
           const k = Math.max(0, 1 - Math.hypot(mx - (r.left + centres[i][0]), my - (r.top + centres[i][1])) / (r.height * .9));
-          const tw = 85 + 40 * k, tg = 560 + 340 * k;
+          const tw = 95 + 30 * k, tg = 700 + 200 * k;
           const dw = (tw - st[i].w) * .14, dg = (tg - st[i].g) * .14;
           if (Math.abs(dw) < .05 && Math.abs(dg) < .5) return;
           moving = true; st[i].w += dw; st[i].g += dg;
@@ -450,67 +468,191 @@
       });
     });
 
-    /* ---------- Hero → case: the original reel handoff ---------- */
-    const hero = $('.hero'), reel = $('.press .reel'), lines = $$('.hero .press .ln');
-    const caseEl = $('.case'), caseMedia = $('.case__media'), flyer = $('.reel-flyer');
-    if (desktop) {
-      // The hero holds briefly while the headline clears; the reel then flies, growing,
-      // into the exact spot the Ganko image takes once its sequence pins, and hands over.
-      gsap.timeline({ defaults: { ease: 'none' }, scrollTrigger: { trigger: hero, start: 'top top', end: '+=95%', pin: true, scrub: 1 } })
-        .fromTo('.hero .press', { yPercent: 0, autoAlpha: 1 }, { yPercent: -8, autoAlpha: 0, duration: .6, ease: 'power1.in', immediateRender: false }, .05)
-        .fromTo('.hero__intro', { y: 0, autoAlpha: 1 }, { y: -40, autoAlpha: 0, duration: .5, ease: 'power1.in', immediateRender: false }, 0)
-        .fromTo('.hero__foot', { autoAlpha: 1 }, { autoAlpha: 0, duration: .4, immediateRender: false }, 0)
-        .to({}, { duration: .45 });
-      const lerp = (a, b, t) => a + (b - a) * t;
+    /* ---------- Hero: layered screens, the hook, and the handoff into Ganko ----------
+       Hover or focus on a screen brings it forward, tints the hero with that brand and rolls "your" in the
+       hook to the brand's name. On touch the hook tries each brand in turn. Desktop: the screens drift a
+       little with the pointer, each at its own depth, and as the hero scrolls away (scrubbed, not pinned)
+       the composition parts while the Ganko screen flies into the case study's image. */
+    const hero = heroEl, caseEl = $('.case'), caseMedia = $('.case__media'), flyer = $('.reel-flyer');
+    const scrs = stageEl ? $$('.scr', stageEl) : [], hookWord = $('[data-hook]');
+    const ganko = $('.scr--ganko'), gankoImg = ganko && $('.scr__main', ganko);
+    const lerp = (a, b, t) => a + (b - a) * t;
+
+    let hookName = 'your', hookTl;
+    const setHook = (name) => {
+      if (!hookWord || name === hookName) return;
+      hookName = name;
+      if (REDUCE || !window.gsap) { hookWord.textContent = name; return; }
+      hookTl?.kill();
+      hookTl = gsap.timeline()
+        .to(hookWord, { yPercent: -110, duration: .2, ease: 'power2.in' })
+        .add(() => { hookWord.textContent = name; })
+        .fromTo(hookWord, { yPercent: 110 }, { yPercent: 0, duration: .5, ease: 'expo.out' });
+    };
+    const setActive = (el) => {
+      scrs.forEach((x) => x.classList.toggle('is-on', x === el));
+      stageEl?.classList.toggle('has-on', !!el);
+      if (hero) { hero.dataset.active = el ? el.dataset.brand : ''; hero.classList.toggle('is-tinted', !!el); }
+      setHook(el ? el.dataset.name : 'your');
+    };
+    if (fine) scrs.forEach((el) => { el.addEventListener('pointerenter', () => setActive(el)); el.addEventListener('pointerleave', () => setActive(null)); });
+    scrs.forEach((el) => { el.addEventListener('focus', () => setActive(el)); el.addEventListener('blur', () => setActive(null)); });
+    if (!fine && !REDUCE && stageEl && 'IntersectionObserver' in window) {
+      const order = [ganko, $('.scr--luumens'), $('.scr--voyagaer'), null];
+      let k = 0, timer = 0;
+      new IntersectionObserver(([e]) => {
+        clearInterval(timer);
+        if (e.isIntersecting) timer = setInterval(() => setActive(order[k++ % order.length]), 3200);
+        else setActive(null);
+      }, { threshold: .4 }).observe(stageEl);
+    }
+
+    // Pointer drift: back layers move least. quickTo eases each layer; nothing runs while the pointer rests.
+    if (fine && desktop && !REDUCE && stageEl && window.gsap) {
+      const layers = scrs.map((el) => ({ d: parseFloat(el.style.getPropertyValue('--d')) || .5, x: gsap.quickTo(el, 'x', { duration: 1.2, ease: 'power3.out' }), y: gsap.quickTo(el, 'y', { duration: 1.2, ease: 'power3.out' }) }));
+      const h1 = $('.hero .press'), hx = gsap.quickTo(h1, 'x', { duration: 1.6, ease: 'power3.out' });
+      let resting = true;
+      addEventListener('pointermove', (e) => {
+        if (sy() > innerHeight * .25 || document.documentElement.classList.contains('os-leaving')) {
+          if (!resting) { resting = true; layers.forEach((l) => { l.x(0); l.y(0); }); hx(0); }
+          return;
+        }
+        resting = false;
+        const nx = e.clientX / innerWidth - .5, ny = e.clientY / innerHeight - .5;
+        layers.forEach((l) => { l.x(-nx * 30 * l.d); l.y(-ny * 18 * l.d); });
+        hx(nx * 6);
+      }, { passive: true });
+    }
+
+    if (desktop && stageEl && caseEl && caseMedia && flyer && gankoImg && window.gsap) {
+      const vo = $('.scr--voyagaer'), lu = $('.scr--luumens'), h1 = $('.hero .press');
+      gsap.timeline({ defaults: { ease: 'none' }, scrollTrigger: { trigger: hero, start: 'top top', end: 'bottom top', scrub: 1 } })
+        .to(vo, { xPercent: -28, yPercent: -30, autoAlpha: 0, duration: .7, ease: 'power2.in' }, 0)
+        .to(lu, { xPercent: -14, yPercent: -60, autoAlpha: 0, duration: .7, ease: 'power2.in' }, .06)
+        .to(h1, { yPercent: -16, scale: .93, autoAlpha: 0, transformOrigin: '0% 100%', duration: .85, ease: 'power1.in' }, .1)
+        .to(['.hero__intro', '.hero__foot'], { y: -30, autoAlpha: 0, duration: .5 }, 0);
       const caseStart = () => ScrollTrigger.getAll().find((t) => t.pin === caseEl)?.start ?? Infinity;
-      const prog = { value: 0 }; let state = 'reel', dock = null;
+      const prog = { value: 0 }; let state = 'stage', dock = null;
       const show = (n) => {
         if (n === state) return; state = n;
-        gsap.set(reel, { visibility: n === 'reel' ? 'visible' : 'hidden' });
+        gsap.set(ganko, { visibility: n === 'stage' ? 'visible' : 'hidden' });
         gsap.set(flyer, { visibility: n === 'flying' ? 'visible' : 'hidden' });
         gsap.set(caseMedia, { autoAlpha: n === 'flying' ? 0 : 1 });
       };
-      // Where the case image sits once its sequence pins, in viewport terms. Measured on refresh only.
+      // Where the case image sits once its sequence pins, measured on refresh only.
       const measureDock = () => {
         const r = caseMedia.getBoundingClientRect(), off = scrollY - caseStart();
         dock = { left: r.left, top: r.top + off, width: r.width, height: r.height };
-        gsap.set(flyer, { width: dock.width, height: dock.height, transformOrigin: '0 0', force3D: true });
+        gsap.set(flyer, { left: 0, top: 0, width: dock.width, height: dock.height, transformOrigin: '50% 50%', force3D: true });
       };
-      // The flyer keeps the docked size and moves by transform only (no layout per frame);
-      // its corners are counter-scaled so they stay round while it grows.
+      // The flyer keeps the docked size and moves by transform only, from the Ganko screen's centre and
+      // size (its frame's tilt unwinding on the way) to the case image.
       const render = () => {
         const t = prog.value;
         if (sy() >= caseStart() - 1 && t >= .999) return show('docked');
-        if (t <= .001) return show('reel');
+        if (t <= .001) return show('stage');
         if (!dock) measureDock();
         show('flying');
-        const f = reel.getBoundingClientRect();
-        const w = lerp(f.width, dock.width, t), hh = lerp(f.height, dock.height, t);
-        const kx = w / dock.width, ky = hh / dock.height, rad = lerp(f.height * .1, 14, t);
-        gsap.set(flyer, { x: lerp(f.left, dock.left, t), y: lerp(f.top, dock.top, t), scaleX: kx, scaleY: ky, borderRadius: `${rad / kx}px / ${rad / ky}px` });
+        const b = gankoImg.getBoundingClientRect(), w0 = gankoImg.offsetWidth, h0 = gankoImg.offsetHeight;
+        const cx = lerp(b.left + b.width / 2, dock.left + dock.width / 2, t), cy = lerp(b.top + b.height / 2, dock.top + dock.height / 2, t);
+        const kx = lerp(w0, dock.width, t) / dock.width, ky = lerp(h0, dock.height, t) / dock.height, rad = lerp(3, 14, t);
+        gsap.set(flyer, { x: cx - dock.width / 2, y: cy - dock.height / 2, scaleX: kx, scaleY: ky, rotation: lerp(-1.2, 0, t), borderRadius: `${rad / kx}px / ${rad / ky}px` });
       };
-      gsap.to(prog, { value: 1, ease: 'power3.inOut', onUpdate: render, scrollTrigger: { start: 0, endTrigger: caseEl, end: 'top top', scrub: 1.6 } });
+      gsap.to(prog, { value: 1, ease: 'power2.inOut', onUpdate: render, scrollTrigger: { start: 0, endTrigger: caseEl, end: 'top top', scrub: 1.2 } });
       ScrollTrigger.create({ start: 0, endTrigger: caseEl, end: 'top top', onUpdate: render, onLeave: render, onEnterBack: render });
       ScrollTrigger.addEventListener('refresh', () => { measureDock(); render(); });
-    } else {
-      // Tablet / phone: the reel opens to the screen's width as the headline parts (original initReelOpen).
-      const [first, second] = lines;
-      const media = reel.querySelector('video');
-      const measure = () => {
-        let left = 0; for (let el = reel; el; el = el.offsetParent) left += el.offsetLeft;
-        const w = reel.offsetWidth, h = reel.offsetHeight, vw = document.documentElement.clientWidth;
-        const tH = matchMedia('(max-width: 767px)').matches ? vw : vw * .625;
-        return { sx: vw / w, sy: tH / h, x: vw / 2 - (left + w / 2) };
+    }
+
+    /* ---------- The portal: the full stop opens onto The Other Side ----------
+       At rest it's punctuation. Hover or focus opens it a little onto the other world and shows
+       "THE OTHER SIDE ↗"; one quiet reveal plays per visit after a long idle on the hero. Click: the
+       headline leans into the square, everything else clears, the square grows, then /other-side/ opens
+       from that exact square. Coming back plays it in reverse. */
+    const portal = $('[data-portal]');
+    if (portal) {
+      const sqEl = $('.portal__sq', portal), root = document.documentElement;
+      const hideOnLeave = ['.hero__intro', '.hero__foot', '.hero .hook', '.top', '.progress', '.rail', '.portal__label'].map((q) => $(q)).filter(Boolean);
+      let prefetched = false;
+      const prefetch = () => {
+        if (prefetched) return; prefetched = true;
+        ['/other-side/', '/css/other-side.css', '/js/other-side.js'].forEach((href) => { const l = document.createElement('link'); l.rel = 'prefetch'; l.href = href; document.head.append(l); });
       };
-      let m = measure();
-      gsap.set(second, { position: 'relative', zIndex: 2 });
-      const tl = gsap.timeline({ defaults: { ease: 'none' }, scrollTrigger: { trigger: hero, start: 'top top', end: 'bottom 20%', scrub: 1, invalidateOnRefresh: true, onRefreshInit: () => { m = measure(); } } });
-      tl.to(reel, { x: () => m.x, scaleX: () => m.sx, scaleY: () => m.sy, ease: 'power2.inOut', duration: 1 }, 0)
-        .to($$('.ch, .sq', second), { autoAlpha: 0, duration: .45 }, 0)
-        .fromTo(first, { yPercent: 0, autoAlpha: 1 }, { yPercent: -60, autoAlpha: 0, duration: .6, immediateRender: false }, 0)
-        .fromTo('.hero__intro', { y: 0, autoAlpha: 1 }, { y: -60, autoAlpha: 0, duration: .6, immediateRender: false }, 0)
-        .fromTo('.hero__foot', { autoAlpha: 1 }, { autoAlpha: 0, duration: .4, immediateRender: false }, 0);
-      tl.eventCallback('onUpdate', () => { const sx = gsap.getProperty(reel, 'scaleX'), sy = gsap.getProperty(reel, 'scaleY'), k = Math.max(sx, sy); gsap.set(media, { scaleX: k / sx, scaleY: k / sy }); });
+      ['pointerenter', 'focus', 'touchstart'].forEach((ev) => portal.addEventListener(ev, prefetch, { passive: true }));
+
+      let hinted = REDUCE;
+      try { hinted = hinted || sessionStorage.getItem('os-hint') === '1'; } catch (e) {}
+      if (!hinted) {
+        let idle = 0;
+        const arm = () => {
+          if (hinted) return;
+          clearTimeout(idle);
+          idle = setTimeout(() => {
+            if (hinted || sy() > innerHeight * .3 || document.hidden || root.classList.contains('has-loader') && $('.loader')) return arm();
+            hinted = true; prefetch();
+            try { sessionStorage.setItem('os-hint', '1'); } catch (e) {}
+            portal.classList.add('is-hint');
+            setTimeout(() => portal.classList.remove('is-hint'), 2800);
+          }, 9000);
+        };
+        ['pointermove', 'scroll', 'keydown', 'touchstart'].forEach((ev) => addEventListener(ev, arm, { passive: true }));
+        arm();
+      }
+
+      const leave = () => {
+        const r = sqEl.getBoundingClientRect(), k = 1.7, cx = r.left + r.width / 2, cy = r.top + r.height / 2, s = r.width * k;
+        try { sessionStorage.setItem('os-from', JSON.stringify({ x: cx - s / 2, y: cy - s / 2, w: s, h: s })); } catch (e) {}
+        if (REDUCE || !window.gsap) { location.href = portal.href; return; }
+        window.lenis?.stop();
+        root.classList.add('os-leaving');
+        portal.classList.add('is-open');
+        const chars = $$('.hero .press .ch');
+        gsap.timeline({ onComplete: () => { location.href = portal.href; } })
+          .to(sqEl, { scale: k, duration: .34, ease: 'power3.inOut' }, 0)
+          .to(chars, {
+            x: (i, el) => { const b = el.getBoundingClientRect(); return (cx - (b.left + b.width / 2)) * .1; },
+            y: (i, el) => { const b = el.getBoundingClientRect(); return (cy - (b.top + b.height / 2)) * .1; },
+            fontVariationSettings: "'wdth' 62, 'wght' 300", autoAlpha: 0, duration: .3, ease: 'power2.in', stagger: { each: .008, from: 'end' },
+          }, 0)
+          .to(scrs, { x: (i, el) => { const b = el.getBoundingClientRect(); return (b.left + b.width / 2 - cx) * .25; }, autoAlpha: 0, duration: .3, ease: 'power2.in' }, 0)
+          .to(hideOnLeave, { autoAlpha: 0, duration: .22 }, 0);
+      };
+      portal.addEventListener('click', (e) => {
+        if (e.button || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+        e.preventDefault(); leave();
+      });
+
+      // Back from The Other Side: a square of it flies home into the full stop, then the hero returns.
+      const comeBack = () => {
+        let from = null;
+        try { from = JSON.parse(sessionStorage.getItem('os-return') || 'null'); sessionStorage.removeItem('os-return'); } catch (e) {}
+        const wasLeaving = root.classList.contains('os-leaving'), returning = root.classList.contains('os-return');
+        if (!from && !wasLeaving && !returning) return;
+        root.classList.remove('os-leaving');
+        portal.classList.remove('is-open');
+        window.lenis?.start();
+        const chars = $$('.hero .press .ch'), parts = [...hideOnLeave, ...scrs];
+        if (REDUCE || !window.gsap) {
+          if (window.gsap) gsap.set([sqEl, ...chars, ...parts], { clearProps: 'transform,opacity,visibility,fontVariationSettings' });
+          root.classList.remove('os-return'); return;
+        }
+        gsap.set(sqEl, { clearProps: 'transform' });
+        gsap.set([...chars, ...parts], { autoAlpha: 0 });
+        root.classList.remove('os-return');
+        const r = sqEl.getBoundingClientRect(), f = from || { x: 24, y: 24, w: 44, h: 44 };
+        const chip = document.createElement('div');
+        chip.className = 'os-chip'; chip.setAttribute('aria-hidden', 'true');
+        document.body.append(chip);
+        gsap.set(sqEl, { autoAlpha: 0 });
+        gsap.timeline({ onComplete: () => chip.remove() })
+          .fromTo(chip, { x: f.x, y: f.y, width: f.w, height: f.h }, { x: r.left, y: r.top, width: r.width, height: r.height, duration: .6, ease: 'power3.inOut' }, 0)
+          .to(chip, { backgroundColor: getComputedStyle(root).getPropertyValue('--mark').trim(), duration: .3 }, .3)
+          .set(sqEl, { clearProps: 'opacity,visibility' }, .6)
+          .fromTo(chars, { x: 0, y: 0, fontVariationSettings: "'wdth' 62, 'wght' 300" }, { autoAlpha: 1, fontVariationSettings: "'wdth' 100, 'wght' 800", duration: .8, stagger: { each: .012, from: 'end' }, ease: 'expo.out', clearProps: 'transform,opacity,visibility,fontVariationSettings' }, .45)
+          .fromTo(scrs, { x: 0, y: 40 }, { y: 0, autoAlpha: 1, duration: .9, stagger: .1, ease: 'expo.out', clearProps: 'transform,opacity,visibility' }, .55)
+          .to(hideOnLeave, { autoAlpha: 1, duration: .5, clearProps: 'opacity,visibility' }, .7);
+      };
+      addEventListener('pageshow', (e) => { if (e.persisted) comeBack(); });
+      comeBack();
     }
 
     /* ---------- Case study: the original pinned timeline ---------- */
@@ -536,7 +678,7 @@
       const mediaShift = () => wrap.offsetLeft - media.offsetLeft;
       const stagesShift = () => (media.offsetLeft + media.offsetWidth) - (wrap.offsetLeft + wrap.offsetWidth);
       gsap.set(stages, { autoAlpha: 0 });
-      const tl = gsap.timeline({ defaults: { ease: 'power3.inOut' }, scrollTrigger: { trigger: section, start: 'top top', end: '+=160%', pin: true, scrub: 1, anticipatePin: 1, invalidateOnRefresh: true,
+      const tl = gsap.timeline({ defaults: { ease: 'power3.inOut' }, scrollTrigger: { trigger: section, start: 'top top', end: '+=120%', pin: true, scrub: 1, anticipatePin: 1, invalidateOnRefresh: true,
         onUpdate: (self) => { const t = self.progress * total; setStep(t < stageIn[1] ? 0 : t < stageIn[2] ? 1 : t < stageIn[3] ? 2 : 3); } } });
       tl.fromTo(bar, { scaleX: 0 }, { scaleX: 1, duration: total, ease: 'none' }, 0)
         .fromTo(titleChars, { yPercent: 115 }, { yPercent: 0, duration: .9, stagger: .04, ease: 'power4.out' }, .1)

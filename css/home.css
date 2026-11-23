@@ -70,7 +70,7 @@ ol, ul { list-style: none; margin: 0; padding: 0; }
 .pill:hover b { rotate: -45deg; }
 
 @view-transition { navigation: auto; }
-.hero .press .sq { view-transition-name: dot; }
+.hero .portal__sq { view-transition-name: dot; }
 ::view-transition-group(dot) { animation-duration: .8s; animation-timing-function: cubic-bezier(.16, 1, .3, 1); }
 
 /* ---------- Theme switch: sun-and-moon disc; the new theme opens as a circle from the button ---------- */
@@ -147,29 +147,49 @@ ol, ul { list-style: none; margin: 0; padding: 0; }
 .tag--on { background: var(--ink); color: var(--bg); border-color: transparent; display: inline-flex; gap: .45rem; align-items: center; }
 .tag--on::before { content: ''; width: .45rem; height: .45rem; border-radius: 50%; background: var(--pink); }
 
+/* The portal: the full stop. A square at rest; hover / focus opens it onto The Other Side.
+   The visible square stays .2em; the link's hit area is at least 44px. */
+.portal { position: relative; flex: none; align-self: flex-end; width: .2em; height: .2em; margin-bottom: .05em; display: block; color: inherit; text-decoration: none; outline: none; }
+.portal::before { content: ''; position: absolute; left: 50%; top: 50%; width: max(44px, 160%); height: max(44px, 160%); translate: -50% -50%; }
+.portal__sq { position: absolute; inset: 0; background: var(--mark); transition: transform .6s var(--ease), border-radius .6s var(--ease); transform-origin: 50% 50%; }
+.portal__win { position: absolute; inset: 0; overflow: hidden; background: #2A2AE8; clip-path: inset(50% 50% 50% 50%); transition: clip-path .6s var(--ease); }
+.portal__win::after { content: ''; position: absolute; inset: 0; background: linear-gradient(#D6FF3D, #D6FF3D) 0 33% / 100% 1px no-repeat, linear-gradient(#D6FF3D, #D6FF3D) 0 66% / 100% 1px no-repeat; opacity: .5; }
+.portal__run { position: absolute; left: 0; top: 50%; translate: 0 -50%; font-size: .13em; font-weight: 800; font-variation-settings: 'wdth' 62, 'wght' 800; letter-spacing: .02em; color: #D6FF3D; white-space: nowrap; animation: portal-run 3.2s linear infinite paused; }
+@keyframes portal-run { to { transform: translateX(-50%); } }
+.portal__label { position: absolute; right: 0; bottom: calc(100% + .9rem); font: 400 12px/1 'Geist Mono', monospace; letter-spacing: .08em; text-transform: uppercase; white-space: nowrap; color: var(--ink); opacity: 0; translate: 0 .4rem; transition: opacity .45s var(--ease), translate .6s var(--ease); pointer-events: none; }
+.portal__label i { font-style: normal; color: var(--mark); }
+.portal:hover .portal__sq, .portal:focus-visible .portal__sq, .portal.is-hint .portal__sq, .portal.is-open .portal__sq { transform: scale(1.45); }
+.portal:hover .portal__win, .portal:focus-visible .portal__win, .portal.is-hint .portal__win, .portal.is-open .portal__win { clip-path: inset(9% 9% 9% 9%); }
+.portal:hover .portal__run, .portal:focus-visible .portal__run, .portal.is-hint .portal__run, .portal.is-open .portal__run { animation-play-state: running; }
+.portal:hover .portal__label, .portal:focus-visible .portal__label, .portal.is-hint .portal__label { opacity: 1; translate: 0 0; }
+.portal:focus-visible .portal__sq { outline: 2px solid var(--ink); outline-offset: .06em; }
+@media (prefers-reduced-motion: reduce) { .portal__run { animation: none; } .portal__sq, .portal__win { transition: none; } }
+.os-chip { position: fixed; left: 0; top: 0; z-index: 9999; background: #2A2AE8; pointer-events: none; }
+.os-return .hero .press, .os-return .hero__intro, .os-return .hero__foot, .os-return .hstage { opacity: 0; }
+
 /* Stage and screens. Desktop: absolutely placed over the right of the hero, no stacking context of its
    own, so each screen can sit in front of or behind the headline. */
-.stage { position: absolute; right: var(--gutter); top: var(--st, 6rem); width: var(--sw, 56vw); aspect-ratio: 1 / .64; }
+.hstage { position: absolute; right: var(--gutter); top: var(--st, 6rem); width: var(--sw, 56vw); aspect-ratio: 1 / .64; }
 .scr { position: absolute; display: block; color: #F8DBC1; text-decoration: none; will-change: transform; outline: none; }
 .scr__in { position: relative; display: block; transition: transform .7s var(--ease); }
-.scr__in > img { display: block; width: 100%; height: auto; aspect-ratio: 16 / 10; object-fit: cover; object-position: top center; }
+.scr__in > .scr__img { display: block; width: 100%; height: auto; aspect-ratio: 16 / 10; object-fit: cover; object-position: top center; }
 .scr__in::after { content: ''; position: absolute; inset: 0; background: #071012; opacity: 0; transition: opacity .6s var(--ease); pointer-events: none; border-radius: inherit; }
-.stage.has-on .scr:not(.is-on) .scr__in::after { opacity: .42; }
+.hstage.has-on .scr:not(.is-on) .scr__in::after { opacity: .42; }
 .scr.is-on { z-index: 6 !important; }
 .scr.is-on .scr__in { transform: scale(1.035); }
 .scr:focus-visible .scr__in { outline: 2px solid var(--mark); outline-offset: 6px; }
 /* Each frame is cut from its own site. */
 .scr--ganko { left: 38%; top: 7%; width: 62%; z-index: 4; }
 .scr--ganko .scr__in { padding: .45rem; background: #F4EBD8; border-radius: .35rem; box-shadow: 0 30px 60px -30px rgba(0,0,0,.55); rotate: -1.2deg; }
-.scr--ganko .scr__in > img.scr__main { border-radius: .15rem; }
+.scr--ganko .scr__img { border-radius: .15rem; }
 .scr--ganko .scr__in::after { border-radius: .35rem; }
-.scr__detail--dish { position: absolute; left: -9%; bottom: -16%; width: 27%; border: .3rem solid #F4EBD8; border-radius: .2rem; box-shadow: 0 18px 36px -18px rgba(0,0,0,.6); rotate: 3deg; }
-.scr--luumens { left: 4%; top: 0; width: 49%; z-index: 3; }
+.scr__detail--dish { position: absolute; left: -12%; top: 18%; width: 24%; height: auto; border: .3rem solid #F4EBD8; border-radius: .2rem; box-shadow: 0 18px 36px -18px rgba(0,0,0,.6); rotate: 3deg; }
+.scr--luumens { left: 4%; top: 4%; width: 49%; z-index: 1; }
 .scr--luumens .scr__in { background: #fff; border-radius: .7rem; overflow: visible; box-shadow: 0 26px 50px -30px rgba(0,0,0,.5); rotate: 1.6deg; }
-.scr--luumens .scr__in > img:first-child { border-radius: .7rem; }
-.scr__detail--stats { position: absolute; right: -6%; top: -15%; width: 58%; border-radius: .5rem; box-shadow: 0 16px 30px -18px rgba(0,0,0,.45); }
-.scr__phone { display: none; }
-.scr--voyagaer { left: 0; top: 46%; width: 45%; z-index: 1; }
+.scr--luumens .scr__img { border-radius: .7rem; }
+.scr__detail--stats { position: absolute; left: -5%; top: -11%; width: 56%; height: auto; border-radius: .5rem; box-shadow: 0 16px 30px -18px rgba(0,0,0,.45); }
+.scr__in > .scr__phone { display: none; }
+.scr--voyagaer { left: -6%; top: 50%; width: 44%; z-index: 1; }
 .scr--voyagaer .scr__in { background: #0A3440; padding: .3rem; border: 1px solid rgba(134, 217, 200, .35); border-radius: .15rem; rotate: -2.4deg; }
 /* Labels: readable at rest, open into the action on hover / focus. */
 .scr__label { position: absolute; left: .7rem; bottom: .7rem; z-index: 2; display: inline-flex; align-items: center; gap: .6rem; padding: .45rem .7rem; border-radius: 99px; background: rgba(8, 16, 18, .82); color: #F8DBC1; font-size: .66rem; white-space: nowrap; }
@@ -182,18 +202,25 @@ ol, ul { list-style: none; margin: 0; padding: 0; }
 
 /* Tablet and phone: the stage joins the flow under the intro, recomposed rather than shrunk: Ganko leads,
    Luumens appears as its real phone screen held in front, Voyagaer is a sliver of teal behind. */
+@media (min-width: 1024px) {
+  .hero__intro { margin-bottom: auto; }
+  .hook { position: absolute; left: 0; bottom: calc(100% + 1.6rem); margin: 0; padding: 0; font-size: max(.1em, .9rem); flex-direction: row-reverse; align-items: flex-end; gap: 1.2em; }
+  .hook__rule { width: 7em; margin: 0 0 .55em; }
+  .hook__txt { font-size: 1.7em; line-height: 1.08; }
+}
+@media (max-width: 1279px) and (min-width: 1024px) { .hero__intro { max-width: 21rem; } }
 @media (max-width: 1023px) {
   .hero { min-height: 0; padding-top: 6.5rem; justify-content: flex-start; }
-  .stage { position: relative; right: auto; top: auto; width: 100%; aspect-ratio: 1 / .78; margin: .4rem 0 2.2rem; }
+  .hstage { position: relative; right: auto; top: auto; width: 100%; aspect-ratio: 1 / .78; margin: .4rem 0 2.2rem; }
   .scr--ganko { left: 0; top: 13%; width: 84%; }
   .scr--ganko .scr__in { rotate: 0deg; padding: .3rem; }
   .scr--luumens { left: auto; right: 0; top: auto; bottom: 0; width: 27%; z-index: 5; }
   .scr--luumens .scr__in { background: none; box-shadow: none; rotate: 3deg; }
-  .scr--luumens .scr__in > img:first-child, .scr__detail--stats { display: none; }
-  .scr__phone { display: block; width: 100%; height: auto; border-radius: 1.1rem; box-shadow: 0 24px 40px -22px rgba(0,0,0,.6); }
+  .scr--luumens .scr__img, .scr__in > .scr__detail--stats { display: none; }
+  .scr__in > .scr__phone { display: block; width: 100%; height: auto; border-radius: 1.1rem; box-shadow: 0 24px 40px -22px rgba(0,0,0,.6); }
   .scr--voyagaer { left: auto; right: 4%; top: 0; width: 62%; }
   .scr--voyagaer .scr__in { rotate: 2deg; }
-  .scr__detail--dish { display: none; }
+  .scr__in > .scr__detail--dish { display: none; }
   .scr--luumens .scr__label { left: auto; right: 0; bottom: -2.4rem; }
   .scr--voyagaer .scr__label { left: auto; right: .5rem; bottom: auto; top: .5rem; }
   .scr--ganko .scr__label { left: .8rem; bottom: .8rem; }
