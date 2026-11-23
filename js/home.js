@@ -327,17 +327,98 @@
       logo.addEventListener('blur', () => hold(false));
     }
 
-    /* ---------- Hero ---------- */
-    const heroChars = $$('.hero .press .ch');
+    /* ---------- Loader → hero (first visit this session) ----------
+       The head script adds .has-loader on a first visit with motion allowed. Stages:
+       entry (0–.45s) · DESIGN → DETAIL → DISTINCTIVE through a mask (.45–2s) · counter completes,
+       labels clear (1.5–2.05s) · the two background halves split (2.05–2.85s) · the rest of the hero
+       rises in (2.45–3.2s). The final word is a copy of the hero's first line, placed exactly over it,
+       so when the halves open it simply stays: the loader copy is removed with no visible change.
+       The counter only reaches 100% once the fonts and the hero poster are ready (capped at 3.5s). */
+    const root = document.documentElement, loader = $('.loader');
     let seen = false;
     try { seen = sessionStorage.getItem('fusion-intro') === '1'; sessionStorage.setItem('fusion-intro', '1'); } catch (e) {}
-    if (!seen) {
-      const st0 = heroChars.map(() => ({ w: 62, g: 300 }));
-      gsap.from('.hero .press .ln', { yPercent: 100, opacity: 0, duration: 1, stagger: .1, ease: 'expo.out', delay: .05 });
-      gsap.to(st0, { w: 100, g: 800, duration: 1.1, stagger: .02, ease: 'expo.out', delay: .15, onUpdate: () => heroChars.forEach((c, i) => c.style.fontVariationSettings = `'wdth' ${st0[i].w}, 'wght' ${st0[i].g}`), onComplete: () => heroChars.forEach((c) => c.style.fontVariationSettings = '') });
-      gsap.from('.hero__intro > *', { y: 20, duration: .9, stagger: .06, ease: 'power3.out', delay: .1 });
-      gsap.from('.hero__foot > *', { y: 20, opacity: 0, duration: .9, stagger: .05, ease: 'power3.out', delay: .4 });
+    if (loader && !seen && root.classList.contains('has-loader') && !REDUCE && window.gsap) runLoader();
+    else if (loader) loader.remove();
+
+    function runLoader() {
+      loader.style.animation = 'none'; // the script owns it now; the CSS timer was only a fallback
+      const [halfTop, halfBottom] = $$('.loader__half', loader);
+      const logoL = $('.loader__logo', loader), label = $('.loader__label', loader), note = $('.loader__note', loader);
+      const prog = $('.loader__progress', loader), bar = $('.loader__bar i', loader), count = $('.loader__count', loader), mask = $('.loader__mask', loader);
+      const heroLogo = $('.top .logo'), lines = $$('.hero .press .ln'), line1 = lines[0], rest = lines.slice(1);
+      const restChars = rest.flatMap((l) => $$('.ch', l));
+      const intro = $$('.hero__intro > *, .hero__foot > *');
+
+      const word = (txt) => `<div class="press"><span class="ln"><span class="t" style="flex:none">${txt}</span></span></div>`;
+      mask.innerHTML = word('Design') + word('Detail') + `<div class="press">${line1.outerHTML}</div>`;
+      const words = $$('.press', mask), wordLines = words.map((w) => $('.ln', w));
+
+      // Pin the loader's logo and word to the header logo and the hero's first line.
+      const place = () => {
+        const r = heroLogo.getBoundingClientRect(), cs = getComputedStyle(heroLogo);
+        logoL.style.left = r.left + parseFloat(cs.paddingLeft) + parseFloat(cs.borderLeftWidth) + 'px';
+        logoL.style.top = r.top + parseFloat(cs.paddingTop) + parseFloat(cs.borderTopWidth) + 'px';
+        const lr = line1.getBoundingClientRect(), fs = line1.style.fontSize || getComputedStyle(line1).fontSize;
+        Object.assign(mask.style, { left: lr.left + 'px', right: 'auto', top: lr.top + 'px', width: lr.width + 'px', height: lr.height + 'px', fontSize: fs });
+        wordLines.forEach((l) => { l.style.fontSize = fs; l.removeAttribute('data-fit'); });
+      };
+      place();
+      addEventListener('resize', place);
+
+      window.lenis?.stop();
+      const block = (e) => e.preventDefault();
+      loader.addEventListener('wheel', block, { passive: false });
+      loader.addEventListener('touchmove', block, { passive: false });
+
+      gsap.set(words, { yPercent: 160 });
+      gsap.set(rest, { yPercent: 70, autoAlpha: 0 });
+      gsap.set(intro, { y: 24, autoAlpha: 0 });
+
+      const cnt = { v: 1 };
+      const draw = () => { const v = Math.round(cnt.v); count.textContent = String(v).padStart(2, '0') + '%'; bar.style.transform = `scaleX(${cnt.v / 100})`; };
+      const wait = (ms) => new Promise((r) => setTimeout(r, ms));
+      const fonts = document.fonts ? document.fonts.load('800 100px Archivo').then(() => document.fonts.ready) : Promise.resolve();
+      const poster = new Promise((r) => { const i = new Image(); i.onload = i.onerror = r; i.src = '/assets/images/ganko-scroll-poster.webp'; });
+      const gate = (promise, at) => {
+        let ok = false; promise.then(() => { ok = true; requestAnimationFrame(place); });
+        tl.add(() => { if (ok) return; tl.pause(); promise.then(() => requestAnimationFrame(() => { place(); tl.resume(); })); }, at);
+      };
+
+      let done = false;
+      const finish = () => {
+        if (done) return; done = true;
+        clearTimeout(safety);
+        removeEventListener('resize', place);
+        loader.remove();
+        window.lenis?.start();
+      };
+      const tl = gsap.timeline();
+      const safety = setTimeout(() => { tl.progress(1); finish(); }, 7000);
+
+      // 1 · Entry
+      tl.from([logoL, label, note, prog], { y: 14, autoAlpha: 0, duration: .5, stagger: .05, ease: 'power3.out' }, 0)
+        .to(cnt, { v: 86, duration: 1.45, ease: 'power1.inOut', onUpdate: draw }, .05);
+      gate(Promise.race([fonts, wait(1500)]), .42);
+      // 2 · Typographic assembly: each word rolls up through the mask
+      tl.to(words[0], { yPercent: 0, duration: .5, ease: 'expo.out' }, .45)
+        .to(words[0], { yPercent: -160, duration: .3, ease: 'power3.in' }, .8)
+        .to(words[1], { yPercent: 0, duration: .5, ease: 'expo.out' }, 1.02)
+        .to(words[1], { yPercent: -160, duration: .3, ease: 'power3.in' }, 1.36);
+      gate(Promise.race([Promise.all([fonts, poster]), wait(3500)]), 1.4);
+      tl.to(words[2], { yPercent: 0, duration: .6, ease: 'expo.out' }, 1.58)
+      // 3 · Completion
+        .to(cnt, { v: 100, duration: .4, ease: 'power2.out', onUpdate: draw }, 1.6)
+        .to([label, note, prog], { autoAlpha: 0, y: -8, duration: .35, ease: 'power2.in', stagger: .03 }, 1.95)
+      // 4 · The halves split
+        .to(halfTop, { yPercent: -101, duration: .8, ease: 'power4.inOut' }, 2.05)
+        .to(halfBottom, { yPercent: 101, duration: .8, ease: 'power4.inOut' }, 2.05)
+        .add(finish, 2.86)
+      // 5 · The rest of the hero rises in, with the letters swelling as on the old intro
+        .to(rest, { yPercent: 0, autoAlpha: 1, duration: .9, stagger: .08, ease: 'expo.out', clearProps: 'transform,opacity,visibility' }, 2.45)
+        .fromTo(restChars, { fontVariationSettings: "'wdth' 62, 'wght' 300" }, { fontVariationSettings: "'wdth' 100, 'wght' 800", duration: 1, stagger: .02, ease: 'expo.out', clearProps: 'fontVariationSettings' }, 2.5)
+        .to(intro, { y: 0, autoAlpha: 1, duration: .8, stagger: .05, ease: 'power3.out', clearProps: 'transform,opacity,visibility' }, 2.6);
     }
+
     if (fine) presses.forEach((h) => {
       // Letters near the cursor widen and thicken. Letter centres are measured once (relative to the
       // line block) and on resize, so each frame does one read and then only writes.

@@ -23,6 +23,8 @@
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="/apple-touch-icon.png">
   <script>var d=document.documentElement;d.dataset.theme='dark';try{d.dataset.theme=localStorage.getItem('noah-theme')||'dark'}catch(e){}</script>
+  <!-- First visit this session, motion allowed: show the loader (js/home.js runs it; css/home.css hides it after 4.5s if scripts fail). -->
+  <script>try{if(sessionStorage.getItem('fusion-intro')!=='1'&&!matchMedia('(prefers-reduced-motion: reduce)').matches)d.classList.add('has-loader')}catch(e){}addEventListener('load',function(){if(!window.gsap){var l=document.querySelector('.loader');if(l)l.remove()}})</script>
   <link rel="preload" href="/assets/fonts/archivo.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="/css/base.css">
   <link rel="stylesheet" href="/css/contact.css">
@@ -78,6 +80,15 @@
   </script>
 </head>
 <body>
+  <div class="loader" aria-hidden="true">
+    <div class="loader__half loader__half--top"></div>
+    <div class="loader__half loader__half--bottom"></div>
+    <span class="loader__logo">noah<i></i></span>
+    <span class="loader__label mono">Loading</span>
+    <div class="loader__mask"></div>
+    <p class="loader__note mono">Independent web designer &amp; developer · Singapore</p>
+    <div class="loader__progress mono"><span class="loader__bar"><i></i></span><span class="loader__count">01%</span></div>
+  </div>
   <a class="skip mono" href="#work">Skip to content</a>
   <div class="progress" aria-hidden="false"><span class="progress__fill"></span></div>
 

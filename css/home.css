@@ -387,3 +387,26 @@ a:hover .arr, a:focus-visible .arr { translate: .35em 0; }
 }
 @media (max-width: 900px) { .pnav { margin-right: 0; } }
 @media (max-width: 600px) { .svc__grid { grid-template-columns: 1fr; } .more, .svc, .cps, .xp { padding-top: 4.5rem; } .statement { padding-block: 4.5rem; } .case { padding-block: 3rem 1rem; } .cta { margin-top: 2.5rem; } .pnav__text.is-empty + .pnav__menu { font-size: inherit; gap: .45rem; } .xp__head { margin-bottom: 1.5rem; } .pnav__text { max-width: 7.5rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; } .pnav__menu { font-size: 0; gap: 0; } .pnav__menu .pnav__icon { font-size: .9rem; } .tl__points { font-family: 'Archivo', sans-serif; text-transform: none; letter-spacing: 0; font-size: 1rem; } .foot { flex-direction: column; gap: .6rem; } }
+
+/* ---------- Loader (first visit per session; js/home.js) ----------
+   Two background halves split apart to reveal the hero. The logo and the word sit above them, exactly
+   over the header logo and the hero's first line, so they're simply removed once the halves are open. */
+.loader { display: none; }
+.has-loader .loader { display: block; position: fixed; inset: 0; z-index: 9999; color: var(--ink); animation: loader-failsafe .4s ease 4.5s forwards; touch-action: none; }
+@keyframes loader-failsafe { to { opacity: 0; visibility: hidden; } }
+.has-loader .logo .logo__l, .has-loader .logo .logo__dot { animation: none; }
+.loader__half { position: absolute; left: 0; right: 0; height: 50.5%; background: var(--bg); will-change: transform; }
+.loader__half--top { top: 0; }
+.loader__half--bottom { bottom: 0; }
+.loader__logo { position: absolute; left: var(--gutter); top: 1.55rem; font-weight: 600; font-size: 1.625rem; letter-spacing: -0.045em; line-height: 1; white-space: nowrap; }
+.loader__logo i { display: inline-block; width: .15em; height: .15em; margin-left: .105em; background: var(--mark); }
+.loader__label { position: absolute; right: var(--gutter); top: 1.9rem; color: var(--muted); }
+.loader__mask { position: absolute; left: var(--gutter); right: var(--gutter); top: 42%; height: 1em; font-size: clamp(3rem, 15vw, 14rem); clip-path: inset(-.1em -.2em -.04em -.2em); }
+.loader__mask .press { position: absolute; inset: 0 0 auto; }
+.loader__mask .ln { will-change: transform; }
+.loader__note { position: absolute; left: var(--gutter); bottom: calc(var(--gutter) + 1.6rem); margin: 0; color: var(--muted); max-width: 70vw; }
+.loader__progress { position: absolute; left: var(--gutter); right: var(--gutter); bottom: var(--gutter); display: flex; align-items: center; gap: 1rem; }
+.loader__bar { flex: 1; height: 1px; background: var(--line); overflow: hidden; }
+.loader__bar i { display: block; height: 100%; background: var(--mark); transform: scaleX(0); transform-origin: 0 50%; }
+.loader__count { min-width: 4ch; text-align: right; font-variant-numeric: tabular-nums; }
+@media (max-width: 600px) { .loader__logo { top: 1.4rem; } .loader__label { top: 1.75rem; } }

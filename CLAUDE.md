@@ -116,6 +116,10 @@ README.md has the file-by-file structure and the motion tiers; read it before la
   styles in a ticker or scroll handler. Use `sy()` (Lenis scroll), cached measurements refreshed on
   ScrollTrigger refresh, and transforms only for anything that moves every frame (the reel flyer).
   Videos play only while on screen. No backdrop-filter on moving elements.
+- Loader (homepage, first visit per session, motion allowed): `.has-loader` from the head script, markup
+  at the top of `<body>`, styles at the end of `css/home.css`, timeline `runLoader()` in `js/home.js`. Its final
+  word is a copy of the hero's first line placed over it; keep the hero's first line and the loader in step.
+  Fallbacks: removed on `load` if GSAP is missing; CSS hides it after 4.5s; a 7s timer forces the end.
 - The top nav collapses into the Menu pill below 1280px; the six links don't fit beside the buttons.
 - Test scripts must not write files into the repo.
 
