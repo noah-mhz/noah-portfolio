@@ -266,7 +266,7 @@
         },
       },
       code: {
-        html: () => stage(`<pre class="code"><span class="ln"><span class="k">const</span> card = $(<span class="s">".card"</span>)</span><span class="ln">gsap.to(card, { y: <span class="v">-24</span> })</span><span class="ln">gsap.to(card, { rotate: <span class="v">6</span> })</span><span class="ln">gsap.to(card, { scale: <span class="v">1.12</span> })</span><span class="ln">card.style.bg = <span class="s">"pink"</span></span></pre>
+        html: () => stage(`<pre class="code"><span class="ln"><span class="k">const</span> card = $(<span class="s">".card"</span>)</span><span class="ln">gsap.to(card, { y: <span class="v">-24</span> })</span><span class="ln">gsap.to(card, { rotate: <span class="v">6</span> })</span><span class="ln">gsap.to(card, { scale: <span class="v">1.12</span> })</span><span class="ln">card.style.bg = <span class="s">"apricot"</span></span></pre>
           <div class="comp"><img src="${IMG}concept-common-table-cover.webp" alt=""><b></b><b></b><span class="comp-sel"></span></div>`),
         tl: (el) => {
           const ln = $$('.ln', el), comp = $('.comp', el), sel = $('.comp-sel', el);
