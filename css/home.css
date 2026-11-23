@@ -100,12 +100,24 @@ ol, ul { list-style: none; margin: 0; padding: 0; }
 .rail a.is-current i { width: 22px; background: var(--mark); }
 .rail:hover::before { content: ''; position: absolute; inset: -1rem -11rem -1rem -2rem; z-index: -1; border-radius: 0 1rem 1rem 0; background: var(--bg); box-shadow: 0 1px 0 var(--line), 0 18px 40px -24px rgba(0,0,0,.35); }
 
-/* ---------- Hero (B): letters swell near the cursor ---------- */
-.hero { min-height: 100svh; display: flex; flex-direction: column; justify-content: flex-end; padding-top: 6rem; padding-bottom: 2.2rem; }
-.hero__intro { display: flex; justify-content: space-between; align-items: end; gap: 2rem; margin-bottom: 1.4rem; }
-.hero__intro p { margin: 0; font-size: clamp(1.1rem, 1.6vw, 1.55rem); line-height: 1.25; max-width: 30rem; font-weight: 450; }
+/* ---------- Hero: DIGITAL / EXPERIENCES. woven through layered real screens ----------
+   The stage holds three real project screens, each framed in its own site's palette. The h1 sits between
+   layers: in front of Voyagaer, behind nothing else. Hover or focus on a screen tints the hero with that
+   brand and swaps "your" in the hook for its name. js/home.js sizes the stage (--sw, --st) from the headline. */
+.hero { position: relative; min-height: 100svh; display: flex; flex-direction: column; justify-content: flex-end; padding-top: 6rem; padding-bottom: 2rem; isolation: isolate; }
+.hero::before { content: ''; position: absolute; inset: 0; z-index: -1; background: var(--wash, transparent); opacity: 0; transition: opacity .9s var(--ease); pointer-events: none; }
+.hero.is-tinted::before { opacity: .07; }
+.hero[data-active='ganko'] { --brand: #E6CB98; --wash: #C99A55; }
+.hero[data-active='luumens'] { --brand: #FF6B6B; --wash: #E5484D; }
+.hero[data-active='voyagaer'] { --brand: #86D9C8; --wash: #138A8C; }
+:root:not([data-theme='dark']) .hero[data-active='ganko'] { --brand: #7A4B1F; }
+:root:not([data-theme='dark']) .hero[data-active='luumens'] { --brand: #B3262D; }
+:root:not([data-theme='dark']) .hero[data-active='voyagaer'] { --brand: #0B5A63; }
+.hero__intro { position: relative; z-index: 2; display: flex; flex-direction: column; align-items: flex-start; gap: 1.1rem; margin-bottom: 1.6rem; max-width: 26rem; }
+.hero__intro p { margin: 0; font-size: clamp(1.05rem, 1.35vw, 1.4rem); line-height: 1.28; font-weight: 450; }
 .hero__intro p span { color: var(--muted); }
-.press { margin: 0; text-transform: uppercase; font-weight: 800; line-height: .8; letter-spacing: -.01em; white-space: nowrap; user-select: none; }
+
+.press { position: relative; z-index: 2; margin: 0; text-transform: uppercase; font-weight: 800; line-height: .8; letter-spacing: -.01em; white-space: nowrap; user-select: none; }
 .press .ln { display: flex; justify-content: space-between; align-items: center; }
 .press .ch { display: inline-block; font-variation-settings: 'wdth' 100, 'wght' 800; }
 /* Letters share their line: the word keeps its width while letters swell and shrink. */
@@ -115,14 +127,84 @@ ol, ul { list-style: none; margin: 0; padding: 0; }
 .press .m .ch { font-variation-settings: 'wdth' 100, 'wght' 800 !important; }
 .is-empty > .tw-caret { display: none; }
 .press .ln + .ln { margin-top: .03em; }
-.press .reel { flex: none; height: .7em; aspect-ratio: 16 / 10; margin: 0 .08em; border-radius: .08em; overflow: hidden; background: var(--pink); position: relative; }
-.press .reel video { width: 100%; height: 100%; object-fit: cover; }
+.press .ln--1 { justify-content: flex-start; align-items: flex-start; }
+.press .ln--1 .t { flex: none; display: inline-flex; }
 .press .sq { flex: none; width: .2em; height: .2em; align-self: flex-end; margin-bottom: .05em; background: var(--mark); }
-.hero__foot { display: flex; justify-content: space-between; align-items: center; gap: 1rem; margin-top: 2rem; }
+/* The hook: an editorial footnote set into the headline, cap-high beside DIGITAL. */
+.hook { display: flex; align-items: flex-start; gap: .75em; margin-left: .55em; padding-top: .55em; font-size: max(.085em, .78rem); font-weight: 500; text-transform: none; letter-spacing: 0; line-height: 1.18; white-space: nowrap; user-select: text; }
+.hook__rule { flex: none; width: 3.2em; height: 1px; margin-top: .62em; background: var(--mark); transform-origin: 0 50%; }
+.hook__txt { font-size: 1.55em; letter-spacing: -.01em; }
+.hook__slot { display: inline-block; vertical-align: bottom; overflow: hidden; height: 1.18em; }
+.hook__word { display: inline-block; color: var(--brand, var(--mark)); transition: color .6s var(--ease); }
+
+.hero__foot { position: relative; z-index: 2; display: flex; justify-content: space-between; align-items: center; gap: 1rem; margin-top: 1.8rem; }
+.hero__cta { display: flex; align-items: center; gap: 1.4rem; }
+.hero__cta .pill { background: var(--pink); color: var(--on-pink); }
+.hero__cta .pill b { display: grid; place-items: center; width: 1.3rem; height: 1.3rem; border-radius: 50%; background: var(--ink); color: var(--bg); transition: translate .4s var(--ease); }
+.hero__cta .pill:hover b, .hero__cta .pill:focus-visible b { translate: .2rem 0; }
 .tags { display: flex; gap: .4rem; flex-wrap: wrap; }
 .tag { padding: .5rem .8rem; border: 1px solid var(--line); border-radius: 99px; }
 .tag--on { background: var(--ink); color: var(--bg); border-color: transparent; display: inline-flex; gap: .45rem; align-items: center; }
 .tag--on::before { content: ''; width: .45rem; height: .45rem; border-radius: 50%; background: var(--pink); }
+
+/* Stage and screens. Desktop: absolutely placed over the right of the hero, no stacking context of its
+   own, so each screen can sit in front of or behind the headline. */
+.stage { position: absolute; right: var(--gutter); top: var(--st, 6rem); width: var(--sw, 56vw); aspect-ratio: 1 / .64; }
+.scr { position: absolute; display: block; color: #F8DBC1; text-decoration: none; will-change: transform; outline: none; }
+.scr__in { position: relative; display: block; transition: transform .7s var(--ease); }
+.scr__in > img { display: block; width: 100%; height: auto; aspect-ratio: 16 / 10; object-fit: cover; object-position: top center; }
+.scr__in::after { content: ''; position: absolute; inset: 0; background: #071012; opacity: 0; transition: opacity .6s var(--ease); pointer-events: none; border-radius: inherit; }
+.stage.has-on .scr:not(.is-on) .scr__in::after { opacity: .42; }
+.scr.is-on { z-index: 6 !important; }
+.scr.is-on .scr__in { transform: scale(1.035); }
+.scr:focus-visible .scr__in { outline: 2px solid var(--mark); outline-offset: 6px; }
+/* Each frame is cut from its own site. */
+.scr--ganko { left: 38%; top: 7%; width: 62%; z-index: 4; }
+.scr--ganko .scr__in { padding: .45rem; background: #F4EBD8; border-radius: .35rem; box-shadow: 0 30px 60px -30px rgba(0,0,0,.55); rotate: -1.2deg; }
+.scr--ganko .scr__in > img.scr__main { border-radius: .15rem; }
+.scr--ganko .scr__in::after { border-radius: .35rem; }
+.scr__detail--dish { position: absolute; left: -9%; bottom: -16%; width: 27%; border: .3rem solid #F4EBD8; border-radius: .2rem; box-shadow: 0 18px 36px -18px rgba(0,0,0,.6); rotate: 3deg; }
+.scr--luumens { left: 4%; top: 0; width: 49%; z-index: 3; }
+.scr--luumens .scr__in { background: #fff; border-radius: .7rem; overflow: visible; box-shadow: 0 26px 50px -30px rgba(0,0,0,.5); rotate: 1.6deg; }
+.scr--luumens .scr__in > img:first-child { border-radius: .7rem; }
+.scr__detail--stats { position: absolute; right: -6%; top: -15%; width: 58%; border-radius: .5rem; box-shadow: 0 16px 30px -18px rgba(0,0,0,.45); }
+.scr__phone { display: none; }
+.scr--voyagaer { left: 0; top: 46%; width: 45%; z-index: 1; }
+.scr--voyagaer .scr__in { background: #0A3440; padding: .3rem; border: 1px solid rgba(134, 217, 200, .35); border-radius: .15rem; rotate: -2.4deg; }
+/* Labels: readable at rest, open into the action on hover / focus. */
+.scr__label { position: absolute; left: .7rem; bottom: .7rem; z-index: 2; display: inline-flex; align-items: center; gap: .6rem; padding: .45rem .7rem; border-radius: 99px; background: rgba(8, 16, 18, .82); color: #F8DBC1; font-size: .66rem; white-space: nowrap; }
+.scr--ganko .scr__label { left: 1.2rem; bottom: 1.2rem; }
+.scr__label b { font-weight: 400; display: inline-flex; gap: .35rem; max-width: 0; overflow: hidden; opacity: 0; transition: max-width .6s var(--ease), opacity .4s; }
+.scr__label b i { font-style: normal; color: var(--pink); }
+.scr.is-on .scr__label b, .scr:focus-visible .scr__label b { max-width: 12rem; opacity: 1; }
+.scr.is-on .scr__label, .scr:focus-visible .scr__label { background: var(--pink); color: var(--on-pink); }
+.scr.is-on .scr__label b i, .scr:focus-visible .scr__label b i { color: var(--on-pink); }
+
+/* Tablet and phone: the stage joins the flow under the intro, recomposed rather than shrunk: Ganko leads,
+   Luumens appears as its real phone screen held in front, Voyagaer is a sliver of teal behind. */
+@media (max-width: 1023px) {
+  .hero { min-height: 0; padding-top: 6.5rem; justify-content: flex-start; }
+  .stage { position: relative; right: auto; top: auto; width: 100%; aspect-ratio: 1 / .78; margin: .4rem 0 2.2rem; }
+  .scr--ganko { left: 0; top: 13%; width: 84%; }
+  .scr--ganko .scr__in { rotate: 0deg; padding: .3rem; }
+  .scr--luumens { left: auto; right: 0; top: auto; bottom: 0; width: 27%; z-index: 5; }
+  .scr--luumens .scr__in { background: none; box-shadow: none; rotate: 3deg; }
+  .scr--luumens .scr__in > img:first-child, .scr__detail--stats { display: none; }
+  .scr__phone { display: block; width: 100%; height: auto; border-radius: 1.1rem; box-shadow: 0 24px 40px -22px rgba(0,0,0,.6); }
+  .scr--voyagaer { left: auto; right: 4%; top: 0; width: 62%; }
+  .scr--voyagaer .scr__in { rotate: 2deg; }
+  .scr__detail--dish { display: none; }
+  .scr--luumens .scr__label { left: auto; right: 0; bottom: -2.4rem; }
+  .scr--voyagaer .scr__label { left: auto; right: .5rem; bottom: auto; top: .5rem; }
+  .scr--ganko .scr__label { left: .8rem; bottom: .8rem; }
+  .hero__intro { max-width: 34rem; }
+}
+@media (max-width: 600px) {
+  .hero__foot { flex-direction: column; align-items: flex-start; }
+  .hero__cta { width: 100%; justify-content: space-between; }
+  .hero__cta .pill { min-height: 2.9rem; }
+  .scr__label { font-size: .6rem; }
+}
 
 .work-label { display: flex; justify-content: space-between; padding-top: clamp(3rem, 8vh, 5rem); padding-bottom: 1rem; border-bottom: 1px solid var(--line); margin: 0 var(--gutter); padding-inline: 0; }
 .reel-flyer { position: fixed; z-index: 5; left: 0; top: 0; width: 0; height: 0; will-change: transform; overflow: hidden; border-radius: .9rem; background: var(--bg-2); visibility: hidden; pointer-events: none; }
@@ -371,8 +453,7 @@ a:hover .arr, a:focus-visible .arr { translate: .35em 0; }
 @media (max-width: 767px) { .tl { grid-template-columns: 1fr; gap: 1rem; } .tl__when { grid-auto-flow: column; justify-content: start; align-items: baseline; gap: 1rem; } }
 @media (max-width: 1023px) { .rail { display: none; } }
 @media (max-width: 900px) {
-  .hero { min-height: 0; padding-top: 8rem; }
-  .hero__intro, .hero__foot, .cta__row, .work__head { flex-direction: column; align-items: start; }
+  .cta__row, .work__head { flex-direction: column; align-items: start; }
   .case__steps { display: none; }
   .more__grid { grid-template-columns: 1fr; gap: 2rem; } .more__side { display: contents; } .more__side .h2s { order: 0; } .more__grid > div:last-child { order: 1; } .record { order: 2; } .more__index { order: 3; } .deck__card { inset: 6% 8% 4% 0; } .deck__ctrl { padding-right: 8%; }
   .svc__grid, .cps__grid { grid-template-columns: 1fr 1fr; }
