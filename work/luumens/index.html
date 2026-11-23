@@ -18,8 +18,9 @@
   <link rel="stylesheet" href="/css/base.css">
   <link rel="stylesheet" href="/css/contact.css">
   <link rel="stylesheet" href="/css/site.css">
+  <link rel="stylesheet" href="/css/case.css">
 </head>
-<body>
+<body data-case="luumens">
   <a class="skip mono" href="#main">Skip to content</a>
   <header class="top">
     <a class="logo" href="/">noah<i></i></a>
@@ -31,16 +32,23 @@
   </header>
 
   <main id="main">
-    <section class="head">
-      <p class="mono">Case study · In-house · Pomar Engineering · Energy · 2026</p>
-      <h1 aria-label="Luumens">Luumens<i aria-hidden="true"></i></h1>
-      <p class="head__lede">Luumens supplies photovoltaic panels, Huawei inverters, energy storage and methanol and hydrogen fuel cells for land and marine use. The site is for customers looking to buy, and it also has to explain the benefits of the products, and of alternative energy itself.</p>
-      <dl class="facts mono">
+    <section class="cs-hero">
+      <p class="mono cs-kicker">Case study · In-house · Pomar Engineering · Energy · 2026</p>
+      <h1 class="cs-title" aria-label="Luumens"><span class="cs-title__mask"><span class="cs-title__txt">Luumens</span></span><i aria-hidden="true"></i></h1>
+      <div class="cs-side">
+        <p class="cs-lede">Luumens supplies photovoltaic panels, Huawei inverters, energy storage and methanol and hydrogen fuel cells for land and marine use. The site is for customers looking to buy, and it also has to explain the benefits of the products, and of alternative energy itself.</p>
+        <dl class="facts mono">
         <dt>Built for</dt><dd>Luumens · In-house, Pomar Engineering</dd>
         <dt>Role</dt><dd>Web design &amp; development</dd>
         <dt>Platform</dt><dd>WordPress + Elementor, custom HTML widgets, GSAP</dd>
         <dt>Live site</dt><dd><a href="https://luumens.com" target="_blank" rel="noopener"><span class="ulink">luumens.com</span> <span class="arr" aria-hidden="true">↗</span></a></dd>
       </dl>
+      </div>
+      <div class="cs-compose" aria-hidden="true">
+        <figure class="cs-layer cs-layer--a" data-depth="0.5"><img src="/assets/images/luumens-v2-hero.webp" width="1200" height="750" alt="" fetchpriority="high" decoding="async"></figure>
+        <figure class="cs-layer cs-layer--b" data-depth="1.3"><img src="/assets/images/luumens-m1.webp" width="640" height="1283" alt="" loading="lazy" decoding="async"></figure>
+        <figure class="cs-layer cs-layer--c" data-depth="0.9"><img src="/assets/images/luumens-ui-stats.webp" width="1200" height="180" alt="" loading="lazy" decoding="async"></figure>
+      </div>
     </section>
 
     <section class="sec" aria-labelledby="screens-title">
@@ -75,12 +83,28 @@
       </div>
     </section>
 
-    <section class="sec" aria-labelledby="decisions-title">
+    <section class="cs-statement"><span class="mono">The brief</span><p>A site for customers looking to buy, that also explains the benefits of the products, and of alternative energy itself.</p></section>
+    <section class="cs-spreads" aria-labelledby="decisions-title">
       <div class="sec__head"><h2 id="decisions-title">Three<br>decisions</h2><span class="mono muted">How the pages are ordered.</span></div>
-      <div class="cols">
-        <div><span class="mono">01 · Story first</span><h3>The energy, before the products.</h3><p>The homepage opens on an illustrated energy cycle, how clean power is made and used, ahead of anything for sale.</p></div>
-        <div><span class="mono">02 · By situation</span><h3>Start from where you need power.</h3><p>Six photographic cards (ship, camping, RV, signal tower, emergency rescue and monitoring) each lead to a page for that setting.</p></div>
-        <div><span class="mono">03 · Figures up front</span><h3>Products lead with the numbers.</h3><p>Product pages open on the product and its key figures as a bento grid of cards, then explain the technology card by card. The bento product page is the part I'm proudest of.</p></div>
+      <article class="cs-spread">
+        <figure class="cs-spread__fig"><img src="/assets/images/luumens-v2-cycle.webp" alt="" loading="lazy" decoding="async"></figure>
+        <div class="cs-spread__txt"><span class="mono">01 · Story first</span><h3>The energy, before the products.</h3><p>The homepage opens on an illustrated energy cycle, how clean power is made and used, ahead of anything for sale.</p></div>
+      </article>
+      <article class="cs-spread">
+        <figure class="cs-spread__fig"><img src="/assets/images/luumens-v2-solutions.webp" alt="" loading="lazy" decoding="async"></figure>
+        <div class="cs-spread__txt"><span class="mono">02 · By situation</span><h3>Start from where you need power.</h3><p>Six photographic cards (ship, camping, RV, signal tower, emergency rescue and monitoring) each lead to a page for that setting.</p></div>
+      </article>
+      <article class="cs-spread">
+        <figure class="cs-spread__fig"><img src="/assets/images/luumens-v2-pv.webp" alt="" loading="lazy" decoding="async"></figure>
+        <div class="cs-spread__txt"><span class="mono">03 · Figures up front</span><h3>Products lead with the numbers.</h3><p>Product pages open on the product and its key figures as a bento grid of cards, then explain the technology card by card. The bento product page is the part I'm proudest of.</p></div>
+      </article>
+    </section>
+    <section class="cs-details" aria-labelledby="details-title">
+      <div class="sec__head"><h2 id="details-title">Up<br>close</h2><span class="mono muted">Details from the build.</span></div>
+      <div class="cs-details__grid">
+        <figure class="cs-detail"><div class="cs-detail__box"><img src="/assets/images/luumens-ui-stats.webp" alt="" loading="lazy" decoding="async"></div><figcaption class="mono"><b>Figures</b><span>Key numbers as cards</span></figcaption></figure>
+        <figure class="cs-detail"><div class="cs-detail__box"><img src="/assets/images/luumens-ui-chips.webp" alt="" loading="lazy" decoding="async"></div><figcaption class="mono"><b>Products</b><span>Linked chips</span></figcaption></figure>
+        <figure class="cs-detail"><div class="cs-detail__box"><img src="/assets/images/luumens-ui-techlist.webp" alt="" loading="lazy" decoding="async"></div><figcaption class="mono"><b>Technology</b><span>Card by card</span></figcaption></figure>
       </div>
     </section>
 
@@ -106,7 +130,8 @@
   </main>
 </main>
 
-  <footer class="next">
+  <footer class="next cs-next" style="--next-bg:#062D38;--next-ink:#EAF2F2;--next-mark:#86D9C8">
+    <figure class="cs-next__peek" aria-hidden="true"><img src="/assets/images/voyagaer-hero-poster.webp" alt="" loading="lazy" decoding="async"></figure>
     <span class="mono">Next project · 03 / 04</span><br>
     <a class="big" href="/work/voyagaer/">Voyagaer<i aria-hidden="true"></i></a>
     <div class="foot mono"><span>© 2026 Noah Zaw Min Htut</span><span>Singapore → Worldwide</span><a href="/colophon/">Colophon</a><a href="/">Back to the homepage</a></div>
@@ -114,6 +139,7 @@
 
   <script type="application/json" id="screens">{"base": "/assets/images/luumens-", "rows": [["Built in", "Elementor + custom HTML"]], "href": "https://luumens.com", "cta": "Visit luumens.com", "screens": [["v2-hero.webp", "Homepage", "Hero", "Full height, with a second way in and a scroll cue."], ["v2-cycle.webp", "Energy cycle", "Story first", "An illustrated energy cycle: water and renewable energy through electrolysis and methanol synthesis to hydrogen, methanol and oxygen consumers."], ["v2-solutions.webp", "Energy solutions", "By situation", "Six photo cards for ship, camping, RV, signal tower, emergency rescue and monitoring, each leading to a page for that setting."], ["v2-pv.webp", "PV panel", "Figures up front", "A product card and the panel itself above three figure cards."], ["menu-poster.webp", "Mega menus", "Products · Solutions", "Motion, added throughout: the mega menus for Products and Solutions."], ["tabs-poster.webp", "Discover", "Tabs", "The Discover page’s tabs."], ["htmfc-poster.webp", "HTMFC", "Product page", "The HTMFC product page."], ["home-1600.webp", "Earlier homepage", "Before", "The earlier hero: a short banner over solar panels."], ["pv-bento.webp", "Earlier PV panel", "Before", "The earlier PV panel page: a bento grid of icon cards. Key figures have since moved to the top, under the product."]]}</script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js" defer></script>
   <script src="/js/theme.js" defer></script>
   <script src="/js/contact.js" defer></script>

@@ -16,8 +16,9 @@
   <link rel="stylesheet" href="/css/base.css">
   <link rel="stylesheet" href="/css/contact.css">
   <link rel="stylesheet" href="/css/site.css">
+  <link rel="stylesheet" href="/css/case.css">
 </head>
-<body>
+<body data-case="industmarine">
   <a class="skip mono" href="#main">Skip to content</a>
   <header class="top">
     <a class="logo" href="/">noah<i></i></a>
@@ -29,16 +30,23 @@
   </header>
 
   <main id="main">
-    <section class="head">
-      <p class="mono">Case study · In-house · Pomar Engineering · Marine &amp; industrial · 2026</p>
-      <h1 aria-label="Industmarine" style="font-size:clamp(2.2rem, 10.2vw, 11rem)">Industmarine<i aria-hidden="true"></i></h1>
-      <p class="head__lede">The website for Industmarine Engineers, a Singapore supplier of marine, offshore and industrial equipment with three decades in the trade. Eight pages, all laid out like an engineering drawing sheet.</p>
-      <dl class="facts mono">
+    <section class="cs-hero">
+      <p class="mono cs-kicker">Case study · In-house · Pomar Engineering · Marine &amp; industrial · 2026</p>
+      <h1 class="cs-title" aria-label="Industmarine"><span class="cs-title__mask"><span class="cs-title__txt">Industmarine</span></span><i aria-hidden="true"></i></h1>
+      <div class="cs-side">
+        <p class="cs-lede">The website for Industmarine Engineers, a Singapore supplier of marine, offshore and industrial equipment with three decades in the trade. Eight pages, all laid out like an engineering drawing sheet.</p>
+        <dl class="facts mono">
         <dt>Company</dt><dd>Industmarine Engineers · In-house</dd>
         <dt>Role</dt><dd>Web design &amp; development</dd>
         <dt>Platform</dt><dd>WordPress + Elementor, custom HTML widgets, GSAP</dd>
         <dt>Live site</dt><dd><a href="https://industmarine.com" target="_blank" rel="noopener"><span class="ulink">industmarine.com</span> <span class="arr" aria-hidden="true">↗</span></a></dd>
       </dl>
+      </div>
+      <div class="cs-compose" aria-hidden="true">
+        <figure class="cs-layer cs-layer--a" data-depth="0.5"><img src="/assets/images/industmarine-hero.webp" width="1440" height="900" alt="" fetchpriority="high" decoding="async"></figure>
+        <figure class="cs-layer cs-layer--b" data-depth="1.2"><img src="/assets/images/industmarine-drawer.webp" width="1440" height="900" alt="" loading="lazy" decoding="async"></figure>
+        <figure class="cs-layer cs-layer--c" data-depth="0.8"><img src="/assets/images/industmarine-menu.webp" width="1440" height="900" alt="" loading="lazy" decoding="async"></figure>
+      </div>
     </section>
 
     <section class="sec" aria-labelledby="screens-title">
@@ -64,12 +72,28 @@
       </div>
     </section>
 
-    <section class="sec" aria-labelledby="decisions-title">
+    <section class="cs-statement"><span class="mono">The idea</span><p>Built like the equipment it sells: every page is laid out like an engineering drawing sheet.</p></section>
+    <section class="cs-spreads" aria-labelledby="decisions-title">
       <div class="sec__head"><h2 id="decisions-title">Three<br>decisions</h2><span class="mono muted">Built like the equipment it sells.</span></div>
-      <div class="cols">
-        <div><span class="mono">01 · The drawing sheet</span><h3>Every page is a sheet.</h3><p>A flexible rail, four content columns and another rail. Every content cell is outlined, and ruler ticks run down both outer edges.</p></div>
-        <div><span class="mono">02 · Drawings, not icons</span><h3>Line drawings with dimensions.</h3><p>Sectors, services and contact channels are shown as technical elevations with dimension lines, which plot themselves as they scroll in.</p></div>
-        <div><span class="mono">03 · One catalogue</span><h3>Twenty products, one page.</h3><p>Products filter by competency or principal and open in a details drawer, so seven principals' equipment stays in one place.</p></div>
+      <article class="cs-spread">
+        <figure class="cs-spread__fig"><img src="/assets/images/industmarine-threes.webp" alt="" loading="lazy" decoding="async"></figure>
+        <div class="cs-spread__txt"><span class="mono">01 · The drawing sheet</span><h3>Every page is a sheet.</h3><p>A flexible rail, four content columns and another rail. Every content cell is outlined, and ruler ticks run down both outer edges.</p></div>
+      </article>
+      <article class="cs-spread">
+        <figure class="cs-spread__fig"><img src="/assets/images/industmarine-offshore.webp" alt="" loading="lazy" decoding="async"></figure>
+        <div class="cs-spread__txt"><span class="mono">02 · Drawings, not icons</span><h3>Line drawings with dimensions.</h3><p>Sectors, services and contact channels are shown as technical elevations with dimension lines, which plot themselves as they scroll in.</p></div>
+      </article>
+      <article class="cs-spread">
+        <figure class="cs-spread__fig"><img src="/assets/images/industmarine-catalogue.webp" alt="" loading="lazy" decoding="async"></figure>
+        <div class="cs-spread__txt"><span class="mono">03 · One catalogue</span><h3>Twenty products, one page.</h3><p>Products filter by competency or principal and open in a details drawer, so seven principals' equipment stays in one place.</p></div>
+      </article>
+    </section>
+    <section class="cs-details" aria-labelledby="details-title">
+      <div class="sec__head"><h2 id="details-title">Up<br>close</h2><span class="mono muted">Details from the build.</span></div>
+      <div class="cs-details__grid">
+        <figure class="cs-detail"><div class="cs-detail__box"><img src="/assets/images/industmarine-sectors.webp" alt="" loading="lazy" decoding="async"></div><figcaption class="mono"><b>Industries</b><span>Activity by sector</span></figcaption></figure>
+        <figure class="cs-detail"><div class="cs-detail__box"><img src="/assets/images/industmarine-lifecycle.webp" alt="" loading="lazy" decoding="async"></div><figcaption class="mono"><b>Services</b><span>Eight services, one life cycle</span></figcaption></figure>
+        <figure class="cs-detail"><div class="cs-detail__box"><img src="/assets/images/industmarine-channels.webp" alt="" loading="lazy" decoding="async"></div><figcaption class="mono"><b>Contact</b><span>Ways to reach us</span></figcaption></figure>
       </div>
     </section>
 
@@ -94,7 +118,8 @@
     </section>
   </main>
 
-  <footer class="next">
+  <footer class="next cs-next" style="--next-bg:#1C1816;--next-ink:#F2EADB;--next-mark:#D9583F">
+    <figure class="cs-next__peek" aria-hidden="true"><img src="/assets/images/ganko-home-900.webp" alt="" loading="lazy" decoding="async"></figure>
     <span class="mono">Next project · 01 / 04</span><br>
     <a class="big" href="/work/ganko/">Ganko.sg<i aria-hidden="true"></i></a>
     <div class="foot mono"><span>© 2026 Noah Zaw Min Htut</span><span>Singapore → Worldwide</span><a href="/colophon/">Colophon</a><a href="/">Back to the homepage</a></div>
@@ -102,6 +127,7 @@
 
   <script type="application/json" id="screens">{"base": "/assets/images/industmarine-", "screens": [["hero.webp", "Homepage", "Slider + featured product", "The hero steps through the mission and the three competencies, and the featured product changes with each slide."], ["threes.webp", "About", "Three of everything", "One 3 stays put while the words around it change: business divisions, focused competencies, key geographies."], ["sectors.webp", "Industries", "Activity by sector", "The split bar fills segment by segment as the shares count up: maritime, offshore, industrial and civil."], ["offshore.webp", "Offshore", "Technical drawings", "Each sector has its own elevation with dimension lines, plotted at its real stroke length as it scrolls in."], ["lifecycle.webp", "Services", "Eight services, one life cycle", "A blue rule runs from cell to cell, then each service’s drawing plots."], ["catalogue.webp", "Products", "Filter by competency or principal", "Twenty products on one page. Any option that would return nothing is switched off."], ["drawer.webp", "Product details", "The drawer", "The panel unfolds band by band while the photo flies in from its card. Products can also be opened from a link."], ["channels.webp", "Contact", "Ways to reach us", "Head office, phone, fax and email, each with its own drawing."], ["menu.webp", "Menu", "Grid overlay", "The menu draws its grid lines, a curtain wipes across, and the links arrive one after another."]], "rows": [["Built in", "Elementor + custom HTML"]], "href": "https://industmarine.com", "cta": "Visit industmarine.com"}</script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js" defer></script>
   <script src="/js/theme.js" defer></script>
   <script src="/js/contact.js" defer></script>

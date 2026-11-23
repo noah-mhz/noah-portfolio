@@ -17,8 +17,9 @@
   <link rel="stylesheet" href="/css/base.css">
   <link rel="stylesheet" href="/css/contact.css">
   <link rel="stylesheet" href="/css/site.css">
+  <link rel="stylesheet" href="/css/case.css">
 </head>
-<body>
+<body data-case="ganko">
   <a class="skip mono" href="#main">Skip to content</a>
   <header class="top">
     <a class="logo" href="/">noah<i></i></a>
@@ -30,16 +31,23 @@
   </header>
 
   <main id="main">
-    <section class="head">
-      <p class="mono">Case study · Freelance · Restaurant · 2025</p>
-      <h1 aria-label="Ganko.sg">Ganko.sg<i aria-hidden="true"></i></h1>
-      <p class="head__lede">The restaurant's first website. Ganko Sushi began in 1963 as a small eatery in Osaka. Its Singapore restaurant had no website before this one, so I designed it from scratch.</p>
-      <dl class="facts mono">
+    <section class="cs-hero">
+      <p class="mono cs-kicker">Case study · Freelance · Restaurant · 2025</p>
+      <h1 class="cs-title" aria-label="Ganko.sg"><span class="cs-title__mask"><span class="cs-title__txt">Ganko.sg</span></span><i aria-hidden="true"></i></h1>
+      <div class="cs-side">
+        <p class="cs-lede">The restaurant's first website. Ganko Sushi began in 1963 as a small eatery in Osaka. Its Singapore restaurant had no website before this one, so I designed it from scratch.</p>
+        <dl class="facts mono">
         <dt>Client</dt><dd>Ganko Sushi Singapore · Freelance</dd>
         <dt>Role</dt><dd>Web design &amp; development</dd>
         <dt>Platform</dt><dd>GoDaddy Website Builder</dd>
         <dt>Live site</dt><dd><a href="https://ganko.sg" target="_blank" rel="noopener"><span class="ulink">ganko.sg</span> <span class="arr" aria-hidden="true">↗</span></a></dd>
       </dl>
+      </div>
+      <div class="cs-compose" aria-hidden="true">
+        <figure class="cs-layer cs-layer--a" data-depth="0.5"><img src="/assets/images/ganko-home-1600.webp" width="1600" height="1066" alt="" fetchpriority="high" decoding="async"></figure>
+        <figure class="cs-layer cs-layer--b" data-depth="1.2"><img src="/assets/images/ganko-dishes.webp" width="1600" height="736" alt="" loading="lazy" decoding="async"></figure>
+        <figure class="cs-layer cs-layer--c" data-depth="0.8"><img src="/assets/images/ganko-tradition.webp" width="1400" height="2143" alt="" loading="lazy" decoding="async"></figure>
+      </div>
     </section>
 
     <!-- Showcase + backstage: one gallery, five arrangements, an index and a detail view -->
@@ -66,12 +74,28 @@
       </div>
     </section>
 
-    <section class="sec" aria-labelledby="decisions-title">
+    <section class="cs-statement"><span class="mono">Approach</span><p>For diners discovering the restaurant and booking a table: the story runs from Ganko's beginnings in Osaka to the Singapore interior, then booking is one step away.</p></section>
+    <section class="cs-spreads" aria-labelledby="decisions-title">
       <div class="sec__head"><h2 id="decisions-title">Three<br>decisions</h2><span class="mono muted">History first, booking last.</span></div>
-      <div class="cols">
-        <div><span class="mono">01 · Heritage first</span><h3>The story starts in Osaka.</h3><p>The About pages set archival photographs of the founding team beside today's Singapore kitchen, on a washi-paper background.</p></div>
-        <div><span class="mono">02 · Photography leads</span><h3>The food and the room do the talking.</h3><p>Copy stays short. Dishes, interiors and the chefs at work carry each page, set in an asymmetric gallery of varied crops and heights.</p></div>
-        <div><span class="mono">03 · Booking on-site</span><h3>Book a table without leaving.</h3><p>The Chope booking widget is embedded in the Reservation page, beside the address and opening hours, so guests never leave ganko.sg to book.</p></div>
+      <article class="cs-spread">
+        <figure class="cs-spread__fig"><img src="/assets/images/ganko-tradition.webp" alt="" loading="lazy" decoding="async"></figure>
+        <div class="cs-spread__txt"><span class="mono">01 · Heritage first</span><h3>The story starts in Osaka.</h3><p>The About pages set archival photographs of the founding team beside today's Singapore kitchen, on a washi-paper background.</p></div>
+      </article>
+      <article class="cs-spread">
+        <figure class="cs-spread__fig"><img src="/assets/images/ganko-hospitality.webp" alt="" loading="lazy" decoding="async"></figure>
+        <div class="cs-spread__txt"><span class="mono">02 · Photography leads</span><h3>The food and the room do the talking.</h3><p>Copy stays short. Dishes, interiors and the chefs at work carry each page, set in an asymmetric gallery of varied crops and heights.</p></div>
+      </article>
+      <article class="cs-spread">
+        <figure class="cs-spread__fig"><img src="/assets/images/ganko-reservation.webp" alt="" loading="lazy" decoding="async"></figure>
+        <div class="cs-spread__txt"><span class="mono">03 · Booking on-site</span><h3>Book a table without leaving.</h3><p>The Chope booking widget is embedded in the Reservation page, beside the address and opening hours, so guests never leave ganko.sg to book.</p></div>
+      </article>
+    </section>
+    <section class="cs-details" aria-labelledby="details-title">
+      <div class="sec__head"><h2 id="details-title">Up<br>close</h2><span class="mono muted">Details from the build.</span></div>
+      <div class="cs-details__grid">
+        <figure class="cs-detail"><div class="cs-detail__box"><img src="/assets/images/ganko-ui-nav.webp" alt="" loading="lazy" decoding="async"></div><figcaption class="mono"><b>Navigation</b><span>Two journeys</span></figcaption></figure>
+        <figure class="cs-detail"><div class="cs-detail__box"><img src="/assets/images/ganko-ui-faq.webp" alt="" loading="lazy" decoding="async"></div><figcaption class="mono"><b>FAQ</b><span>Under More</span></figcaption></figure>
+        <figure class="cs-detail"><div class="cs-detail__box"><img src="/assets/images/ganko-ui-contact.webp" alt="" loading="lazy" decoding="async"></div><figcaption class="mono"><b>Contact</b><span>Hours · map</span></figcaption></figure>
       </div>
     </section>
 
@@ -86,7 +110,8 @@
     </section>
   </main>
 
-  <footer class="next">
+  <footer class="next cs-next" style="--next-bg:#121314;--next-ink:#F2F2F0;--next-mark:#FF5A5F">
+    <figure class="cs-next__peek" aria-hidden="true"><img src="/assets/images/luumens-v2-hero.webp" alt="" loading="lazy" decoding="async"></figure>
     <span class="mono">Next project · 02 / 04</span><br>
     <a class="big" href="/work/luumens/">Luumens<i aria-hidden="true"></i></a>
     <div class="foot mono"><span>© 2026 Noah Zaw Min Htut</span><span>Singapore → Worldwide</span><a href="/colophon/">Colophon</a><a href="/">Back to the homepage</a></div>
@@ -94,6 +119,7 @@
 
   <script type="application/json" id="screens">{"base": "/assets/images/", "screens": [["ganko-home-1600.webp", "Homepage", "Home", "Discover the restaurant, or go straight to booking: the two journeys start here."], ["ganko-tradition.webp", "Tradition", "Heritage first", "Archival photographs of the founding team beside today’s Singapore kitchen, on a washi-paper background."], ["ganko-hospitality.webp", "Hospitality", "Photography leads", "Dishes, interiors and the chefs at work in an asymmetric gallery of varied crops and heights."], ["ganko-reservation.webp", "Reservation", "Booking on-site", "The Chope booking widget, embedded beside the address and opening hours."], ["ganko-dishes.webp", "Signature dishes", "Six-up grid, dark ground", "The food does the talking; copy stays short."], ["ganko-interiors.webp", "Interiors", "The Singapore room", "The interior design of the Singapore restaurant, the end of the story that starts in Osaka."], ["ganko-ui-nav.webp", "Navigation", "Two journeys", "Discover (Home, Tradition, Hospitality, Menu) or plan a visit (Reservation, Contact)."], ["ganko-ui-faq.webp", "FAQ", "Under More", "FAQ and Careers sit under More, out of the two main journeys."], ["ganko-ui-contact.webp", "Contact", "Hours · map", "Opening hours and the map, one step from booking."]], "rows": [["Built in", "GoDaddy + custom HTML"]], "href": "https://ganko.sg", "cta": "Visit ganko.sg"}</script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js" defer></script>
   <script src="/js/theme.js" defer></script>
   <script src="/js/contact.js" defer></script>

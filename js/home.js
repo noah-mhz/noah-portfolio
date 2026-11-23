@@ -441,6 +441,7 @@
       // Letters near the cursor widen and thicken. Letter centres are measured once (relative to the
       // line block) and on resize, so each frame does one read and then only writes.
       const chars = $$('.ch', h); let mx = 0, my = 0, active = 0, centres = [];
+      const lineOf = chars.map((c) => c.closest('.ln'));
       const measure = () => {
         chars.forEach((c) => (c.style.fontVariationSettings = ''));
         const r = h.getBoundingClientRect();
@@ -456,9 +457,14 @@
         if (r.bottom < 0 || r.top > innerHeight || gsap.getProperty(h, 'opacity') < .05) { active = 0; return; }
         if (!centres.length) measure();
         let moving = false;
+        // Letters near the cursor widen and thicken; the rest of that line gives way to make room. With
+        // the cursor away from a line, its letters sit at their resting width (no gaps open up).
+        const ks = chars.map((c, i) => Math.max(0, 1 - Math.hypot(mx - (r.left + centres[i][0]), my - (r.top + centres[i][1])) / (r.height * .9)));
+        const near = new Map();
+        chars.forEach((c, i) => { const l = lineOf[i]; near.set(l, Math.max(near.get(l) || 0, ks[i])); });
         chars.forEach((c, i) => {
-          const k = Math.max(0, 1 - Math.hypot(mx - (r.left + centres[i][0]), my - (r.top + centres[i][1])) / (r.height * .9));
-          const tw = 95 + 30 * k, tg = 700 + 200 * k;
+          const k = ks[i], m = near.get(lineOf[i]) || 0;
+          const tw = 100 - 14 * m + 39 * k, tg = 800 - 120 * m + 220 * k;
           const dw = (tw - st[i].w) * .14, dg = (tg - st[i].g) * .14;
           if (Math.abs(dw) < .05 && Math.abs(dg) < .5) return;
           moving = true; st[i].w += dw; st[i].g += dg;

@@ -124,6 +124,11 @@ README.md has the file-by-file structure and the motion tiers; read it before la
   Desktop: bounded board, scroll drives a camera through five stops, drag/keys/ticks/mini-map. Phones
   (< 900px): stacked. Exhibits: Stretch, Pressure, Helix, Concepts pile; each runs only when near/visible.
   A fifth (technical experiments) is reserved for real material only.
+- Case framework: `css/case.css` + art-direction layer at the end of `js/case.js`. Each work page sets
+  `body[data-case="<slug>"]` (per-project palette, light + dark) and uses `.cs-hero` (title + `.cs-compose`
+  layers with `data-depth`), `.cs-statement`, `.cs-spreads` (3 decisions), `.cs-details` ("Up close") and
+  `.cs-next` (next project in its dark palette, peek image). Order: Ganko → Luumens → Voyagaer →
+  Industmarine → Ganko. Per-project type signatures live in `case.css`; keep copy factual.
 
 ## Pitfalls already hit (don't repeat)
 

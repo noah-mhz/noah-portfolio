@@ -1,0 +1,143 @@
+/* Case-study framework (work/<slug>/). One structure, art-directed per project.
+   body[data-case] swaps the site tokens for the project's own palette (light and dark), so the header,
+   gallery, form and notes all follow it; the components below add each project's signature:
+     .cs-hero      title + lede/facts beside a composition of real screens (.cs-compose / .cs-layer)
+     .cs-statement one large sentence that frames the work
+     .cs-spreads   the decisions, each beside a large image that reveals and drifts as you scroll
+     .cs-details   UI cut-outs shown large
+     .cs-next      the next project, already in its own colours
+   Motion lives in js/case.js. */
+
+/* ---------- Palettes ---------- */
+body[data-case='ganko'] { --bg: #F2EADB; --bg-2: #E7DAC2; --ink: #2B2522; --muted: #6E6258; --line: rgba(43, 37, 34, .16); --pink: #B23A2E; --pink-ink: #9E3227; --mark: #B23A2E; --on-pink: #F2EADB; --teal: #8A3A2A; --frame: #FBF6EC; }
+:root[data-theme='dark'] body[data-case='ganko'] { --bg: #1C1816; --bg-2: #28221F; --ink: #F2EADB; --muted: #B3A594; --line: rgba(242, 234, 219, .14); --pink: #D9583F; --pink-ink: #E7735B; --mark: #D9583F; --on-pink: #1C1816; --teal: #E0A48F; --frame: #F4EBD8; }
+body[data-case='luumens'] { --bg: #F4F4F2; --bg-2: #E8E8E5; --ink: #1B1B1B; --muted: #626266; --line: rgba(27, 27, 27, .13); --pink: #E5484D; --pink-ink: #C0353B; --mark: #E5484D; --on-pink: #FFFFFF; --teal: #C0353B; --frame: #FFFFFF; }
+:root[data-theme='dark'] body[data-case='luumens'] { --bg: #121314; --bg-2: #1C1E20; --ink: #F2F2F0; --muted: #A2A4A8; --line: rgba(242, 242, 240, .13); --pink: #FF5A5F; --pink-ink: #FF7A7E; --mark: #FF5A5F; --on-pink: #121314; --teal: #FF8A8D; --frame: #FFFFFF; }
+body[data-case='voyagaer'] { --bg: #EDF3F3; --bg-2: #DCE7E7; --ink: #062D38; --muted: #4B676D; --line: rgba(6, 45, 56, .16); --pink: #0E6B73; --pink-ink: #0E6B73; --mark: #0E6B73; --on-pink: #EDF3F3; --teal: #0E6B73; --frame: #062D38; }
+:root[data-theme='dark'] body[data-case='voyagaer'] { --bg: #062D38; --bg-2: #0B3A46; --ink: #EAF2F2; --muted: #9DB9BC; --line: rgba(234, 242, 242, .15); --pink: #86D9C8; --pink-ink: #86D9C8; --mark: #86D9C8; --on-pink: #062D38; --teal: #86D9C8; --frame: #0A3440; }
+body[data-case='industmarine'] { --bg: #F6F8FA; --bg-2: #E6ECF2; --ink: #173654; --muted: #586A7E; --line: rgba(23, 54, 84, .16); --pink: #1F5FBF; --pink-ink: #1F5FBF; --mark: #1F5FBF; --on-pink: #FFFFFF; --teal: #1F5FBF; --frame: #FFFFFF; }
+:root[data-theme='dark'] body[data-case='industmarine'] { --bg: #0E2135; --bg-2: #163452; --ink: #EEF2F7; --muted: #9FB0C3; --line: rgba(238, 242, 247, .14); --pink: #6AA6FF; --pink-ink: #8AB9FF; --mark: #6AA6FF; --on-pink: #0E2135; --teal: #8AB9FF; --frame: #FFFFFF; }
+body[data-case] { background: var(--bg); color: var(--ink); transition: background-color .6s var(--ease), color .6s var(--ease); }
+
+/* ---------- Hero ---------- */
+.cs-hero { position: relative; padding: clamp(2.5rem, 7vh, 5rem) var(--gutter) 0; display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gutter); align-items: start; }
+.cs-kicker { grid-column: 1 / -1; margin: 0 0 1.2rem; color: var(--teal); }
+.cs-title { grid-column: 1 / -1; position: relative; z-index: 5; margin: 0; display: flex; align-items: flex-end; font-size: clamp(3.2rem, 13vw, 14rem); line-height: .82; white-space: nowrap; font-weight: 800; letter-spacing: -.02em; text-transform: uppercase; }
+.cs-title .cs-ch { display: inline-block; }
+.cs-title i { flex: none; width: .2em; height: .2em; margin: 0 0 .06em .05em; background: var(--mark); view-transition-name: dot; }
+.cs-title__mask { display: inline-flex; overflow: hidden; padding-block: .06em; margin-block: -.06em; }
+.cs-side { grid-column: 1 / 6; margin-top: clamp(2rem, 5vh, 3.5rem); }
+.cs-lede { margin: 0 0 2rem; font-size: clamp(1.15rem, 1.6vw, 1.5rem); line-height: 1.3; }
+.cs-side .facts { margin: 0; }
+.cs-compose { grid-column: 6 / 13; position: relative; margin-top: clamp(-6rem, -6vw, -2rem); aspect-ratio: 7 / 5.2; }
+.cs-layer { position: absolute; margin: 0; will-change: transform; }
+.cs-layer img { display: block; width: 100%; height: auto; }
+.cs-layer--a { left: 0; top: 10%; width: 76%; z-index: 2; }
+.cs-layer--b { right: 0; bottom: 0; width: 40%; z-index: 3; }
+.cs-layer--c { right: 4%; top: 0; width: 34%; z-index: 1; }
+
+/* ---------- Statement ---------- */
+.cs-statement { padding: clamp(6rem, 16vh, 11rem) var(--gutter) 0; }
+.cs-statement p { margin: 0; max-width: 24ch; font-size: clamp(2rem, 4.4vw, 4.6rem); line-height: 1.02; letter-spacing: -.03em; font-weight: 600; }
+.cs-statement p::before { content: ''; display: inline-block; width: .32em; height: .32em; margin-right: .3em; vertical-align: .12em; background: var(--mark); }
+.cs-statement--long p { max-width: 34ch; font-size: clamp(1.5rem, 2.8vw, 2.9rem); line-height: 1.12; }
+.cs-statement .mono { display: block; margin-bottom: 1.6rem; color: var(--teal); }
+
+/* ---------- Spreads ---------- */
+.cs-spreads { padding: clamp(5rem, 13vh, 9rem) var(--gutter) 0; display: grid; gap: clamp(5rem, 14vh, 10rem); }
+.cs-spreads > .sec__head { margin-bottom: -2rem; }
+.cs-spread { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gutter); align-items: center; }
+.cs-spread__fig { grid-column: 1 / 8; position: relative; margin: 0; overflow: hidden; aspect-ratio: 4 / 3; background: var(--bg-2); }
+.cs-spread__fig img { position: absolute; left: 0; top: -8%; width: 100%; height: 116%; object-fit: cover; object-position: top center; will-change: transform; }
+.cs-spread__txt { grid-column: 9 / 13; }
+.cs-spread:nth-child(odd of .cs-spread) .cs-spread__fig { grid-column: 6 / 13; grid-row: 1; }
+.cs-spread:nth-child(odd of .cs-spread) .cs-spread__txt { grid-column: 1 / 5; grid-row: 1; }
+.cs-spread__txt .mono { color: var(--teal); }
+.cs-spread__txt h3 { margin: .9rem 0 1rem; font-size: clamp(1.9rem, 3.2vw, 3.4rem); line-height: .98; letter-spacing: -.02em; font-weight: 700; }
+.cs-spread__txt p { margin: 0; color: var(--muted); font-size: 1.08rem; line-height: 1.45; max-width: 38ch; }
+.cs-line { display: block; overflow: hidden; }
+.cs-line > span { display: block; }
+
+/* ---------- Details ---------- */
+.cs-details { padding: clamp(5rem, 13vh, 9rem) var(--gutter) 0; }
+.cs-details__grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(1rem, 2vw, 1.8rem); margin-top: 2rem; align-items: start; }
+.cs-detail { margin: 0; }
+.cs-detail__box { display: grid; place-items: center; padding: clamp(1rem, 2.4vw, 2rem); background: var(--bg-2); aspect-ratio: 4 / 3; overflow: hidden; }
+.cs-detail__box img { display: block; max-width: 100%; max-height: 100%; width: auto; height: auto; box-shadow: 0 18px 40px -24px rgba(0, 0, 0, .45); }
+.cs-detail figcaption { margin-top: .8rem; display: flex; justify-content: space-between; gap: 1rem; }
+.cs-detail figcaption b { font-weight: 600; }
+.cs-detail figcaption span { color: var(--muted); }
+
+/* ---------- Next project, in its own colours ---------- */
+.cs-next { position: relative; overflow: hidden; background: var(--next-bg); color: var(--next-ink); }
+.cs-next .big i { background: var(--next-mark); }
+.cs-next > :not(.cs-next__peek) { position: relative; z-index: 2; }
+.cs-next__peek { z-index: 1; }
+.cs-next .foot a, .cs-next .foot { color: inherit; }
+.cs-next__peek { position: absolute; right: var(--gutter); bottom: -18%; width: min(38vw, 34rem); margin: 0; pointer-events: none; }
+.cs-next__peek img { display: block; width: 100%; height: auto; rotate: -3deg; box-shadow: 0 30px 60px -30px rgba(0, 0, 0, .6); transition: translate .9s var(--ease), rotate .9s var(--ease); }
+.cs-next:hover .cs-next__peek img, .cs-next:focus-within .cs-next__peek img { rotate: -1deg; translate: 0 -12%; }
+
+/* ---------- Per-project signatures ---------- */
+/* Ganko: cream mats, a print of the archive, the hanko square. */
+[data-case='ganko'] .cs-title { font-variation-settings: 'wdth' 72, 'wght' 800; letter-spacing: .005em; }
+[data-case='ganko'] .cs-layer--a, [data-case='ganko'] .cs-layer--c { padding: .5rem; background: var(--frame); box-shadow: 0 30px 60px -32px rgba(0, 0, 0, .5); }
+[data-case='ganko'] .cs-layer--c { transform: rotate(3deg); padding-bottom: 2.2rem; }
+[data-case='ganko'] .cs-layer--c img { aspect-ratio: 3 / 4; object-fit: cover; object-position: top; }
+[data-case='ganko'] .cs-layer--b { border: .4rem solid var(--frame); transform: rotate(-2deg); box-shadow: 0 24px 44px -24px rgba(0, 0, 0, .55); }
+[data-case='ganko'] .cs-spread__fig { padding: .6rem; background: var(--frame); box-shadow: 0 30px 60px -36px rgba(0, 0, 0, .45); }
+[data-case='ganko'] .cs-spread__fig img { inset: .6rem; left: .6rem; top: .6rem; width: calc(100% - 1.2rem); height: calc(100% - 1.2rem); }
+[data-case='ganko'] .cs-spread__txt h3 { font-variation-settings: 'wdth' 80, 'wght' 700; text-transform: uppercase; letter-spacing: 0; }
+
+/* Luumens: clean white cards, a phone held in front, figures as chips. */
+[data-case='luumens'] .cs-title { text-transform: none; font-variation-settings: 'wdth' 112, 'wght' 300; letter-spacing: -.05em; }
+[data-case='luumens'] .cs-title i { border-radius: 50%; }
+[data-case='luumens'] .cs-layer--a { border-radius: 1.2rem; overflow: hidden; box-shadow: 0 40px 80px -40px rgba(0, 0, 0, .45); }
+[data-case='luumens'] .cs-layer--b { right: 6%; bottom: -6%; width: 22%; border-radius: 1.6rem; overflow: hidden; box-shadow: 0 30px 50px -24px rgba(0, 0, 0, .5); }
+[data-case='luumens'] .cs-layer--c { left: 30%; right: auto; top: -2%; width: 50%; border-radius: .8rem; overflow: hidden; z-index: 3; box-shadow: 0 20px 40px -24px rgba(0, 0, 0, .35); }
+[data-case='luumens'] .cs-spread__fig { border-radius: 1.4rem; }
+[data-case='luumens'] .cs-detail__box { border-radius: 1.4rem; background: var(--frame); }
+:root[data-theme='dark'] [data-case='luumens'] .cs-detail__box { background: #F4F4F2; }
+[data-case='luumens'] .cs-spread__txt h3 { font-variation-settings: 'wdth' 108, 'wght' 400; letter-spacing: -.04em; }
+
+/* Voyagaer: deep sea teal, line drawings, hairline dimension marks. */
+[data-case='voyagaer'] .cs-title { text-transform: lowercase; font-variation-settings: 'wdth' 100, 'wght' 250; letter-spacing: -.04em; }
+[data-case='voyagaer'] .cs-layer { border: 1px solid var(--line); }
+[data-case='voyagaer'] .cs-layer--a { box-shadow: 0 40px 80px -40px rgba(0, 0, 0, .5); }
+[data-case='voyagaer'] .cs-layer--b { width: 36%; right: 2%; bottom: -4%; }
+[data-case='voyagaer'] .cs-layer--c { top: -4%; right: 0; width: 46%; }
+[data-case='voyagaer'] .cs-compose::before, [data-case='voyagaer'] .cs-compose::after { content: ''; position: absolute; background: var(--mark); opacity: .7; }
+[data-case='voyagaer'] .cs-compose::before { left: 0; right: 24%; bottom: -2.2rem; height: 1px; box-shadow: -1px -5px 0 0 var(--mark), -1px 5px 0 0 var(--mark); }
+[data-case='voyagaer'] .cs-compose::after { left: -1.6rem; top: 10%; bottom: 14%; width: 1px; }
+[data-case='voyagaer'] .cs-spread__txt h3 { text-transform: lowercase; font-variation-settings: 'wdth' 100, 'wght' 300; letter-spacing: -.03em; }
+[data-case='voyagaer'] .cs-spread__fig { border: 1px solid var(--line); }
+
+/* Industmarine: the engineering drawing sheet: a column grid and ruler ticks behind the hero. */
+[data-case='industmarine'] .cs-title { font-variation-settings: 'wdth' 125, 'wght' 800; font-size: clamp(2.4rem, 7.4vw, 9rem); }
+[data-case='industmarine'] .cs-hero::before { content: ''; position: absolute; inset: 0 var(--gutter); z-index: 0; pointer-events: none;
+  background: repeating-linear-gradient(90deg, var(--line) 0 1px, transparent 1px calc(100% / 12)), repeating-linear-gradient(0deg, var(--line) 0 1px, transparent 1px 12px) left / 8px 100% no-repeat, repeating-linear-gradient(0deg, var(--line) 0 1px, transparent 1px 12px) right / 8px 100% no-repeat; opacity: .8; }
+[data-case='industmarine'] .cs-hero > * { position: relative; z-index: 1; }
+[data-case='industmarine'] .cs-layer { border: 1px solid var(--ink); background: var(--frame); padding: .35rem; }
+[data-case='industmarine'] .cs-layer--b { width: 42%; bottom: -6%; }
+[data-case='industmarine'] .cs-layer--c { width: 38%; top: -6%; }
+[data-case='industmarine'] .cs-spread__fig { border: 1px solid var(--ink); }
+[data-case='industmarine'] .cs-detail__box { border: 1px solid var(--line); }
+[data-case='industmarine'] .cs-spread__txt h3 { text-transform: uppercase; font-variation-settings: 'wdth' 120, 'wght' 800; letter-spacing: 0; font-size: clamp(1.6rem, 2.6vw, 2.8rem); }
+
+/* ---------- Tablet and phone ---------- */
+@media (max-width: 1023px) {
+  .cs-side { grid-column: 1 / -1; }
+  .cs-compose { grid-column: 1 / -1; margin-top: 2.5rem; }
+  .cs-spread__fig, .cs-spread:nth-child(odd of .cs-spread) .cs-spread__fig { grid-column: 1 / -1; grid-row: 1; }
+  .cs-spread__txt, .cs-spread:nth-child(odd of .cs-spread) .cs-spread__txt { grid-column: 1 / -1; grid-row: 2; margin-top: 1.6rem; }
+  .cs-details__grid { grid-template-columns: 1fr 1fr; }
+  .cs-next__peek { width: 48vw; bottom: -10%; }
+}
+@media (max-width: 600px) {
+  .cs-title { font-size: clamp(2.6rem, 15vw, 6rem); }
+  [data-case='industmarine'] .cs-title { font-size: 9.6vw; }
+  .cs-details__grid { grid-template-columns: 1fr; }
+  .cs-compose { aspect-ratio: 7 / 6; }
+  .cs-next__peek { display: none; }
+}
+@media (prefers-reduced-motion: reduce) { .cs-next__peek img { transition: none; } body[data-case] { transition: none; } }

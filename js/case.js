@@ -30,9 +30,56 @@ addEventListener('DOMContentLoaded', () => {
     g.arrange(b.dataset.arr);
   }));
 
-  // Page intro: title rises, the rest follows.
-  if (!reduce && window.gsap) {
-    gsap.from('.head h1', { yPercent: 40, opacity: 0, duration: 1.1, ease: 'expo.out' });
-    gsap.from('.head > :not(h1)', { y: 24, opacity: 0, duration: .9, stagger: .06, ease: 'power3.out', delay: .15 });
+  /* ---------- Art direction layer (css/case.css) ----------
+     Hero: the title rises letter by letter, the composition's layers arrive back to front, then drift
+     with the pointer and at different speeds as you scroll. Spreads: each image is uncovered upward
+     and drifts inside its frame; the text lines rise. Details and the next project slide in. */
+  const G = window.gsap, ST = window.ScrollTrigger;
+  if (G && ST) { G.registerPlugin(ST); if (window.lenis) window.lenis.on('scroll', ST.update); }
+  const title = $('.cs-title');
+  if (title) {
+    // Split the title into letters inside a mask; the accessible name stays on the h1.
+    const t = title.querySelector('.cs-title__txt');
+    if (t) { const txt = t.textContent; t.textContent = ''; [...txt].forEach((c) => { const s = document.createElement('span'); s.className = 'cs-ch'; s.setAttribute('aria-hidden', 'true'); s.textContent = c === ' ' ? '\u00a0' : c; t.append(s); }); }
   }
+  if (reduce || !G) return;
+  const layers = $$('.cs-layer');
+  const intro = G.timeline({ defaults: { ease: 'expo.out' } });
+  intro.from('.cs-title .cs-ch', { yPercent: 110, duration: 1.1, stagger: .03 }, 0)
+    .from('.cs-title i', { scale: 0, duration: .7, ease: 'back.out(2)' }, .5)
+    .from('.cs-kicker, .cs-side > *', { y: 24, autoAlpha: 0, duration: .9, stagger: .06 }, .2)
+    .from([...layers].reverse(), { y: 80, autoAlpha: 0, rotation: (i) => [3, -4, 2][i % 3], duration: 1.3, stagger: .12 }, .25);
+
+  if (matchMedia('(hover: hover) and (pointer: fine)').matches && layers.length) {
+    const qs = layers.map((el) => ({ d: parseFloat(el.dataset.depth) || .6, x: G.quickTo(el, 'x', { duration: 1.2, ease: 'power3.out' }), y: G.quickTo(el, 'y', { duration: 1.2, ease: 'power3.out' }) }));
+    addEventListener('pointermove', (e) => {
+      if ((window.lenis ? window.lenis.scroll : scrollY) > innerHeight) return;
+      const nx = e.clientX / innerWidth - .5, ny = e.clientY / innerHeight - .5;
+      qs.forEach((q) => { q.x(-nx * 26 * q.d); q.y(-ny * 18 * q.d); });
+    }, { passive: true });
+  }
+  if (!ST) return;
+  const compose = $('.cs-compose');
+  if (compose) layers.forEach((el) => {
+    const d = parseFloat(el.dataset.depth) || .6;
+    G.to(el, { yPercent: -18 * d, ease: 'none', scrollTrigger: { trigger: compose, start: 'top 40%', end: 'bottom top', scrub: true } });
+  });
+  const lines = (el) => {
+    // Wrap each block's text in a line mask so it can rise.
+    $$('h3, p, .mono', el).forEach((b) => { if (b.querySelector('.cs-line')) return; b.innerHTML = `<span class="cs-line"><span>${b.innerHTML}</span></span>`; });
+    return $$('.cs-line > span', el);
+  };
+  $$('.cs-spread').forEach((sp) => {
+    const fig = $('.cs-spread__fig', sp), img = $('img', fig), txt = $('.cs-spread__txt', sp);
+    G.fromTo(fig, { clipPath: 'inset(100% 0% 0% 0%)' }, { clipPath: 'inset(0% 0% 0% 0%)', duration: 1.4, ease: 'expo.inOut', scrollTrigger: { trigger: sp, start: 'top 78%', once: true } });
+    G.fromTo(img, { scale: 1.18 }, { scale: 1, duration: 1.8, ease: 'expo.out', scrollTrigger: { trigger: sp, start: 'top 78%', once: true } });
+    G.fromTo(img, { yPercent: -5 }, { yPercent: 5, ease: 'none', scrollTrigger: { trigger: fig, start: 'top bottom', end: 'bottom top', scrub: true } });
+    G.from(lines(txt), { yPercent: 110, duration: 1, stagger: .07, ease: 'expo.out', scrollTrigger: { trigger: sp, start: 'top 70%', once: true } });
+  });
+  const st = $('.cs-statement p');
+  if (st) G.from(st, { y: 40, autoAlpha: 0, duration: 1.2, ease: 'expo.out', scrollTrigger: { trigger: st, start: 'top 82%', once: true } });
+  const det = $$('.cs-detail');
+  if (det.length) G.from(det, { y: 60, autoAlpha: 0, duration: 1.1, stagger: .1, ease: 'expo.out', scrollTrigger: { trigger: det[0], start: 'top 85%', once: true } });
+  const peek = $('.cs-next__peek');
+  if (peek) G.fromTo(peek, { yPercent: 40 }, { yPercent: 0, ease: 'none', scrollTrigger: { trigger: '.cs-next', start: 'top bottom', end: 'bottom bottom', scrub: true } });
 });

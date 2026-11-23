@@ -18,8 +18,9 @@
   <link rel="stylesheet" href="/css/base.css">
   <link rel="stylesheet" href="/css/contact.css">
   <link rel="stylesheet" href="/css/site.css">
+  <link rel="stylesheet" href="/css/case.css">
 </head>
-<body>
+<body data-case="voyagaer">
   <a class="skip mono" href="#main">Skip to content</a>
   <header class="top">
     <a class="logo" href="/">noah<i></i></a>
@@ -31,16 +32,23 @@
   </header>
 
   <main id="main">
-    <section class="head">
-      <p class="mono">Case study · In-house · Pomar Engineering · Marine · Not yet launched</p>
-      <h1 aria-label="Voyagaer">Voyagaer<i aria-hidden="true"></i></h1>
-      <p class="head__lede">Voyagaer engineers water, wastewater and fuel systems for marine and industrial applications, and supports them across their whole lifecycle. The site is for its customers, new and existing: somewhere to find the right system, read its full specifications and get in touch about it.</p>
-      <dl class="facts mono">
+    <section class="cs-hero">
+      <p class="mono cs-kicker">Case study · In-house · Pomar Engineering · Marine · Not yet launched</p>
+      <h1 class="cs-title" aria-label="Voyagaer"><span class="cs-title__mask"><span class="cs-title__txt">Voyagaer</span></span><i aria-hidden="true"></i></h1>
+      <div class="cs-side">
+        <p class="cs-lede">Voyagaer engineers water, wastewater and fuel systems for marine and industrial applications, and supports them across their whole lifecycle. The site is for its customers, new and existing: somewhere to find the right system, read its full specifications and get in touch about it.</p>
+        <dl class="facts mono">
         <dt>Built for</dt><dd>Voyagaer · In-house, Pomar Engineering</dd>
         <dt>Role</dt><dd>Web design &amp; build</dd>
         <dt>Platform</dt><dd>WordPress + Elementor, custom widgets, GSAP</dd>
         <dt>Live site</dt><dd>Coming soon</dd>
       </dl>
+      </div>
+      <div class="cs-compose" aria-hidden="true">
+        <figure class="cs-layer cs-layer--a" data-depth="0.5"><img src="/assets/images/voyagaer-hero-poster.webp" width="1424" height="790" alt="" fetchpriority="high" decoding="async"></figure>
+        <figure class="cs-layer cs-layer--b" data-depth="1.2"><img src="/assets/images/voyagaer-product.webp" width="1400" height="1510" alt="" loading="lazy" decoding="async"></figure>
+        <figure class="cs-layer cs-layer--c" data-depth="0.8"><img src="/assets/images/voyagaer-carousel.webp" width="1600" height="661" alt="" loading="lazy" decoding="async"></figure>
+      </div>
     </section>
 
     <section class="sec" aria-labelledby="screens-title">
@@ -66,13 +74,28 @@
       </div>
     </section>
 
-    <section class="sec" aria-labelledby="decisions-title">
+    <section class="cs-statement cs-statement--long"><span class="mono">The approach</span><p>I stripped the design back. It borrows the restraint of a premium automotive brand (thin lowercase headings, generous space, one deep sea teal) and pairs it with the depth engineers expect: line drawings instead of renders, full specification sheets and clear routes to an enquiry.</p></section>
+    <section class="cs-spreads" aria-labelledby="decisions-title">
       <div class="sec__head"><h2 id="decisions-title">Minimal, so<br>the products lead</h2><span class="mono muted">After trying a few directions.</span></div>
-      <div class="note"><p>I stripped the design back. It borrows the restraint of a premium automotive brand (thin lowercase headings, generous space, one deep sea teal) and pairs it with the depth engineers expect: line drawings instead of renders, full specification sheets and clear routes to an enquiry.</p></div>
-      <div class="cols">
-        <div><span class="mono">01 · Drawings, not renders</span><h3>One consistent range.</h3><p>Every product is shown as a technical line drawing, so the range reads consistently side by side.</p></div>
-        <div><span class="mono">02 · Depth on demand</span><h3>As deep as needed.</h3><p>Product pages open simply, then go as deep as needed: process, compliance and the full tech sheet.</p></div>
-        <div><span class="mono">03 · Slow motion</span><h3>Nothing gimmicky.</h3><p>GSAP clip-path wipes and paced scroll reveals, with fast, gimmicky hover effects removed.</p></div>
+      <article class="cs-spread">
+        <figure class="cs-spread__fig"><img src="/assets/images/voyagaer-carousel.webp" alt="" loading="lazy" decoding="async"></figure>
+        <div class="cs-spread__txt"><span class="mono">01 · Drawings, not renders</span><h3>One consistent range.</h3><p>Every product is shown as a technical line drawing, so the range reads consistently side by side.</p></div>
+      </article>
+      <article class="cs-spread">
+        <figure class="cs-spread__fig"><img src="/assets/images/voyagaer-specs.webp" alt="" loading="lazy" decoding="async"></figure>
+        <div class="cs-spread__txt"><span class="mono">02 · Depth on demand</span><h3>As deep as needed.</h3><p>Product pages open simply, then go as deep as needed: process, compliance and the full tech sheet.</p></div>
+      </article>
+      <article class="cs-spread">
+        <figure class="cs-spread__fig"><img src="/assets/images/voyagaer-services.webp" alt="" loading="lazy" decoding="async"></figure>
+        <div class="cs-spread__txt"><span class="mono">03 · Slow motion</span><h3>Nothing gimmicky.</h3><p>GSAP clip-path wipes and paced scroll reveals, with fast, gimmicky hover effects removed.</p></div>
+      </article>
+    </section>
+    <section class="cs-details" aria-labelledby="details-title">
+      <div class="sec__head"><h2 id="details-title">Up<br>close</h2><span class="mono muted">Details from the build.</span></div>
+      <div class="cs-details__grid">
+        <figure class="cs-detail"><div class="cs-detail__box"><img src="/assets/images/voyagaer-links.webp" alt="" loading="lazy" decoding="async"></div><figcaption class="mono"><b>Homepage</b><span>Oversized links</span></figcaption></figure>
+        <figure class="cs-detail"><div class="cs-detail__box"><img src="/assets/images/voyagaer-marine.webp" alt="" loading="lazy" decoding="async"></div><figcaption class="mono"><b>Industries</b><span>Marine</span></figcaption></figure>
+        <figure class="cs-detail"><div class="cs-detail__box"><img src="/assets/images/voyagaer-catalog.webp" alt="" loading="lazy" decoding="async"></div><figcaption class="mono"><b>Product catalog</b><span>Nine systems, one catalog</span></figcaption></figure>
       </div>
     </section>
 
@@ -93,7 +116,8 @@
   </main>
 </main>
 
-  <footer class="next">
+  <footer class="next cs-next" style="--next-bg:#0E2135;--next-ink:#EEF2F7;--next-mark:#6AA6FF">
+    <figure class="cs-next__peek" aria-hidden="true"><img src="/assets/images/industmarine-hero.webp" alt="" loading="lazy" decoding="async"></figure>
     <span class="mono">Next project · 04 / 04</span><br>
     <a class="big" href="/work/industmarine/">Industmarine<i aria-hidden="true"></i></a>
     <div class="foot mono"><span>© 2026 Noah Zaw Min Htut</span><span>Singapore → Worldwide</span><a href="/colophon/">Colophon</a><a href="/">Back to the homepage</a></div>
@@ -101,6 +125,7 @@
 
   <script type="application/json" id="screens">{"base": "/assets/images/voyagaer-", "rows": [["Built in", "Elementor + custom widgets"]], "screens": [["hero-poster.webp", "Homepage", "Hero", "The homepage opening, in deep sea teal."], ["carousel.webp", "Product carousel", "Line drawings", "Sewage treatment plant, oily water separator, reverse osmosis freshwater maker and hydrophore system as line drawings."], ["catalog.webp", "Product catalog", "Nine systems, one catalog", "Search, then filter by category, application or system type, and see each product’s status at a glance."], ["product.webp", "Hydrophore system", "Product page", "Deep teal hero with the line drawing, a tagline and three key specifications."], ["specs.webp", "Tech specs", "Ruled rows", "Side navigation, the general-arrangement drawing and ruled specification rows."], ["lifecycle.webp", "Lifecycle services", "After the installation", "Commissioning, training, spare parts, maintenance, surveys and retrofits."], ["marine.webp", "Industries", "Marine", "Commercial and cargo, navy, and offshore and support, each with a photo and system tags."], ["services.webp", "Services", "Accordion", "Six lifecycle services in an accordion on deep teal."], ["links.webp", "Homepage", "Oversized links", "Lifecycle services, product catalog, our values."]]}</script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js" defer></script>
   <script src="/js/theme.js" defer></script>
   <script src="/js/contact.js" defer></script>
