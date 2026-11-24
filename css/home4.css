@@ -143,3 +143,60 @@ body.r4 { background: var(--bg); color: var(--ink); }
 
 @media (prefers-reduced-motion: reduce) { .scr__in, .sw__panel img, .sw__tabs a::before { transition: none; } }
 .r4 .progress__tick::before { display: none; }
+
+/* ---------- Milestone 2: the rest of the page on the same sheet ----------
+   One gutter for everything (the hero's x = 57 rule), a hairline and a copper dot opening each section,
+   condensed light display type, square corners, outlined buttons. The footer repeats the hero's pressed type. */
+body.r4 { --gutter: max(1rem, calc(57 * var(--u))); --sec: clamp(5rem, calc(130 * var(--u)), 11rem); }
+.r4 main { position: relative; }
+.r4 main::before { content: ''; position: absolute; left: var(--gutter); top: calc(480 * var(--u)); bottom: 0; width: 1px; background: var(--line); pointer-events: none; }
+.r4 .more, .r4 .statement, .r4 .svc, .r4 .cps, .r4 .xp { position: relative; margin-top: var(--sec); padding-top: calc(var(--sec) * .5); border-top: 1px solid var(--line); background: none; }
+.r4 .more::before, .r4 .statement::before, .r4 .svc::before, .r4 .cps::before, .r4 .xp::before, .r4 .cta::before { content: ''; position: absolute; left: var(--gutter); top: -3px; width: 5px; height: 5px; margin-left: -2px; background: var(--mark); }
+.r4 .more { margin-top: calc(var(--sec) * .4); }
+.r4 .statement { padding-bottom: 0; }
+
+/* Display type: condensed, light, copper. */
+.r4 .h2s { font-weight: 360; font-stretch: 62%; font-size: clamp(3rem, calc(96 * var(--u)), 9rem); line-height: .84; letter-spacing: .005em; color: var(--ink); }
+.r4 .statement p { font-weight: 360; font-stretch: 66%; font-size: clamp(2rem, calc(54 * var(--u)), 5rem); line-height: 1; letter-spacing: 0; max-width: 24ch; text-transform: uppercase; }
+.r4 .statement .w { opacity: .22; }
+.r4 .statement .w.k { color: var(--mark); }
+.r4 .more__index .nm { font-weight: 400; font-stretch: 70%; font-size: clamp(1.3rem, calc(26 * var(--u)), 2.2rem); }
+.r4 .svc__item h3 { font-weight: 420; font-stretch: 66%; font-size: clamp(1.8rem, calc(36 * var(--u)), 3.2rem); line-height: .92; }
+.r4 .tl__year { font-weight: 340; font-stretch: 62%; font-size: clamp(2.8rem, calc(68 * var(--u)), 6rem); }
+.r4 .tl__company { font-weight: 440; font-stretch: 70%; }
+.r4 .tl__num { font-weight: 500; color: var(--mark); }
+
+/* Square corners and hairlines in place of rounded panels. */
+.r4 .svc__grid, .r4 .cps__grid { gap: 0; border-top: 1px solid var(--line); border-left: 1px solid var(--line); }
+.r4 .svc__item { border-radius: 0; background: none; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); padding: calc(18 * var(--u)) max(1rem, calc(18 * var(--u))); transition: background-color .5s var(--ease); }
+.r4 .svc__item.is-on { background: var(--bg-2); color: var(--ink); translate: none; box-shadow: inset 0 2px 0 var(--mark); }
+.r4 .svc__item > .mono { color: var(--muted); }
+.r4 .stage { border-radius: 3px; }
+.r4 .cps__grid a { padding: max(.8rem, calc(14 * var(--u))); border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.r4 .cps__grid .im { border-radius: 3px; }
+.r4 .cps__grid .mono { color: var(--muted); }
+.r4 .deck__card { border-radius: calc(8 * var(--u)); border: 1px solid var(--line-2); box-shadow: 0 30px 60px -30px rgba(0, 0, 0, .8); }
+.r4 .deck__tag { border-radius: 3px; background: var(--chip); color: var(--ink); border: 1px solid var(--line-2); }
+.r4 .deck__ctrl button { border-radius: 2px; border-color: var(--line-2); }
+.r4 .deck__ctrl button:hover { background: var(--mark); color: var(--on-pink); }
+.r4 .record { border-radius: 0; background: none; border: 1px solid var(--line); }
+.r4 .rail a.is-current i { background: var(--mark); }
+
+/* Buttons: outlined, square, copper arrow block. */
+.r4 .pill, .r4 .xp__resume { border-radius: 2px; background: none; color: var(--ink); border: 1px solid var(--line-2); font-weight: 450; font-stretch: 88%; transition: background-color .4s var(--ease), color .4s var(--ease); }
+.r4 .pill b, .r4 .xp__resume b { border-radius: 1px; background: var(--mark); color: var(--on-pink); }
+.r4 .pill:hover, .r4 .xp__resume:hover { background: var(--mark); color: var(--on-pink); }
+.r4 .pill:hover b, .r4 .xp__resume:hover b { background: var(--on-pink); color: var(--mark); }
+
+/* Footer: the closing sheet, its headline pressed into the ground like the hero's. */
+.r4 .cta { position: relative; margin-top: var(--sec); border-radius: 0; background: var(--bg); color: var(--ink); border-top: 1px solid var(--line-2); padding: calc(var(--sec) * .55) var(--gutter) 2.5rem; }
+.r4 .cta .press { margin: 0; color: var(--emb); font-size: clamp(3.4rem, calc(196 * var(--u)), 18rem); font-weight: 320; line-height: .82; text-transform: uppercase; white-space: nowrap; user-select: none; }
+.r4 .cta .press .ln { display: flex; align-items: flex-end; }
+.r4 .cta .press .ch { display: inline-block; font-variation-settings: 'wdth' 62, 'wght' 320; text-shadow: -1px -1px 0 var(--emb-hi), 1px 1px 0 var(--emb-lo), 2px 3px 6px var(--emb-lo); -webkit-text-stroke: 1px rgba(255, 236, 220, .1); }
+:root:not([data-theme='dark']) .r4 .cta .press .ch { -webkit-text-stroke: 1px rgba(126, 64, 28, .06); text-shadow: -1px -1px 0 var(--emb-lo), 1px 1px 0 var(--emb-hi), 1px 2px 3px rgba(255, 255, 255, .9); }
+.r4 .cta .press .sq { flex: none; width: .11em; height: .11em; margin: 0 0 .13em .05em; background: var(--mark); }
+.r4 .cta__row { margin-top: calc(40 * var(--u)); padding-top: calc(24 * var(--u)); border-top: 1px solid var(--line); }
+.r4 .cta__row p { color: var(--muted); font-size: clamp(1rem, calc(18 * var(--u)), 1.3rem); }
+.r4 .cta .pill { background: var(--mark); color: var(--on-pink); border-color: var(--mark); }
+.r4 .cta .pill b { background: var(--on-pink); color: var(--mark); }
+.r4 .foot { border-top: 1px solid var(--line); color: var(--muted); }

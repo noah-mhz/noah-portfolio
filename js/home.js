@@ -18,6 +18,8 @@
 
     /* ---------- Deck data + behaviour ---------- */
     const WORK = [
+      { n: '01 / 04', name: 'Ganko.sg', img: '/assets/images/ganko-home-1600.webp', href: '/work/ganko/', cta: 'Read the case study →',
+        rows: [['Type', 'Freelance'], ['Sector', 'Japanese restaurant'], ['Year', '2025'], ['Built with', 'GoDaddy Website Builder, custom HTML, Chope booking']] },
       { n: '02 / 04', name: 'Luumens', img: '/assets/images/luumens-home-1600.webp', href: '/work/luumens/', cta: 'Read the case study →',
         rows: [['Type', 'In-house · Pomar Engineering'], ['Sector', 'Energy'], ['Year', '2026'], ['Built with', 'WordPress, custom widgets, GSAP']] },
       { n: '03 / 04', name: 'Voyagaer', img: '/assets/images/voyagaer-hero-poster.webp', href: '/work/voyagaer/', cta: 'Read the case study →',
