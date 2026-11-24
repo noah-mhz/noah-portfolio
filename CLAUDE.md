@@ -130,6 +130,22 @@ README.md has the file-by-file structure and the motion tiers; read it before la
   `.cs-next` (next project in its dark palette, peek image). Order: Ganko → Luumens → Voyagaer →
   Industmarine → Ganko. Per-project type signatures live in `case.css`; keep copy factual.
 
+## Redesign 5: redesign-3 + the Gemini hero (branch `redesign-5`, from `redesign-3`)
+
+- Only the hero changed. Navigation, services scenes, the All work deck (Ganko added as 01 / 04), statement,
+  concepts, timeline, contact and footer are redesign-3 as-is. The pinned Ganko section and the reel flyer are gone;
+  "More work" is now "All work" and carries `id="work"` (skip link and nav).
+- Hero: `css/hero5.css` (loaded after home.css), markup `.hero.h5`. Composed on a 1312-unit sheet (`--u` = 100vw / 1312)
+  at ≥ 1024px; recomposes in flow below. Live palette via tokens (`--emb*`, `--chip`, `--frame`, `--line-2` added on
+  :root per theme). SYSTEMS OF NARRATIVE. pressed into the ground; portal on the full stop; four screens on one tilt
+  (tilt on `.scr__in`, GSAP moves `.scr`). `heroIn(fromLoader)` in js/home.js is the entrance.
+- Loader: same mechanics (gates, safety timer, session flag) but a sheet, not halves: SKETCH → STRUCTURE → SYSTEMS press
+  in through a mask placed over the hero's first line; the progress hairline is the hero's first full-width grid line
+  (tablet/phone: the rule above the notes). At 100% the ground dissolves and `heroIn(true)` draws the rest around them;
+  the hero's own first line and line stay hidden until the hand-off so nothing draws twice.
+- The footer's DISCUSS A PROJECT. keeps the original `.press` styles and `fit()`; the letter-swell effect skips the hero.
+- Wordmark NOAH (no square dot). Reduced motion now clears `os-return` so the hero isn't left hidden after The Other Side.
+
 ## Pitfalls already hit (don't repeat)
 
 - The Ganko pin (`stageIn` / `stageOut` / `total` and its `end` in `js/home.js`) keeps its last stage

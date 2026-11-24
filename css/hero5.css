@@ -1,0 +1,155 @@
+/* Homepage hero (redesign 5): the architectural sheet from the Gemini reference, in the live palette.
+   Loaded after css/home.css. Only the hero and the loader live here; every other section keeps its own styles.
+   Desktop (≥ 1024px) is composed on a 1312-unit sheet: --u is one unit, so the hero keeps the reference's
+   proportions at every desktop width. Tablet and phone recompose in flow at the end of the file. */
+
+/* ---------- Hero tokens (the live palette; dark = deep teal ground, light = peach ground) ---------- */
+:root {
+  --u: calc(100vw / 1312);
+  --line-2: rgba(14, 23, 24, .3);
+  --emb: #F4D4B8;
+  --emb-hi: rgba(255, 246, 236, .95);
+  --emb-lo: rgba(14, 23, 24, .22);
+  --emb-edge: rgba(148, 72, 16, .12);
+  --chip: #FBE6D3;
+  --frame: #0E1718;
+}
+:root[data-theme='dark'] {
+  --line-2: rgba(248, 219, 193, .28);
+  --emb: #122023;
+  --emb-hi: rgba(248, 219, 193, .13);
+  --emb-lo: rgba(0, 0, 0, .8);
+  --emb-edge: rgba(248, 219, 193, .1);
+  --chip: #15292B;
+  --frame: #081012;
+}
+
+/* NOAH: the wordmark in capitals (it still folds to "N" on scroll). */
+.logo { text-transform: uppercase; letter-spacing: .01em; font-weight: 560; font-stretch: 96%; }
+.logo__dot { display: none; }
+
+/* ---------- Shared: grid lines, dots, chips ---------- */
+.gl { position: absolute; display: block; background: var(--line); pointer-events: none; }
+.gl--x { left: calc(var(--x0) * var(--u)); top: calc(var(--y) * var(--u)); width: calc((var(--x1) - var(--x0)) * var(--u)); height: 1px; transform-origin: 0 50%; }
+.gl--y { top: calc(var(--y0) * var(--u)); left: calc(var(--x) * var(--u)); height: calc((var(--y1) - var(--y0)) * var(--u)); width: 1px; transform-origin: 50% 0; }
+.gl--full { background: var(--line-2); }
+.gl--nav { left: 0; right: 0; width: auto; top: var(--nav-h); }
+.gd { position: absolute; left: calc(var(--x) * var(--u)); top: calc(var(--y) * var(--u)); width: 5px; height: 5px; margin: -2px 0 0 -2px; background: var(--mark); pointer-events: none; }
+.chip { position: absolute; z-index: 8; padding: calc(7 * var(--u)) calc(12 * var(--u)); border: 1px solid var(--line-2); border-radius: calc(4 * var(--u)); background: var(--chip); color: var(--ink); font-size: max(.72rem, calc(14 * var(--u))); font-stretch: 92%; line-height: 1.1; white-space: nowrap; box-shadow: 0 8px 18px -10px rgba(0, 0, 0, .55); pointer-events: none; }
+
+/* ---------- Hero ---------- */
+.h5 { position: relative; height: calc(610 * var(--u)); isolation: isolate; z-index: 3; }
+.h5__grid { position: absolute; inset: 0; z-index: -1; }
+.h5 .h5__title { position: absolute; left: calc(55 * var(--u)); top: calc(112 * var(--u)); z-index: 1; margin: 0; font-size: calc(104 * var(--u)); font-weight: 320; line-height: .818; letter-spacing: .004em; text-transform: uppercase; white-space: nowrap; color: var(--emb); user-select: none; }
+.h5__title .ln { display: flex; justify-content: flex-start; align-items: flex-end; }
+.h5__title .ln + .ln { margin-top: 0; }
+.h5__title .t { flex: none; display: inline-flex; }
+.h5__title .ch, .loader__mask .ch { display: inline-block; font-variation-settings: 'wdth' 62, 'wght' 320;
+  text-shadow: -1px -1px 0 var(--emb-hi), 1px 1px 0 var(--emb-lo), 2px 3px 6px var(--emb-lo); -webkit-text-stroke: 1px var(--emb-edge); }
+.h5__title .portal { width: .11em; height: .11em; margin: 0 0 .13em .05em; }
+.h5__title .portal__label { font-size: 11px; }
+
+.h5__notes .note { position: absolute; z-index: 1; margin: 0; font-size: max(.56rem, calc(9.5 * var(--u))); line-height: 1.55; letter-spacing: .05em; color: var(--muted); }
+.note--a { left: calc(206 * var(--u)); top: calc(222 * var(--u)); }
+.note--b { left: calc(462 * var(--u)); top: calc(222 * var(--u)); }
+.note--c { left: calc(206 * var(--u)); top: calc(388 * var(--u)); }
+.note__on { color: var(--ink); }
+.note__on::before { content: ''; display: inline-block; width: .55em; height: .55em; margin-right: .6em; background: var(--mark); }
+
+/* The stack: four case studies on one tilt, back to front (tilt on .scr__in, GSAP moves .scr). */
+.hstage { position: absolute; left: calc(560 * var(--u)); top: calc(48 * var(--u)); width: calc(752 * var(--u)); height: calc(530 * var(--u)); z-index: 2; }
+.h5__wires { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 7; overflow: visible; pointer-events: none; }
+.h5__wires path { fill: none; stroke: var(--mark); stroke-width: 1; vector-effect: non-scaling-stroke; }
+.h5__wires circle { fill: var(--mark); }
+.scr { position: absolute; display: block; text-decoration: none; outline: none; will-change: transform; }
+.scr__in { position: relative; display: block; padding: calc(7 * var(--u)); border-radius: calc(12 * var(--u)); background: var(--frame); border: 1px solid rgba(248, 219, 193, .16);
+  box-shadow: 0 calc(40 * var(--u)) calc(60 * var(--u)) calc(-24 * var(--u)) rgba(0, 0, 0, .7), inset 0 1px 0 rgba(255, 255, 255, .06);
+  transform: perspective(calc(2200 * var(--u))) rotateX(10deg) rotateY(-12deg) rotate(9deg); transition: translate .7s var(--ease), scale .7s var(--ease), filter .6s var(--ease); }
+.scr__img { display: block; width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: cover; object-position: top left; border-radius: calc(6 * var(--u)); }
+.scr--industmarine { left: calc(408 * var(--u)); top: calc(18 * var(--u)); width: calc(420 * var(--u)); z-index: 1; }
+.scr--luumens { left: calc(172 * var(--u)); top: calc(40 * var(--u)); width: calc(415 * var(--u)); z-index: 2; }
+.scr--voyagaer { left: calc(196 * var(--u)); top: calc(90 * var(--u)); width: calc(395 * var(--u)); z-index: 3; }
+.scr--ganko { left: calc(8 * var(--u)); top: calc(210 * var(--u)); width: calc(372 * var(--u)); z-index: 4; }
+.scr--luumens .scr__img, .scr--voyagaer .scr__img, .scr--industmarine .scr__img { aspect-ratio: 16 / 11; }
+.hstage.has-on .scr:not(.is-on) .scr__in { filter: brightness(.6) saturate(.75); }
+.scr.is-on { z-index: 6 !important; }
+.scr.is-on .scr__in { translate: 0 calc(-10 * var(--u)); scale: 1.03; }
+.scr:focus-visible .scr__in { outline: 2px solid var(--mark); outline-offset: 4px; }
+.chip--a { left: calc(48 * var(--u)); top: calc(108 * var(--u)); rotate: 8deg; }
+.chip--b { left: calc(398 * var(--u)); top: calc(412 * var(--u)); rotate: 8deg; }
+.h5__measure { position: absolute; left: calc(650 * var(--u)); top: calc(404 * var(--u)); color: var(--muted); font-size: max(.56rem, calc(10 * var(--u))); white-space: nowrap; }
+
+/* Audience tags (from the previous hero). */
+.tags { display: flex; gap: .4rem; flex-wrap: wrap; }
+.tag { padding: .5rem .8rem; border: 1px solid var(--line); border-radius: 99px; }
+.tag--on { background: var(--ink); color: var(--bg); border-color: transparent; display: inline-flex; gap: .45rem; align-items: center; }
+.tag--on::before { content: ''; width: .45rem; height: .45rem; border-radius: 50%; background: var(--pink); }
+
+/* Foot row: closes the sheet between the two full-width lines, then the page carries on. */
+.h5__foot { position: absolute; left: calc(57 * var(--u)); right: calc(57 * var(--u)); top: calc(430 * var(--u)); height: calc(180 * var(--u)); z-index: 1; }
+.h5__intro { position: absolute; left: calc(14 * var(--u)); top: calc(28 * var(--u)); width: calc(360 * var(--u)); margin: 0; font-size: clamp(.95rem, calc(17 * var(--u)), 1.5rem); line-height: 1.3; font-weight: 450; }
+.h5__intro span { color: var(--muted); }
+.h5__foot .tags { position: absolute; left: calc(14 * var(--u)); bottom: calc(22 * var(--u)); }
+.h5__cta { position: absolute; right: 0; bottom: calc(22 * var(--u)); display: flex; flex-direction: column; align-items: flex-end; gap: .9rem; }
+.h5__cta .pill { background: var(--pink); color: var(--on-pink); }
+.h5__cta .pill b { background: var(--ink); color: var(--bg); transition: translate .4s var(--ease); }
+.h5__cta .pill:hover b, .h5__cta .pill:focus-visible b { translate: .2rem 0; }
+
+/* The next section follows the sheet closely, so its heading is already in view on the first screen. */
+.h5 + .more { padding-top: clamp(3rem, calc(70 * var(--u)), 6rem); }
+
+.os-return .h5__title, .os-return .h5__notes, .os-return .h5__foot, .os-return .hstage { opacity: 0; }
+@media (prefers-reduced-motion: reduce) { .scr__in { transition: none; } }
+
+/* ---------- Loader (first visit per session; js/home.js runLoader) ----------
+   A blank sheet in the hero's ground. Words press in through a mask placed exactly over the hero's first line,
+   ending on SYSTEMS in the hero's own pressed type; the progress hairline sits exactly on the hero's first
+   full-width grid line. At 100% the ground dissolves: the word and the line stay where they are, and the rest
+   of the sheet draws itself around them, so nothing jumps. */
+.loader { display: none; }
+.has-loader .loader { display: block; position: fixed; inset: 0; z-index: 9999; color: var(--ink); animation: loader-failsafe .4s ease 4.5s forwards; touch-action: none; }
+@keyframes loader-failsafe { to { opacity: 0; visibility: hidden; } }
+.has-loader .logo .logo__l { animation: none; }
+.loader__ground { position: absolute; inset: 0; background: var(--bg); }
+.loader__logo { position: absolute; left: var(--gutter); top: 1.55rem; font-weight: 560; font-stretch: 96%; font-size: 1.625rem; letter-spacing: .01em; line-height: 1; text-transform: uppercase; white-space: nowrap; }
+.loader__label { position: absolute; right: var(--gutter); top: 1.9rem; color: var(--muted); }
+.loader__mask { position: absolute; left: var(--gutter); top: 30%; height: 1em; font-size: calc(104 * var(--u)); line-height: .818; clip-path: inset(-.08em -.3em -.12em -.1em); text-transform: uppercase; color: var(--emb); }
+.loader__word { position: absolute; left: 0; top: 0; display: flex; white-space: nowrap; will-change: transform; }
+.loader__note { position: absolute; left: var(--gutter); top: 0; max-width: calc(100vw - 2 * var(--gutter) - 4.5rem); margin: 0; color: var(--muted); }
+.loader__count { position: absolute; right: var(--gutter); top: 0; font-variant-numeric: tabular-nums; color: var(--muted); }
+.loader__line { position: absolute; left: 0; right: 0; top: 60%; height: 1px; background: var(--line-2); overflow: hidden; }
+.loader__line i { display: block; height: 100%; background: var(--mark); transform: scaleX(0); transform-origin: 0 50%; }
+@media (max-width: 600px) { .loader__logo { top: 1.4rem; } .loader__label { top: 1.75rem; } }
+
+/* ---------- Tablet and phone (< 1024px): the sheet recomposes in flow ----------
+   Headline at full width, the notes in columns, the stack on its own 790-unit board (desktop positions, rescaled),
+   then the foot row. */
+@media (max-width: 1023px) {
+  .h5 { height: auto; padding: calc(var(--nav-h) + 2rem) var(--gutter) 2.4rem; }
+  .h5__grid .gl, .h5__grid .gd { display: none; }
+  .h5__grid .gl--nav { display: block; }
+  .h5__grid::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 1px; background: var(--line-2); }
+  .h5 .h5__title { position: relative; left: auto; top: auto; font-size: min(23vw, 11.5rem); }
+  .h5__notes { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem 1.2rem; margin: 1.6rem 0 0; padding-top: 1rem; border-top: 1px solid var(--line); }
+  .h5__notes .note { position: static; font-size: .62rem; }
+  .note--c { grid-column: 1 / -1; order: -1; }
+  .hstage { --u: calc((100vw - 2 * var(--gutter)) / 790); position: relative; left: auto; top: auto; width: calc(790 * var(--u)); height: calc(600 * var(--u)); margin-top: 1.4rem; }
+  .hstage .chip { font-size: max(.62rem, calc(15 * var(--u))); }
+  .h5__measure { display: none; }
+  .h5__foot { position: static; height: auto; display: grid; gap: 1.2rem; margin-top: 1.6rem; padding-top: 1.4rem; border-top: 1px solid var(--line-2); }
+  .h5__intro, .h5__foot .tags, .h5__cta { position: static; width: auto; }
+  .h5__intro { font-size: clamp(1.05rem, 3.6vw, 1.4rem); }
+  .h5__cta { justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
+  .loader__mask { font-size: min(23vw, 11.5rem); }
+}
+@media (min-width: 640px) and (max-width: 1023px) {
+  .h5 .h5__title { font-size: min(17vw, 11.5rem); }
+  .h5__notes { grid-template-columns: repeat(3, 1fr); }
+  .note--c { grid-column: auto; order: 0; }
+  .loader__mask { font-size: min(17vw, 11.5rem); }
+}
+/* Small desktops (1024–1199): fixed minimum type sizes no longer clear the stack, so the hero drops what is repeated below. */
+@media (min-width: 1024px) and (max-width: 1199px) {
+  .h5__cta > .mono, .note--b { display: none; }   /* the services list is the Services section; the location is in the footer */
+  .h5__intro span { display: none; }
+}
