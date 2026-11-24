@@ -130,6 +130,20 @@ README.md has the file-by-file structure and the motion tiers; read it before la
   `.cs-next` (next project in its dark palette, peek image). Order: Ganko → Luumens → Voyagaer →
   Industmarine → Ganko. Per-project type signatures live in `case.css`; keep copy factual.
 
+## Redesign 4: the architectural sheet (branch `redesign-4`, from `redesign-3`)
+
+- Homepage only (`body.r4`, `css/home4.css` loaded after `home.css`); inner pages unchanged. Built to Noah's
+  Gemini reference: charcoal ground, copper ink (light theme: paper + burnt copper), tokens overridden on `body.r4`.
+- Desktop (≥ 1024px) is composed on a 1312-unit sheet: `--u` = 100vw / 1312, so the first screen (hero + strip +
+  index) keeps the reference's proportions at every width. Grid lines are `.gl` with `--x/--y` in units.
+- Hero: SYSTEMS OF NARRATIVE. pressed into the ground (text-shadow + stroke), portal on the full stop; notes in
+  the grid cells (real copy only); `.hstage` stacks Industmarine, Luumens, Voyagaer, Ganko on one tilt (tilt on
+  `.scr__in`, GSAP moves `.scr`). Selected-work strip (`.sw`) and a four-tab index; hover/focus on a screen,
+  panel or tab sets that project active everywhere (`setActive` in `js/home.js`).
+- Removed on this branch: the first-visit loader and the Ganko pin (the strip replaces them). The work deck is
+  "All work" and includes Ganko. Wordmark is NOAH (reference), not "noah.".
+- Phones/tablets: the hero flows (headline, notes, then the stack on its own 790-unit board), the strip stacks.
+
 ## Pitfalls already hit (don't repeat)
 
 - The Ganko pin (`stageIn` / `stageOut` / `total` and its `end` in `js/home.js`) keeps its last stage

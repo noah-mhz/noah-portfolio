@@ -200,3 +200,66 @@ body.r4 { --gutter: max(1rem, calc(57 * var(--u))); --sec: clamp(5rem, calc(130 
 .r4 .cta .pill { background: var(--mark); color: var(--on-pink); border-color: var(--mark); }
 .r4 .cta .pill b { background: var(--on-pink); color: var(--mark); }
 .r4 .foot { border-top: 1px solid var(--line); color: var(--muted); }
+
+/* ---------- Milestone 4: header at every width ---------- */
+.r4 .pnav__links { display: flex; }
+.r4 .pnav { margin-right: 0; }
+@media (max-width: 1023px) {
+  .r4 .top { height: 3.6rem; padding: 0 var(--g); }
+  .r4 .pnav { font-size: .95rem; }
+}
+@media (max-width: 600px) {
+  .r4 .pnav__links a[data-link='services'], .r4 .pnav__links a[data-link='concepts'] { display: none; }
+  .r4 .theme__label { display: none; }
+  .r4 .top__end { margin-left: .9rem; }
+}
+
+/* ---------- Milestone 4: tablet and phone (< 1024px) recompose in flow ----------
+   The headline leads at full width, the notes follow in two columns, then the stack, drawn on its own
+   752-unit board (the desktop positions, rescaled), then the strip as a stacked sheet and a 2 × 2 index. */
+@media (max-width: 1023px) {
+  body.r4 { --g: clamp(1.1rem, 5vw, 2.5rem); --gutter: var(--g); }
+  .r4 main::before { display: none; }
+  .h4 { height: auto; padding: calc(3.6rem + 2.2rem) var(--g) 0; }
+  .h4__grid .gl, .h4__grid .gd { display: none; }
+  .h4__grid::before { content: ''; position: absolute; left: var(--g); right: var(--g); top: calc(3.6rem + 1.2rem); height: 1px; background: var(--line); }
+  .h4__title { position: relative; left: auto; top: auto; font-size: min(23vw, 11.5rem); }
+  .h4__notes { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem 1.2rem; margin: 1.6rem 0 0; padding-top: 1rem; border-top: 1px solid var(--line); }
+  .h4__notes .note { position: static; font-size: .62rem; }
+  .note--c { grid-column: 1 / -1; order: -1; }
+  .hstage { --u: calc((100vw - 2 * var(--g)) / 790); position: relative; left: auto; top: auto; width: calc(790 * var(--u)); height: calc(600 * var(--u)); margin-top: 1.4rem; }
+  .hstage .chip { font-size: max(.62rem, calc(15 * var(--u))); }
+  .h4__measure { display: none; }
+
+  .sw { height: auto; display: grid; grid-template-columns: 1fr 1fr; gap: 0; padding: 2.2rem var(--g) 0; }
+  .sw__grid { display: none; }
+  .sw__head, .sw__panel, .sw__copy, .sw__tabs { position: relative; left: auto; top: auto; right: auto; width: auto; height: auto; }
+  .sw__head { grid-column: 1 / -1; padding: .9rem 0; border-top: 1px solid var(--line-2); }
+  .sw__title { font-size: clamp(1.4rem, 5.2vw, 2rem); }
+  .sw__meta { font-size: .62rem; padding: 0; }
+  .sw__panel--ganko { grid-column: 1 / -1; aspect-ratio: 2 / 1; }
+  .sw__band { width: 12%; font-size: clamp(.8rem, 2.6vw, 1.1rem); }
+  .sw__copy { grid-column: 1 / -1; padding: 1.4rem 0 1.2rem; gap: .7rem; }
+  .sw__big { font-size: clamp(1.9rem, 7.4vw, 3rem); }
+  .sw__sub { font-size: .72rem; }
+  .sw__panel--luumens { aspect-ratio: 1 / 1; }
+  .sw__panel--voyagaer { aspect-ratio: 1 / 1; margin-left: .6rem; }
+  .sw__panel--voyagaer .chip--c { left: .6rem; top: .6rem; font-size: .7rem; }
+  .sw__tabs { grid-column: 1 / -1; grid-template-columns: 1fr 1fr; margin-top: 2rem; }
+  .sw__tabs a { flex-direction: column; gap: .3rem; padding: .9rem .8rem 1rem; font-size: 1rem; border-bottom: 1px solid var(--line); }
+  .sw__tabs a:nth-child(3) { border-left: 0; }
+  .sw__tabs a .mono { opacity: 1; translate: none; font-size: .6rem; color: var(--muted); }
+
+  .r4 .cta .press { font-size: min(21vw, 11rem); }
+}
+@media (min-width: 640px) and (max-width: 1023px) {
+  .h4__title { font-size: min(17vw, 11.5rem); }
+  .h4__notes { grid-template-columns: repeat(3, 1fr); }
+  .note--c { grid-column: auto; order: 0; }
+  .sw { grid-template-columns: 1.15fr .7fr 1.15fr; }
+  .sw__panel--ganko { grid-column: 1 / -1; aspect-ratio: 2.6 / 1; }
+  .sw__copy { grid-column: auto; padding: 1.2rem 1rem 0 0; }
+  .sw__panel--luumens, .sw__panel--voyagaer { aspect-ratio: auto; height: 100%; min-height: 13rem; margin-top: 1.2rem; }
+  .sw__tabs { grid-template-columns: repeat(4, 1fr); }
+  .sw__tabs a:nth-child(3) { border-left: 1px solid var(--line); }
+}
