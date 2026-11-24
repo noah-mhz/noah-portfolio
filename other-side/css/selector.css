@@ -1,0 +1,168 @@
+/* The selector: a paper sheet with three doors. Each door is a square already speaking its world's language
+   (a portal, a window, a fracture). Hover a door and the title re-sets itself in that world's voice. */
+.sel { position: relative; height: 100svh; min-height: 40rem; overflow: hidden; background: #EFEBE2; color: #121320; display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr)); grid-template-rows: auto 1fr auto; column-gap: var(--pad); padding: 1.2rem var(--pad) 1.4rem;
+  background-image: linear-gradient(rgba(18, 19, 32, .055) 1px, transparent 1px), linear-gradient(90deg, rgba(18, 19, 32, .055) 1px, transparent 1px);
+  background-size: calc((100% - 2 * var(--pad)) / 12) calc((100% - 2 * var(--pad)) / 12); background-position: var(--pad) var(--pad);
+  transition: background-color .8s var(--ease), color .6s var(--ease); --hy: 70%; --hx: 30%; }
+.sel[hidden] { display: none; }
+.sel__top { grid-column: 1 / -1; grid-row: 1; display: flex; align-items: center; gap: .8rem; position: relative; z-index: 3; }
+.sel__who { margin-left: auto; font-size: .95rem; }
+.sel__mark { width: 12px; height: 12px; background: #F2A65A; }
+/* The title stands on the horizon; its full stop is where the horizon starts. */
+.sel__title { grid-column: 1 / 7; grid-row: 2; align-self: end; position: relative; z-index: 2; margin-bottom: 4.6rem; pointer-events: none;
+  font-size: clamp(4rem, 14.6vw, 14.5rem); line-height: .8; }
+
+/* ---------- The title morph ----------
+   Three layers share one grid cell: Archivo (base, and the Fable), Space Grotesk (Neon) and Cormorant (Hollow).
+   js/app.js sizes the Neon and Hollow layers so each line is as wide as the Archivo line it replaces; letters then
+   hand over in place, in reading order, rather than jumping. Only properties that don't move letters are
+   animated during a hand-off (opacity, a baseline wipe), so the word never looks broken.
+   - Fable: a real morph. Archivo's weight axis thickens, the colour turns, and one wave runs through the
+     letters and settles back on the baseline.
+   - Neon: each letter is rebuilt from the baseline up, left to right, as its Archivo counterpart fades.
+   - Hollow: a slow dissolve, letter for letter, in reading order. */
+.tt { display: grid; }
+.tt__l { grid-area: 1 / 1; align-self: end; display: block; }
+.tt .ln { display: block; white-space: nowrap; }
+.tt .ln:nth-child(1) { padding-left: 1.06em; }
+.tl { display: inline-block; transition: opacity .4s var(--ease), clip-path .55s var(--ease), font-variation-settings .7s var(--ease), color .5s var(--ease); transition-delay: calc(var(--i) * 16ms); }
+.tt .sel__dot { display: inline-block; width: .16em; height: .16em; margin-left: .05em; background: #F2A65A; transition: background-color .4s, transform .7s var(--ease), opacity .4s; }
+
+.tt--base { font-weight: 800; text-transform: uppercase; letter-spacing: -.005em; }
+.tt--base .tl { font-variation-settings: 'wdth' 62, 'wght' var(--wg, 800); }
+.tt--neon { font-family: 'Space Grotesk', sans-serif; font-weight: 500; font-size: var(--fs, .66em); line-height: .9; letter-spacing: -.045em; color: #EAF1FF; }
+.tt--neon .tl { opacity: 0; clip-path: inset(100% 0 -12% 0); }
+.tt--neon .sel__dot { background: #B6F34A; width: .14em; height: .14em; margin-left: .06em; }
+.tt--hollow { font-family: 'Cormorant Garamond', serif; font-weight: 300; font-size: var(--fs, .86em); line-height: .82; letter-spacing: -.01em; color: #D8D2C6; }
+.tt--hollow .tl { opacity: 0; }
+.tt--hollow .sel__dot { background: #A33D34; width: .12em; height: .12em; }
+.tt--neon .sel__dot, .tt--hollow .sel__dot { opacity: 0; }
+
+/* Fable */
+:is(.sel[data-hover='fable'], [data-voice='fable']) .tt--base { color: #3B45DE; }
+:is(.sel[data-hover='fable'], [data-voice='fable']) .tt--base .tl { --wg: 900; animation: fwave .8s var(--ease) both; animation-delay: calc(var(--i) * 28ms); }
+@keyframes fwave { 0%, 100% { translate: 0 0; } 38% { translate: 0 -.07em; } }
+:is(.sel[data-hover='fable'], [data-voice='fable']) .tt--base .sel__dot { background: #C4E44A; transform: rotate(45deg) scale(1.15); }
+/* Neon */
+:is(.sel[data-hover='neon'], [data-voice='neon']) .tt--base .tl { opacity: 0; transition-duration: .3s; transition-delay: calc(60ms + var(--i) * 22ms); }
+:is(.sel[data-hover='neon'], [data-voice='neon']) .tt--neon .tl { opacity: 1; clip-path: inset(0 0 -12% 0); transition-duration: .1s, .55s; transition-delay: calc(60ms + var(--i) * 22ms); }
+/* Hollow */
+:is(.sel[data-hover='hollow'], [data-voice='hollow']) .tt--base .tl { opacity: 0; transition-duration: .55s; transition-delay: calc(var(--i) * 26ms); }
+:is(.sel[data-hover='hollow'], [data-voice='hollow']) .tt--hollow .tl { opacity: 1; transition-duration: .8s; transition-delay: calc(140ms + var(--i) * 26ms); }
+:is(.sel[data-hover='neon'], [data-voice='neon']) .tt--base .sel__dot, :is(.sel[data-hover='hollow'], [data-voice='hollow']) .tt--base .sel__dot { opacity: 0; }
+:is(.sel[data-hover='neon'], [data-voice='neon']) .tt--neon .sel__dot, :is(.sel[data-hover='hollow'], [data-voice='hollow']) .tt--hollow .sel__dot { opacity: 1; transition-delay: .35s; }
+/* Chosen: once the morph has landed, the title steps back as the transition takes over */
+.sel[data-chosen] .tt { transition: opacity .45s var(--ease) .1s; opacity: 0; }
+
+.sel__horizon { position: absolute; z-index: 0; left: var(--hx); right: 0; top: var(--hy); height: 1px; background: currentColor; opacity: .35; transform-origin: 0 50%; pointer-events: none; }
+.sel__lede { grid-column: 1 / 6; grid-row: 3; align-self: end; max-width: 24rem; font-size: 1.1rem; line-height: 1.35; position: relative; z-index: 3; }
+.sel__lede-sub { display: block; margin-top: .6rem; opacity: .78; }
+
+/* Sheet colour follows the hovered world */
+.sel[data-hover='fable'] { background-color: #F4F0E6; }
+.sel[data-hover='neon'] { background-color: #0B0F1C; color: #DDE6F7; }
+.sel[data-hover='hollow'] { background-color: #0C0D15; color: #B5B0A6; }
+.sel[data-hover] { background-image: none; }
+
+/* Doors: three squares standing on the horizon, each smaller than the last, so the row reads as distance:
+   the Fable near, Neon further, the Hollow furthest. Each has a plaque below the line and an "Enter" cue. */
+.sel__worlds { grid-column: 7 / -1; grid-row: 2; align-self: end; position: relative; z-index: 1; display: flex; align-items: flex-end; justify-content: flex-end; gap: clamp(1rem, 2.4vw, 2.6rem); margin-bottom: 4.6rem; translate: 0 var(--dy, 0); }
+.door { position: relative; display: block; flex: none; text-decoration: none; outline: none; color: inherit; }
+.door--fable { width: clamp(9rem, 20vw, 22rem); }
+.door--neon { width: clamp(6.5rem, 13.4vw, 15rem); }
+.door--hollow { width: clamp(4.5rem, 9vw, 10rem); }
+.door__sq { position: relative; display: block; width: 100%; aspect-ratio: 1; overflow: hidden; transform-origin: 50% 100%; transition: transform .8s var(--ease), filter .6s var(--ease); }
+.door__label { position: absolute; left: 0; top: calc(100% + 1rem); display: grid; gap: .3rem; white-space: nowrap; }
+.door__label b { font-weight: 700; font-size: clamp(.95rem, 1.25vw, 1.25rem); letter-spacing: -.01em; }
+.door__label .mono { opacity: .8; }
+/* each plaque already speaks its world's voice */
+.door--fable .door__label b { font-weight: 900; font-variation-settings: 'wdth' 62, 'wght' 900; text-transform: uppercase; font-size: clamp(1.05rem, 1.5vw, 1.5rem); letter-spacing: 0; }
+.door--neon .door__label b { font-family: 'Space Grotesk', sans-serif; font-weight: 500; letter-spacing: -.02em; }
+.door--hollow .door__label b { font-family: 'Cormorant Garamond', serif; font-weight: 400; font-size: clamp(1.1rem, 1.5vw, 1.45rem); }
+.door__label::after { content: 'Enter →'; font: var(--t-micro)/1 var(--f-ui); letter-spacing: .08em; text-transform: uppercase; opacity: 0; translate: -6px 0; transition: opacity .3s, translate .5s var(--ease); }
+.door:hover .door__label::after, .door:focus-visible .door__label::after, .door.is-hot .door__label::after { opacity: 1; translate: 0 0; }
+.door__key { position: absolute; right: 0; top: calc(100% + 1rem); font: var(--t-micro)/1 var(--f-ui); opacity: .78; }
+.door:focus-visible .door__sq { outline: 3px solid #F2A65A; outline-offset: 6px; }
+.sel[data-hover] .door:not(.is-hot) .door__sq { filter: saturate(.35) brightness(.7); transform: scale(.97); }
+.door.is-hot .door__sq { transform: translateY(-.8rem) scale(1.03); }
+.door .door__sq { transform: none; }
+.door.is-hot .door__sq { transform: translateY(-.8rem) scale(1.03); }
+
+/* The Fable door: a portal of sky with a sun and a leaf, a cream window inside */
+.door--fable .door__sq { background: #3B45DE; box-shadow: 0 30px 50px -30px rgba(59, 69, 222, .7); }
+.df { position: absolute; display: block; }
+.df--sky { inset: 0; background: radial-gradient(60% 55% at 75% 30%, #77C8FF 0 30%, transparent 70%), radial-gradient(50% 50% at 20% 85%, #C4E44A 0 15%, transparent 60%), #3B45DE; }
+.df--sun { width: 34%; aspect-ratio: 1; border-radius: 50%; right: -8%; top: 12%; background: radial-gradient(circle at 35% 35%, #FFC98E, #F2A65A 55%, #E2793A); transition: transform 1s var(--ease); }
+.df--leaf { width: 46%; height: 30%; left: -6%; bottom: 8%; background: #C4E44A; border-radius: 60% 40% 55% 45% / 70% 60% 40% 30%; transition: transform 1s var(--ease); }
+.df--win { width: 36%; aspect-ratio: 1; left: 30%; top: 30%; border: clamp(6px, 1.2vw, 14px) solid #F4F0E6; transition: transform 1s var(--ease); }
+.door--fable.is-hot .df--sun { transform: translate(-18%, 10%) scale(1.1); }
+.door--fable.is-hot .df--leaf { transform: translate(10%, -8%) rotate(-10deg); }
+.door--fable.is-hot .df--win { transform: rotate(45deg) scale(.9); }
+
+/* Neon District door: a window onto a gridded city, one lit tower, a slow scan */
+.door--neon .door__sq { background: #080B12; box-shadow: 0 30px 50px -30px rgba(8, 11, 18, .9); }
+.dn { position: absolute; display: block; }
+.dn--grid { inset: 0; background-image: linear-gradient(rgba(40, 89, 255, .35) 1px, transparent 1px), linear-gradient(90deg, rgba(40, 89, 255, .35) 1px, transparent 1px); background-size: 12.5% 12.5%; }
+.dn--city { left: 8%; right: 8%; bottom: 0; height: 64%;
+  /* same language as the district: towers with window grids, lime only as one roof signal */
+  -webkit-mask: linear-gradient(#000, #000) 8% 100% / 12% 48% no-repeat, linear-gradient(#000, #000) 24% 100% / 10% 70% no-repeat,
+    linear-gradient(#000, #000) 40% 100% / 14% 58% no-repeat, linear-gradient(#000, #000) 60% 100% / 12% 92% no-repeat,
+    linear-gradient(#000, #000) 80% 100% / 11% 76% no-repeat, linear-gradient(#000, #000) 98% 100% / 8% 40% no-repeat;
+  mask: linear-gradient(#000, #000) 8% 100% / 12% 48% no-repeat, linear-gradient(#000, #000) 24% 100% / 10% 70% no-repeat,
+    linear-gradient(#000, #000) 40% 100% / 14% 58% no-repeat, linear-gradient(#000, #000) 60% 100% / 12% 92% no-repeat,
+    linear-gradient(#000, #000) 80% 100% / 11% 76% no-repeat, linear-gradient(#000, #000) 98% 100% / 8% 40% no-repeat;
+  background: linear-gradient(#B6F34A, #B6F34A) 60% 8% / 12% 3% no-repeat,
+    repeating-linear-gradient(90deg, transparent 0 3px, rgba(8, 11, 18, .9) 3px 4px), repeating-linear-gradient(transparent 0 3px, rgba(8, 11, 18, .9) 3px 4px),
+    linear-gradient(#22336B, #121A3A); transition: transform 1s var(--ease); }
+.dn--scan { left: 0; right: 0; top: 30%; height: 1px; background: #12C9D9; box-shadow: 0 0 0 1px rgba(18, 201, 217, .15); animation: scan 4.5s var(--ease-io) infinite alternate; animation-play-state: paused; }
+.dn--node { width: 14%; aspect-ratio: 1; left: 12%; top: 12%; border: 1.5px solid #12C9D9; }
+.door--neon.is-hot .dn--scan, .door--neon:focus-visible .dn--scan { animation-play-state: running; }
+.door--neon.is-hot .dn--city { transform: translateY(-4%); }
+@keyframes scan { to { top: 88%; } }
+
+/* The Hollow door: a square broken open, a crimson seam, the deep showing through */
+.door--hollow .door__sq { background: transparent; overflow: visible; }
+.dh { position: absolute; display: block; }
+.dh--deep { inset: 0; background: radial-gradient(70% 60% at 60% 40%, #55283A, #20264B 55%, #090A12); clip-path: polygon(0 0, 58% 0, 66% 16%, 80% 9%, 100% 26%, 100% 100%, 0 100%); }
+.dh--seam { left: 6%; top: 30%; width: 82%; height: 1.5px; background: linear-gradient(90deg, transparent, #A33D34 30%, #A33D34 90%, transparent); transform-origin: 100% 0; transform: rotate(-38deg); right: auto; opacity: .8; }
+.sel__foot { grid-column: 7 / -1; grid-row: 3; align-self: end; display: flex; justify-content: flex-end; gap: 2rem; opacity: .78; position: relative; z-index: 3; }
+
+/* Tablet: the title on top, the row of doors on its own horizon below */
+@media (max-width: 1023px) {
+  .sel { grid-template-rows: auto auto 1fr auto; }
+  .sel__title { grid-column: 1 / -1; grid-row: 2; align-self: start; margin: 2rem 0 0; font-size: clamp(3.6rem, 19vw, 11rem); }
+  .sel__worlds { grid-column: 1 / -1; grid-row: 3; align-self: end; justify-content: flex-start; margin: 0 0 6.5rem; translate: none; }
+  .door--fable { width: 40vw; } .door--neon { width: 27vw; } .door--hollow { width: 18vw; }
+  .sel__horizon { display: none; }
+  .sel__worlds::after { content: ''; position: absolute; left: calc(-1 * var(--pad)); right: calc(-1 * var(--pad)); bottom: 0; height: 1px; background: currentColor; opacity: .35; }
+  .sel__lede { grid-row: 4; grid-column: 1 / 8; }
+  .sel__foot { grid-row: 4; grid-column: 8 / -1; flex-direction: column; align-items: flex-end; gap: .3rem; }
+}
+/* Phone: a vertical list of doors, each a row with its square and plaque */
+@media (max-width: 640px) {
+  body[data-view='select'] { overflow: auto; }
+  .sel { height: auto; min-height: 100svh; display: block; padding-bottom: 2rem; }
+  .sel__title { font-size: 22vw; margin: 2rem 0 0; }
+  .sel__lede { margin: 1.2rem 0 1.6rem; }
+  .sel__worlds { display: grid; grid-template-columns: minmax(0, 1fr); justify-content: stretch; gap: 0; margin: 0; }
+  .sel__worlds::after { display: none; }
+  .door, .door--fable, .door--neon, .door--hollow { width: auto; display: grid; grid-template-columns: 34% 1fr; align-items: center; gap: 1rem; padding: .8rem 0; border-top: 1px solid rgba(18, 19, 32, .15); }
+  .door__label { position: static; white-space: normal; }
+  .door__label::after { opacity: .7; translate: none; }
+  .door__key { display: none; }
+ 
+  .sel__foot { margin-top: 2rem; flex-direction: column; align-items: flex-start; }
+}
+.sel__title:focus { outline: none; }
+@media (max-width: 640px) {
+  .sel__top { flex-wrap: wrap; row-gap: .3rem; }
+  .sel__who { margin-left: 0; flex-basis: 100%; font-size: .9rem; }
+  .door, .door--fable, .door--neon, .door--hollow { grid-template-columns: 30% 1fr; gap: 1.1rem; padding: 1rem 0; }
+  .door .door__label b { font-size: 1.75rem; line-height: 1; }
+  .door--hollow .door__label b { font-size: 2rem; }
+  .door .door__label { gap: .45rem; }
+  .door:active .door__sq { transform: scale(.96); }
+}
+/* the smallest door sits at the edge: its plaque hangs to the left so it never runs off the sheet */
+@media (min-width: 641px) { .door--hollow .door__label { left: auto; right: 0; justify-items: end; text-align: right; } .door--hollow .door__label .mono { white-space: normal; max-width: 6.5rem; } .door--hollow .door__key { right: auto; left: 0; } }

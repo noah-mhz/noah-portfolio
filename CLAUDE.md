@@ -105,6 +105,15 @@ README.md has the file-by-file structure and the motion tiers; read it before la
 - Search: titles name "Noah Zaw Min Htut"; Person/WebSite JSON-LD on the homepage; canonical
   URLs on every page; update `sitemap.xml` lastmod when pages change.
 
+## The Other Side (live at /other-side/)
+
+- Self-contained page in `other-side/` (own css/js/fonts/assets, absolute paths, no GSAP/Lenis): a selector and three
+  worlds on hash routes (#fable, #neon, #hollow). The Fable: Little Rösti, Common Table, Crumb & Kin. Neon District:
+  Pixel Pull + build notes. The Hollow: two studies made for the page + an honest "opening" note. No invented projects.
+- Screens in `other-side/assets/` are captures of the anonymised concept builds; each project links to `/concepts/<slug>/`.
+- Portal handshake kept: reads `os-from` on arrival, writes `os-return` on "Back to the portfolio" / Esc on the selector.
+- Not linked from the live homepage yet (the full-stop portal is on `redesign-5`).
+
 ## Pitfalls already hit (don't repeat)
 
 - The Ganko pin (`stageIn` / `stageOut` / `total` and `end: '+=160%'` in `js/home.js`) keeps its last stage

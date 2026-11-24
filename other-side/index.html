@@ -1,0 +1,432 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Other Side · Noah Zaw Min Htut</title>
+<meta name="description" content="The Other Side of Noah's portfolio: three worlds of speculative homepages, a shop designed as a system, and studies.">
+<link rel="canonical" href="https://noah-portfolio.pages.dev/other-side/">
+<meta name="theme-color" content="#EFEBE2">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<!-- The portal's handshake with the homepage: open from the square that was clicked (sessionStorage os-from);
+     on the way back, store the back button's square (os-return) so the homepage can fly it into the full stop. -->
+<script>
+  (function () {
+    var d = document.documentElement, f = null;
+    try { f = JSON.parse(sessionStorage.getItem('os-from') || 'null'); sessionStorage.removeItem('os-from'); } catch (e) {}
+    if (!f || location.hash.length > 1 || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    var W = innerWidth, H = innerHeight;
+    d.classList.add('enter');
+    d.style.setProperty('--at', Math.max(0, f.y) + 'px'); d.style.setProperty('--al', Math.max(0, f.x) + 'px');
+    d.style.setProperty('--ar', Math.max(0, W - f.x - f.w) + 'px'); d.style.setProperty('--ab', Math.max(0, H - f.y - f.h) + 'px');
+  })();
+</script>
+<link rel="preload" href="/assets/fonts/archivo.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/geist-mono.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/other-side/css/shared.css">
+<link rel="stylesheet" href="/other-side/css/selector.css">
+<link rel="stylesheet" href="/other-side/css/fable.css">
+<link rel="stylesheet" href="/other-side/css/neon.css">
+<link rel="stylesheet" href="/other-side/css/hollow.css">
+<link rel="stylesheet" href="/other-side/css/projects.css">
+</head>
+<body data-view="select">
+<a class="skip" href="#select-worlds">Skip to the worlds</a>
+
+<!-- ============================ SELECTOR ============================ -->
+<section class="sel" id="select" aria-labelledby="sel-title">
+  <header class="sel__top">
+    <span class="sel__mark" aria-hidden="true"></span>
+    <span class="mono">The Other Side</span>
+    <a class="sel__back" href="/" data-back><span aria-hidden="true">←</span> Back to the portfolio</a>
+  </header>
+
+  <!-- One heading with three typographic layers drawn over it by js/app.js: Archivo (also the Fable's voice, by
+       animating its own weight axis), Space Grotesk (Neon) and Cormorant Garamond (the Hollow). -->
+  <h1 class="sel__title" id="sel-title" tabindex="-1">
+    <span class="sr">The Other Side</span>
+    <span class="tt" aria-hidden="true" data-lines="The|Other|Side"></span>
+  </h1>
+  <i class="sel__horizon" aria-hidden="true"></i>
+  <p class="sel__lede">The creative side of Noah’s portfolio. Three worlds, three kinds of work: speculative homepages, a shop designed as a system, and studies.<span class="sel__lede-sub mono" data-sel-sub>Choose a world to enter</span></p>
+
+  <nav class="sel__worlds" id="select-worlds" aria-label="Choose a world">
+    <a class="door door--fable" href="#fable" data-world="fable" data-sub="The Fable · three speculative homepages for food places">
+      <span class="door__sq" aria-hidden="true">
+        <i class="df df--sky"></i><i class="df df--sun"></i><i class="df df--leaf"></i><i class="df df--win"></i>
+      </span>
+      <span class="door__key" aria-hidden="true">1</span>
+      <span class="door__label"><b>The Fable</b><span class="mono">3 speculative homepages</span></span>
+    </a>
+    <a class="door door--neon" href="#neon" data-world="neon" data-sub="Neon District · a shop homepage designed as a system, and build notes">
+      <span class="door__sq" aria-hidden="true">
+        <i class="dn dn--grid"></i><i class="dn dn--city"></i><i class="dn dn--scan"></i><i class="dn dn--node"></i>
+      </span>
+      <span class="door__key" aria-hidden="true">2</span>
+      <span class="door__label"><b>Neon District</b><span class="mono">A shop as a system</span></span>
+    </a>
+    <a class="door door--hollow" href="#hollow" data-world="hollow" data-sub="The Hollow · studies, and experiments in progress">
+      <span class="door__sq" aria-hidden="true">
+        <i class="dh dh--deep"></i><i class="dh dh--seam"></i>
+      </span>
+      <span class="door__key" aria-hidden="true">3</span>
+      <span class="door__label"><b>The Hollow</b><span class="mono">Studies · opening</span></span>
+    </a>
+  </nav>
+
+  <footer class="sel__foot mono">
+    <span>Keys 1 · 2 · 3 · Esc goes back</span>
+    <span>Speculative work · nothing here was commissioned</span>
+  </footer>
+</section>
+
+<!-- ============================ THE FABLE ============================ -->
+<main class="world fable" id="fable" hidden tabindex="-1" aria-labelledby="fh-title">
+  <header class="fnav">
+    <a class="fnav__home" href="#select"><span class="fnav__sq" aria-hidden="true"></span><span>The Fable</span><span class="sr">, back to the world selector</span></a>
+    <nav class="fnav__links" aria-label="The Fable">
+      <a href="#fable-work" data-scroll>Three places</a><a href="#fable-end" data-scroll>Leave</a>
+    </nav>
+    <nav class="realm" aria-label="Switch world">
+      <span class="realm__k mono" aria-hidden="true">Worlds</span>
+      <a href="#fable" aria-current="page" class="realm__f" title="The Fable"><span class="sr">The Fable (current)</span></a>
+      <a href="#neon" class="realm__n" title="Neon District"><span class="sr">Neon District</span></a>
+      <a href="#hollow" class="realm__h" title="The Hollow"><span class="sr">The Hollow</span></a>
+    </nav>
+  </header>
+
+  <!-- Hero: three windows standing in one landscape, each opening onto a real homepage -->
+  <section class="fhero" data-sec="hero">
+    <h1 class="fhero__title" id="fh-title" data-warp>
+      <span class="fw fw--1">Places</span>
+      <span class="fw fw--2"><em>you could</em></span>
+      <span class="fw fw--3">walk into</span>
+    </h1>
+    <p class="fhero__lede">Three speculative homepages for small food places in Singapore: a rösti café, a restaurant and a bakery. Each was designed and built as a pitch. None was commissioned.</p>
+    <!-- Three doorways cut into one blue wall, each shaped after its place (an arch, a leaf, a round window) and
+         opening onto that place's real homepage. Light from each spills onto the floor. -->
+    <div class="fdoors" data-doors>
+      <i class="fdoors__wall" aria-hidden="true"></i><i class="fdoors__floor" aria-hidden="true"></i>
+      <a class="fdoor fdoor--rosti" href="#fx-rosti" data-scroll>
+        <span class="fdoor__open"><img loading="lazy" decoding="async" src="/other-side/assets/rosti-hero-s.webp" srcset="/other-side/assets/rosti-hero-s.webp 720w, /other-side/assets/rosti-hero.webp 1440w" sizes="(max-width: 900px) 60vw, 30vw" width="1440" height="900" alt="Little Rösti homepage: “Good things come in crispy layers”"></span>
+        <i class="fdoor__spill" aria-hidden="true"></i>
+        <span class="fdoor__plate"><span class="mono">01</span>Little Rösti<small>Café</small></span>
+      </a>
+      <a class="fdoor fdoor--table" href="#fx-table" data-scroll>
+        <span class="fdoor__open"><img loading="lazy" decoding="async" src="/other-side/assets/table-hero-s.webp" width="720" height="450" alt="Common Table homepage: “Make room for good things”"></span>
+        <i class="fdoor__spill" aria-hidden="true"></i>
+        <span class="fdoor__plate"><span class="mono">02</span>Common Table<small>Restaurant</small></span>
+      </a>
+      <a class="fdoor fdoor--crumb" href="#fx-crumb" data-scroll>
+        <span class="fdoor__open"><img loading="lazy" decoding="async" src="/other-side/assets/crumb-hero-s.webp" width="720" height="450" alt="Crumb &amp; Kin homepage: “good things take a little time”"></span>
+        <i class="fdoor__spill" aria-hidden="true"></i>
+        <span class="fdoor__plate"><span class="mono">03</span>Crumb &amp; Kin<small>Bakery</small></span>
+      </a>
+    </div>
+  </section>
+
+  <section class="fwork" id="fable-work" data-sec="work" aria-labelledby="fw-title">
+    <h2 class="sr" id="fw-title">Three places</h2>
+
+    <!-- 1 · Little Rösti · a layered spread: the desktop screen in an arch, the phone and a section laid over it -->
+    <article class="pj pj--rosti" id="fx-rosti" aria-labelledby="pj-rosti">
+      <div class="lr" data-reveal>
+        <figure class="lr__desk"><img src="/other-side/assets/rosti-hero.webp" loading="lazy" decoding="async" width="1440" height="900" alt="Little Rösti homepage on desktop: the headline “Good things come in crispy layers” beside a plate of rösti"></figure>
+        <figure class="lr__card"><img src="/other-side/assets/rosti-s-fav.webp" loading="lazy" decoding="async" width="1200" height="1350" alt="The favourites section: dishes in rounded frames with price tags"></figure>
+        <figure class="lr__phone"><img src="/other-side/assets/rosti-mob.webp" loading="lazy" decoding="async" width="520" height="1125" alt="Little Rösti homepage on a phone"></figure>
+      </div>
+      <div class="pj__text">
+        <p class="pj__label mono">Speculative homepage · Café</p>
+        <h2 class="pj__title" id="pj-rosti">Little Rösti</h2>
+        <dl class="pj__brief">
+          <div><dt class="mono">The pitch</dt><dd>Designed and built to pitch a rösti café in Singapore. Not commissioned.</dd></div>
+          <div><dt class="mono">The proposal</dt><dd>Lead with the food: favourites first, then the menu, the story and how to visit.</dd></div>
+          <div><dt class="mono">Explored</dt><dd>A warm toast palette, a serif headline (“Good things come in crispy layers”), dishes framed in arches and circles, handwritten asides.</dd></div>
+        </dl>
+        <p class="pj__shown">Shown anonymised: the café's photos are replaced with illustrations in its palette, and menu text is sample copy.</p>
+        <div class="pj__acts"><button class="pbtn" type="button" data-viewer data-title="Little Rösti" data-d="/other-side/assets/rosti-full.webp" data-dw="960" data-dh="5379" data-m="/other-side/assets/rosti-mob-full.webp" data-mw="440" data-mh="12178"><i aria-hidden="true"></i>View the full homepage</button><a class="plink" href="/concepts/little-rosti/">Open the live concept ↗</a></div>
+      </div>
+    </article>
+
+    <!-- 2 · Common Table · a window you scroll through: the whole homepage passes behind the frame as you read -->
+    <article class="pj pj--table" id="fx-table" aria-labelledby="pj-table" data-scrub>
+      <div class="ct">
+        <div class="ct__text pj__text">
+          <p class="pj__label mono">Speculative homepage · Restaurant</p>
+          <h2 class="pj__title" id="pj-table">Common Table</h2>
+          <dl class="pj__brief">
+            <div><dt class="mono">The pitch</dt><dd>Designed and built to pitch a restaurant in Singapore. Not commissioned.</dd></div>
+            <div><dt class="mono">The proposal</dt><dd>A homepage about sharing a table: the room, a menu you build course by course, and how to find the place.</dd></div>
+            <div><dt class="mono">Explored</dt><dd>A tilted photo collage over soft green shapes, and “Find your balance”: start with comfort, choose a main, add a little more, finish with a soup.</dd></div>
+          </dl>
+          <p class="pj__shown">Shown anonymised: stock photos, a sample menu and placeholder details.</p>
+          <div class="pj__acts"><button class="pbtn" type="button" data-viewer data-title="Common Table" data-d="/other-side/assets/table-full.webp" data-dw="960" data-dh="5537" data-m="/other-side/assets/table-mob-full.webp" data-mw="440" data-mh="10050"><i aria-hidden="true"></i>View the full homepage</button><a class="plink" href="/concepts/common-table/">Open the live concept ↗</a></div>
+        </div>
+        <div class="ct__frame">
+          <div class="ct__bar mono" aria-hidden="true"><i></i>Common Table · homepage</div>
+          <div class="ct__view" tabindex="0" role="region" aria-label="Common Table homepage, scrollable">
+            <img src="/other-side/assets/table-full.webp" loading="lazy" decoding="async" width="960" height="5537" alt="The full Common Table homepage: hero collage, the shared-table story, the build-your-plate section, the menu, the room and directions">
+          </div>
+          <figure class="ct__phone"><img src="/other-side/assets/table-mob.webp" loading="lazy" decoding="async" width="520" height="1125" alt="Common Table homepage on a phone"></figure>
+        </div>
+      </div>
+    </article>
+
+    <!-- 3 · Crumb & Kin · typography first: its own headline, set slowly; then the bakes and the phone -->
+    <article class="pj pj--crumb" id="fx-crumb" aria-labelledby="pj-crumb">
+      <div class="ck" data-reveal>
+        <p class="ck__line" aria-hidden="true"><span>good</span> <span>things</span> <span>take</span> <span>a</span> <span>little</span> <em>time.</em></p>
+        <svg class="ck__rule" viewBox="0 0 600 14" preserveAspectRatio="none" aria-hidden="true"><path d="M2 8 C 60 3, 110 12, 170 7 S 290 3, 350 8 S 470 12, 520 6 S 580 7, 598 9"/></svg>
+        <p class="ck__entry" aria-hidden="true"><b>kin</b> <span class="mono">/kin/ · noun</span><br>your family; the people you share a table with.</p>
+      </div>
+      <div class="ck__spread">
+        <figure class="ck__desk"><img src="/other-side/assets/crumb-s-bakes.webp" loading="lazy" decoding="async" width="1200" height="1308" alt="The bakes section: “Made fresh. Worth slowing down for.” with sourdough loaves and bagels"></figure>
+        <figure class="ck__phone"><img src="/other-side/assets/crumb-mob.webp" loading="lazy" decoding="async" width="520" height="1125" alt="Crumb &amp; Kin homepage on a phone"></figure>
+        <div class="pj__text">
+          <p class="pj__label mono">Speculative homepage · Bakery</p>
+          <h2 class="pj__title" id="pj-crumb">Crumb &amp; Kin</h2>
+          <dl class="pj__brief">
+            <div><dt class="mono">The pitch</dt><dd>Designed and built to pitch a small-batch bakery in Singapore. Not commissioned.</dd></div>
+            <div><dt class="mono">The proposal</dt><dd>A homepage that asks you to slow down: the story, the bakes, the craft and a peek inside the shop.</dd></div>
+            <div><dt class="mono">Explored</dt><dd>A large serif headline with an italic turn (“good things take a little time”), warm paper tones, and a dictionary-style entry for kin.</dd></div>
+          </dl>
+          <p class="pj__shown">Shown anonymised: placeholder brand, story and address; stock photos.</p>
+          <div class="pj__acts"><button class="pbtn" type="button" data-viewer data-title="Crumb &amp; Kin" data-d="/other-side/assets/crumb-full.webp" data-dw="960" data-dh="7741" data-m="/other-side/assets/crumb-mob-full.webp" data-mw="440" data-mh="13466"><i aria-hidden="true"></i>View the full homepage</button><a class="plink" href="/concepts/crumb-and-kin/">Open the live concept ↗</a></div>
+        </div>
+      </div>
+    </article>
+  </section>
+
+  <!-- Exit · the landscape again, with doors standing on its hill -->
+  <footer class="fend" data-sec="end" id="fable-end">
+    <div class="fend__scene">
+      <i class="fend__sky" aria-hidden="true"></i><i class="fend__sun" aria-hidden="true"></i><i class="fend__hill" aria-hidden="true"></i>
+      <p class="fend__big">Step through<br>another square</p>
+      <nav class="fend__doors" aria-label="Leave the Fable">
+        <a href="#neon" class="fx fx--n"><span class="fx__sq" aria-hidden="true"></span><span class="fx__t">Neon District<span class="mono">A shop as a system</span></span></a>
+        <a href="#hollow" class="fx fx--h"><span class="fx__sq" aria-hidden="true"></span><span class="fx__t">The Hollow<span class="mono">Studies</span></span></a>
+        <a href="#select" class="fx fx--s"><span class="fx__sq" aria-hidden="true"></span><span class="fx__t">All worlds<span class="mono">Back to the start</span></span></a>
+      </nav>
+    </div>
+  </footer>
+</main>
+
+<!-- ============================ NEON DISTRICT ============================ -->
+<main class="world neon" id="neon" hidden tabindex="-1" aria-labelledby="nh-title">
+  <header class="nnav">
+    <a class="nnav__home" href="#select"><span class="nnav__sq" aria-hidden="true"></span><span class="nnav__name">Neon District</span><span class="sr">, back to the world selector</span></a>
+    <nav class="nnav__links" aria-label="Neon District">
+      <a href="#neon-pixel" data-scroll>Pixel Pull</a>
+      <a href="#neon-build" data-scroll>Build notes</a>
+      <a href="#neon-end" data-scroll>Leave</a>
+    </nav>
+    <nav class="realm" aria-label="Switch world">
+      <span class="realm__k mono" aria-hidden="true">Worlds</span>
+      <a href="#fable" class="realm__f" title="The Fable"><span class="sr">The Fable</span></a>
+      <a href="#neon" aria-current="page" class="realm__n" title="Neon District"><span class="sr">Neon District (current)</span></a>
+      <a href="#hollow" class="realm__h" title="The Hollow"><span class="sr">The Hollow</span></a>
+    </nav>
+  </header>
+
+  <!-- Hero: the city is the map of this world. Two towers are destinations; the rest is skyline. -->
+  <section class="nhero" data-sec="hero">
+    <div class="nhero__copy">
+      <p class="mono nlabel">Neon District</p>
+      <h1 class="nhero__title" id="nh-title">Built like<br>a <span>city</span></h1>
+      <p class="nhero__lede">One shop homepage taken apart floor by floor. Each floor is a section the owner can rearrange, and each carries the note that argued for it. Further down: how this site itself is built.</p>
+      <a class="nbtn" href="#neon-pixel" data-scroll><span class="mono">→</span>Walk the floors</a>
+    </div>
+    <!-- The building: Pixel Pull's real homepage sections, stacked in depth on the district's plan. Each floor tag
+         opens that floor at street level below. -->
+    <div class="nbldg" data-on="hero">
+      <div class="ncity" aria-hidden="true">
+        <div class="ncity__plan"></div>
+        <div class="ncity__back"><i style="--h:40"></i><i style="--h:62"></i><i style="--h:34"></i><i style="--h:70"></i><i style="--h:48"></i><i style="--h:58"></i><i style="--h:30"></i><i style="--h:66"></i><i style="--h:44"></i></div>
+        <div class="ncity__ground"></div>
+      </div>
+      <div class="px" aria-hidden="true">
+        <div class="px__slab" data-s="camp"><img src="/other-side/assets/pixel-s-camp.webp" loading="lazy" decoding="async" alt="" width="1200" height="833"></div>
+        <div class="px__slab" data-s="prod"><img src="/other-side/assets/pixel-s-prod.webp" loading="lazy" decoding="async" alt="" width="1200" height="1042"></div>
+        <div class="px__slab" data-s="cats"><img src="/other-side/assets/pixel-s-cats.webp" loading="lazy" decoding="async" alt="" width="1200" height="908"></div>
+        <div class="px__slab" data-s="hero"><img src="/other-side/assets/pixel-s-hero.webp" loading="lazy" decoding="async" alt="" width="1200" height="917"></div>
+      </div>
+      <ol class="nbldg__tags" aria-label="Pixel Pull, floor by floor">
+        <li style="--k:0"><button type="button" data-floor="hero"><span class="mono">F4</span>Hero</button></li>
+        <li style="--k:1"><button type="button" data-floor="cats"><span class="mono">F3</span>Categories</button></li>
+        <li style="--k:2"><button type="button" data-floor="prod"><span class="mono">F2</span>New arrivals</button></li>
+        <li style="--k:3"><button type="button" data-floor="camp"><span class="mono">F1</span>Campaigns</button></li>
+      </ol>
+      <p class="nbldg__name mono" aria-hidden="true">Pixel Pull · homepage · 4 floors</p>
+    </div>
+  </section>
+
+  <!-- Pixel Pull · the homepage exploded into its floors; each floor opens at street level with its design note -->
+  <section class="npx" id="neon-pixel" data-sec="work" aria-labelledby="pj-pixel">
+    <div class="npx__head pj__text">
+      <p class="pj__label mono">01 · Speculative homepage · Card shop</p>
+      <h2 class="pj__title" id="pj-pixel">Pixel Pull</h2>
+      <dl class="pj__brief">
+        <div><dt class="mono">The pitch</dt><dd>Designed and built to pitch a trading card store in Singapore. Not commissioned.</dd></div>
+        <div><dt class="mono">The proposal</dt><dd>A storefront homepage proposed as a future Shopify Online Store 2.0 build: sections the owner can rearrange and update, each with a design note explaining it.</dd></div>
+      </dl>
+    </div>
+
+    <div class="npx__map">
+      <div class="npx__street">
+        <div class="npx__floors" role="tablist" aria-label="Pixel Pull homepage sections">
+          <button role="tab" id="pxt-hero" aria-controls="px-view" aria-selected="true" data-s="hero" data-src="/other-side/assets/pixel-s-hero.webp" data-h="917" data-alt="Hero: “Your next big pull starts here” on a black stage with orange accents and floating cards" data-note="Black stage + orange pops = instant brand recognition. Cards float to say “TCG store” in one glance."><span class="mono">F4</span>Hero</button>
+          <button role="tab" id="pxt-cats" aria-controls="px-view" aria-selected="false" tabindex="-1" data-s="cats" data-src="/other-side/assets/pixel-s-cats.webp" data-h="908" data-alt="Categories: “Pick your game” with asymmetric tiles in different colours and sizes" data-note="Asymmetric tiles, each its own colour and size. Big for the best sellers, small for the rest. Not a Shopify grid."><span class="mono">F3</span>Categories</button>
+          <button role="tab" id="pxt-prod" aria-controls="px-view" aria-selected="false" tabindex="-1" data-s="prod" data-src="/other-side/assets/pixel-s-prod.webp" data-h="1042" data-alt="New arrivals: a grid of identical product cards with filters by game" data-note="Clean, identical cards so the product is the star. Filter by TCG now; set, language and stock next."><span class="mono">F2</span>New arrivals</button>
+          <button role="tab" id="pxt-camp" aria-controls="px-view" aria-selected="false" tabindex="-1" data-s="camp" data-src="/other-side/assets/pixel-s-camp.webp" data-h="833" data-alt="Live campaigns: loud event posters inside a calm layout" data-note="Posters stay in their original loud colours, framed by a calm layout. Owner uploads new art in Shopify, no developer needed."><span class="mono">F1</span>Campaigns</button>
+        </div>
+        <div class="npx__view" id="px-view" role="tabpanel" aria-labelledby="pxt-hero" tabindex="0"><figure>
+          <img src="/other-side/assets/pixel-s-hero.webp" loading="lazy" decoding="async" width="1200" height="917" alt="Hero: “Your next big pull starts here” on a black stage with orange accents and floating cards">
+          <figcaption><span class="mono">Design note from the pitch</span><q>Black stage + orange pops = instant brand recognition. Cards float to say “TCG store” in one glance.</q></figcaption>
+        </figure></div>
+      </div>
+    </div>
+
+    <div class="npx__foot">
+      <p class="pj__shown">Shown anonymised: an original brand, generated posters and fictional details replace the store's own. Product images belong to their publishers.</p>
+      <div class="pj__acts"><button class="pbtn" type="button" data-viewer data-title="Pixel Pull" data-d="/other-side/assets/pixel-full.webp" data-dw="960" data-dh="4999" data-m="/other-side/assets/pixel-mob-full.webp" data-mw="440" data-mh="14603"><i aria-hidden="true"></i>View the full homepage</button><a class="plink" href="/concepts/pixel-pull/">Open the live concept ↗</a></div>
+    </div>
+  </section>
+
+  <!-- Build notes · true statements about this site, drawn as a plan -->
+  <section class="nbuild" id="neon-build" data-sec="about" aria-labelledby="nb-title">
+    <div class="nbuild__head">
+      <p class="mono nlabel">02 · Build notes</p>
+      <h2 id="nb-title">How this site is built</h2>
+    </div>
+    <p class="nbuild__intro">Five true statements about this page, each with a reading taken from your browser right now.</p>
+    <ol class="nbuild__plan">
+      <li><span class="mono">B-1</span><h3>One page, three worlds</h3><p>Each world is a section of a single HTML page. Hash routes (#fable, #neon, #hollow) switch between them, so links can point into a world and the back button works.</p><p class="nbuild__live mono" data-readout="route"></p></li>
+      <li><span class="mono">B-2</span><h3>No dependencies</h3><p>HTML, CSS and plain JavaScript, with no build step. Motion runs on the browser's Web Animations API. Four typefaces are self-hosted.</p><p class="nbuild__live mono" data-readout="files"></p></li>
+      <li><span class="mono">B-3</span><h3>One type system, three voices</h3><p>Geist Mono and Archivo carry navigation and reading everywhere. Each world has its own display face, and the selector's title is fitted so every letter can hand over in place.</p><p class="nbuild__live mono" data-readout="fonts"></p></li>
+      <li><span class="mono">B-4</span><h3>Worlds load when you enter</h3><p>Screens for a world you have not entered are not downloaded. They load lazily when the world opens.</p><p class="nbuild__live mono" data-readout="images"></p></li>
+      <li><span class="mono">B-5</span><h3>Motion you can switch off</h3><p>With reduced motion turned on in your system settings, every transition becomes an instant cut and nothing moves on its own.</p><p class="nbuild__live mono" data-readout="motion"></p></li>
+    </ol>
+  </section>
+
+  <!-- Exit · a departures board: origin, one track, three gates -->
+  <footer class="nend" data-sec="end" id="neon-end">
+    <div class="nend__head"><p class="mono nlabel">Leaving Neon District</p><h2 class="nend__title">Routes out</h2></div>
+    <div class="nend__board">
+      <div class="nend__here" aria-hidden="true"><i></i><span class="mono">You are here</span><b>Neon District</b></div>
+      <i class="nend__sig" aria-hidden="true"></i>
+      <nav class="nend__routes" aria-label="Leave Neon District">
+        <a href="#fable" class="gate gate--f"><span class="mono">R-1</span><b>The Fable</b><span class="gate__sw" aria-hidden="true"></span><span class="mono gate__go">3 speculative homepages →</span></a>
+        <a href="#hollow" class="gate gate--h"><span class="mono">R-3</span><b>The Hollow</b><span class="gate__sw" aria-hidden="true"></span><span class="mono gate__go">Studies →</span></a>
+        <a href="#select" class="gate gate--s"><span class="mono">R-0</span><b>All worlds</b><span class="gate__sw" aria-hidden="true"></span><span class="mono gate__go">Back to the start →</span></a>
+      </nav>
+    </div>
+  </footer>
+</main>
+
+<!-- ============================ THE HOLLOW ============================ -->
+<main class="world hollow" id="hollow" data-state="stable" hidden tabindex="-1" aria-labelledby="hh-title">
+  <header class="hnav">
+    <a class="hnav__home" href="#select"><span class="hnav__sq" aria-hidden="true"></span><span>The Hollow</span><span class="sr">, back to the world selector</span></a>
+    <nav class="hnav__links" aria-label="The Hollow">
+      <a href="#hollow-studies" data-scroll>Studies</a><span aria-hidden="true">/</span><a href="#hollow-open" data-scroll>Opening</a><span aria-hidden="true">/</span><a href="#hollow-end" data-scroll>Leave</a>
+    </nav>
+    <nav class="realm" aria-label="Switch world">
+      <span class="realm__k mono" aria-hidden="true">Worlds</span>
+      <a href="#fable" class="realm__f" title="The Fable"><span class="sr">The Fable</span></a>
+      <a href="#neon" class="realm__n" title="Neon District"><span class="sr">Neon District</span></a>
+      <a href="#hollow" aria-current="page" class="realm__h" title="The Hollow"><span class="sr">The Hollow (current)</span></a>
+    </nav>
+  </header>
+
+  <section class="hhero" data-sec="hero" data-lens>
+    <div class="hhero__under" aria-hidden="true"><p>nothing here is<br>finished yet</p></div>
+    <h1 class="hhero__title" id="hh-title"><span class="hh1 mono">Entering</span><span class="hh2" data-ghost="the Hollow">the H<span class="hshift">o</span>llow</span></h1>
+    <div class="hhole" aria-hidden="true"><i class="hhole__rim"></i><span class="hhole__deep"><i class="hrec hrec--1"></i><i class="hrec hrec--2"></i><i class="hrec hrec--3"></i><i class="hhole__fog"></i></span><i class="hhole__ghost"></i></div>
+    <p class="hhero__lede">Where unfinished things live. For now it holds two studies made while building this site. Other experiments are in progress and will appear here when they are ready.</p>
+  </section>
+
+  <section class="hstudies" id="hollow-studies" data-sec="work" aria-labelledby="hs-title">
+    <h2 class="hstudies__title" id="hs-title">Studies</h2>
+
+    <article class="hst" aria-labelledby="st1">
+      <div class="hst__text">
+        <p class="mono hst__k">Study 1 · Typography</p>
+        <h3 id="st1">Hand-over</h3>
+        <p>How the title on the first screen changes typeface. Families can't be blended, so each letter fades into its counterpart in the same place, and the word never breaks. Pick a voice.</p>
+        <div class="hst__ctl" role="group" aria-label="Typeface">
+          <button type="button" data-voice-btn="base" aria-pressed="true">Archivo</button>
+          <button type="button" data-voice-btn="fable" aria-pressed="false">The Fable</button>
+          <button type="button" data-voice-btn="neon" aria-pressed="false">Neon</button>
+          <button type="button" data-voice-btn="hollow" aria-pressed="false">The Hollow</button>
+        </div>
+      </div>
+      <div class="hst__stage hst__stage--type">
+        <p class="hst__plate mono" aria-hidden="true">Plate 1</p>
+        <p class="sr">The words “The Other Side”, shown in the selected typeface.</p>
+        <span class="tt tt--study" aria-hidden="true" data-lines="The Other|Side"></span>
+        <p class="hst__face mono" aria-live="polite" data-face>Archivo · condensed, weight 800</p>
+      </div>
+    </article>
+
+    <article class="hst" aria-labelledby="st2">
+      <div class="hst__text">
+        <p class="mono hst__k">Study 2 · Interaction</p>
+        <h3 id="st2">The light</h3>
+        <p>A line hidden under the surface that only a moving light can read. Drag across the dark with a pointer or a finger, or focus it and use the arrow keys.</p>
+      </div>
+      <div class="hst__stage hst__stage--light" data-light tabindex="0" role="img" aria-label="A dark panel. The hidden line reads: some work is a door, some is a crack in the wall.">
+        <p class="hst__plate mono" aria-hidden="true">Plate 2</p>
+        <i class="hst__ring" aria-hidden="true"></i>
+        <p class="hst__surface" aria-hidden="true">Move the light</p>
+        <p class="hst__hidden" aria-hidden="true">some work is a door.<br><em>some is a crack in the wall.</em></p>
+      </div>
+    </article>
+  </section>
+
+  <section class="hopen" id="hollow-open" data-sec="about" aria-labelledby="ho-title">
+    <div class="hopen__slit" aria-hidden="true"><i></i></div>
+    <div class="hopen__text">
+      <h2 id="ho-title">Opening</h2>
+      <p>The Hollow is meant for work that doesn't fit the other two worlds: rough, odd and unfinished. Nothing is shown here until it exists. The two studies above are real and running on this page; the rest is still being made.</p>
+    </div>
+  </section>
+
+  <!-- Exit · a passage beside the ways out -->
+  <footer class="hend" data-sec="end" id="hollow-end">
+    <div class="hend__slit" aria-hidden="true"><i></i></div>
+    <div class="hend__side">
+      <p class="serif hend__lead">Leave through</p>
+      <nav class="hend__exits" aria-label="Leave the Hollow">
+        <a href="#fable" class="hx--f"><span>the Fable</span><small class="mono">3 homepages</small></a>
+        <a href="#neon" class="hx--n"><span>Neon District</span><small class="mono">A shop as a system</small></a>
+        <a href="#select" class="hx--s"><span>every world</span><small class="mono">Back to the start</small></a>
+      </nav>
+      <p class="mono hend__note">Or press Esc, anywhere</p>
+    </div>
+  </footer>
+  <div class="hrupture" aria-hidden="true"></div>
+</main>
+
+<!-- One viewer for every full homepage: desktop and phone, scrollable -->
+<dialog class="viewer" aria-labelledby="vw-title">
+  <div class="viewer__bar">
+    <p class="viewer__title" id="vw-title"></p>
+    <div class="viewer__seg" role="group" aria-label="Screen size">
+      <button type="button" data-vw="d" aria-pressed="true">Desktop</button>
+      <button type="button" data-vw="m" aria-pressed="false">Phone</button>
+    </div>
+    <button class="viewer__close" type="button" data-close>Close<span aria-hidden="true"> ×</span></button>
+  </div>
+  <div class="viewer__scroll" tabindex="0" role="region" aria-label="Full homepage, scrollable">
+    <img alt="" decoding="async">
+  </div>
+  <p class="viewer__note mono">Captured from the anonymised concept build · speculative, not commissioned</p>
+</dialog>
+
+<div class="tx" aria-hidden="true"></div>
+<p class="sr" aria-live="polite" data-live></p>
+
+<script src="/other-side/js/app.js"></script>
+</body>
+</html>

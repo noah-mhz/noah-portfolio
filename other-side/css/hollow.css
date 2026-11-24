@@ -1,0 +1,143 @@
+/* THE HOLLOW: experimentation. Near-black with grain, desaturated blues, one muted crimson. Cormorant (serif)
+   for what's remembered, condensed Archivo for what's broken, Geist Mono for the record.
+   Three states on the root (data-state): stable (default, still), unstable (hover: small shifts and colour
+   separation), rupture (rare: opening a fragment slices the screen once).
+   Square: the hole. The logo is a square with a corner missing; the hero holds a broken square open. */
+.hollow { --bk: #090A12; --navy: #20264B; --blue: #34445B; --crim: #55283A; --wine: #3D192A; --rust: #A33D34; --rust-t: #D9776A; --bone: #B5B0A6; --pale: #D8D2C6;
+  background: var(--bk); color: var(--bone); position: relative; isolation: isolate; }
+.hollow::before { content: ''; position: fixed; inset: 0; z-index: 4; pointer-events: none; opacity: .12;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
+.hollow > * { position: relative; z-index: 1; }
+.serif { font-family: 'Cormorant Garamond', Georgia, serif; font-weight: 300; text-transform: none; letter-spacing: -.01em; }
+.cond { font-family: 'Archivo', sans-serif; font-weight: 600; font-stretch: 62%; text-transform: uppercase; letter-spacing: .01em; }
+
+.hnav { position: sticky; top: 0; z-index: 20; display: flex; align-items: center; gap: 2rem; padding: 1rem var(--pad); background: linear-gradient(var(--bk) 60%, transparent); }
+.hnav__home { display: flex; align-items: center; gap: .8rem; text-decoration: none; font: 400 1.25rem 'Cormorant Garamond', serif; color: var(--pale); }
+.hnav__sq { width: 16px; height: 16px; background: var(--pale); clip-path: polygon(0 0, 100% 0, 100% 55%, 55% 55%, 55% 100%, 0 100%); transition: clip-path .7s var(--ease); }
+.hnav__home:hover .hnav__sq { clip-path: polygon(0 0, 100% 0, 100% 100%, 100% 100%, 100% 100%, 0 100%); }
+.hnav__links { display: flex; gap: .8rem; margin-left: auto; color: var(--bone); }
+.hnav__links a { text-decoration: none; padding: .6rem .2rem; letter-spacing: .14em; transition: color .3s, letter-spacing .6s var(--ease); }
+.hnav__links a:hover, .hnav__links a:focus-visible { color: var(--pale); letter-spacing: .22em; }
+.hnav__links span { opacity: .35; align-self: center; }
+.hollow .realm { color: var(--pale); }
+
+/* Hero: a serif headline, a broken square held open, and a hidden line that only the light reveals */
+.hhero { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--pad); padding: 10vh var(--pad) 12vh; min-height: calc(100svh - 4rem); align-content: center; position: relative; overflow: clip; --mx: -999px; --my: -999px; }
+.hhero__title { grid-column: 1 / 10; grid-row: 1; position: relative; z-index: 3; font-family: 'Cormorant Garamond', serif; font-weight: 300; line-height: .86; color: var(--pale); }
+.hh1 { display: block; font-family: var(--f-ui); font-size: var(--t-ui); letter-spacing: .2em; text-transform: uppercase; color: var(--rust-t); margin-bottom: 1.4rem; }
+.hh2 { display: block; font-size: clamp(4rem, 12.5vw, 12.5rem); letter-spacing: -.02em; }
+.hshift { display: inline-block; transition: transform 1.4s var(--ease), color .6s; }
+.hhole { grid-column: 7 / -1; grid-row: 1 / 3; position: relative; aspect-ratio: 1; z-index: 1; align-self: center;
+  --cp: polygon(0 0, 100% 0, 100% 56%, 86% 63%, 93% 72%, 74% 80%, 79% 100%, 0 100%); }
+.hollow[data-state='unstable'] .hhole { --cp: polygon(0 0, 100% 0, 100% 50%, 82% 60%, 90% 70%, 68% 82%, 74% 100%, 0 100%); }
+/* the fracture edge catches a thin crimson light: a copy of the opening, nudged, sitting behind it */
+.hhole__rim { position: absolute; inset: 8%; translate: 5px 4px; clip-path: var(--cp); background: linear-gradient(160deg, transparent 40%, var(--crim) 62%, var(--rust)); transition: clip-path 1.6s var(--ease); }
+/* receding frames: a corridor that goes further back than the page allows; the last door is lit */
+.hrec { position: absolute; display: block; border: 1px solid rgba(216, 210, 198, .16); }
+.hrec--1 { inset: 14% 24% 18% 16%; border-color: rgba(216, 210, 198, .1); }
+.hrec--2 { inset: 26% 36% 30% 30%; border-color: rgba(216, 210, 198, .08); transform: rotate(-1.5deg); }
+.hrec--3 { inset: 38% 45% 40% 42%; border: 0; background: linear-gradient(var(--pale), var(--bone)); opacity: .55; }
+.hhole__fog { position: absolute; inset: -20% -40%; display: block; opacity: .5;
+  background: radial-gradient(40% 18% at 30% 70%, rgba(181, 176, 166, .28), transparent 70%), radial-gradient(50% 22% at 70% 40%, rgba(85, 40, 58, .45), transparent 70%);
+  animation: fog 22s var(--ease-io) infinite alternate; }
+@keyframes fog { to { transform: translateX(18%) translateY(-4%); } }
+.hhero::after { content: ''; position: absolute; inset: 0; z-index: 1; pointer-events: none; background: radial-gradient(120% 90% at 60% 45%, transparent 45%, rgba(9, 10, 18, .85)); }
+/* the title has a displaced double: one band slips sideways, crimson, a beat behind */
+.hh2 { position: relative; }
+.hh2::after { content: attr(data-ghost); position: absolute; left: 0; top: 0; z-index: -1; color: var(--crim); translate: -.07em -.02em; opacity: .7; pointer-events: none; transition: translate 1.4s var(--ease); }
+.hollow[data-state="unstable"] .hh2::after { translate: .1em .01em; }
+.hhole__deep { position: absolute; inset: 8%; display: block; overflow: hidden; background: radial-gradient(34% 30% at 52% 48%, #3A1E2E, #12131F 60%, #030308); clip-path: var(--cp); transition: clip-path 1.6s var(--ease); }
+.hhole::after { content: ''; position: absolute; right: -2%; bottom: -4%; width: 24%; height: 34%; background: linear-gradient(200deg, var(--blue), var(--bk)); clip-path: polygon(30% 0, 100% 10%, 100% 100%, 20% 90%, 40% 60%, 8% 40%); transform: rotate(8deg); transition: transform 1.6s var(--ease); }
+.hollow[data-state='unstable'] .hhole::after { transform: translate(14px, 10px) rotate(14deg); }
+.hhole__deep::after { z-index: 1; content: ''; position: absolute; inset: 0; background: repeating-linear-gradient(0deg, transparent 0 3px, rgba(9, 10, 18, .35) 3px 4px); mix-blend-mode: multiply; }
+.hhole__ghost { position: absolute; inset: 22% 10% 30% 34%; border: 1px solid rgba(216, 210, 198, .2); transform: translate(12px, -10px) rotate(2deg); transition: transform 1.6s var(--ease); }
+.hhero__under { position: absolute; inset: 0; z-index: 2; display: grid; place-items: center; pointer-events: none;
+  -webkit-mask: radial-gradient(160px 160px at var(--mx) var(--my), #000 30%, transparent 70%); mask: radial-gradient(160px 160px at var(--mx) var(--my), #000 30%, transparent 70%); }
+.hhero__under p { font: 400 clamp(2rem, 6vw, 6rem)/.9 'Archivo'; font-stretch: 62%; text-transform: uppercase; color: var(--rust); text-align: center; letter-spacing: .02em; }
+.hhero__lede { grid-column: 1 / 6; grid-row: 2; margin-top: 2.4rem; max-width: 26rem; font-size: var(--t-lede); line-height: 1.45; position: relative; z-index: 3; }
+
+/* UNSTABLE: hovering anything that can move unsettles the scene a little */
+.hollow[data-state='unstable'] .hshift { transform: translate(.04em, -.06em) rotate(-4deg); color: var(--rust); }
+.hollow[data-state='unstable'] .hhole__ghost { transform: translate(-6px, 8px) rotate(-1deg); }
+
+.hollow [data-reveal].pre { opacity: 0; filter: blur(10px); }
+
+/* Studies: two working specimens made while building this site, each a small stage with its controls */
+.hstudies { padding: 12vh var(--pad) 8vh; display: grid; gap: 14vh; }
+.hstudies__title { font: 300 clamp(3rem, 7vw, 6.6rem)/.9 'Cormorant Garamond', serif; color: var(--pale); border-bottom: 1px solid rgba(181, 176, 166, .22); padding-bottom: 1rem; }
+.hst { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--pad); row-gap: 2rem; align-items: center; }
+.hst__text { grid-column: 1 / 5; display: grid; gap: 1rem; align-content: start; }
+.hst__k { color: var(--rust-t); }
+.hst h3 { font: 300 clamp(2.4rem, 4.4vw, 4rem)/.95 'Cormorant Garamond', serif; color: var(--pale); }
+.hst p { line-height: 1.6; max-width: 30rem; }
+.hst__stage { grid-column: 5 / -1; position: relative; min-height: 22rem; display: grid; place-items: center; border: 1px solid rgba(181, 176, 166, .2); background: radial-gradient(70% 80% at 50% 40%, #12142A, var(--bk) 70%); overflow: hidden; }
+.hst__ctl { display: flex; flex-wrap: wrap; gap: .5rem; }
+.hst__ctl button { min-height: 44px; padding: 0 1rem; border: 1px solid rgba(216, 210, 198, .45); background: transparent; color: var(--pale); cursor: pointer; font: 500 var(--t-ui)/1 var(--f-ui); letter-spacing: .08em; text-transform: uppercase; transition: background-color .3s, color .3s; }
+.hst__ctl button:hover { border-color: var(--pale); }
+.hst__ctl button[aria-pressed='true'] { background: var(--pale); color: var(--bk); }
+.hst__ctl button:focus-visible { outline: 2px solid var(--pale); outline-offset: 3px; }
+.hst__stage--type { padding: 2rem; color: var(--pale); font-size: clamp(3rem, 7.4vw, 7.4rem); line-height: .82; }
+.tt--study .tt--base { color: var(--pale); }
+.tt--study [data-v] {}
+.hst__stage--light { cursor: crosshair; touch-action: none; --lx: 30%; --ly: 45%; }
+.hst__stage--light:focus-visible { outline: 2px solid var(--pale); outline-offset: 4px; }
+.hst__surface { position: absolute; left: 1.2rem; bottom: 1rem; font: 500 var(--t-ui)/1 var(--f-ui); letter-spacing: .1em; text-transform: uppercase; color: var(--bone); }
+.hst__hidden { padding: 2rem; text-align: center; font: 300 clamp(2rem, 4.4vw, 4.2rem)/1.05 'Cormorant Garamond', serif; color: var(--pale);
+  -webkit-mask: radial-gradient(9rem 9rem at var(--lx) var(--ly), #000 35%, transparent 72%); mask: radial-gradient(9rem 9rem at var(--lx) var(--ly), #000 35%, transparent 72%); }
+.hst__hidden em { color: var(--rust-t); }
+
+/* Opening: an honest state for a world that is still being made */
+.hopen { padding: 10vh var(--pad); display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--pad); align-items: center; border-top: 1px solid rgba(181, 176, 166, .15); }
+.hopen__slit { grid-column: 1 / 4; height: 40vh; min-height: 14rem; display: grid; place-items: center; }
+.hopen__slit i { width: 4px; height: 100%; background: linear-gradient(transparent, var(--bone) 30%, var(--pale) 70%, transparent); }
+.hopen__text { grid-column: 5 / 11; display: grid; gap: 1.2rem; }
+.hopen h2 { font: 300 clamp(2.6rem, 5vw, 4.6rem)/.95 'Cormorant Garamond', serif; color: var(--pale); }
+.hopen p { font-size: var(--t-lede); line-height: 1.6; max-width: 36rem; }
+
+/* RUPTURE: horizontal slices that tear across the screen once, then heal */
+.hrupture { position: fixed !important; inset: 0; z-index: 50 !important; pointer-events: none; display: none; }
+.hrupture i { position: absolute; left: 0; right: 0; background: linear-gradient(90deg, var(--rust), var(--crim) 40%, var(--pale) 41%, var(--blue) 70%, var(--bk)); mix-blend-mode: difference; }
+.hollow[data-state='rupture'] .hrupture { display: block; }
+.hollow[data-state='rupture'] > :not(.hrupture) { animation: tear .55s steps(5) 1; }
+@keyframes tear { 0% { transform: translateX(0); filter: none; } 20% { transform: translateX(-14px); filter: hue-rotate(-30deg); } 40% { transform: translateX(10px); } 60% { transform: translateX(-6px) skewX(-3deg); } 100% { transform: none; filter: none; } }
+
+.hend { position: relative; padding: 14vh var(--pad) 12vh; display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--pad); align-items: center; overflow: clip; }
+/* the passage: a lit slit far away on the left; the ways out are listed beside it, and the slit opens toward
+   (and takes the colour of) whichever one you reach for */
+.hend__slit { grid-column: 1 / 6; height: 62vh; min-height: 22rem; display: grid; place-items: center; border-left: 1px solid rgba(181, 176, 166, .12); border-right: 1px solid rgba(181, 176, 166, .12); }
+.hend__slit i { display: block; width: 6px; height: 78%; background: linear-gradient(var(--pale), var(--bone)); opacity: .7; transition: width 1.2s var(--ease), background 1s var(--ease), opacity 1s; }
+.hend:has(.hx--f:hover, .hx--f:focus-visible) .hend__slit i { width: 34%; background: linear-gradient(#77C8FF, #3B45DE 70%, #C4E44A); opacity: .9; }
+.hend:has(.hx--n:hover, .hx--n:focus-visible) .hend__slit i { width: 34%; background: linear-gradient(#10152F, #2859FF 60%, #12C9D9); opacity: .9; }
+.hend:has(.hx--s:hover, .hx--s:focus-visible) .hend__slit i { width: 34%; background: linear-gradient(#EFEBE2, #E4DED2); opacity: .9; }
+.hend__side { grid-column: 7 / -1; display: grid; gap: 1.6rem; }
+.hend__lead { font-size: 1.6rem; color: var(--bone); }
+.hend__exits { display: grid; border-top: 1px solid rgba(181, 176, 166, .18); }
+.hend__exits a { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; padding: 1.1rem 0; border-bottom: 1px solid rgba(181, 176, 166, .18); color: var(--pale); text-decoration: none; transition: opacity .6s var(--ease), padding .8s var(--ease); }
+.hend__exits a span { font: 300 clamp(2.2rem, 4.6vw, 4.4rem)/1 'Cormorant Garamond', serif; }
+.hend__exits a small { color: var(--bone); }
+.hend__exits a:hover, .hend__exits a:focus-visible { padding-left: 1.2rem; outline: none; }
+.hend__exits a:focus-visible span { text-decoration: underline; text-decoration-color: var(--rust); text-underline-offset: .15em; text-decoration-thickness: 1px; }
+.hend__exits:has(a:hover, a:focus-visible) a:not(:hover, :focus-visible) { opacity: .35; }
+.hend__note { color: var(--bone); }
+
+@media (max-width: 900px) {
+  .hst, .hopen { grid-template-columns: 1fr; }
+  .hst__text, .hst__stage, .hopen__slit, .hopen__text { grid-column: 1; }
+  .hst__stage { min-height: 16rem; }
+  .hopen__slit { height: 18vh; min-height: 8rem; }
+  .hnav__links { display: none; }
+  .hnav .realm { margin-left: auto; }
+  .hhero { grid-template-columns: 1fr; min-height: 0; padding-top: 6vh; }
+  .hhero__title, .hhero__lede,   .hhole { grid-column: 1; grid-row: 2; width: 80%; justify-self: end; margin-top: -8vw; }
+  .hhero__lede { grid-row: 3; }   .hh2 { font-size: 21vw; }
+}
+@media (max-width: 900px) { .hend { grid-template-columns: 1fr; row-gap: 2rem; } .hend__slit, .hend__side { grid-column: 1; } .hend__slit { height: 30vh; min-height: 12rem; } }
+.tt--study .ln { padding-left: 0 !important; }
+.hst__stage[data-voice='fable'] .tt--base { color: #9AA1FF; }
+
+/* Plates: both studies sit in the same numbered frame, so they read as a pair */
+.hst__plate { position: absolute; left: 1.2rem; top: 1rem; color: var(--bone); }
+.hst__face { position: absolute; left: 1.2rem; bottom: 1rem; color: var(--bone); text-transform: none; letter-spacing: .03em; }
+.hst__stage::after { content: ''; position: absolute; inset: .6rem; border: 1px solid rgba(181, 176, 166, .12); pointer-events: none; }
+.hst__ring { position: absolute; left: var(--lx); top: var(--ly); width: 2.6rem; height: 2.6rem; translate: -50% -50%; border: 1px solid rgba(216, 210, 198, .55); border-radius: 50%; pointer-events: none; }
+.hst__stage--light:focus-visible .hst__ring { border-color: var(--pale); border-width: 2px; }

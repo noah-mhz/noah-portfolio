@@ -1,0 +1,181 @@
+/* THE FABLE: imagination. Cream is the ground; ultramarine is kept for the type and one hill; orange and lime
+   are small accents. The world's single device is the window: a framed view into somewhere else. In the hero
+   three windows stand in one landscape, each opening onto a real homepage; each project below is shown in its
+   own way. Type: Archivo at its narrowest and heaviest, with a wide italic; letters lean toward the pointer. */
+.fable { --u: #3B45DE; --sky: #CFE6F2; --lime: #C4E44A; --org: #F2A65A; --cream: #F4F0E6; --paper: #FBF8F1; --ink: #141634; --ink2: #3E4060;
+  background: var(--cream); color: var(--ink); }
+
+.fnav { position: sticky; top: 0; z-index: 20; display: flex; align-items: center; gap: 1.5rem; padding: .6rem var(--pad); background: color-mix(in srgb, var(--cream) 92%, transparent); }
+.fnav__home { display: flex; align-items: center; gap: .7rem; min-height: 44px; text-decoration: none; font-weight: 900; font-variation-settings: 'wdth' 62, 'wght' 900; font-size: 1.4rem; text-transform: uppercase; color: var(--u); }
+.fnav__sq { width: 18px; height: 18px; background: var(--org); transition: transform .6s var(--ease); }
+.fnav__home:hover .fnav__sq, .fnav__home:focus-visible .fnav__sq { transform: rotate(45deg); }
+.fnav__links { display: flex; gap: .4rem; margin-left: auto; }
+.fnav__links a { display: inline-flex; align-items: center; min-height: 44px; padding: 0 1rem; border-radius: 99px; text-decoration: none; transition: background-color .3s, color .3s; }
+.fnav__links a:hover, .fnav__links a:focus-visible { background: var(--u); color: var(--cream); outline: none; }
+.fable .realm { color: var(--u); }
+
+/* ---------- Hero ---------- */
+.fhero { position: relative; display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--pad); row-gap: 2rem; padding: 4vh var(--pad) 10vh; min-height: calc(100svh - 4rem); align-items: center; }
+.fhero__title { grid-column: 1 / 7; grid-row: 1; align-self: end; position: relative; z-index: 3; font-weight: 900; text-transform: uppercase; color: var(--u); line-height: .8; }
+.fw { display: block; white-space: nowrap; }
+.fw--1 { font-size: clamp(4rem, 14.4vw, 14rem); letter-spacing: -.01em; }
+.fw--2 { font-size: clamp(1.5rem, 3.6vw, 3.5rem); font-weight: 400; text-transform: none; margin: .15em 0 .12em .3em; color: var(--ink); }
+.fw--2 em { font-style: italic; font-variation-settings: 'wdth' 125, 'wght' 380; }
+.fw--3 { font-size: clamp(3.2rem, 10.4vw, 10.2rem); padding-left: .35em; }
+.fhero__title .ch { display: inline-block; font-variation-settings: 'wdth' var(--w, 62), 'wght' 900; transition: font-variation-settings .5s var(--ease); }
+.fhero__lede { grid-column: 1 / 6; grid-row: 2; align-self: start; max-width: 30rem; font-size: var(--t-lede); line-height: 1.45; color: var(--ink2); }
+
+/* The doorways: one ultramarine wall standing on a cream floor. Three openings, each cut in the shape its place
+   uses (Little Rösti's arch, Common Table's leaf, Crumb & Kin's round window). Through each you see that place's
+   real homepage, set back a little so the pointer moves it like a view through a door. Light spills forward. */
+.fdoors { grid-column: 7 / -1; grid-row: 1 / 3; position: relative; aspect-ratio: 1 / 1.02; --px: 0; --py: 0; }
+.fdoors__wall { position: absolute; left: 0; right: 0; top: 0; height: 74%; background: var(--u); }
+.fdoors__floor { position: absolute; left: -6%; right: -6%; top: 74%; bottom: 0; background: linear-gradient(#E9E2D3, var(--cream) 70%); }
+.fdoor { position: absolute; bottom: 26%; display: block; text-decoration: none; color: var(--ink); }
+.fdoor__open { position: absolute; inset: 0; overflow: hidden; background: var(--paper); box-shadow: inset 0 0 0 clamp(5px, .6vw, 9px) #2A33B8; }
+.fdoor__open img { position: absolute; top: -6%; left: -14%; width: 128%; height: 112%; max-width: none; object-fit: cover; object-position: 0% 30%;
+  transform: translate(calc(var(--px) * -10px), calc(var(--py) * -8px)) scale(1.02); transition: transform .9s var(--ease); }
+.fdoor__open::after { content: ''; position: absolute; inset: 0; box-shadow: inset 0 18px 30px -16px rgba(10, 14, 60, .55), inset 0 0 0 clamp(5px, .6vw, 9px) #2A33B8; pointer-events: none; }
+.fdoor__spill { position: absolute; top: 100%; left: -18%; right: -18%; height: 30%; background: linear-gradient(rgba(255, 250, 238, .95), rgba(255, 250, 238, 0)); clip-path: polygon(14% 0, 86% 0, 100% 100%, 0 100%); opacity: .7; transition: opacity .6s var(--ease); }
+.fdoor__plate { position: absolute; left: 0; top: calc(100% + clamp(1.2rem, 3vw, 2.2rem)); display: grid; gap: .15rem; font-weight: 800; font-size: clamp(.82rem, 1.05vw, 1rem); white-space: nowrap; }
+.fdoor__plate .mono { color: #33389E; }
+.fdoor__plate small { font: 400 var(--t-micro)/1.2 var(--f-ui); letter-spacing: .07em; text-transform: uppercase; color: var(--ink2); }
+.fdoor--rosti { left: 7%; width: 34%; height: 62%; }
+.fdoor--rosti .fdoor__open { border-radius: 999px 999px 0 0; }
+.fdoor--table { left: 47%; width: 22%; height: 44%; }
+.fdoor--table .fdoor__open { border-radius: 70% 4% 70% 4% / 44% 4% 44% 4%; }
+.fdoor--crumb { right: 6%; width: 20%; height: 20%; bottom: 46%; }
+.fdoor--crumb .fdoor__open { border-radius: 50%; }
+.fdoor--crumb .fdoor__spill { display: none; }
+.fdoor--crumb .fdoor__plate { top: calc(100% + .8rem); color: var(--cream); }
+.fdoor--crumb .fdoor__plate .mono, .fdoor--crumb .fdoor__plate small { color: #E3E6FF; }
+.fdoor:hover .fdoor__open img, .fdoor:focus-visible .fdoor__open img { transform: translate(calc(var(--px) * -10px), calc(var(--py) * -8px)) scale(1.08); }
+.fdoor:hover .fdoor__spill, .fdoor:focus-visible .fdoor__spill { opacity: 1; }
+.fdoor:focus-visible { outline: none; }
+.fdoor:focus-visible .fdoor__open { outline: 3px solid var(--org); outline-offset: 5px; }
+
+/* ---------- Projects ---------- */
+.fwork { padding: 10vh var(--pad) 4vh; display: grid; gap: 22vh; }
+.fable .pj__title { font-weight: 900; font-variation-settings: 'wdth' 62, 'wght' 900; text-transform: uppercase; font-size: clamp(2.8rem, 5.6vw, 5.4rem); line-height: .86; color: var(--u); }
+.fable .pj__label, .fable .pj__brief dt { color: #33389E; }
+.fable .pbtn { color: var(--u); }
+.fable .pbtn:hover, .fable .pbtn:focus-visible { background: var(--u); color: var(--cream); outline: none; }
+.fable figure { margin: 0; }
+
+/* 1 · Little Rösti: a layered spread. The desktop screen sits in an arch in the café's own toast colour; the
+   favourites section and the phone are laid over it like cut-outs on a table. */
+.pj--rosti { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--pad); align-items: center; }
+.lr { grid-column: 1 / 9; position: relative; padding: 0 0 12% 0; }
+.lr__desk { padding: clamp(10px, 1.4vw, 20px); padding-top: clamp(40px, 6vw, 90px); background: #C88F55; border-radius: 999px 999px 0 0 / 46% 46% 0 0; }
+.lr__desk img { width: 100%; height: auto; border-radius: 2px; }
+.lr__card { position: absolute; left: -2%; bottom: 0; width: 30%; padding: 7px; background: var(--paper); rotate: -4deg; box-shadow: 0 24px 40px -24px rgba(60, 30, 10, .55); }
+.lr__phone { position: absolute; right: 4%; bottom: -2%; width: 21%; padding: 6px; border-radius: 24px; background: var(--ink); box-shadow: 0 30px 50px -26px rgba(20, 22, 52, .6); }
+.lr__phone img { border-radius: 18px; }
+.pj--rosti .pj__text { grid-column: 9 / -1; }
+.lr > * { transition: translate 1.1s var(--ease), opacity .9s var(--ease), rotate 1.1s var(--ease); }
+.lr.pre .lr__card { translate: -12% 10%; opacity: 0; rotate: -12deg; }
+.lr.pre .lr__phone { translate: 0 18%; opacity: 0; }
+.lr.pre .lr__desk { opacity: 0; translate: 0 6%; }
+.lr .lr__phone { transition-delay: .15s; } .lr .lr__card { transition-delay: .3s; }
+
+/* 2 · Common Table: a window you scroll through. On wide screens the section holds still while the whole
+   homepage passes behind the frame; on small screens (or with reduced motion) the frame scrolls by itself. */
+.pj--table { position: relative; }
+.ct { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--pad); align-items: center; }
+.ct__text { grid-column: 1 / 5; }
+.ct__frame { grid-column: 5 / -1; position: relative; display: grid; grid-template-rows: auto 1fr; height: min(78vh, 52rem); background: var(--paper); border: clamp(6px, .8vw, 12px) solid var(--paper); box-shadow: 0 40px 70px -40px rgba(20, 22, 52, .55); }
+.ct__bar { display: flex; align-items: center; gap: .6rem; padding: .45rem .6rem .7rem; color: var(--ink2); font-size: var(--t-micro); }
+.ct__bar i { width: 9px; height: 9px; background: #A9C29A; }
+.ct__view { position: relative; overflow-y: auto; overscroll-behavior: contain; background: #EEF0E6; }
+.ct__view:focus-visible { outline: 3px solid var(--ink); outline-offset: 2px; }
+.ct__view img { width: 100%; height: auto; }
+.ct__phone { position: absolute; right: -4%; bottom: -5%; width: 16%; padding: 5px; border-radius: 22px; background: var(--ink); box-shadow: 0 30px 50px -26px rgba(20, 22, 52, .6); }
+.ct__phone img { border-radius: 17px; }
+@media (min-width: 901px) and (prefers-reduced-motion: no-preference) {
+  .pj--table[data-scrub] { height: 230vh; }
+  .pj--table[data-scrub] .ct { position: sticky; top: 9vh; }
+  .pj--table[data-scrub] .ct__view { overflow: hidden; }
+  .pj--table[data-scrub] .ct__view img { will-change: transform; }
+}
+
+/* 3 · Crumb & Kin: typography first, in the bakery's own warm paper and terracotta; then the bakes and the phone */
+.ck { position: relative; padding: clamp(2rem, 6vh, 4.5rem) clamp(1.4rem, 4vw, 3.6rem) clamp(2rem, 5vh, 3.4rem); background: #F6E7D3; color: #3A1F14; overflow: hidden; }
+.ck::before { content: ''; position: absolute; inset: 0; pointer-events: none; opacity: .3; mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.1' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .45 0 0 0 0 .3 0 0 0 0 .2 0 0 0 .5 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
+.ck__line { position: relative; font: 400 clamp(3rem, 9.6vw, 9.4rem)/.9 'Cormorant Garamond', serif; letter-spacing: -.02em; max-width: 12ch; }
+.ck__line span, .ck__line em { display: inline-block; transition: opacity 1.1s var(--ease), translate 1.4s var(--ease); }
+.ck__line em { color: #A8432B; font-style: italic; }
+.ck.pre .ck__line > * { opacity: 0; translate: 0 .12em; }
+.ck__line > :nth-child(2) { transition-delay: .3s; } .ck__line > :nth-child(3) { transition-delay: .6s; } .ck__line > :nth-child(4) { transition-delay: .9s; }
+.ck__line > :nth-child(5) { transition-delay: 1.2s; } .ck__line > :nth-child(6) { transition-delay: 1.7s; }
+.ck__rule { position: relative; display: block; width: min(46rem, 70%); height: 14px; margin: 1.4rem 0 0; overflow: visible; }
+.ck__rule path { fill: none; stroke: #A8432B; stroke-width: 1.4; vector-effect: non-scaling-stroke; stroke-linecap: round; stroke-dasharray: 700; stroke-dashoffset: 0; transition: stroke-dashoffset 2s var(--ease-io) 1.8s; }
+.ck.pre .ck__rule path { stroke-dashoffset: 700; }
+.ck__entry { position: absolute; right: clamp(1.4rem, 4vw, 3.6rem); top: clamp(2rem, 6vh, 4.5rem); max-width: 17rem; font: italic 400 1.25rem/1.35 'Cormorant Garamond', serif; color: #5A3A2A; }
+.ck__entry b { font-style: normal; font-weight: 400; font-size: 1.9rem; color: #3A1F14; }
+.ck__entry .mono { font-style: normal; margin-left: .4rem; color: #8F3A25; }
+.ck__spread { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--pad); align-items: start; margin-top: clamp(2rem, 5vw, 4rem); }
+.ck__desk { grid-column: 1 / 7; box-shadow: 0 30px 50px -34px rgba(60, 30, 10, .5); }
+.ck__phone { grid-column: 7 / 9; margin-top: 18%; padding: 5px; border-radius: 22px; background: var(--ink); box-shadow: 0 30px 50px -26px rgba(20, 22, 52, .6); }
+.ck__phone img { border-radius: 17px; }
+.pj--crumb .pj__text { grid-column: 9 / -1; padding-top: 4%; }
+
+/* ---------- Exit ---------- */
+.fend { padding: 10vh var(--pad) 8vh; background: var(--lime); display: grid; gap: 1.4rem; }
+/* the last view of the world: the window from the hero, now wide open, doors standing on its hill */
+.fend__scene { position: relative; aspect-ratio: 21 / 9; overflow: hidden; border: clamp(10px, 1.4vw, 18px) solid var(--cream); background: var(--u); box-shadow: 0 50px 70px -46px rgba(20, 22, 52, .55); }
+.fend__sky { position: absolute; inset: 0; background: linear-gradient(#5DB6FF 0%, #9FD7FF 42%, #F7E3C6 62%, #F4F0E6 74%); }
+.fend__sun { position: absolute; right: 8%; top: 10%; width: 11%; aspect-ratio: 1; border-radius: 50%; background: radial-gradient(circle at 40% 38%, #FFE1B8, var(--org) 58%, #E46E35); }
+.fend__hill { position: absolute; left: -10%; right: -10%; bottom: -36%; height: 62%; border-radius: 50% 50% 0 0 / 40% 40% 0 0; background: var(--u); }
+.fend__big { position: absolute; left: 4%; top: 8%; z-index: 1; font-size: clamp(2.6rem, 6.4vw, 6.6rem); font-weight: 900; font-stretch: 62%; text-transform: uppercase; line-height: .86; word-spacing: .14em; color: var(--u); }
+.fend__doors { position: absolute; left: 34%; right: 4%; bottom: 25%; z-index: 1; display: flex; align-items: flex-end; justify-content: space-around; }
+.fend__sign { color: var(--u); }
+.fx { position: relative; z-index: 1; display: grid; justify-items: center; gap: .7rem; text-decoration: none; color: var(--ink); outline: none; }
+.fx__sq { width: clamp(3.6rem, 8.4vw, 8.4rem); aspect-ratio: 1; transform-origin: 50% 100%; transition: transform .8s var(--ease); box-shadow: 0 22px 30px -18px rgba(20, 22, 52, .6); }
+.fx--n .fx__sq { background: linear-gradient(rgba(40, 89, 255, .5) 1px, transparent 1px) 0 0 / 100% 20%, linear-gradient(90deg, rgba(40, 89, 255, .5) 1px, transparent 1px) 0 0 / 20% 100%, #080B12; border-top: 3px solid #B6F34A; }
+.fx--h .fx__sq { background: radial-gradient(60% 50% at 60% 40%, #55283A, #20264B 60%, #090A12); clip-path: polygon(0 0, 66% 0, 74% 14%, 100% 18%, 100% 100%, 0 100%); }
+.fx--s .fx__sq { background: #F4F0E6; box-shadow: inset 0 0 0 clamp(5px, .7vw, 9px) var(--org), 0 22px 30px -18px rgba(20, 22, 52, .6); }
+.fx__t { order: -1; display: grid; justify-items: center; gap: .2rem; font-weight: 800; font-size: clamp(.9rem, 1.2vw, 1.15rem); text-align: center; }
+.fx__t .mono { font-weight: 400; opacity: .75; font-size: var(--t-micro); }
+.fx:hover .fx__sq, .fx:focus-visible .fx__sq { transform: scale(1.14); }
+.fx__t { margin-bottom: .6rem; transition: translate .8s var(--ease); }
+.fx:hover .fx__t, .fx:focus-visible .fx__t { translate: 0 -.9rem; }
+.fx:focus-visible .fx__sq { outline: 3px solid var(--u); outline-offset: 5px; }
+
+
+@media (max-width: 900px) {
+  .fnav__links { display: none; }
+  .fnav .realm { margin-left: auto; }
+  .fhero { grid-template-columns: 1fr; min-height: 0; padding-top: 3vh; row-gap: 1.6rem; }
+  .fhero__title, .fhero__lede, .fdoors { grid-column: 1; grid-row: auto; }
+  .fw--1 { font-size: 23vw; } .fw--3 { font-size: 17vw; } .fw--2 { font-size: 7vw; }
+  .fdoors { aspect-ratio: 1 / .98; margin: 0 calc(-1 * var(--pad)) 2.4rem; overflow: hidden; }
+  .fwork { gap: 14vh; padding-top: 8vh; }
+  .pj--rosti, .ct, .ck__spread { grid-template-columns: 1fr; row-gap: 2.4rem; }
+  .lr, .pj--rosti .pj__text, .ct__text, .ct__frame, .ck__desk, .pj--crumb .pj__text { grid-column: 1; }
+  .ct__frame { height: 72svh; order: -1; }
+  .ct__phone { left: auto; right: 4%; bottom: -6%; width: 24%; }
+  .ck__entry { position: relative; right: auto; top: auto; margin-top: 1.6rem; }
+  .ck__spread { grid-template-columns: 1fr 34%; column-gap: 1rem; }
+  .ck__desk { grid-column: 1; } .ck__phone { grid-column: 2; grid-row: 1; margin-top: 30%; }
+  .pj--crumb .pj__text { grid-column: 1 / -1; }
+}
+@media (max-width: 900px) {
+  .fend__scene { aspect-ratio: 4 / 5; }
+  .fend__big { left: 6%; top: 6%; }
+  .fend__doors { left: 4%; right: 4%; bottom: 22%; }
+  .fend__sun { top: 30%; right: 8%; width: 14%; }
+}
+@media (max-width: 640px) { .fend__scene { aspect-ratio: 3 / 4.4; } .fx__t { font-size: .82rem; } .fend__doors { bottom: 20%; }
+  .lr__phone { width: 26%; } .lr__card { width: 36%; } }
+/* The exit returns to the hero's language: the same blue wall and cream floor, now with doorways out */
+.fend__sky { background: var(--u); }
+.fend__sun { display: none; }
+.fend__hill { left: 0; right: 0; bottom: 0; height: 26%; border-radius: 0; background: linear-gradient(#E9E2D3, var(--cream) 70%); }
+.fend__big { color: var(--cream); }
+.fx { color: var(--cream); }
+.fx__t .mono { opacity: 1; color: #E3E6FF; }
+.fend__doors { bottom: 26%; }
+.fx:focus-visible .fx__sq { outline-color: var(--org); }
+@media (max-width: 900px) { .fend__doors { bottom: 26%; } }
+@media (max-width: 640px) { .fend__doors { bottom: 26%; } }

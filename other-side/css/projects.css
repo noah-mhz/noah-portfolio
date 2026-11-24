@@ -1,0 +1,11 @@
+/* PROJECTS: the four speculative homepages. Each world shows them its own way (layouts live in the world's
+   file); what they share is the anatomy of the text: a label, the title in the world's display face, a brief
+   that answers why it was made, what it proposes and what it explored, an honest note on what is shown,
+   and one button that opens the full homepage. */
+.pj__text { display: grid; gap: 1.1rem; justify-items: start; align-content: start; }
+.pj__label { font-size: var(--t-ui); }
+.pj__brief { display: grid; gap: 1rem; margin: 0; max-width: 32rem; }
+.pj__brief div { display: grid; gap: .3rem; }
+.pj__brief dt { font-size: var(--t-micro); }
+.pj__brief dd { margin: 0; font-size: 1rem; line-height: 1.55; }
+.pj__shown { max-width: 32rem; font-size: .92rem; line-height: 1.5; padding-left: .9rem; border-left: 2px solid currentColor; }

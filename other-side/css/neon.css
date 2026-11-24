@@ -1,0 +1,168 @@
+/* NEON DISTRICT: the systems side. A city at night drawn as an elevation and a plan: near-black ground, electric
+   blue structure, cyan for routes, acid lime only for where you are and what is selected. The city is the map of
+   this world: its two lit towers are its two destinations. No dashboards, no fake data.
+   Type: Space Grotesk, mixed case, medium weight; Geist Mono for codes and labels. */
+.neon { --bg: #080B12; --navy: #10152F; --blue: #2859FF; --cyan: #12C9D9; --lime: #B6F34A; --ink: #DDE6F7; --dim: #9AA6C2; --line: rgba(124, 137, 168, .2);
+  background: var(--bg); color: var(--ink); font-family: var(--f-body);
+  background-image: linear-gradient(var(--line) 1px, transparent 1px), linear-gradient(90deg, var(--line) 1px, transparent 1px); background-size: 64px 64px; background-position: -1px -1px; }
+.neon .nlabel { color: var(--cyan); }
+.nhero__title, .neon h2, .neon h3, .nnav__name, .neon .pj__title { font-family: 'Space Grotesk', sans-serif; }
+
+.nnav { position: sticky; top: 0; z-index: 20; display: flex; align-items: stretch; border-bottom: 1px solid var(--line); background: rgba(8, 11, 18, .94); }
+.nnav__home { display: flex; align-items: center; gap: .8rem; min-height: 52px; padding: 0 var(--pad); text-decoration: none; border-right: 1px solid var(--line); }
+.nnav__sq { width: 16px; height: 16px; border: 1.5px solid var(--lime); position: relative; }
+.nnav__sq::after { content: ''; position: absolute; inset: 3px; background: var(--lime); transform: scale(0); transition: transform .4s var(--ease); }
+.nnav__home:hover .nnav__sq::after, .nnav__home:focus-visible .nnav__sq::after { transform: scale(1); }
+.nnav__name { font-weight: 600; letter-spacing: -.01em; font-size: 1.05rem; }
+.nnav__links { display: flex; margin-left: auto; }
+.nnav__links a { display: flex; align-items: center; padding: 0 1.3rem; border-left: 1px solid var(--line); text-decoration: none; transition: background-color .25s, color .25s; }
+.nnav__links a:hover, .nnav__links a:focus-visible { background: var(--blue); color: #fff; outline: none; }
+.neon .realm { padding: 0 1rem; border-left: 1px solid var(--line); color: var(--ink); }
+
+/* ---------- Hero: the city as the map ---------- */
+.nhero { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--pad); row-gap: 3rem; padding: 8vh var(--pad) 10vh; min-height: calc(100svh - 3.3rem); align-items: center; }
+.nhero__copy { grid-column: 1 / 6; display: grid; gap: 1.6rem; justify-items: start; }
+.nhero__title { font-size: clamp(3rem, 7vw, 7rem); font-weight: 500; letter-spacing: -.04em; line-height: .92; }
+.nhero__title span { color: var(--lime); }
+.nhero__lede { max-width: 30rem; color: var(--dim); font-size: var(--t-lede); line-height: 1.5; }
+.nbtn { display: inline-flex; align-items: center; gap: 1rem; min-height: 48px; padding: 0 1.2rem 0 0; border: 1px solid var(--blue); text-decoration: none; font-weight: 600; transition: background-color .3s; }
+.nbtn .mono { align-self: stretch; display: grid; place-items: center; padding: 0 .9rem; background: var(--blue); color: #fff; }
+.nbtn:hover, .nbtn:focus-visible { background: rgba(40, 89, 255, .18); outline: none; }
+/* The building: the city's plan and skyline behind, Pixel Pull's four real floors stacked in front */
+.nbldg { grid-column: 6 / -1; position: relative; aspect-ratio: 1 / .9; }
+.ncity { position: absolute; inset: 0; border: 1px solid var(--line); background: linear-gradient(#070A12 0%, #0B1026 70%, #0D1430 78%, #070A12 100%); overflow: hidden; }
+.ncity__plan { position: absolute; inset: 0 0 22% 0; background-image: linear-gradient(rgba(40, 89, 255, .12) 1px, transparent 1px), linear-gradient(90deg, rgba(40, 89, 255, .12) 1px, transparent 1px); background-size: 8.33% 8.33%; }
+/* An elevation of a city at night, not a chart: a far skyline in silhouette, a perspective ground plane, near
+   towers with setbacks, antennas and a few lit windows, one elevated route, one active tower. */
+.ncity__back { position: absolute; left: 0; right: 0; bottom: 22%; height: 60%; display: flex; align-items: flex-end; gap: 1.2%; opacity: .55; }
+.ncity__back i { flex: 1 1 0; height: calc(var(--h) * 1%); background: #0E1430; border-top: 1px solid rgba(40, 89, 255, .35); }
+.ncity__ground { position: absolute; left: -30%; right: -30%; bottom: -8%; height: 34%; transform: perspective(420px) rotateX(64deg); transform-origin: 50% 100%;
+  background-image: linear-gradient(rgba(40, 89, 255, .55) 1px, transparent 1px), linear-gradient(90deg, rgba(40, 89, 255, .55) 1px, transparent 1px); background-size: 6% 18%;
+  -webkit-mask: linear-gradient(transparent, #000 60%); mask: linear-gradient(transparent, #000 60%); }
+/* ---------- Pixel Pull: an exploded homepage and its street view ---------- */
+.npx { padding: 12vh var(--pad) 10vh; border-top: 1px solid var(--line); display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--pad); row-gap: 3rem; align-items: start; }
+.npx__head { grid-column: 1 / 5; position: sticky; top: 5rem; }
+.npx__map { grid-column: 5 / -1; }
+.npx__foot { grid-column: 5 / -1; }
+.neon .pj__title { font-weight: 500; letter-spacing: -.04em; font-size: clamp(3rem, 6vw, 6rem); line-height: .92; }
+.neon .pj__label, .neon .pj__brief dt { color: var(--cyan); }
+.neon .pj__brief dd, .neon .pj__shown { color: #C3CCE0; }
+.neon .pj__shown { border-left-color: var(--blue); }
+.neon .pbtn { border-color: var(--blue); }
+.neon .pbtn i { background: var(--lime); }
+.neon .pbtn:hover, .neon .pbtn:focus-visible { background: var(--blue); color: #fff; outline: none; }
+/* exploded floors: real section screens, rotated into a stack; the chosen floor lifts and takes the lime edge */
+.px { position: absolute; inset: 0 26% 8% 0; perspective: 1600px; }
+.px__slab { position: absolute; left: 12%; width: 76%; top: calc(var(--k) * 15% + 6%); aspect-ratio: 1200 / 980; transform: rotateX(58deg) rotateZ(-34deg); transition: transform .7s var(--ease), opacity .5s var(--ease), translate .9s var(--ease); outline: 1px solid rgba(40, 89, 255, .9); background: #111; overflow: hidden; opacity: .6; }
+.px__slab img { width: 100%; height: 100%; object-fit: cover; object-position: top; }
+.px__slab[data-s='hero'] { --k: 0; } .px__slab[data-s='cats'] { --k: 1; } .px__slab[data-s='prod'] { --k: 2; } .px__slab[data-s='camp'] { --k: 3; }
+.nbldg[data-on='hero'] [data-s='hero'], .nbldg[data-on='cats'] [data-s='cats'], .nbldg[data-on='prod'] [data-s='prod'], .nbldg[data-on='camp'] [data-s='camp'] { opacity: 1; outline: 2px solid var(--lime); transform: rotateX(58deg) rotateZ(-34deg) translateZ(60px); }
+.neon.is-entering .px__slab { translate: 0 -40%; opacity: 0; }
+.px__slab[data-s='cats'] { transition-delay: 0s, 0s, .06s; } .px__slab[data-s='prod'] { transition-delay: 0s, 0s, .12s; } .px__slab[data-s='camp'] { transition-delay: 0s, 0s, .18s; }
+/* floor tags: a lift's floor index down the right edge, each joined to its floor by a line */
+.nbldg__tags { position: absolute; right: 0; top: 0; bottom: 8%; width: 26%; }
+.nbldg__tags li { position: absolute; right: 0; left: 0; top: calc(var(--k) * 15% + 14%); }
+.nbldg__tags li::before { content: ''; position: absolute; right: 100%; top: 50%; width: 32%; height: 1px; background: rgba(40, 89, 255, .8); }
+.nbldg__tags button { width: 100%; display: grid; gap: .15rem; justify-items: start; min-height: 48px; padding: .5rem .8rem; border: 1px solid rgba(40, 89, 255, .8); background: rgba(8, 11, 18, .92); color: var(--ink); cursor: pointer; font: 500 1rem/1.1 'Space Grotesk', sans-serif; text-align: left; transition: background-color .25s, border-color .25s, color .25s; }
+.nbldg__tags .mono { color: var(--cyan); font-size: var(--t-micro); }
+.nbldg__tags button:hover, .nbldg__tags button:focus-visible { border-color: var(--lime); background: var(--navy); outline: none; }
+.nbldg[data-on='hero'] [data-floor='hero'], .nbldg[data-on='cats'] [data-floor='cats'], .nbldg[data-on='prod'] [data-floor='prod'], .nbldg[data-on='camp'] [data-floor='camp'] { border-color: var(--lime); }
+.nbldg__name { position: absolute; left: 1rem; bottom: 1rem; color: var(--dim); }
+.npx__street { display: grid; gap: 1rem; }
+.npx__floors { display: flex; flex-wrap: wrap; border: 1px solid var(--line); }
+.npx__floors button { flex: 1 1 auto; display: grid; gap: .2rem; justify-items: start; min-height: 52px; padding: .6rem 1rem; border: 0; border-right: 1px solid var(--line); background: transparent; color: var(--dim); cursor: pointer; font: 500 1rem/1.1 'Space Grotesk', sans-serif; text-align: left; transition: background-color .25s, color .25s; }
+.npx__floors button:last-child { border-right: 0; }
+.npx__floors button .mono { color: var(--dim); font-size: var(--t-micro); }
+.npx__floors button:hover { color: var(--ink); background: rgba(40, 89, 255, .12); }
+.npx__floors button[aria-selected='true'] { background: var(--lime); color: var(--bg); }
+.npx__floors button[aria-selected='true'] .mono { color: #22340A; }
+.npx__floors button:focus-visible { outline: 2px solid var(--cyan); outline-offset: -2px; }
+.npx__view { margin: 0; display: grid; gap: 0; border: 1px solid var(--line); background: var(--navy); }
+.npx__view img { width: 100%; height: auto; aspect-ratio: 1200 / 980; object-fit: cover; object-position: top; }
+.npx__view figcaption { display: grid; gap: .5rem; padding: 1.1rem 1.2rem 1.3rem; border-top: 1px solid var(--line); }
+.npx__view figcaption .mono { color: var(--cyan); }
+.npx__view q { font: 400 1.15rem/1.45 'Space Grotesk', sans-serif; quotes: '“' '”'; }
+.npx__view:focus-visible { outline: 2px solid var(--cyan); outline-offset: 3px; }
+.npx__view.is-swap img { animation: nswap .45s var(--ease); }
+@keyframes nswap { from { clip-path: inset(0 0 100% 0); } to { clip-path: inset(0 0 0 0); } }
+.npx__foot { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1.4rem 3rem; }
+
+/* ---------- Build notes: a plan of five plots ---------- */
+.nbuild { padding: 12vh var(--pad); border-top: 1px solid var(--line); display: grid; gap: 3rem; }
+.nbuild__head { display: grid; gap: .8rem; }
+.nbuild__head h2 { font-size: clamp(2.6rem, 5.4vw, 5.2rem); font-weight: 500; letter-spacing: -.04em; line-height: .92; }
+.nbuild__plan { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); border-top: 1px solid var(--blue); border-left: 1px solid var(--blue); counter-reset: none; }
+.nbuild__plan li { grid-column: span 2; display: grid; gap: .6rem; align-content: start; padding: 1.4rem 1.4rem 1.8rem; border-right: 1px solid var(--blue); border-bottom: 1px solid var(--blue); }
+.nbuild__plan li:nth-child(4), .nbuild__plan li:nth-child(5) { grid-column: span 3; }
+.nbuild__plan .mono { color: var(--lime); }
+.nbuild__intro { color: var(--dim); max-width: 36rem; font-size: var(--t-lede); line-height: 1.5; }
+.nbuild__plan .nbuild__live { margin-top: .4rem; padding-top: .7rem; border-top: 1px dashed rgba(40, 89, 255, .6); color: var(--cyan); text-transform: none; letter-spacing: .02em; line-height: 1.5; }
+.nbuild__live::before { content: 'Reading · '; color: var(--dim); }
+.nbuild__plan h3 { font-size: 1.45rem; font-weight: 500; letter-spacing: -.02em; line-height: 1.1; }
+.nbuild__plan p { color: #C3CCE0; line-height: 1.55; }
+
+/* ---------- Exit ---------- */
+.nend { padding: 10vh var(--pad) 12vh; border-top: 1px solid var(--line); display: grid; gap: 2.4rem; }
+.nend__head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: .6rem 2rem; }
+.nend__title { font-size: clamp(2.6rem, 6vw, 5.6rem); font-weight: 500; letter-spacing: -.04em; line-height: .9; }
+/* a departures board: one track along the top, each gate hangs from it; reaching for a gate lights its route */
+/* the board: an origin (you are here), one track, three gates hanging from it. Reaching for a gate sends the
+   signal along the track from the origin to that gate, then lights its connector and its destination. */
+.nend__board { position: relative; display: grid; grid-template-columns: 12rem minmax(0, 1fr); column-gap: var(--pad); padding-top: 2.4rem; --to: 0px; }
+.nend__board::before { content: ''; position: absolute; left: 0; right: 0; top: 0; height: 1px; background: var(--blue); }
+.nend__sig { position: absolute; left: 0; top: -1px; height: 3px; width: var(--to); background: var(--lime); transition: width .9s var(--ease); }
+.nend__sig::after { content: ''; position: absolute; right: -5px; top: -4px; width: 11px; height: 11px; background: var(--lime); opacity: 0; transition: opacity .3s .5s; }
+.nend__board:has(.gate:hover, .gate:focus-visible) .nend__sig::after { opacity: 1; }
+.nend__board:has(.gate--f:hover, .gate--f:focus-visible) { --to: calc(12rem + var(--pad) + 1.4rem); }
+.nend__board:has(.gate--h:hover, .gate--h:focus-visible) { --to: calc(12rem + var(--pad) + (100% - 12rem - var(--pad) + var(--pad)) / 3 + 1.4rem); }
+.nend__board:has(.gate--s:hover, .gate--s:focus-visible) { --to: calc(12rem + var(--pad) + 2 * (100% - 12rem - var(--pad) + var(--pad)) / 3 + 1.4rem); }
+.nend__here { position: relative; display: grid; gap: .5rem; align-content: start; padding-top: .2rem; }
+.nend__here i { position: absolute; left: -5px; top: calc(-2.4rem - 5px); width: 11px; height: 11px; background: var(--lime); }
+.nend__here .mono { color: var(--lime); }
+.nend__here b { font: 500 1.3rem/1.1 'Space Grotesk', sans-serif; letter-spacing: -.02em; }
+.nend__routes { position: relative; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--pad); }
+.gate { position: relative; display: grid; gap: .7rem; padding: 1.4rem; min-height: 12rem; text-decoration: none; border: 1px solid var(--line); background: rgba(8, 11, 18, .85); transition: border-color .3s, background-color .3s; }
+.gate::before { content: ''; position: absolute; left: 1.4rem; bottom: 100%; width: 1px; height: 2.4rem; background: var(--blue); transform-origin: top; transition: background-color .3s; }
+.gate::after { content: ''; position: absolute; left: calc(1.4rem - 4px); top: calc(-2.4rem - 4px); width: 9px; height: 9px; background: var(--bg); border: 1px solid var(--blue); transition: background-color .3s, border-color .3s; }
+.gate > .mono:first-child { color: var(--cyan); }
+.gate b { font-family: 'Space Grotesk', sans-serif; font-weight: 500; font-size: clamp(1.6rem, 2.8vw, 2.6rem); letter-spacing: -.035em; line-height: 1; }
+.gate__sw { height: 6px; align-self: end; transform-origin: 0 50%; transform: scaleX(.18); transition: transform .8s var(--ease); }
+.gate--f .gate__sw { background: linear-gradient(90deg, #3B45DE 0 50%, #77C8FF 50% 75%, #C4E44A 75%); }
+.gate--h .gate__sw { background: linear-gradient(90deg, #20264B 0 50%, #55283A 50% 80%, #A33D34 80%); }
+.gate--s .gate__sw { background: linear-gradient(90deg, #EFEBE2 0 70%, #F2A65A 70%); }
+.gate__go { color: var(--dim); }
+.gate:hover, .gate:focus-visible { border-color: var(--lime); outline: none; background: rgba(16, 21, 47, .9); }
+.gate:hover::before, .gate:focus-visible::before { background: var(--lime); }
+.gate:hover::after, .gate:focus-visible::after { background: var(--lime); border-color: var(--lime); }
+.gate:hover .gate__sw, .gate:focus-visible .gate__sw { transform: scaleX(1); }
+.gate:hover .gate__go, .gate:focus-visible .gate__go { color: var(--ink); }
+
+/* Entrance: the towers rise as the district opens */
+.neon.is-entering .nhero__copy > * { opacity: 0; translate: 0 12px; }
+.nhero__copy > * { transition: opacity .6s var(--ease), translate .7s var(--ease); }
+
+@media (max-width: 900px) {
+  .nnav__links { display: none; }
+  .nnav .realm { margin-left: auto; }
+  .nhero { grid-template-columns: 1fr; min-height: 0; padding-top: 6vh; }
+  .nhero__copy, .nbldg { grid-column: 1; }
+  .npx { grid-template-columns: 1fr; }
+  .npx__head, .npx__map, .npx__foot { grid-column: 1; position: static; }
+  .nbldg { aspect-ratio: 1 / 1.05; }
+  .px { inset: 0 30% 10% 0; }
+  .nbldg__tags { width: 32%; }
+  .nbldg__tags button { font-size: .9rem; padding: .45rem .55rem; }
+  .nbldg__name { display: none; }
+  .npx__floors button { flex-basis: 50%; border-bottom: 1px solid var(--line); }
+  .nbuild__plan { grid-template-columns: 1fr; }
+  .nbuild__plan li, .nbuild__plan li:nth-child(4), .nbuild__plan li:nth-child(5) { grid-column: 1; }
+  .nend__board { grid-template-columns: 1fr; row-gap: 1.6rem; padding: 0 0 0 1.6rem; }
+  .nend__board::before { left: 0; right: auto; top: 0; bottom: 0; width: 1px; height: auto; }
+  .nend__sig { display: none; }
+  .nend__here i { left: calc(-1.6rem - 5px); top: .3rem; }
+  .nend__routes { grid-template-columns: 1fr; gap: 1rem; }
+  .gate { min-height: 0; }
+  .gate::before { left: auto; right: 100%; bottom: auto; top: 1.6rem; width: 1.6rem; height: 1px; }
+  .gate::after { left: calc(-1.6rem - 4px); top: calc(1.6rem - 4px); }
+}
+.npx__view figure { margin: 0; display: grid; }
