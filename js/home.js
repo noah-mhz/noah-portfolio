@@ -11,33 +11,10 @@
     const desktop = matchMedia('(min-width: 1024px)').matches;
 
 
-    /* ---------- Fit the pressure lines to the width ---------- */
+    /* ---------- Hero headline: one span per letter (the entrance and the portal move letters) ---------- */
     const presses = $$('[data-press]');
-    presses.forEach((h) => $$('.t', h).forEach((t) => {
-      splitChars(t); t.removeAttribute('aria-label');
-      // Spaces collapse inside the flex line: give each one its own letter box.
-      [...t.childNodes].filter((n) => n.nodeType === 3 && /\s/.test(n.data)).forEach((n) => { const sp = document.createElement('span'); sp.className = 'ch'; sp.setAttribute('aria-hidden', 'true'); sp.innerHTML = '&nbsp;'; n.replaceWith(sp); });
-    }));
+    presses.forEach((h) => $$('.t', h).forEach((t) => { splitChars(t); t.removeAttribute('aria-label'); }));
     const heroEl = $('.hero'), stageEl = $('[data-stage-hero]');
-    const fit = () => {
-      presses.forEach((h) => {
-        const W = h.clientWidth; let size = '';
-        $$('[data-fit]', h).forEach((ln) => {
-          ln.classList.add('m'); ln.style.fontSize = '100px';
-          const w = [...ln.children].reduce((a, c) => { const cs = getComputedStyle(c); return a + c.getBoundingClientRect().width + parseFloat(cs.marginLeft) + parseFloat(cs.marginRight); }, 0);
-          size = ln.style.fontSize = (100 * W / w * 0.995) + 'px'; ln.classList.remove('m');
-        });
-        if (size) $$('[data-fit-copy]', h).forEach((ln) => (ln.style.fontSize = size));
-      });
-      // Desktop: the stage takes the right of the hero; Voyagaer and Luumens dip behind the headline.
-      if (stageEl && matchMedia('(min-width: 1024px)').matches) {
-        const l1 = $('.hero .ln--1'), hr = heroEl.getBoundingClientRect(), r1 = l1.getBoundingClientRect();
-        const foot = r1.bottom - hr.top + r1.height * .12, topMin = 84, W = heroEl.clientWidth;
-        const sw = Math.max(320, Math.min(W * .56, (foot - topMin) / .64));
-        heroEl.style.setProperty('--sw', sw + 'px'); heroEl.style.setProperty('--st', (foot - sw * .64) + 'px');
-      } else if (heroEl) { heroEl.style.removeProperty('--sw'); heroEl.style.removeProperty('--st'); }
-    };
-    fit(); document.fonts.load('800 100px Archivo').then(() => { fit(); window.ScrollTrigger?.refresh(); }); addEventListener('resize', fit);
 
     /* ---------- Deck data + behaviour ---------- */
     const WORK = [
@@ -338,235 +315,65 @@
       logo.addEventListener('blur', () => hold(false));
     }
 
-    /* ---------- Loader → hero (first visit this session) ----------
-       The head script adds .has-loader on a first visit with motion allowed. Stages:
-       entry (0–.45s) · DESIGN → DETAIL → DISTINCTIVE through a mask (.45–2s) · counter completes,
-       labels clear (1.5–2.05s) · the two background halves split (2.05–2.85s) · the rest of the hero
-       rises in (2.45–3.2s). The final word is a copy of the hero's first line, placed exactly over it,
-       so when the halves open it simply stays: the loader copy is removed with no visible change.
-       The counter only reaches 100% once the fonts and the hero poster are ready (capped at 3.5s). */
-    const root = document.documentElement, loader = $('.loader');
-    let seen = false;
-    try { seen = sessionStorage.getItem('fusion-intro') === '1'; sessionStorage.setItem('fusion-intro', '1'); } catch (e) {}
-    if (loader && !seen && root.classList.contains('has-loader') && !REDUCE && window.gsap) runLoader();
-    else if (loader) loader.remove();
-
-    function runLoader() {
-      loader.style.animation = 'none'; // the script owns it now; the CSS timer was only a fallback
-      const [halfTop, halfBottom] = $$('.loader__half', loader);
-      const logoL = $('.loader__logo', loader), label = $('.loader__label', loader), note = $('.loader__note', loader);
-      const prog = $('.loader__progress', loader), bar = $('.loader__bar i', loader), count = $('.loader__count', loader), mask = $('.loader__mask', loader);
-      const heroLogo = $('.top .logo'), lines = $$('.hero .press .ln'), line1 = lines[0], rest = lines.slice(1);
-      const restChars = rest.flatMap((l) => $$('.ch', l));
-      const intro = $$('.hero__intro > *, .hero__foot > *');
-      const screens = ['.scr--voyagaer', '.scr--luumens', '.scr--ganko'].map((q) => $(q)).filter(Boolean), hook = $('.hero .hook');
-
-      const word = (txt) => `<div class="press"><span class="ln"><span class="t" style="flex:none">${txt}</span></span></div>`;
-      mask.innerHTML = word('Design') + word('Detail') + `<div class="press">${line1.outerHTML}</div>`;
-      $$('.hook', mask).forEach((h) => h.remove());
-      const words = $$('.press', mask), wordLines = words.map((w) => $('.ln', w));
-
-      // Pin the loader's logo and word to the header logo and the hero's first line.
-      const place = () => {
-        const r = heroLogo.getBoundingClientRect(), cs = getComputedStyle(heroLogo);
-        logoL.style.left = r.left + parseFloat(cs.paddingLeft) + parseFloat(cs.borderLeftWidth) + 'px';
-        logoL.style.top = r.top + parseFloat(cs.paddingTop) + parseFloat(cs.borderTopWidth) + 'px';
-        const lr = line1.getBoundingClientRect(), fs = line1.style.fontSize || getComputedStyle(line1).fontSize;
-        Object.assign(mask.style, { left: lr.left + 'px', right: 'auto', top: lr.top + 'px', width: lr.width + 'px', height: lr.height + 'px', fontSize: fs });
-        wordLines.forEach((l) => { l.style.fontSize = fs; l.removeAttribute('data-fit'); });
-      };
-      place();
-      addEventListener('resize', place);
-
-      window.lenis?.stop();
-      const block = (e) => e.preventDefault();
-      loader.addEventListener('wheel', block, { passive: false });
-      loader.addEventListener('touchmove', block, { passive: false });
-
-      gsap.set(words, { yPercent: 160 });
-      gsap.set(rest, { yPercent: 70, autoAlpha: 0 });
-      gsap.set(intro, { y: 24, autoAlpha: 0 });
-      gsap.set(screens, { y: 60, autoAlpha: 0 }); if (hook) gsap.set(hook, { autoAlpha: 0 });
-
-      const cnt = { v: 1 };
-      const draw = () => { const v = Math.round(cnt.v); count.textContent = String(v).padStart(2, '0') + '%'; bar.style.transform = `scaleX(${cnt.v / 100})`; };
-      const wait = (ms) => new Promise((r) => setTimeout(r, ms));
-      const fonts = document.fonts ? document.fonts.load('800 100px Archivo').then(() => document.fonts.ready) : Promise.resolve();
-      const poster = new Promise((r) => { const i = new Image(); i.onload = i.onerror = r; i.src = '/assets/images/hero-ganko-1200.webp'; });
-      const gate = (promise, at) => {
-        let ok = false; promise.then(() => { ok = true; requestAnimationFrame(place); });
-        tl.add(() => { if (ok) return; tl.pause(); promise.then(() => requestAnimationFrame(() => { place(); tl.resume(); })); }, at);
-      };
-
-      let done = false;
-      const finish = () => {
-        if (done) return; done = true;
-        clearTimeout(safety);
-        removeEventListener('resize', place);
-        loader.remove();
-        window.lenis?.start();
-      };
-      const tl = gsap.timeline();
-      const safety = setTimeout(() => { tl.progress(1); finish(); }, 7000);
-
-      // 1 · Entry
-      tl.from([logoL, label, note, prog], { y: 14, autoAlpha: 0, duration: .5, stagger: .05, ease: 'power3.out' }, 0)
-        .to(cnt, { v: 86, duration: 1.45, ease: 'power1.inOut', onUpdate: draw }, .05);
-      gate(Promise.race([fonts, wait(1500)]), .42);
-      // 2 · Typographic assembly: each word rolls up through the mask
-      tl.to(words[0], { yPercent: 0, duration: .5, ease: 'expo.out' }, .45)
-        .to(words[0], { yPercent: -160, duration: .3, ease: 'power3.in' }, .8)
-        .to(words[1], { yPercent: 0, duration: .5, ease: 'expo.out' }, 1.02)
-        .to(words[1], { yPercent: -160, duration: .3, ease: 'power3.in' }, 1.36);
-      gate(Promise.race([Promise.all([fonts, poster]), wait(3500)]), 1.4);
-      tl.to(words[2], { yPercent: 0, duration: .6, ease: 'expo.out' }, 1.58)
-      // 3 · Completion
-        .to(cnt, { v: 100, duration: .4, ease: 'power2.out', onUpdate: draw }, 1.6)
-        .to([label, note, prog], { autoAlpha: 0, y: -8, duration: .35, ease: 'power2.in', stagger: .03 }, 1.95)
-      // 4 · The halves split
-        .to(halfTop, { yPercent: -101, duration: .8, ease: 'power4.inOut' }, 2.05)
-        .to(halfBottom, { yPercent: 101, duration: .8, ease: 'power4.inOut' }, 2.05)
-        .add(finish, 2.86)
-      // 5 · The rest of the hero rises in, with the letters swelling as on the old intro
-        .to(rest, { yPercent: 0, autoAlpha: 1, duration: .9, stagger: .08, ease: 'expo.out', clearProps: 'transform,opacity,visibility' }, 2.45)
-        .fromTo(restChars, { fontVariationSettings: "'wdth' 62, 'wght' 300" }, { fontVariationSettings: "'wdth' 100, 'wght' 800", duration: 1, stagger: .02, ease: 'expo.out', clearProps: 'fontVariationSettings' }, 2.5)
-        .to(intro, { y: 0, autoAlpha: 1, duration: .8, stagger: .05, ease: 'power3.out', clearProps: 'transform,opacity,visibility' }, 2.75)
-        // The screens enter back to front, the largest last; then the hook draws in.
-        .to(screens, { y: 0, autoAlpha: 1, duration: 1.1, stagger: .15, ease: 'expo.out', clearProps: 'transform,opacity,visibility' }, 2.4);
-      if (hook) tl.fromTo(hook, { autoAlpha: 0 }, { autoAlpha: 1, duration: .5, clearProps: 'opacity,visibility' }, 2.95)
-        .fromTo($('.hook__rule', hook), { scaleX: 0 }, { scaleX: 1, duration: .8, ease: 'expo.out', clearProps: 'transform' }, 2.95);
-    }
-
-    if (fine) presses.forEach((h) => {
-      // Letters near the cursor widen and thicken. Letter centres are measured once (relative to the
-      // line block) and on resize, so each frame does one read and then only writes.
-      const chars = $$('.ch', h); let mx = 0, my = 0, active = 0, centres = [];
-      const lineOf = chars.map((c) => c.closest('.ln'));
-      const measure = () => {
-        chars.forEach((c) => (c.style.fontVariationSettings = ''));
-        const r = h.getBoundingClientRect();
-        centres = chars.map((c) => { const b = c.getBoundingClientRect(); return [b.left - r.left + b.width / 2, b.top - r.top + b.height / 2]; });
-      };
-      addEventListener('pointermove', (e) => { mx = e.clientX; my = e.clientY; active = 90; }, { passive: true });
-      addEventListener('resize', () => { centres = []; });
-      if (document.fonts) document.fonts.ready.then(() => { centres = []; });
-      const st = chars.map(() => ({ w: 100, g: 800 }));
-      gsap.ticker.add(() => {
-        if (active <= 0) return;
-        const r = h.getBoundingClientRect();
-        if (r.bottom < 0 || r.top > innerHeight || gsap.getProperty(h, 'opacity') < .05) { active = 0; return; }
-        if (!centres.length) measure();
-        let moving = false;
-        // Letters near the cursor widen and thicken; the rest of that line gives way to make room. With
-        // the cursor away from a line, its letters sit at their resting width (no gaps open up).
-        const ks = chars.map((c, i) => Math.max(0, 1 - Math.hypot(mx - (r.left + centres[i][0]), my - (r.top + centres[i][1])) / (r.height * .9)));
-        const near = new Map();
-        chars.forEach((c, i) => { const l = lineOf[i]; near.set(l, Math.max(near.get(l) || 0, ks[i])); });
-        chars.forEach((c, i) => {
-          const k = ks[i], m = near.get(lineOf[i]) || 0;
-          const tw = 100 - 14 * m + 39 * k, tg = 800 - 120 * m + 220 * k;
-          const dw = (tw - st[i].w) * .14, dg = (tg - st[i].g) * .14;
-          if (Math.abs(dw) < .05 && Math.abs(dg) < .5) return;
-          moving = true; st[i].w += dw; st[i].g += dg;
-          c.style.fontVariationSettings = `'wdth' ${st[i].w.toFixed(1)}, 'wght' ${st[i].g.toFixed(0)}`;
-        });
-        if (!moving) active--;
-      });
+    /* ---------- Hero: the sheet draws itself, the headline presses in, the screens settle into their stack ----------
+       Hover / focus on a screen, a work panel or a tab lifts that project everywhere it appears. Desktop: the
+       screens drift with the pointer at their own depths; scrolling on, the stack rises ahead of the page (the
+       nearest screen fastest) while the headline sinks back into the ground. */
+    const scrs = stageEl ? $$('.scr', stageEl) : [];
+    const swEl = $('.sw'), tabs = $$('.sw__tabs a');
+    let onP = null;
+    const setActive = (p) => {
+      if (p === onP) return; onP = p;
+      scrs.forEach((x) => x.classList.toggle('is-on', x.dataset.brand === p));
+      stageEl?.classList.toggle('has-on', !!p);
+      $$('.sw__panel, .sw__copy').forEach((x) => x.classList.toggle('is-on', x.dataset.p === p));
+      swEl?.classList.toggle('has-on', !!p);
+      tabs.forEach((t, i) => t.classList.toggle('is-on', p ? t.dataset.p === p : i === 0));
+    };
+    [...scrs, ...$$('.sw [data-p]')].forEach((el) => {
+      const p = el.dataset.brand || el.dataset.p;
+      if (fine) { el.addEventListener('pointerenter', () => setActive(p)); el.addEventListener('pointerleave', () => setActive(null)); }
+      el.addEventListener('focus', () => setActive(p)); el.addEventListener('blur', () => setActive(null));
     });
 
-    /* ---------- Hero: layered screens, the hook, and the handoff into Ganko ----------
-       Hover or focus on a screen brings it forward, tints the hero with that brand and rolls "your" in the
-       hook to the brand's name. On touch the hook tries each brand in turn. Desktop: the screens drift a
-       little with the pointer, each at its own depth, and as the hero scrolls away (scrubbed, not pinned)
-       the composition parts while the Ganko screen flies into the case study's image. */
-    const hero = heroEl, caseEl = $('.case'), caseMedia = $('.case__media'), flyer = $('.reel-flyer');
-    const scrs = stageEl ? $$('.scr', stageEl) : [], hookWord = $('[data-hook]');
-    const ganko = $('.scr--ganko'), gankoImg = ganko && $('.scr__main', ganko);
-    const lerp = (a, b, t) => a + (b - a) * t;
-
-    let hookName = 'your', hookTl;
-    const setHook = (name) => {
-      if (!hookWord || name === hookName) return;
-      hookName = name;
-      if (REDUCE || !window.gsap) { hookWord.textContent = name; return; }
-      hookTl?.kill();
-      hookTl = gsap.timeline()
-        .to(hookWord, { yPercent: -110, duration: .2, ease: 'power2.in' })
-        .add(() => { hookWord.textContent = name; })
-        .fromTo(hookWord, { yPercent: 110 }, { yPercent: 0, duration: .5, ease: 'expo.out' });
-    };
-    const setActive = (el) => {
-      scrs.forEach((x) => x.classList.toggle('is-on', x === el));
-      stageEl?.classList.toggle('has-on', !!el);
-      if (hero) { hero.dataset.active = el ? el.dataset.brand : ''; hero.classList.toggle('is-tinted', !!el); }
-      setHook(el ? el.dataset.name : 'your');
-    };
-    if (fine) scrs.forEach((el) => { el.addEventListener('pointerenter', () => setActive(el)); el.addEventListener('pointerleave', () => setActive(null)); });
-    scrs.forEach((el) => { el.addEventListener('focus', () => setActive(el)); el.addEventListener('blur', () => setActive(null)); });
-    if (!fine && !REDUCE && stageEl && 'IntersectionObserver' in window) {
-      const order = [ganko, $('.scr--luumens'), $('.scr--voyagaer'), null];
-      let k = 0, timer = 0;
-      new IntersectionObserver(([e]) => {
-        clearInterval(timer);
-        if (e.isIntersecting) timer = setInterval(() => setActive(order[k++ % order.length]), 3200);
-        else setActive(null);
-      }, { threshold: .4 }).observe(stageEl);
+    if (window.gsap && !REDUCE && heroEl) {
+      const chars = $$('.h4__title .ch'), wires = $$('.h4__wires path');
+      wires.forEach((w) => { w.setAttribute('pathLength', '1'); });
+      gsap.timeline({ defaults: { ease: 'expo.out' } })
+        .from('.h4__grid .gl--x, .sw__grid .gl--x', { scaleX: 0, duration: 1.5, ease: 'expo.inOut', stagger: .05 }, 0)
+        .from('.h4__grid .gl--y, .sw__grid .gl--y', { scaleY: 0, duration: 1.5, ease: 'expo.inOut', stagger: .07 }, .1)
+        .from('.h4 .gd, .sw .gd', { scale: 0, duration: .6, ease: 'back.out(3)', stagger: .08 }, .9)
+        .from(chars, { yPercent: 30, autoAlpha: 0, fontVariationSettings: "'wdth' 62, 'wght' 200", duration: 1.4, stagger: .035, clearProps: 'transform,opacity,visibility,fontVariationSettings' }, .3)
+        .from('.h4__notes .note', { y: 12, autoAlpha: 0, duration: .9, stagger: .1, clearProps: 'transform,opacity,visibility' }, 1.1)
+        .from(scrs, { y: 90, x: 50, autoAlpha: 0, duration: 1.6, stagger: .13, clearProps: 'transform,opacity,visibility' }, .45)
+        .fromTo(wires, { strokeDasharray: 1, strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: .9, ease: 'power2.inOut', stagger: .15 }, 1.5)
+        .from('.h4 .chip, .h4__measure', { y: 8, autoAlpha: 0, duration: .7, stagger: .12, clearProps: 'transform,opacity,visibility' }, 1.7)
+        .from('.sw__head, .sw__copy', { y: 16, autoAlpha: 0, duration: 1, stagger: .1, clearProps: 'transform,opacity,visibility' }, 1)
+        .fromTo('.sw__panel', { clipPath: 'inset(0% 0% 100% 0%)' }, { clipPath: 'inset(0% 0% 0% 0%)', duration: 1.3, ease: 'expo.inOut', stagger: .12, clearProps: 'clipPath' }, .9)
+        .from('.sw__tabs a', { y: 14, autoAlpha: 0, duration: .8, stagger: .07, clearProps: 'transform,opacity,visibility' }, 1.4);
     }
 
-    // Pointer drift: back layers move least. quickTo eases each layer; nothing runs while the pointer rests.
+    // Pointer drift: back layers move least. Nothing runs while the pointer rests.
     if (fine && desktop && !REDUCE && stageEl && window.gsap) {
       const layers = scrs.map((el) => ({ d: parseFloat(el.style.getPropertyValue('--d')) || .5, x: gsap.quickTo(el, 'x', { duration: 1.2, ease: 'power3.out' }), y: gsap.quickTo(el, 'y', { duration: 1.2, ease: 'power3.out' }) }));
-      const h1 = $('.hero .press'), hx = gsap.quickTo(h1, 'x', { duration: 1.6, ease: 'power3.out' });
       let resting = true;
       addEventListener('pointermove', (e) => {
-        if (sy() > innerHeight * .25 || document.documentElement.classList.contains('os-leaving')) {
-          if (!resting) { resting = true; layers.forEach((l) => { l.x(0); l.y(0); }); hx(0); }
+        if (sy() > innerHeight * .4 || document.documentElement.classList.contains('os-leaving')) {
+          if (!resting) { resting = true; layers.forEach((l) => { l.x(0); l.y(0); }); }
           return;
         }
         resting = false;
         const nx = e.clientX / innerWidth - .5, ny = e.clientY / innerHeight - .5;
-        layers.forEach((l) => { l.x(-nx * 30 * l.d); l.y(-ny * 18 * l.d); });
-        hx(nx * 6);
+        layers.forEach((l) => { l.x(-nx * 26 * l.d); l.y(-ny * 16 * l.d); });
       }, { passive: true });
     }
 
-    if (desktop && stageEl && caseEl && caseMedia && flyer && gankoImg && window.gsap) {
-      const vo = $('.scr--voyagaer'), lu = $('.scr--luumens'), h1 = $('.hero .press');
-      gsap.timeline({ defaults: { ease: 'none' }, scrollTrigger: { trigger: hero, start: 'top top', end: 'bottom top', scrub: 1 } })
-        .to(vo, { xPercent: -28, yPercent: -30, autoAlpha: 0, duration: .7, ease: 'power2.in' }, 0)
-        .to(lu, { xPercent: -14, yPercent: -60, autoAlpha: 0, duration: .7, ease: 'power2.in' }, .06)
-        .to(h1, { yPercent: -16, scale: .93, autoAlpha: 0, transformOrigin: '0% 100%', duration: .85, ease: 'power1.in' }, .1)
-        .to(['.hero__intro', '.hero__foot'], { y: -30, autoAlpha: 0, duration: .5 }, 0);
-      const caseStart = () => ScrollTrigger.getAll().find((t) => t.pin === caseEl)?.start ?? Infinity;
-      const prog = { value: 0 }; let state = 'stage', dock = null;
-      const show = (n) => {
-        if (n === state) return; state = n;
-        gsap.set(ganko, { visibility: n === 'stage' ? 'visible' : 'hidden' });
-        gsap.set(flyer, { visibility: n === 'flying' ? 'visible' : 'hidden' });
-        gsap.set(caseMedia, { autoAlpha: n === 'flying' ? 0 : 1 });
-      };
-      // Where the case image sits once its sequence pins, measured on refresh only.
-      const measureDock = () => {
-        const r = caseMedia.getBoundingClientRect(), off = scrollY - caseStart();
-        dock = { left: r.left, top: r.top + off, width: r.width, height: r.height };
-        gsap.set(flyer, { left: 0, top: 0, width: dock.width, height: dock.height, transformOrigin: '50% 50%', force3D: true });
-      };
-      // The flyer keeps the docked size and moves by transform only, from the Ganko screen's centre and
-      // size (its frame's tilt unwinding on the way) to the case image.
-      const render = () => {
-        const t = prog.value;
-        if (sy() >= caseStart() - 1 && t >= .999) return show('docked');
-        if (t <= .001) return show('stage');
-        if (!dock) measureDock();
-        show('flying');
-        const b = gankoImg.getBoundingClientRect(), w0 = gankoImg.offsetWidth, h0 = gankoImg.offsetHeight;
-        const cx = lerp(b.left + b.width / 2, dock.left + dock.width / 2, t), cy = lerp(b.top + b.height / 2, dock.top + dock.height / 2, t);
-        const kx = lerp(w0, dock.width, t) / dock.width, ky = lerp(h0, dock.height, t) / dock.height, rad = lerp(3, 14, t);
-        gsap.set(flyer, { x: cx - dock.width / 2, y: cy - dock.height / 2, scaleX: kx, scaleY: ky, rotation: lerp(-1.2, 0, t), borderRadius: `${rad / kx}px / ${rad / ky}px` });
-      };
-      gsap.to(prog, { value: 1, ease: 'power2.inOut', onUpdate: render, scrollTrigger: { start: 0, endTrigger: caseEl, end: 'top top', scrub: 1.2 } });
-      ScrollTrigger.create({ start: 0, endTrigger: caseEl, end: 'top top', onUpdate: render, onLeave: render, onEnterBack: render });
-      ScrollTrigger.addEventListener('refresh', () => { measureDock(); render(); });
+    // Scrolling on: the stack rises ahead of the page by depth; the headline sinks into the ground.
+    if (desktop && !REDUCE && stageEl && window.gsap) {
+      gsap.timeline({ defaults: { ease: 'none' }, scrollTrigger: { trigger: heroEl, start: 'top top', end: 'bottom top', scrub: .8 } })
+        .to(stageEl, { yPercent: -14, duration: 1 }, 0)
+        .to('.h4__title', { yPercent: 8, autoAlpha: .35, duration: 1 }, 0)
+        .to('.h4__notes', { autoAlpha: 0, duration: .6 }, 0);
     }
 
     /* ---------- The portal: the full stop opens onto The Other Side ----------
@@ -577,7 +384,7 @@
     const portal = $('[data-portal]');
     if (portal) {
       const sqEl = $('.portal__sq', portal), root = document.documentElement;
-      const hideOnLeave = ['.hero__intro', '.hero__foot', '.hero .hook', '.top', '.progress', '.rail', '.portal__label'].map((q) => $(q)).filter(Boolean);
+      const hideOnLeave = ['.h4__notes', '.h4__grid', '.sw', '.top', '.progress', '.rail', '.portal__label'].map((q) => $(q)).filter(Boolean);
       let prefetched = false;
       const prefetch = () => {
         if (prefetched) return; prefetched = true;
@@ -653,58 +460,12 @@
           .fromTo(chip, { x: f.x, y: f.y, width: f.w, height: f.h }, { x: r.left, y: r.top, width: r.width, height: r.height, duration: .6, ease: 'power3.inOut' }, 0)
           .to(chip, { backgroundColor: getComputedStyle(root).getPropertyValue('--mark').trim(), duration: .3 }, .3)
           .set(sqEl, { clearProps: 'opacity,visibility' }, .6)
-          .fromTo(chars, { x: 0, y: 0, fontVariationSettings: "'wdth' 62, 'wght' 300" }, { autoAlpha: 1, fontVariationSettings: "'wdth' 100, 'wght' 800", duration: .8, stagger: { each: .012, from: 'end' }, ease: 'expo.out', clearProps: 'transform,opacity,visibility,fontVariationSettings' }, .45)
+          .fromTo(chars, { x: 0, y: 0, fontVariationSettings: "'wdth' 62, 'wght' 300" }, { autoAlpha: 1, fontVariationSettings: "'wdth' 62, 'wght' 320", duration: .8, stagger: { each: .012, from: 'end' }, ease: 'expo.out', clearProps: 'transform,opacity,visibility,fontVariationSettings' }, .45)
           .fromTo(scrs, { x: 0, y: 40 }, { y: 0, autoAlpha: 1, duration: .9, stagger: .1, ease: 'expo.out', clearProps: 'transform,opacity,visibility' }, .55)
           .to(hideOnLeave, { autoAlpha: 1, duration: .5, clearProps: 'opacity,visibility' }, .7);
       };
       addEventListener('pageshow', (e) => { if (e.persisted) comeBack(); });
       comeBack();
-    }
-
-    /* ---------- Case study: the original pinned timeline ---------- */
-    const section = $('.case');
-    const stages = $$('.case__stage', section);
-    const media = $('.case__media', section), imgA = $('.case__img--a', section), imgB = $('.case__img--b', section);
-    const titleChars = splitChars($('[data-case-title]'));
-    const STAGES = ['Overview', 'Approach', 'Platform', 'Live'];
-    const twStage = typewriter($('[data-tw-stage]'), { speed: 55 });
-    if (!desktop) {
-      gsap.fromTo(titleChars, { yPercent: 115 }, { yPercent: 0, duration: 1.4, ease: 'power4.out', stagger: .03, scrollTrigger: { trigger: section, start: 'top 75%', once: true } });
-      gsap.fromTo(media, { clipPath: 'inset(42% 0% 0% 0% round .9rem)' }, { clipPath: 'inset(0% 0% 0% 0% round .9rem)', duration: 1.6, ease: 'expo.out', scrollTrigger: { trigger: media, start: 'top 85%', once: true } });
-      stages.forEach((stage, i) => {
-        gsap.fromTo($$('[data-stage-item]', stage), { yPercent: 110 }, { yPercent: 0, duration: 1.2, ease: 'expo.out', stagger: .06, scrollTrigger: { trigger: stage, start: 'top 85%', once: true } });
-        ScrollTrigger.create({ trigger: stage, start: 'top 60%', end: 'bottom 40%', onToggle: (t) => t.isActive && twStage.set(STAGES[i]) });
-      });
-    } else {
-      section.classList.add('is-pinned');
-      const steps = $$('.case__steps li', section), bar = $('[data-case-bar]', section), wrap = $('.case__stages', section), next = $$('[data-case-next]', section);
-      // Pacing for a 120% pin: short entries and exits, so each stage holds for about a tenth of a screen of
-      // scrolling, and the last one for the rest.
-      const stageIn = [.15, 1.6, 3.05, 4.5], stageOut = [1.35, 2.8, 4.25, 99], exitAt = 5.6, total = 6.2;
-      let cur = -1;
-      const setStep = (i) => { if (i === cur) return; cur = i; steps.forEach((s, k) => s.classList.toggle('is-active', k === i)); twStage.set(STAGES[i]); };
-      const mediaShift = () => wrap.offsetLeft - media.offsetLeft;
-      const stagesShift = () => (media.offsetLeft + media.offsetWidth) - (wrap.offsetLeft + wrap.offsetWidth);
-      gsap.set(stages, { autoAlpha: 0 });
-      const tl = gsap.timeline({ defaults: { ease: 'power3.inOut' }, scrollTrigger: { trigger: section, start: 'top top', end: '+=120%', pin: true, scrub: 1, anticipatePin: 1, invalidateOnRefresh: true,
-        onUpdate: (self) => { const t = self.progress * total; setStep(t < stageIn[1] ? 0 : t < stageIn[2] ? 1 : t < stageIn[3] ? 2 : 3); } } });
-      tl.fromTo(bar, { scaleX: 0 }, { scaleX: 1, duration: total, ease: 'none' }, 0)
-        .fromTo(titleChars, { yPercent: 115 }, { yPercent: 0, duration: .9, stagger: .04, ease: 'power4.out' }, .1)
-        .fromTo(imgB, { clipPath: 'inset(100% 0% 0% 0%)', scale: 1.2 }, { clipPath: 'inset(0% 0% 0% 0%)', scale: 1, duration: 1.3 }, stageIn[1] - .3)
-        .to(imgA, { yPercent: -10, scale: 1.08, duration: 1.3 }, stageIn[1] - .3)
-        .to(imgB, { scale: 1.08, xPercent: -3, duration: exitAt - stageIn[2], ease: 'none' }, stageIn[2])
-        .to(media, { x: mediaShift, duration: 1.2 }, stageOut[2] + .1)
-        .to(wrap, { x: stagesShift, duration: 1.2 }, stageOut[2] + .1)
-        // The last step stays: the frame then scrolls away whole, so no empty screen follows.
-        .to({}, { duration: .1 }, total - .1);
-      stages.forEach((stage, i) => {
-        const items = $$('[data-stage-item]', stage);
-        tl.set(stage, { autoAlpha: 1 }, stageIn[i] + (i ? .1 : 0))
-          .fromTo(items, { yPercent: 110 }, { yPercent: 0, duration: .45, stagger: .04, ease: 'power3.out' }, stageIn[i] + (i ? .12 : 0));
-        if (i < stages.length - 1) tl.to(items, { yPercent: -110, duration: .22, stagger: .01, ease: 'power3.in' }, stageOut[i])
-          .set(stage, { autoAlpha: 0 }, stageOut[i] + .3);
-      });
-      setStep(0);
     }
 
     /* ---------- More work: the deck (after Motion's gallery-cards: stack + tilt) ---------- */
