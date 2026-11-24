@@ -92,7 +92,10 @@ README.md has the file-by-file structure and the motion tiers; read it before la
 - JS: `js/base.js` (homepage Lenis + helpers), `js/home.js` (homepage), `js/theme.js` (theme + blinds),
   `js/gallery.js` (gallery engine: coverflow, fan, stack, helix, grid, staircase, list + detail view),
   `js/case.js` (case-study galleries; each page lists its screens in `<script type="application/json" id="screens">`),
-  `js/concepts.js`, `js/colophon.js`, `js/contact.js` (project form).
+  `js/concepts.js`, `js/colophon.js`, `js/contact.js` (project form), `js/dot.js` (period portal).
+- Period portal: `<a class="dotp" href="…" data-bleed="work|talk|concepts" aria-label="…"><span class="dotp__sq" aria-hidden="true"></span></a>`
+  placed as the last child of a heading. Styles at the end of `css/base.css` (colours per `data-bleed`); `js/dot.js`
+  injects the SVG ink filters and bleed layers and runs the click flood. Add `data-pf-open` to open the form instead.
 - Pages: `/`, `/work/{ganko,luumens,voyagaer,industmarine}/`, `/concepts/` (+ the concept homepages,
   self-contained), `/colophon/`, `/404.html`. Case studies run 01 / 04 Ganko → Luumens → Voyagaer →
   Industmarine; the homepage deck (`WORK` in `js/home.js`) and the "Next project" footers follow that order.
