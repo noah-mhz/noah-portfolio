@@ -370,6 +370,13 @@
       }, { passive: true });
     }
 
+    // Section openings: display headings rise into place once; the footer's headline presses in like the hero's.
+    if (window.gsap && !REDUCE) {
+      $$('.r4 .h2s').forEach((h) => gsap.from(h, { yPercent: 30, autoAlpha: 0, fontVariationSettings: "'wdth' 62, 'wght' 200", duration: 1.3, ease: 'expo.out', clearProps: 'all', scrollTrigger: { trigger: h, start: 'top 88%', once: true } }));
+      const cta = $$('.cta .press .ch');
+      if (cta.length) gsap.from(cta, { yPercent: 30, autoAlpha: 0, duration: 1.4, ease: 'expo.out', stagger: .03, clearProps: 'transform,opacity,visibility', scrollTrigger: { trigger: '.cta', start: 'top 75%', once: true } });
+    }
+
     // Scrolling on: the stack rises ahead of the page by depth; the headline sinks into the ground.
     if (desktop && !REDUCE && stageEl && window.gsap) {
       gsap.timeline({ defaults: { ease: 'none' }, scrollTrigger: { trigger: heroEl, start: 'top top', end: 'bottom top', scrub: .8 } })
