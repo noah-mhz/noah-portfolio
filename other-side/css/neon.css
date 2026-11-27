@@ -103,31 +103,6 @@
 .nbuild__intro { color: var(--dim); max-width: 36rem; font-size: var(--t-lede); line-height: 1.5; }
 .nbuild__plan .nbuild__live { margin-top: .4rem; padding-top: .7rem; border-top: 1px dashed rgba(40, 89, 255, .6); color: var(--cyan); text-transform: none; letter-spacing: .02em; line-height: 1.5; }
 .nbuild__live::before { content: 'Reading · '; color: var(--dim); }
-/* B-6 · ask the build notes (an experiment) */
-.nask { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--pad); row-gap: 1.2rem; padding: 1.6rem; border: 1px dashed rgba(40, 89, 255, .7); }
-.nask__text { grid-column: 1 / 6; display: grid; gap: .7rem; align-content: start; }
-.nask__text h3 { font-size: clamp(1.6rem, 2.4vw, 2.2rem); font-weight: 500; letter-spacing: -.02em; }
-.nask__text p:last-child { color: var(--dim); line-height: 1.55; max-width: 32rem; }
-.nask__form, .nask__try, .nask__check, .nask__out { grid-column: 6 / -1; }
-.nask__form { display: flex; align-self: end; border: 1px solid var(--blue); }
-.nask__form input { flex: 1; min-width: 0; min-height: 52px; padding: 0 1rem; border: 0; background: transparent; color: var(--ink); font: 400 1.05rem/1 'Space Grotesk', sans-serif; }
-.nask__form input::placeholder { color: rgba(154, 166, 194, .7); }
-.nask__form input:focus-visible { outline: 2px solid var(--lime); outline-offset: -2px; }
-.nask__form button { display: inline-flex; align-items: center; gap: .8rem; padding: 0 1.1rem 0 0; border: 0; border-left: 1px solid var(--blue); background: transparent; color: var(--ink); font: 600 1rem/1 'Space Grotesk', sans-serif; cursor: pointer; }
-.nask__form button .mono { align-self: stretch; display: grid; place-items: center; padding: 0 .9rem; background: var(--blue); color: #fff; }
-.nask__form button:hover, .nask__form button:focus-visible { background: rgba(40, 89, 255, .18); outline: none; }
-.nask__form button[disabled], .nask__form input[disabled] { opacity: .5; cursor: not-allowed; }
-.nask__try { display: flex; flex-wrap: wrap; gap: .5rem; }
-.nask__try button { min-height: 40px; padding: 0 .8rem; border: 1px solid var(--line); background: transparent; color: var(--dim); font: inherit; font-size: var(--t-micro); letter-spacing: .04em; text-transform: none; cursor: pointer; transition: color .25s, border-color .25s; }
-.nask__try button:hover, .nask__try button:focus-visible { color: var(--ink); border-color: var(--lime); outline: none; }
-.nask__check:empty { display: none; }
-.nask__out { min-height: 1.5em; color: var(--ink); font-size: 1.1rem; line-height: 1.55; max-width: 44rem; }
-.nask__out:empty { display: none; }
-.nask__out.is-wait { color: var(--cyan); }
-.nask__out.is-wait::after { content: '_'; animation: nask-caret 1s steps(2) infinite; }
-.nask__out.is-err { color: #FF9A8B; }
-@keyframes nask-caret { 50% { opacity: 0; } }
-@media (prefers-reduced-motion: reduce) { .nask__out.is-wait::after { animation: none; } }
 .nbuild__plan h3 { font-size: 1.45rem; font-weight: 500; letter-spacing: -.02em; line-height: 1.1; }
 .nbuild__plan p { color: #C3CCE0; line-height: 1.55; }
 
@@ -185,8 +160,6 @@
   .nbldg__name { display: none; }
   .npx__floors button { flex-basis: 50%; border-bottom: 1px solid var(--line); }
   .nbuild__plan { grid-template-columns: 1fr; }
-  .nask { grid-template-columns: 1fr; padding: 1.2rem; }
-  .nask__text, .nask__form, .nask__try, .nask__check, .nask__out { grid-column: 1; }
   .nbuild__plan li, .nbuild__plan li:nth-child(4), .nbuild__plan li:nth-child(5) { grid-column: 1; }
   .nend__board { grid-template-columns: 1fr; row-gap: 1.6rem; padding: 0 0 0 1.6rem; }
   .nend__board::before { left: 0; right: auto; top: 0; bottom: 0; width: 1px; height: auto; }

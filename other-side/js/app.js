@@ -368,55 +368,6 @@
   if ('IntersectionObserver' in window) new IntersectionObserver((es) => es.forEach((e) => e.isIntersecting && readouts()), { threshold: .2 }).observe($('.nbuild'));
 
   /* ---------- World on: only the visible world runs anything ---------- */
-  /* ---------- B-6 · ask the build notes (functions/api/ask.js) ---------- */
-  const ask = $('[data-ask]');
-  if (ask) {
-    const formEl = $('[data-ask-form]', ask), input = $('input', formEl), btn = $('button', formEl), out = $('[data-ask-out]', ask), check = $('[data-ask-check]', ask);
-    let cfg = null, widget = null, token = '', tsLoad = null, busyAsk = false;
-    const say = (text, cls = '') => { out.className = 'nask__out' + (cls ? ' is-' + cls : ''); out.textContent = text; };
-    const off = (why) => { input.disabled = true; btn.disabled = true; $$('[data-ask-try]', ask).forEach((b) => { b.disabled = true; }); say(why, 'err'); };
-    const loadTs = () => tsLoad || (tsLoad = new Promise((res, rej) => {
-      if (window.turnstile) return res(window.turnstile);
-      const s = document.createElement('script'); s.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit'; s.async = true;
-      s.onload = () => res(window.turnstile); s.onerror = rej; document.head.append(s);
-    }));
-    const setup = async () => {
-      if (cfg) return cfg;
-      try { cfg = await fetch('/api/ask', { headers: { accept: 'application/json' } }).then((r) => r.json()); }
-      catch (e) { cfg = { configured: false }; }
-      if (!cfg.configured || !cfg.siteKey) { off('This experiment is switched off right now.'); return cfg; }
-      try {
-        const ts = await loadTs();
-        widget = ts.render(check, { sitekey: cfg.siteKey, theme: 'dark', size: 'flexible', appearance: 'interaction-only',
-          callback: (t) => { token = t; }, 'expired-callback': () => { token = ''; }, 'error-callback': () => { token = ''; return true; } });
-      } catch (e) { off('The spam check could not load, so the experiment is off in this browser.'); }
-      return cfg;
-    };
-    const waitToken = (ms) => new Promise((res) => { const t0 = Date.now(); const tick = () => { if (!token && window.turnstile && widget !== null) token = window.turnstile.getResponse(widget) || ''; if (token || Date.now() - t0 > ms) return res(token); setTimeout(tick, 150); }; tick(); });
-    input.addEventListener('focus', setup, { once: true });
-    $$('[data-ask-try]', ask).forEach((b) => b.addEventListener('click', () => { input.value = b.textContent; formEl.requestSubmit(); }));
-    formEl.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const q = input.value.trim();
-      if (busyAsk) return;
-      if (q.length < 3) { say('Ask a question about how the site is built.', 'err'); input.focus(); return; }
-      busyAsk = true; btn.disabled = true; say('Reading the build notes', 'wait');
-      try {
-        await setup();
-        if (!cfg.configured) return;
-        const t = await waitToken(8000);
-        if (!t) { say('Please complete the check above, then ask again.', 'err'); return; }
-        const r = await fetch('/api/ask', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ q, token: t }) });
-        const d = await r.json().catch(() => ({}));
-        say(d.ok ? d.answer : (d.error || 'Something went wrong. Try again.'), d.ok ? '' : 'err');
-      } catch (err) { say('Could not reach the server. Try again in a moment.', 'err'); }
-      finally {
-        busyAsk = false; if (cfg && cfg.configured) btn.disabled = false;
-        token = ''; if (window.turnstile && widget !== null) window.turnstile.reset(widget);
-      }
-    });
-  }
-
   // Study 3 (js/ink.js): the GLSL ink sheet, loaded when the Hollow first opens
   let inkLoaded = false;
   const loadInk = () => {

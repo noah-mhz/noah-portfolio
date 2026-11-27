@@ -307,21 +307,6 @@
       <li><span class="mono">B-4</span><h3>Worlds load when you enter</h3><p>Screens for a world you have not entered are not downloaded. They load lazily when the world opens.</p><p class="nbuild__live mono" data-readout="images"></p></li>
       <li><span class="mono">B-5</span><h3>Motion you can switch off</h3><p>With reduced motion turned on in your system settings, every transition becomes an instant cut and nothing moves on its own.</p><p class="nbuild__live mono" data-readout="motion"></p></li>
     </ol>
-    <div class="nask" data-ask aria-labelledby="nask-title">
-      <div class="nask__text">
-        <p class="mono nlabel">B-6 · Experiment</p>
-        <h3 id="nask-title">Ask the build notes</h3>
-        <p>A small Claude model answers questions about how this site is made, using only the notes above and a short list of facts. When the notes don't cover something, it says so. Your question is sent to Anthropic's API to be answered; this site doesn't store it.</p>
-      </div>
-      <form class="nask__form" data-ask-form novalidate>
-        <label class="sr" for="ask-q">Your question about how the site is built</label>
-        <input id="ask-q" name="q" type="text" maxlength="240" autocomplete="off" placeholder="Why is the building drawn in Three.js?" required>
-        <button type="submit"><span class="mono">→</span>Ask</button>
-      </form>
-      <div class="nask__try mono" aria-label="Example questions"><button type="button" data-ask-try>How does the ink study work?</button><button type="button" data-ask-try>What happens with reduced motion?</button><button type="button" data-ask-try>Which libraries does this page use?</button></div>
-      <div class="nask__check" data-ask-check></div>
-      <p class="nask__out" data-ask-out aria-live="polite"></p>
-    </div>
   </section>
 
   <!-- Exit · a departures board: origin, one track, three gates -->

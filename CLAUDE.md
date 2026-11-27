@@ -116,8 +116,6 @@ README.md has the file-by-file structure and the motion tiers; read it before la
 - Neon building: `other-side/js/district.js` (ES module, Three.js r170 self-hosted in `other-side/vendor/`), loaded by app.js
   when Neon opens and WebGL2 exists; GLSL floor material; talks to app.js via `data-on` and `floor` events; CSS floors are the fallback.
 - Hollow Study 3 "Ink": `other-side/js/ink.js`, raw WebGL2 fragment shader (exported `FRAG` is shown on the page).
-- Neon B-6 "Ask the build notes": `functions/api/ask.js` (Anthropic API, Turnstile). Needs `ANTHROPIC_API_KEY` in Cloudflare env;
-  without it the box says it's switched off. Its NOTES list must stay true and in step with the page; never put the key in code.
 - Screens in `other-side/assets/` are captures of the anonymised concept builds; each project links to `/concepts/<slug>/`.
 - Portal handshake kept: reads `os-from` on arrival, writes `os-return` on "Back to the portfolio" / Esc on the selector.
 - Not linked from the live homepage yet (the full-stop portal is on `redesign-5`).
