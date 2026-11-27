@@ -244,9 +244,11 @@
       wire: {
         html: () => stage(`<div class="layer a">${page('wire')}</div><div class="layer b">${page('fin')}</div>`),
         tl: (el) => {
+          // the start state is set outside the timeline: zero-length sets inside it would undo themselves when
+          // the timeline reverses back to 0, leaving the finished page showing
+          gsap.set($('.b .mp-bg', el), { opacity: 0 });
+          KEYS.forEach((k) => gsap.set($(`.b [data-k="${k}"]`, el), { clipPath: 'inset(0% 100% 0% 0%)' }));
           const tl = gsap.timeline({ paused: true });
-          tl.set($('.b .mp-bg', el), { opacity: 0 }, 0);
-          KEYS.forEach((k) => tl.set($(`.b [data-k="${k}"]`, el), { clipPath: 'inset(0% 100% 0% 0%)' }, 0));
           tl.to($('.b .mp-bg', el), { opacity: 1, duration: .5 }, 0);
           KEYS.forEach((k, i) => {
             tl.to($(`.a [data-k="${k}"]`, el), { opacity: 0, duration: .3 }, .15 + i * .14)
