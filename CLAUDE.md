@@ -89,7 +89,7 @@ README.md has the file-by-file structure and the motion tiers; read it before la
 - All paths are absolute (`/css/…`, `/assets/…`), so every page works at any depth (404 included).
 - CSS: `css/base.css` (fonts, tokens, resets), `css/home.css` (homepage), `css/site.css` (inner pages),
   `css/contact.css` (project form).
-- JS: `js/base.js` (homepage Lenis + helpers), `js/home.js` (homepage), `js/theme.js` (theme + blinds),
+- JS: `js/base.js` (homepage Lenis + helpers), `js/home.js` (homepage), `js/theme.js` (theme + blinds; also the inner-page footer slide-up, styles at the end of `css/site.css`),
   `js/gallery.js` (gallery engine: coverflow, fan, stack, helix, grid, staircase, list + detail view),
   `js/case.js` (case-study galleries; each page lists its screens in `<script type="application/json" id="screens">`),
   `js/concepts.js`, `js/colophon.js`, `js/contact.js` (project form), `js/dot.js` (period portal).

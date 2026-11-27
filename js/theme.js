@@ -56,3 +56,33 @@
     }));
   });
 })();
+
+/* Inner-page footer: the "Start a project" card slides up as it scrolls into view (scrubbed with the scroll, so it
+   always sits flush at the bottom of the page), then the words rise out of a mask and the full stop drops in.
+   The card is revealed with clip-path, so nothing moves in layout and the page never grows. Reduced motion: static. */
+(() => {
+  const f = document.querySelector('footer.next');
+  if (!f || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const big = f.querySelector('a.big');
+  if (big && !big.querySelector('.nx-w')) {
+    const txt = [...big.childNodes].filter((n) => n.nodeType === 3).map((n) => n.textContent).join('').trim();
+    big.setAttribute('aria-label', txt);
+    [...big.childNodes].filter((n) => n.nodeType === 3).forEach((n) => n.remove());
+    const words = txt.split(/\s+/).map((w, i) => `<span class="nx-w" aria-hidden="true"><span style="--i:${i}">${w}</span></span>`).join(' ');
+    big.insertAdjacentHTML('afterbegin', words);
+  }
+  f.classList.add('nx');
+  let top = 0, h = 1, q = 0, shown = false;
+  const measure = () => { const r = f.getBoundingClientRect(); top = r.top + scrollY; h = r.height; };
+  const tick = () => {
+    q = 0;
+    const p = Math.max(0, Math.min(1, (scrollY + innerHeight - top) / Math.min(h, innerHeight * .8)));
+    f.style.setProperty('--nx', p.toFixed(4));
+    if (!shown && p > .45) { shown = true; f.classList.add('is-in'); }
+  };
+  measure(); tick();
+  addEventListener('scroll', () => { if (!q) q = requestAnimationFrame(tick); }, { passive: true });
+  addEventListener('resize', () => { measure(); tick(); });
+  addEventListener('load', () => { measure(); tick(); });
+  if (window.ResizeObserver) new ResizeObserver(() => { measure(); tick(); }).observe(document.body);
+})();
