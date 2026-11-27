@@ -28,7 +28,7 @@
     if (!d.querySelector('.dotp__sq')) d.insertAdjacentHTML('afterbegin', '<span class="dotp__sq" aria-hidden="true"></span>');
     d.querySelector('.dotp__sq').insertAdjacentHTML('beforeend', '<i class="dotp__f"></i><i class="dotp__x"></i>');
     d.insertAdjacentHTML('beforeend', `<span class="dotp__label" aria-hidden="true">${[...LABEL].map((c) => c === ' ' ? '<b class="s">\u00a0</b>' : `<b>${c}</b>`).join('')}</span>`);
-    d.insertAdjacentHTML('beforeend', '<span class="dotp__bleed" aria-hidden="true"><i class="b3"></i><i class="b1"></i><i class="b2"></i></span>');
+    // Ink bleed on hover is switched off for now (styles kept in css/base.css as .dotp__bleed).
     d.addEventListener('click', (e) => {
       if (REDUCE || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button > 0) return;
       const sq = d.querySelector('.dotp__sq').getBoundingClientRect(), cx = sq.left + sq.width / 2, cy = sq.top + sq.height / 2;
