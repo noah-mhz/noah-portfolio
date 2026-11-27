@@ -148,3 +148,8 @@ a { color: inherit; }
 .press .sq.dotp { background: none; margin-left: 0; }
 .press .sq.dotp::before { width: max(44px, 150%); height: max(44px, 150%); }
 .press .sq.dotp:focus-visible::after { width: max(40px, 140%); height: max(40px, 140%); }
+
+/* MorphSVG marks (js/dot.js adds .is-svg when GSAP MorphSVG is loaded): the SVG draws every world, the CSS marks stand down */
+.dotp.is-svg .dotp__sq, .dotp.is-svg[data-w] .dotp__sq { background: none; box-shadow: none; clip-path: none; scale: none; }
+.dotp__svg { position: absolute; inset: 0; width: 100%; height: 100%; display: block; overflow: visible; }
+.dotp.is-svg.is-glitch .dotp__sq { animation: none; }

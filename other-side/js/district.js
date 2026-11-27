@@ -11,6 +11,7 @@
  * Loaded only when Neon District opens and WebGL2 is available; otherwise the CSS floors stay.
  */
 import * as THREE from '/other-side/vendor/three.module.min.js';
+import { load as loadTheatre } from '/other-side/js/district.theatre.js';
 
 const FLOORS = [
   { s: 'hero', src: '/other-side/assets/pixel-s-hero.webp', h: 917 },
@@ -201,6 +202,15 @@ export function init({ bldg, reduce, hover }) {
   // ---------- render loop: runs only while on screen and something is moving ----------
   const clock = new THREE.Clock();
   let raf = 0, visible = false, t0 = performance.now(), entered = reduce, tilt = 0, tiltX = 0;
+  // Theatre.js: the entrance sequence. Loaded alongside; if it fails, the code curve above runs instead.
+  let th = null, thPlaying = false;
+  const playEntrance = () => {
+    if (!th || reduce) return;
+    th.seq.position = 0; thPlaying = true;
+    th.seq.play().then(() => { thPlaying = false; wake(); });
+    wake();
+  };
+  if (!reduce) loadTheatre().then((t) => { th = t; if (!entered) { t0 = performance.now(); playEntrance(); } }).catch(() => {});
   function frame() {
     raf = 0;
     const dt = Math.min(clock.getDelta(), .05), t = clock.elapsedTime;
@@ -211,19 +221,24 @@ export function init({ bldg, reduce, hover }) {
       const ease = reduce ? 1 : 1 - Math.exp(-dt * 9);
       u.on += (u.target - u.on) * ease; u.above += (u.aboveT - u.above) * ease;
       if (Math.abs(u.target - u.on) > .002 || Math.abs(u.aboveT - u.above) > .002) moving = true;
-      // entrance: floors settle from above, top floor last
+      // entrance: floors settle from above, bottom floor first. Timed by the Theatre.js sequence
+      // (district.theatre.js) once it has loaded; the same curve in code until then.
       let drop = 0;
       if (!entered) {
-        const p = Math.min(1, Math.max(0, (since - (3 - u.k) * .09) / .7)), e = 1 - Math.pow(1 - p, 3);
-        drop = (1 - e) * spacing * 2.2; U.uIn.value = e; if (p < 1) moving = true;
+        let e;
+        if (th) e = th.obj.value['f' + u.k];
+        else { const p = Math.min(1, Math.max(0, (since - (3 - u.k) * .09) / .7)); e = 1 - Math.pow(1 - p, 3); }
+        drop = (1 - e) * spacing * 2.2; U.uIn.value = e; if (e < 1) moving = true;
       }
       m.position.y = u.base + u.on * lift() + drop;
       U.uOn.value = u.on; U.uAbove.value = u.above; U.uTime.value = t;
     });
+    if (th && thPlaying) moving = true;
     if (!entered && !moving) entered = true;
+    const swing = !entered && th ? th.obj.value.swing : 0;
     if (!reduce) {
       tilt += (px * .07 - tilt) * (1 - Math.exp(-dt * 4)); tiltX += (py * .04 - tiltX) * (1 - Math.exp(-dt * 4));
-      group.rotation.y = -.18 + tilt; group.rotation.x = tiltX;
+      group.rotation.y = -.18 + tilt + swing; group.rotation.x = tiltX;
       if (Math.abs(px * .07 - tilt) > .0005 || Math.abs(py * .04 - tiltX) > .0005) moving = true;
       if (floors.some((m) => m.userData.on > .01)) moving = true; // the scan line keeps the lit floor alive
     }
@@ -239,6 +254,6 @@ export function init({ bldg, reduce, hover }) {
   layout();
   bldg.classList.add('is-gl');
   return {
-    replay() { if (reduce) return; entered = false; t0 = performance.now(); floors.forEach((m) => { m.material.uniforms.uIn.value = 0; }); wake(); },
+    replay() { if (reduce) return; entered = false; t0 = performance.now(); floors.forEach((m) => { m.material.uniforms.uIn.value = 0; }); playEntrance(); wake(); },
   };
 }

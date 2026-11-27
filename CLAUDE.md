@@ -85,7 +85,12 @@ README.md has the file-by-file structure and the motion tiers; read it before la
 
 ## Stack and conventions
 
-- Static HTML/CSS/JS, no build step, no modules. GSAP 3.12.5 + ScrollTrigger (cdnjs), Lenis 1.1.13 (jsdelivr).
+- Static HTML/CSS/JS, no build step, no modules. GSAP 3.15.1 (jsdelivr `npm/gsap@3.15.1/dist/`, all plugins free) + Lenis 1.1.13.
+  Plugins per page: homepage ScrollTrigger + SplitText (`splitChars` in base.js) + MorphSVGPlugin (dot.js marks);
+  case studies and /concepts/ Flip (gallery.js detail view); Industmarine DrawSVGPlugin (case.js `[data-dim]` dimension line);
+  colophon ScrollTrigger. The concept homepages in `concepts/<slug>/` keep their own GSAP 3.12.5 tags; leave them.
+- Native motion: inner-page footer rise runs on a CSS scroll-driven `view()` timeline where supported (`.nx-sd`, JS fallback);
+  The Other Side's world-to-world switch uses the View Transitions API (`viewSwap` in app.js, `.os-vt` in shared.css).
 - All paths are absolute (`/css/…`, `/assets/…`), so every page works at any depth (404 included).
 - CSS: `css/base.css` (fonts, tokens, resets), `css/home.css` (homepage), `css/site.css` (inner pages),
   `css/contact.css` (project form).
@@ -115,6 +120,8 @@ README.md has the file-by-file structure and the motion tiers; read it before la
   Pixel Pull + build notes. The Hollow: three studies made for the page + an honest "opening" note. No invented projects.
 - Neon building: `other-side/js/district.js` (ES module, Three.js r170 self-hosted in `other-side/vendor/`), loaded by app.js
   when Neon opens and WebGL2 exists; GLSL floor material; talks to app.js via `data-on` and `floor` events; CSS floors are the fallback.
+  Its entrance is a Theatre.js sequence (`district.theatre.js`, state JSON inline; `vendor/theatre-core.mjs` is an esbuild ESM bundle
+  of @theatre/core 0.7.2). `/other-side/?studio#neon` loads `vendor/theatre-studio.mjs` (core + studio in one bundle) to edit it.
 - Hollow Study 3 "Ink": `other-side/js/ink.js`, raw WebGL2 fragment shader (exported `FRAG` is shown on the page).
 - Screens in `other-side/assets/` are captures of the anonymised concept builds; each project links to `/concepts/<slug>/`.
 - Portal handshake kept: reads `os-from` on arrival, writes `os-return` on "Back to the portfolio" / Esc on the selector.

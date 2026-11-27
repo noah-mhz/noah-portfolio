@@ -25,6 +25,7 @@
   function show(name) {
     Object.entries(roots).forEach(([k, el]) => { el.hidden = k !== name; });
     body.dataset.view = name; view = name;
+    if (WORLDS.includes(name)) seen.add(name);   // a world you've been in doesn't need its name card again
     // every world opens at its start
     scrollTo({ top: 0, left: 0, behavior: 'instant' });
     if (name !== 'select') $('h1', roots[name]).focus({ preventScroll: true }); else $('#sel-title').focus({ preventScroll: true });
@@ -76,6 +77,17 @@
       return s.animate([{ transform: 'none', opacity: 1 }, { transform: `translate(${dx}px,${dy}px)`, opacity: 0 }], { duration: 560, delay: i * 40, easing: OUT, fill: 'forwards' }).finished;
     }));
   }
+  // World to world (once the destination's name card has been seen): the View Transitions API snapshots both
+  // worlds and the new one opens out of the square that was clicked, as a CSS clip-path (css/shared.css, .os-vt).
+  async function viewSwap(to, from) {
+    const root = document.documentElement;
+    root.style.setProperty('--vt-t', from.y + 'px'); root.style.setProperty('--vt-l', from.x + 'px');
+    root.style.setProperty('--vt-r', (innerWidth - from.x - from.w) + 'px'); root.style.setProperty('--vt-b', (innerHeight - from.y - from.h) + 'px');
+    root.classList.add('os-vt');
+    try { await document.startViewTransition(() => show(to)).finished; }
+    catch (e) { if (view !== to) show(to); }
+    finally { root.classList.remove('os-vt'); }
+  }
   // Back to the selector: the world folds into its own door.
   async function toSelect(from) {
     const cover = document.createElement('div'); tx.append(cover);
@@ -118,6 +130,7 @@
       if (from === 'select' && to !== 'select') { sel.dataset.hover = to; $$('.door').forEach((x) => x.classList.toggle('is-hot', x.dataset.world === to)); }
       if (REDUCE) show(to);
       else if (to === 'select') await toSelect(from);
+      else if (WORLDS.includes(from) && seen.has(to) && document.startViewTransition) await viewSwap(to, origin);
       else { const cap = caption(to, from); await Promise.all([({ fable: enterFable, neon: enterNeon, hollow: enterHollow })[to](origin, cap.arrived), cap.done]); }
     } catch (err) { show(to); } finally {
       busy = false; tx.replaceChildren();

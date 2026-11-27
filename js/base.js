@@ -1,4 +1,4 @@
-/* Homepage helpers: Lenis smooth scroll synced to ScrollTrigger, anchor scrolling, splitChars, magnet, scramble. */
+/* Homepage helpers: Lenis smooth scroll synced to ScrollTrigger, anchor scrolling, splitChars (GSAP SplitText), magnet, scramble. */
 (() => {
   const root = document.documentElement;
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -20,8 +20,13 @@
     }));
   }
 
-  // Split an element's text into per-char spans (kept readable via aria-label).
+  // Split an element's text into per-char spans with GSAP SplitText (readable via aria-label on the element,
+  // each char aria-hidden). Same output as before: span.<cls> per character, spaces left as text.
   window.splitChars = (el, cls = 'ch') => {
+    if (window.SplitText) {
+      gsap.registerPlugin(SplitText);
+      return SplitText.create(el, { type: 'chars', charsClass: cls, tag: 'span', aria: 'auto', reduceWhiteSpace: false }).chars;
+    }
     const text = el.textContent;
     el.setAttribute('aria-label', text.trim());
     el.innerHTML = [...text].map((c) => c === ' ' ? ' ' : `<span class="${cls}" aria-hidden="true">${c}</span>`).join('');

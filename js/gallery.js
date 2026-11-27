@@ -138,6 +138,7 @@
     addEventListener('resize', render);
 
     /* Detail view: the picture grows from its spot into a panel with a thumbnail strip. */
+    if (window.gsap && window.Flip) gsap.registerPlugin(Flip);
     const dlg = document.createElement('div');
     dlg.className = 'g-detail'; dlg.setAttribute('role', 'dialog'); dlg.setAttribute('aria-modal', 'true'); dlg.hidden = true;
     document.body.append(dlg);
@@ -147,11 +148,15 @@
       const el = els[openIdx], fig = dlg.querySelector('.g-detail__fig');
       const done = () => { dlg.hidden = true; dlg.innerHTML = ''; document.documentElement.classList.remove('g-locked'); window.lenis?.start(); lastFocus?.focus({ preventScroll: true }); openIdx = -1; };
       if (reduce || !window.gsap) return done();
-      const a = el.getBoundingClientRect(), b = fig.getBoundingClientRect();
-      gsap.timeline({ onComplete: done })
+      const tl = gsap.timeline({ onComplete: done })
         .to(dlg.querySelectorAll('.g-detail__side > *, .g-detail__strip, .g-detail__close'), { opacity: 0, y: 12, duration: .25, stagger: .02 }, 0)
-        .to(fig, { x: a.left - b.left, y: a.top - b.top, scaleX: a.width / b.width, scaleY: a.height / b.height, duration: .6, ease: 'expo.inOut' }, .05)
         .to(dlg, { backgroundColor: 'transparent', duration: .4 }, .2);
+      // GSAP Flip fits the panel back onto the card it came from, rotation and all (fan, helix and stack tilt their cards)
+      if (window.Flip) tl.add(Flip.fit(fig, el, { scale: true, duration: .6, ease: 'expo.inOut' }), .05);
+      else {
+        const a = el.getBoundingClientRect(), b = fig.getBoundingClientRect();
+        tl.to(fig, { x: a.left - b.left, y: a.top - b.top, scaleX: a.width / b.width, scaleY: a.height / b.height, duration: .6, ease: 'expo.inOut' }, .05);
+      }
     };
     const open = (i) => {
       const it = items[i]; openIdx = i; lastFocus = document.activeElement;
@@ -177,10 +182,17 @@
       }));
       dlg.querySelector('.g-detail__close').focus({ preventScroll: true });
       if (reduce || !window.gsap) return;
-      const a = els[i].getBoundingClientRect(), b = fig.getBoundingClientRect();
-      gsap.timeline()
-        .fromTo(dlg, { backgroundColor: 'transparent' }, { backgroundColor: getComputedStyle(document.body).backgroundColor, duration: .45 }, 0)
-        .fromTo(fig, { x: a.left - b.left, y: a.top - b.top, scaleX: a.width / b.width, scaleY: a.height / b.height, transformOrigin: '0 0' }, { x: 0, y: 0, scaleX: 1, scaleY: 1, duration: .8, ease: 'expo.inOut' }, 0)
+      const tl = gsap.timeline()
+        .fromTo(dlg, { backgroundColor: 'transparent' }, { backgroundColor: getComputedStyle(document.body).backgroundColor, duration: .45 }, 0);
+      if (window.Flip) {
+        // GSAP Flip: work out where the panel would sit fitted onto the clicked card (its tilt included), start there, fly home
+        const from = Flip.fit(fig, els[i], { scale: true, getVars: true });
+        tl.fromTo(fig, from, { x: 0, y: 0, rotation: 0, skewX: 0, scaleX: 1, scaleY: 1, duration: .8, ease: 'expo.inOut', clearProps: 'transform' }, 0);
+      } else {
+        const a = els[i].getBoundingClientRect(), b = fig.getBoundingClientRect();
+        tl.fromTo(fig, { x: a.left - b.left, y: a.top - b.top, scaleX: a.width / b.width, scaleY: a.height / b.height, transformOrigin: '0 0' }, { x: 0, y: 0, scaleX: 1, scaleY: 1, duration: .8, ease: 'expo.inOut' }, 0);
+      }
+      tl
         .from(dlg.querySelectorAll('.g-detail__side > *'), { opacity: 0, y: 24, duration: .6, stagger: .05, ease: 'power3.out' }, .45)
         .from(dlg.querySelectorAll('.g-thumb, .g-detail__close'), { y: 24, duration: .6, stagger: .03, ease: 'power3.out', clearProps: 'transform' }, .5);
     };

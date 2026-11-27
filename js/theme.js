@@ -69,9 +69,17 @@
     big.setAttribute('aria-label', txt);
     [...big.childNodes].filter((n) => n.nodeType === 3).forEach((n) => n.remove());
     const words = txt.split(/\s+/).map((w, i) => `<span class="nx-w" aria-hidden="true"><span style="--i:${i}">${w}</span></span>`).join(' ');
-    big.insertAdjacentHTML('afterbegin', words);
+    big.insertAdjacentHTML('afterbegin', `<span class="nx-ws">${words}</span>`);   // one flex item, so word spacing stays a normal space
+    const sq = big.querySelector(':scope > i'); if (sq) big.querySelector('.nx-ws').append(sq);   // the full stop follows the last word, even when the title wraps
   }
   f.classList.add('nx');
+  // Where the browser has CSS scroll-driven animations, the card's rise runs in CSS on a view() timeline
+  // (css/site.css, .nx-sd) and JS only marks the moment the words come in. Elsewhere the scroll handler below does it.
+  if (window.CSS && CSS.supports('animation-timeline: view()')) {
+    f.classList.add('nx-sd');
+    new IntersectionObserver((es, io) => { if (es[0].intersectionRatio >= .45 || es[0].intersectionRect.height > innerHeight * .36) { f.classList.add('is-in'); io.disconnect(); } }, { threshold: [0, .2, .45, .6] }).observe(f);
+    return;
+  }
   let top = 0, h = 1, q = 0, shown = false;
   const measure = () => { const r = f.getBoundingClientRect(); top = r.top + scrollY; h = r.height; };
   const tick = () => {

@@ -148,3 +148,17 @@ a:hover .arr, a:focus-visible .arr { translate: .35em 0; }
 .next.nx.is-in a.big i { scale: 1; }
 .next.nx .foot { opacity: 0; transition: opacity .8s ease .5s; }
 .next.nx.is-in .foot { opacity: 1; }
+
+/* A dimension line under a case-study title (Industmarine: the site is laid out like an engineering drawing).
+   js/case.js draws it to the title's measured width; GSAP DrawSVG plots it in. */
+.dim { grid-column: 1 / -1; height: 2.6rem; margin-top: .9rem; color: var(--mark); }
+.dim svg { display: block; overflow: visible; }
+.dim line, .dim path { stroke: currentColor; stroke-width: 1; fill: none; vector-effect: non-scaling-stroke; }
+.dim text { fill: currentColor; font: 400 11px 'Geist Mono', monospace; letter-spacing: .12em; text-transform: uppercase; }
+
+/* Footer slide-up on a CSS scroll-driven timeline (js/theme.js adds .nx-sd where supported): --nx runs 0 → 1 while the
+   footer enters the viewport, and the same rules above turn it into the rise. */
+@property --nx { syntax: '<number>'; inherits: true; initial-value: 0; }
+@keyframes nx-rise { from { --nx: 0; } to { --nx: 1; } }
+.next.nx.nx-sd { animation: nx-rise linear both; animation-timeline: view(); animation-range: entry 0% entry 100%; }
+.next a.big .nx-ws i { display: inline-block; margin-left: .06em; vertical-align: baseline; }

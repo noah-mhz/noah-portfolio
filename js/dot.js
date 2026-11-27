@@ -9,6 +9,42 @@
   const WORLDS = ['base', 'fable', 'neon', 'hollow'];
   const GLYPHS = '▚▞░▒▓/\\_#%<>01';
 
+  /* GSAP MorphSVG: with the plugin loaded, the mark is one SVG path that morphs between the worlds' shapes
+     (the portfolio's square → the Fable's diamond → Neon's pixel on its tile → the Hollow's torn shard),
+     with each world's details fading in around it. Without it, the CSS marks in css/base.css take over. */
+  const MORPH = !REDUCE && window.gsap && window.MorphSVGPlugin;
+  if (MORPH) gsap.registerPlugin(MorphSVGPlugin);
+  const SHAPE = {
+    base: 'M0 0H10V10H0Z',
+    fable: 'M5 .6L9.4 5L5 9.4L.6 5Z',
+    neon: 'M2.9 2.9H7.1V7.1H2.9Z',
+    hollow: 'M-.6 -.6H5.9L6.7 1.4L8.2 .2L10.6 2.4V10.6H-.6Z',
+  };
+  const FILL = { fable: '#C4E44A', neon: '#B6F34A', hollow: '#2A2148' };
+  const PARTS = { fable: ['.m-bar'], neon: ['.m-tile', '.m-scan'], hollow: ['.m-seam'], base: [] };
+  const SVG_MARK = '<svg class="dotp__svg" viewBox="0 0 10 10" overflow="visible" aria-hidden="true" focusable="false">'
+    + '<rect class="m-tile" x="0" y="0" width="10" height="10" fill="#080B12" stroke="#22336B" stroke-width=".5" opacity="0"/>'
+    + '<rect class="m-bar" x="-2.6" y="1.8" width=".9" height="6.4" fill="#3B45DE" opacity="0"/>'
+    + '<path class="m-shape" d="' + 'M0 0H10V10H0Z' + '" fill="currentColor"/>'
+    + '<line class="m-scan" x1="0" x2="10" y1="3" y2="3" stroke="#12C9D9" stroke-width=".35" opacity="0"/>'
+    + '<line class="m-seam" x1="1" y1="8.4" x2="9.2" y2="2.4" stroke="#C0463B" stroke-width=".6" opacity="0"/></svg>';
+  const morph = (d, w) => {
+    const g = d.querySelector('.dotp__svg'); if (!g) return;
+    const shape = g.querySelector('.m-shape');
+    gsap.killTweensOf(shape);
+    gsap.to(shape, { morphSVG: SHAPE[w], duration: .55, ease: 'expo.inOut' });
+    if (w === 'base') gsap.to(shape, { fill: getComputedStyle(d).color, duration: .4, onComplete: () => shape.setAttribute('fill', 'currentColor') });
+    else gsap.to(shape, { fill: FILL[w], duration: .4 });
+    const on = PARTS[w];
+    g.querySelectorAll('.m-tile, .m-bar, .m-scan, .m-seam').forEach((el) => {
+      const show = on.some((q) => el.matches(q));
+      gsap.killTweensOf(el, 'opacity');
+      gsap.to(el, { opacity: show ? (el.matches('.m-scan') ? .9 : 1) : 0, duration: show ? .35 : .2, delay: show ? .2 : 0 });
+    });
+    g._scan?.kill();
+    if (w === 'neon') g._scan = gsap.fromTo(g.querySelector('.m-scan'), { attr: { y1: 2.6, y2: 2.6 } }, { attr: { y1: 7.4, y2: 7.4 }, duration: 1, ease: 'steps(6)', repeat: -1, yoyo: true });
+  };
+
   // One filter for every bloom: fractal noise displaces the edge so it frays like ink in paper fibres.
   // Units are the element's own box, so the frayed edge looks the same at any heading size.
   const NS = 'http://www.w3.org/2000/svg', svg = document.createElementNS(NS, 'svg');
@@ -26,7 +62,8 @@
 
   dots.forEach((d) => {
     if (!d.querySelector('.dotp__sq')) d.insertAdjacentHTML('afterbegin', '<span class="dotp__sq" aria-hidden="true"></span>');
-    d.querySelector('.dotp__sq').insertAdjacentHTML('beforeend', '<i class="dotp__f"></i><i class="dotp__x"></i>');
+    d.querySelector('.dotp__sq').insertAdjacentHTML('beforeend', MORPH ? SVG_MARK : '<i class="dotp__f"></i><i class="dotp__x"></i>');
+    if (MORPH) d.classList.add('is-svg');
     d.insertAdjacentHTML('beforeend', `<span class="dotp__label" aria-hidden="true">${[...LABEL].map((c) => c === ' ' ? '<b class="s">\u00a0</b>' : `<b>${c}</b>`).join('')}</span>`);
     // Ink bleed on hover is switched off for now (styles kept in css/base.css as .dotp__bleed).
     d.addEventListener('click', (e) => {
@@ -56,6 +93,7 @@
     if (d.dataset.w === w) return;
     d.dataset.w = w;
     if (REDUCE) return;
+    if (MORPH) morph(d, w);
     d.classList.remove('is-glitch'); void d.offsetWidth; d.classList.add('is-glitch');
     clearTimeout(state.get(d).g); state.get(d).g = setTimeout(() => d.classList.remove('is-glitch'), 240);
     if (d.matches(':hover, :focus-visible') || d.classList.contains('is-tell')) scramble(d);
