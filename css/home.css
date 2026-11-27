@@ -67,7 +67,6 @@ ol, ul { list-style: none; margin: 0; padding: 0; }
 .pnav.is-open .pnav__menu { border-left: 0; padding-left: 0; }
 .pill { display: inline-flex; align-items: center; gap: .6rem; padding: .95rem 1.35rem; border-radius: 99px; background: var(--ink); color: var(--bg); text-decoration: none; font: 600 .95rem/1 'Archivo'; font-stretch: 110%; white-space: nowrap; }
 .pill b { display: grid; place-items: center; width: 1.4rem; height: 1.4rem; border-radius: 50%; background: var(--pink); color: var(--on-pink); font-weight: 600; transition: rotate .5s var(--ease); }
-.pill:hover b { rotate: -45deg; }
 
 @view-transition { navigation: auto; }
 .hero .press .sq { view-transition-name: dot; }
@@ -410,3 +409,14 @@ a:hover .arr, a:focus-visible .arr { translate: .35em 0; }
 .loader__bar i { display: block; height: 100%; background: var(--mark); transform: scaleX(0); transform-origin: 0 50%; }
 .loader__count { min-width: 4ch; text-align: right; font-variant-numeric: tabular-nums; }
 @media (max-width: 600px) { .loader__logo { top: 1.4rem; } .loader__label { top: 1.75rem; } }
+
+/* Pill arrow: a drawn line arrow in the disc. On hover it travels out to the right while a second one follows in
+   from the left, and the disc swells a touch. Replaces the rotated text arrow. */
+.pill .pill__ar { position: relative; overflow: hidden; width: 1.55rem; height: 1.55rem; transition: scale .5s var(--ease); rotate: none !important; }
+.pill .pill__ar i { position: absolute; inset: 0; display: grid; place-items: center; transition: translate .55s var(--ease); }
+.pill .pill__ar i + i { translate: -110% 0; }
+.pill .pill__ar svg { width: 58%; height: 58%; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+.pill:hover .pill__ar, .pill:focus-visible .pill__ar { scale: 1.08; }
+.pill:hover .pill__ar i, .pill:focus-visible .pill__ar i { translate: 110% 0; }
+.pill:hover .pill__ar i + i, .pill:focus-visible .pill__ar i + i { translate: 0 0; transition-delay: .06s; }
+@media (prefers-reduced-motion: reduce) { .pill .pill__ar, .pill .pill__ar i { transition: none; } .pill:hover .pill__ar { scale: none; } .pill:hover .pill__ar i { translate: 0 0; } .pill:hover .pill__ar i + i { translate: -110% 0; } }
