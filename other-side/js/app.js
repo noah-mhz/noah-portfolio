@@ -11,8 +11,9 @@
   const EASE = 'cubic-bezier(.76,0,.24,1)', OUT = 'cubic-bezier(.16,1,.3,1)';
   const body = document.body, sel = $('#select'), tx = $('.tx'), live = $('[data-live]'), viewer = $('.viewer');
   const roots = { select: sel, fable: $('#fable'), neon: $('#neon'), hollow: $('#hollow') };
-  let view = 'select', busy = false, lastRect = null, quiet = false, landAt = null;
+  let view = 'select', busy = false, lastRect = null, quiet = false;
   const seen = new Set();
+  if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
 
   const routeOf = () => { const h = location.hash.slice(1); return WORLDS.includes(h) ? h : 'select'; };
   const rectOf = (el) => { const r = el.getBoundingClientRect(); return { x: r.left, y: r.top, w: r.width, h: r.height }; };
@@ -24,12 +25,8 @@
   function show(name) {
     Object.entries(roots).forEach(([k, el]) => { el.hidden = k !== name; });
     body.dataset.view = name; view = name;
-    // land on the same part of the page, or the nearest earlier part this world has
-    const ORDER = ['hero', 'work', 'about', 'end'];
-    let land = null;
-    if (landAt && landAt !== 'hero') for (let i = ORDER.indexOf(landAt); i > 0 && !land; i--) land = $(`[data-sec="${ORDER[i]}"]`, roots[name]);
-    landAt = null;
-    scrollTo(0, land ? land.getBoundingClientRect().top + scrollY - 60 : 0);
+    // every world opens at its start
+    scrollTo({ top: 0, left: 0, behavior: 'instant' });
     if (name !== 'select') $('h1', roots[name]).focus({ preventScroll: true }); else $('#sel-title').focus({ preventScroll: true });
     live.textContent = name === 'select' ? 'The Other Side, choose a world' : NAMES[name];
     document.title = name === 'select' ? 'The Other Side · Noah Zaw Min Htut' : NAMES[name] + ' · The Other Side';
@@ -111,9 +108,6 @@
     return { arrived, done: arrived.then(() => cap.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 220, fill: 'forwards' }).finished) };
   }
 
-  // Which part of the page you're in, so a world-to-world switch lands you in the same part.
-  const secOf = (w) => { const mid = innerHeight * .45; return $$('[data-sec]', roots[w]).filter((s) => s.getBoundingClientRect().top <= mid).pop()?.dataset.sec || 'hero'; };
-
   async function go(to) {
     if (to === view || busy) return;
     busy = true;
@@ -122,7 +116,6 @@
     if (viewer.open) viewer.close();
     try {
       if (from === 'select' && to !== 'select') { sel.dataset.hover = to; $$('.door').forEach((x) => x.classList.toggle('is-hot', x.dataset.world === to)); }
-      landAt = WORLDS.includes(from) && WORLDS.includes(to) ? secOf(from) : null;
       if (REDUCE) show(to);
       else if (to === 'select') await toSelect(from);
       else { const cap = caption(to, from); await Promise.all([({ fable: enterFable, neon: enterNeon, hollow: enterHollow })[to](origin, cap.arrived), cap.done]); }
