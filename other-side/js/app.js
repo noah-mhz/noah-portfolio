@@ -227,19 +227,47 @@
   addEventListener('resize', scrub);
 
   /* ---------- Neon District: Pixel Pull floors as tabs ---------- */
+  const HOVER = matchMedia('(hover: hover) and (pointer: fine)');
   const px = $('.nbldg'), tabs = $$('.npx__floors [role="tab"]'), pview = $('#px-view'), pimg = $('img', pview), pnote = $('q', pview);
+  let chosen = 'hero';
   const pick = (t, focus) => {
+    chosen = t.dataset.s;
     tabs.forEach((x) => { const on = x === t; x.setAttribute('aria-selected', on); x.tabIndex = on ? 0 : -1; });
     px.dataset.on = t.dataset.s; pview.setAttribute('aria-labelledby', t.id);
     pimg.src = t.dataset.src; pimg.alt = t.dataset.alt; pimg.height = t.dataset.h; pnote.textContent = t.dataset.note;
     if (!REDUCE) { pview.classList.remove('is-swap'); void pview.offsetWidth; pview.classList.add('is-swap'); }
     if (focus) t.focus();
   };
-  // the building's floor tags open that floor at street level
-  $$('[data-floor]').forEach((b) => b.addEventListener('click', () => {
-    const t = tabs.find((x) => x.dataset.s === b.dataset.floor); pick(t);
+  // The building: a floor lights up under the pointer (desktop) or as you scroll past it (touch).
+  // Clicking or tapping a floor, or its tag, opens that floor at street level below.
+  const light = (s) => { px.dataset.on = s; };
+  const openFloor = (s) => {
+    const t = tabs.find((x) => x.dataset.s === s); pick(t);
     $('#neon-pixel').scrollIntoView({ behavior: REDUCE ? 'auto' : 'smooth' }); t.focus({ preventScroll: true });
-  }));
+  };
+  $$('[data-floor]').forEach((b) => {
+    b.addEventListener('click', () => openFloor(b.dataset.floor));
+    b.addEventListener('pointerenter', () => { if (HOVER.matches) light(b.dataset.floor); });
+    b.addEventListener('focus', () => light(b.dataset.floor));
+    b.addEventListener('blur', () => { if (!px.matches(':hover')) light(chosen); });
+  });
+  $$('.px__slab', px).forEach((sl) => {
+    sl.addEventListener('pointerenter', () => { if (HOVER.matches) light(sl.dataset.s); });
+    sl.addEventListener('click', () => openFloor(sl.dataset.s));
+  });
+  px.addEventListener('pointerleave', () => { if (HOVER.matches) light(chosen); });
+  // touch: the floors light top to bottom as the building moves up the screen
+  const FLOORS = ['hero', 'cats', 'prod', 'camp'];
+  let flq = 0;
+  const floorScroll = () => {
+    flq = 0;
+    if (HOVER.matches || view !== 'neon') return;
+    const r = px.getBoundingClientRect();
+    if (r.bottom < 0 || r.top > innerHeight) return;
+    const p = (innerHeight * .55 - r.top) / (innerHeight * .25 + r.height); // top at 55% of the screen → bottom at 30%
+    light(FLOORS[Math.max(0, Math.min(3, Math.floor(p * 4)))]);
+  };
+  addEventListener('scroll', () => { if (!flq) flq = requestAnimationFrame(floorScroll); }, { passive: true });
   tabs.forEach((t, i) => {
     t.addEventListener('click', () => pick(t));
     t.addEventListener('keydown', (e) => {

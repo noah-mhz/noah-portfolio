@@ -67,6 +67,7 @@
 .nbldg__tags .mono { color: var(--cyan); font-size: var(--t-micro); }
 .nbldg__tags button:hover, .nbldg__tags button:focus-visible { border-color: var(--lime); background: var(--navy); outline: none; }
 .nbldg[data-on='hero'] [data-floor='hero'], .nbldg[data-on='cats'] [data-floor='cats'], .nbldg[data-on='prod'] [data-floor='prod'], .nbldg[data-on='camp'] [data-floor='camp'] { border-color: var(--lime); }
+.px__slab { cursor: pointer; }
 .nbldg__name { position: absolute; left: 1rem; bottom: 1rem; color: var(--dim); }
 .npx__street { display: grid; gap: 1rem; }
 .npx__floors { display: flex; flex-wrap: wrap; border: 1px solid var(--line); }
