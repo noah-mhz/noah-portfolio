@@ -143,3 +143,8 @@ a { color: inherit; }
   .dotp.is-glitch .dotp__sq, .dotp.is-glitch .dotp__label, .dotp[data-w='neon'] .dotp__x { animation: none !important; }
   .dotp__f, .dotp__x, .dotp__label { transition: none !important; }
 }
+
+/* the homepage footer's full stop (.press .sq) is a portal too: the link keeps the square's place, its marks draw it */
+.press .sq.dotp { background: none; margin-left: 0; }
+.press .sq.dotp::before { width: max(44px, 150%); height: max(44px, 150%); }
+.press .sq.dotp:focus-visible::after { width: max(40px, 140%); height: max(40px, 140%); }

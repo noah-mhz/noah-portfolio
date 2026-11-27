@@ -94,12 +94,12 @@ README.md has the file-by-file structure and the motion tiers; read it before la
   `js/case.js` (case-study galleries; each page lists its screens in `<script type="application/json" id="screens">`),
   `js/concepts.js`, `js/colophon.js`, `js/contact.js` (project form), `js/dot.js` (period portal).
 - Period portal: `<a class="dotp" href="…" data-bleed="work|talk|concepts" aria-label="…"><span class="dotp__sq" aria-hidden="true"></span></a>`
-  placed as the last child of a heading. Every homepage period leads to `/other-side/`; it cycles base → Fable → Neon → Hollow marks (`data-w`) and shows a glitching "To the other side" tag on hover/focus and once on first view. Styles at the end of `css/base.css` (colours per `data-bleed`); `js/dot.js`
+  placed as the last child of a heading. Every homepage period (More work, Services, Concepts, Timeline, and the footer's DISCUSS A PROJECT `.press .sq.dotp`) leads to `/other-side/`; it cycles base → Fable → Neon → Hollow marks (`data-w`) and shows a glitching "To the other side" tag on hover/focus and once on first view. Styles at the end of `css/base.css` (colours per `data-bleed`); `js/dot.js`
   injects the SVG ink filters and bleed layers and runs the click flood. Add `data-pf-open` to open the form instead.
 - Pages: `/`, `/work/{ganko,luumens,voyagaer,industmarine}/`, `/concepts/` (+ the concept homepages,
   self-contained), `/colophon/`, `/404.html`. Case studies run 01 / 04 Ganko → Luumens → Voyagaer →
   Industmarine; the homepage deck (`WORK` in `js/home.js`) and the "Next project" footers follow that order.
-- Contact: any `[data-pf-open]` link opens the form, which `js/contact.js` builds on the page. It posts to
+- Contact: any `[data-pf-open]` link opens the form in place (base.js's Lenis anchor scroll skips them), which `js/contact.js` builds on the page. It posts to
   `functions/api/contact.js` (Turnstile + Resend). Field names must match the function.
 - Images are WebP. `_headers` sets caching (CSS/JS always revalidate) and security headers.
 - Every repo file deploys. `functions/_middleware.js` returns the 404 page for working files

@@ -14,7 +14,7 @@
     lenis.on('scroll', ScrollTrigger.update);
     gsap.ticker.add((t) => lenis.raf(t * 1000));
     gsap.ticker.lagSmoothing(0);
-    document.querySelectorAll('a[href^="#"]').forEach((a) => a.addEventListener('click', (e) => {
+    document.querySelectorAll('a[href^="#"]:not([data-pf-open])').forEach((a) => a.addEventListener('click', (e) => {
       const el = document.querySelector(a.getAttribute('href'));
       if (el) { e.preventDefault(); lenis.scrollTo(el, { duration: 1.6 }); }
     }));
