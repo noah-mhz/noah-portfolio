@@ -256,6 +256,23 @@
     sl.addEventListener('click', () => openFloor(sl.dataset.s));
   });
   px.addEventListener('pointerleave', () => { if (HOVER.matches) light(chosen); });
+  // The building in Three.js (js/district.js): loaded when the district first opens, if WebGL2 is there.
+  // It reports hover / click on its floors; the CSS floors stay as the fallback.
+  px.addEventListener('floor', (e) => {
+    const { type, s } = e.detail;
+    if (type === 'hover' && HOVER.matches) light(s);
+    if (type === 'open') openFloor(s);
+  });
+  let district = null, districtLoading = false;
+  const loadDistrict = () => {
+    if (district) { district.replay(); return; }
+    if (districtLoading) return;
+    let ok = false;
+    try { ok = !!document.createElement('canvas').getContext('webgl2'); } catch (e) {}
+    if (!ok) return;
+    districtLoading = true;
+    import('/other-side/js/district.js').then((m) => { district = m.init({ bldg: px, reduce: REDUCE, hover: HOVER }); readouts(); }).catch(() => {});
+  };
   // touch: the floors light top to bottom as the building moves up the screen
   const FLOORS = ['hero', 'cats', 'prod', 'camp'];
   let flq = 0;
@@ -340,7 +357,7 @@
   function readouts() {
     const r = (k, v) => { const el = $(`[data-readout="${k}"]`); if (el) el.textContent = v; };
     r('route', `you are at ${location.hash || '#select'}; ${history.length} ${history.length === 1 ? 'entry' : 'entries'} in this tab's history`);
-    r('files', `${document.querySelectorAll('script[src]').length} script file, ${document.styleSheets.length} stylesheets, 0 libraries`);
+    r('files', `${document.querySelectorAll('script[src]').length} script file, ${document.styleSheets.length} stylesheets, ${$('.nbldg.is-gl') ? '1 library (Three.js), loaded for the building' : '0 libraries loaded'}`);
     const fams = new Set([...document.fonts].filter((f) => f.status === 'loaded').map((f) => f.family.replace(/["']/g, '')));
     r('fonts', `${fams.size} of 4 typefaces loaded so far: ${[...fams].join(', ') || 'none yet'}`);
     const imgs = performance.getEntriesByType('resource').filter((e) => /other-side\/assets\//.test(e.name));
@@ -351,11 +368,71 @@
   if ('IntersectionObserver' in window) new IntersectionObserver((es) => es.forEach((e) => e.isIntersecting && readouts()), { threshold: .2 }).observe($('.nbuild'));
 
   /* ---------- World on: only the visible world runs anything ---------- */
+  /* ---------- B-6 · ask the build notes (functions/api/ask.js) ---------- */
+  const ask = $('[data-ask]');
+  if (ask) {
+    const formEl = $('[data-ask-form]', ask), input = $('input', formEl), btn = $('button', formEl), out = $('[data-ask-out]', ask), check = $('[data-ask-check]', ask);
+    let cfg = null, widget = null, token = '', tsLoad = null, busyAsk = false;
+    const say = (text, cls = '') => { out.className = 'nask__out' + (cls ? ' is-' + cls : ''); out.textContent = text; };
+    const off = (why) => { input.disabled = true; btn.disabled = true; $$('[data-ask-try]', ask).forEach((b) => { b.disabled = true; }); say(why, 'err'); };
+    const loadTs = () => tsLoad || (tsLoad = new Promise((res, rej) => {
+      if (window.turnstile) return res(window.turnstile);
+      const s = document.createElement('script'); s.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit'; s.async = true;
+      s.onload = () => res(window.turnstile); s.onerror = rej; document.head.append(s);
+    }));
+    const setup = async () => {
+      if (cfg) return cfg;
+      try { cfg = await fetch('/api/ask', { headers: { accept: 'application/json' } }).then((r) => r.json()); }
+      catch (e) { cfg = { configured: false }; }
+      if (!cfg.configured || !cfg.siteKey) { off('This experiment is switched off right now.'); return cfg; }
+      try {
+        const ts = await loadTs();
+        widget = ts.render(check, { sitekey: cfg.siteKey, theme: 'dark', size: 'flexible', appearance: 'interaction-only',
+          callback: (t) => { token = t; }, 'expired-callback': () => { token = ''; }, 'error-callback': () => { token = ''; return true; } });
+      } catch (e) { off('The spam check could not load, so the experiment is off in this browser.'); }
+      return cfg;
+    };
+    const waitToken = (ms) => new Promise((res) => { const t0 = Date.now(); const tick = () => { if (!token && window.turnstile && widget !== null) token = window.turnstile.getResponse(widget) || ''; if (token || Date.now() - t0 > ms) return res(token); setTimeout(tick, 150); }; tick(); });
+    input.addEventListener('focus', setup, { once: true });
+    $$('[data-ask-try]', ask).forEach((b) => b.addEventListener('click', () => { input.value = b.textContent; formEl.requestSubmit(); }));
+    formEl.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const q = input.value.trim();
+      if (busyAsk) return;
+      if (q.length < 3) { say('Ask a question about how the site is built.', 'err'); input.focus(); return; }
+      busyAsk = true; btn.disabled = true; say('Reading the build notes', 'wait');
+      try {
+        await setup();
+        if (!cfg.configured) return;
+        const t = await waitToken(8000);
+        if (!t) { say('Please complete the check above, then ask again.', 'err'); return; }
+        const r = await fetch('/api/ask', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ q, token: t }) });
+        const d = await r.json().catch(() => ({}));
+        say(d.ok ? d.answer : (d.error || 'Something went wrong. Try again.'), d.ok ? '' : 'err');
+      } catch (err) { say('Could not reach the server. Try again in a moment.', 'err'); }
+      finally {
+        busyAsk = false; if (cfg && cfg.configured) btn.disabled = false;
+        token = ''; if (window.turnstile && widget !== null) window.turnstile.reset(widget);
+      }
+    });
+  }
+
+  // Study 3 (js/ink.js): the GLSL ink sheet, loaded when the Hollow first opens
+  let inkLoaded = false;
+  const loadInk = () => {
+    if (inkLoaded) return; inkLoaded = true;
+    const stage = $('[data-ink]'); if (!stage) return;
+    import('/other-side/js/ink.js').then((m) => {
+      const src = $('[data-ink-src]'); if (src) src.textContent = m.FRAG.trim();
+      let ok = null; try { ok = m.init(stage, { reduce: REDUCE }); } catch (e) {}
+      stage.classList.add(ok ? 'is-gl' : 'is-nogl');
+    }).catch(() => stage.classList.add('is-nogl'));
+  };
   function worldOn(name) {
     if (name === 'fable') requestAnimationFrame(() => { fmeasure(); scrub(); });
     if (name === 'hollow' && !REDUCE) setTimeout(rupture, 60);
-    if (name === 'hollow') fits.forEach((f) => f());
-    if (name === 'neon') readouts();
+    if (name === 'hollow') { fits.forEach((f) => f()); loadInk(); }
+    if (name === 'neon') { readouts(); loadDistrict(); }
   }
   addEventListener('resize', () => { if (view === 'fable') fmeasure(); });
   document.fonts?.ready.then(() => { if (view === 'fable') fmeasure(); });

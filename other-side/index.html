@@ -302,11 +302,26 @@
     <p class="nbuild__intro">Five true statements about this page, each with a reading taken from your browser right now.</p>
     <ol class="nbuild__plan">
       <li><span class="mono">B-1</span><h3>One page, three worlds</h3><p>Each world is a section of a single HTML page. Hash routes (#fable, #neon, #hollow) switch between them, so links can point into a world and the back button works.</p><p class="nbuild__live mono" data-readout="route"></p></li>
-      <li><span class="mono">B-2</span><h3>No dependencies</h3><p>HTML, CSS and plain JavaScript, with no build step. Motion runs on the browser's Web Animations API. Four typefaces are self-hosted.</p><p class="nbuild__live mono" data-readout="files"></p></li>
+      <li><span class="mono">B-2</span><h3>One library, loaded late</h3><p>HTML, CSS and plain JavaScript, with no build step. Motion runs on the browser's Web Animations API. The one exception is the building at the top of this world: Three.js with custom GLSL floors, loaded only when you enter. Four typefaces are self-hosted.</p><p class="nbuild__live mono" data-readout="files"></p></li>
       <li><span class="mono">B-3</span><h3>One type system, three voices</h3><p>Geist Mono and Archivo carry navigation and reading everywhere. Each world has its own display face, and the selector's title is fitted so every letter can hand over in place.</p><p class="nbuild__live mono" data-readout="fonts"></p></li>
       <li><span class="mono">B-4</span><h3>Worlds load when you enter</h3><p>Screens for a world you have not entered are not downloaded. They load lazily when the world opens.</p><p class="nbuild__live mono" data-readout="images"></p></li>
       <li><span class="mono">B-5</span><h3>Motion you can switch off</h3><p>With reduced motion turned on in your system settings, every transition becomes an instant cut and nothing moves on its own.</p><p class="nbuild__live mono" data-readout="motion"></p></li>
     </ol>
+    <div class="nask" data-ask aria-labelledby="nask-title">
+      <div class="nask__text">
+        <p class="mono nlabel">B-6 · Experiment</p>
+        <h3 id="nask-title">Ask the build notes</h3>
+        <p>A small Claude model answers questions about how this site is made, using only the notes above and a short list of facts. When the notes don't cover something, it says so. Your question is sent to Anthropic's API to be answered; this site doesn't store it.</p>
+      </div>
+      <form class="nask__form" data-ask-form novalidate>
+        <label class="sr" for="ask-q">Your question about how the site is built</label>
+        <input id="ask-q" name="q" type="text" maxlength="240" autocomplete="off" placeholder="Why is the building drawn in Three.js?" required>
+        <button type="submit"><span class="mono">→</span>Ask</button>
+      </form>
+      <div class="nask__try mono" aria-label="Example questions"><button type="button" data-ask-try>How does the ink study work?</button><button type="button" data-ask-try>What happens with reduced motion?</button><button type="button" data-ask-try>Which libraries does this page use?</button></div>
+      <div class="nask__check" data-ask-check></div>
+      <p class="nask__out" data-ask-out aria-live="polite"></p>
+    </div>
   </section>
 
   <!-- Exit · a departures board: origin, one track, three gates -->
@@ -343,7 +358,7 @@
     <div class="hhero__under" aria-hidden="true"><p>nothing here is<br>finished yet</p></div>
     <h1 class="hhero__title" id="hh-title"><span class="hh1 mono">Entering</span><span class="hh2" data-ghost="the Hollow">the H<span class="hshift">o</span>llow</span></h1>
     <div class="hhole" aria-hidden="true"><i class="hhole__rim"></i><span class="hhole__deep"><i class="hrec hrec--1"></i><i class="hrec hrec--2"></i><i class="hrec hrec--3"></i><i class="hhole__fog"></i></span><i class="hhole__ghost"></i></div>
-    <p class="hhero__lede">Where unfinished things live. For now it holds two studies made while building this site. Other experiments are in progress and will appear here when they are ready.</p>
+    <p class="hhero__lede">Where unfinished things live. For now it holds three studies made while building this site. Other experiments are in progress and will appear here when they are ready.</p>
   </section>
 
   <section class="hstudies" id="hollow-studies" data-sec="work" aria-labelledby="hs-title">
@@ -382,13 +397,27 @@
         <p class="hst__hidden" aria-hidden="true">some work is a door.<br><em>some is a crack in the wall.</em></p>
       </div>
     </article>
+    <article class="hst" aria-labelledby="st3">
+      <div class="hst__text">
+        <p class="mono hst__k">Study 3 · GLSL</p>
+        <h3 id="st3">Ink</h3>
+        <p>Ink dropped on wet paper, written as one fragment shader with no library. Each drop spreads along fractal noise, so its edge frays like paper fibres; as it dries, a darker tide-line gathers at the rim. Press or drag on the sheet, or focus it and press Enter.</p>
+        <div class="hst__ctl"><button type="button" data-ink-clear>New sheet</button></div>
+        <details class="hst__src"><summary class="mono">Read the shader</summary><pre><code data-ink-src></code></pre></details>
+      </div>
+      <div class="hst__stage hst__stage--ink" data-ink tabindex="0" role="img" aria-label="A sheet of pale paper in the dark. Ink spreads from each place you press, its edge fraying and drying to a rust-coloured rim.">
+        <p class="hst__plate mono" aria-hidden="true">Plate 3</p>
+        <canvas aria-hidden="true"></canvas>
+        <p class="hst__surface" aria-hidden="true">Drop ink</p>
+      </div>
+    </article>
   </section>
 
   <section class="hopen" id="hollow-open" data-sec="about" aria-labelledby="ho-title">
     <div class="hopen__slit" aria-hidden="true"><i></i></div>
     <div class="hopen__text">
       <h2 id="ho-title">Opening</h2>
-      <p>The Hollow is meant for work that doesn't fit the other two worlds: rough, odd and unfinished. Nothing is shown here until it exists. The two studies above are real and running on this page; the rest is still being made.</p>
+      <p>The Hollow is meant for work that doesn't fit the other two worlds: rough, odd and unfinished. Nothing is shown here until it exists. The three studies above are real and running on this page; the rest is still being made.</p>
     </div>
   </section>
 

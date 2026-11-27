@@ -86,6 +86,20 @@
   -webkit-mask: radial-gradient(9rem 9rem at var(--lx) var(--ly), #000 35%, transparent 72%); mask: radial-gradient(9rem 9rem at var(--lx) var(--ly), #000 35%, transparent 72%); }
 .hst__hidden em { color: var(--rust-t); }
 
+/* Study 3 · Ink: a WebGL canvas fills the plate */
+.hst__stage.hst__stage--ink { cursor: crosshair; touch-action: none; aspect-ratio: 16 / 10; min-height: 0; }
+.hst__stage--ink canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.hst__stage--ink:focus-visible { outline: 2px solid var(--pale); outline-offset: 4px; }
+.hst__stage--ink .hst__plate, .hst__stage--ink .hst__surface { z-index: 1; pointer-events: none; color: #3a3640; mix-blend-mode: multiply; }
+.hst__stage--ink.is-nogl .hst__surface { display: none; }
+.hst__stage--ink.is-nogl .hst__plate { color: var(--bone); mix-blend-mode: normal; }
+.hst__stage--ink.is-nogl::after { content: 'This study needs WebGL2, which this browser has turned off.'; position: absolute; inset: auto 1.2rem 3rem; color: var(--bone); font: 400 var(--t-ui)/1.4 var(--f-ui); }
+.hst__text { min-width: 0; }
+.hst__src { min-width: 0; max-width: 100%; }
+.hst__src summary { cursor: pointer; color: var(--rust-t); min-height: 44px; display: flex; align-items: center; letter-spacing: .1em; text-transform: uppercase; }
+.hst__src summary:focus-visible { outline: 2px solid var(--pale); outline-offset: 2px; }
+.hst__src pre { max-width: 100%; margin: .4rem 0 0; max-height: 22rem; overflow: auto; padding: 1rem; border: 1px solid rgba(181, 176, 166, .2); background: #0C0D15; color: var(--bone); font: 400 .78rem/1.5 'Geist Mono', ui-monospace, monospace; white-space: pre; tab-size: 2; }
+
 /* Opening: an honest state for a world that is still being made */
 .hopen { padding: 10vh var(--pad); display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--pad); align-items: center; border-top: 1px solid rgba(181, 176, 166, .15); }
 .hopen__slit { grid-column: 1 / 4; height: 40vh; min-height: 14rem; display: grid; place-items: center; }
