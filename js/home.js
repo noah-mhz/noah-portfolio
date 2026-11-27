@@ -211,9 +211,30 @@
         if (s === deckSection) deckStatus();
       }
     };
-    const open = (v) => { pnav.classList.toggle('is-open', v); status.setAttribute('aria-expanded', v); };
-    status.addEventListener('click', () => open(!pnav.classList.contains('is-open')));
-    if (fine) { status.addEventListener('pointerenter', () => open(true)); pnav.addEventListener('pointerleave', () => open(false)); }
+    // Opening the menu unfolds the links to the LEFT of the Menu button, so the button stays under the pointer
+    // (centred, the pill grew both ways and the button ran off, which closed and reopened it in a loop).
+    let hoverOpenedAt = 0, unpin = 0;
+    const pin = () => {
+      clearTimeout(unpin);
+      if (pnav.style.left) return;
+      const r = pnav.getBoundingClientRect(), parent = pnav.offsetParent.getBoundingClientRect();
+      if (r.right - r.width - $('.pnav__links', pnav).scrollWidth < 12) return;   // no room on the left: stay centred
+      pnav.style.left = (r.right - parent.left) + 'px'; pnav.style.translate = '-100% 0';
+    };
+    const release = () => { clearTimeout(unpin); unpin = setTimeout(() => { if (!pnav.classList.contains('is-open')) { pnav.style.left = ''; pnav.style.translate = ''; } }, 850); };
+    const open = (v) => {
+      if (v === pnav.classList.contains('is-open')) return;
+      if (v) pin(); else release();
+      pnav.classList.toggle('is-open', v); status.setAttribute('aria-expanded', v);
+    };
+    status.addEventListener('click', () => {
+      if (pnav.classList.contains('is-open') && performance.now() - hoverOpenedAt < 700) return;   // the hover just opened it
+      open(!pnav.classList.contains('is-open'));
+    });
+    if (fine) {
+      status.addEventListener('pointerenter', () => { if (!pnav.classList.contains('is-open')) { hoverOpenedAt = performance.now(); open(true); } });
+      pnav.addEventListener('pointerleave', () => open(false));
+    }
     $$('.pnav__links a').forEach((a) => a.addEventListener('click', () => open(false)));
     if (window.gsap) gsap.ticker.add(update); else addEventListener('scroll', update, { passive: true });
     addEventListener('resize', place);
